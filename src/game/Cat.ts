@@ -110,11 +110,12 @@ export class Cat {
                 return;
         }
 
-        // pause near the player (unless following)
-        if (this.st !== 'follow' && dPlayer < 26) {
+        // pause near the player while idling or wandering (a cat on his way to a nap does not stop)
+        if ((this.st === 'idle' || this.st === 'walk') && dPlayer < 26) {
             this.target = null;
             this.sprite.setFlipX(player.x < this.x);
-            if (this.st === 'walk' || this.st === 'toBed') this.st = 'idle';
+            this.st = 'idle';
+            this.timer = Math.max(this.timer, 600);
             this.sitAnim();
             return;
         }

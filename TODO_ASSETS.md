@@ -1,19 +1,41 @@
-# TODO: assets, copy, and decisions
+# TODO: assets, copy, and decisions (iteration 2)
 
-Everything the site still needs from Daniel. Every item here shows up on the site as a visible yellow `[TODO: ...]` or a striped "photo coming soon" box until it is filled.
+Everything the site still needs from Daniel. Every item here shows up on the site as a visible yellow `[TODO: ...]`, a striped "photo coming soon" box, or an original placeholder until it is filled.
 
 - Copy lives in `src/content/` (`profile.ts`, `dorm.ts`, `home.ts`, `ui.ts`).
 - Photos go in `public/media/<item-id>/` as WebP, at most about 1600px on the long edge. Then set `src: '/media/<item-id>/<file>.webp'` on the matching image in the content file.
 - Final art goes in `public/assets/<pack>/`. Then set `url` on the matching entry in `src/assets/manifest.ts` (keep `w`, `h`, `frames` matching the file).
+- Decor images (posters, logos) go in `public/assets/decor/` with the exact names below. Restart `npm run dev` after adding one.
 
 ---
 
 ## Art and identity
 
 - [ ] **itch.io asset pack:** link and license. It fixes the tile size (`TILE` in `src/config.ts`). Put its license in `public/assets/<pack>/LICENSE`.
-- [ ] **Commissioned character sheet:** idle, walk in 4 directions, sleeping, waking, riding the longboard, pull up. Current placeholder frame is 16x22 (`CHAR_FRAME` in `src/config.ts`).
-- [ ] **Cat sprite:** idle, walk, sit, pet reaction. Current placeholder is 16x12.
-- [ ] **Reference photos for the artist:** front, side, and back of Daniel.
+- [ ] **Commissioned character sheet** (current placeholder frame is 16x22, `CHAR_FRAME` in `src/config.ts`): idle, walk in 4 directions, sleep, wake, sit, pet (crouch), ride longboard, pull up (hang and up), snap photo (optional), a small cheer for the completion moment. **The shirt must be on its own layer** (a second sheet with only the shirt, drawn in white or light grey) so the closet can recolour it. Look: East Asian young man, warm skin, big friendly smile, dark curly permed hair (short sides, curls on top, closer to the left photo in `reference/daniel-photos.png`), plain white tee, dark pants.
+- [ ] **Cat sheet** (placeholder is 18x14): fluffy cream and golden longhair, round face, big green eyes. States: idle, walk, sit, sit with eyes closed (petted), curled up asleep, bat paw.
+- [ ] **Final outfit colours** for the closet (now: white, black, UCLA blue, an orange graphic tee colour; `OUTFITS` in `src/game/Player.ts`).
+
+## Decor images to provide (optional)
+
+Never drawn by us. Until the file exists, an original abstract placeholder shows.
+
+| File in `public/assets/decor/` | Where | Placeholder now |
+|---|---|---|
+| `poster-graduation.png` | Dorm wall above the desk, P1 | Pink and purple pixel pattern |
+| `poster-damn.png` | Dorm wall above the desk, P2 | Red and white pattern |
+| `poster-duck.png` | Dorm closet door, P3 | Yellow and white pattern |
+| `poster-caricature.png` | Dorm wall, optional extra frame | Hidden until the file exists |
+| `hoodie-logo.png` | Home hoodie on the wall hook, chest | Plain "TORONTO" text |
+| `speaker-logo.png` | Home speaker badge | Small plain orange badge |
+| `phone-screen.png` | Dorm phone screen | Grid of coloured squares |
+| `family-photo.png` | Home nightstand photo frame | Outline silhouettes of people |
+
+## Little lines (`src/content/profile.ts`)
+
+- [ ] **Wake up line.** Now: "Hey, I'm Daniel. Welcome to my dorm at UCLA." Confirm or replace.
+- [ ] **HUD stat names and numbers.** Now: Caffeine 7/7, Sleep 2/6, Curiosity 200/200.
+- [ ] **5 to 8 idle thoughts.** Now placeholders: "should probably do my readings", "what should I eat later...", "where did I leave my charger", "five more minutes", "hmm".
 
 ## Contact (`src/content/profile.ts`)
 
@@ -25,35 +47,34 @@ Everything the site still needs from Daniel. Every item here shows up on the sit
 
 ---
 
-## Dorm (professional)
+## Dorm: Rieber Hall, UCLA (professional)
 
-### 1. Mirror: intro (`dorm.mirror`)
+### 1. HUD portrait: About me (`dorm.about`)
 - [ ] Confirm major wording (see "Wording to confirm")
 - [ ] 2 to 3 sentences of background and experience
 - [ ] Headshot
 
-### 2. Pin board: Hope For Hearing (`dorm.pinboard`)
-- [ ] Role and years
-- [ ] Founding story (meeting Roy on the subway), 2 to 4 sentences
-- [ ] What it does and the impact so far
-- [ ] What it taught you
-- [ ] Milestones and stats
-- [ ] Funding grants won (names, amounts if shareable)
-- [ ] Gallery photos with captions (4 slots now; add as many as you like)
+### 2. UCLA pennant: UCLA education (`dorm.pennant`)
+- [ ] Confirm major wording
+- [ ] Royce Hall photo
 
-### 3. Laptop: software projects (`dorm.laptop`)
+### 3. TO DO board: student orgs (`dorm.todo`)
+- [ ] One line on each org: Sharpe Fellows, Delta Sigma Pi, the entertainment association, IBB, UBS Technology Committee, ResLife
+- [ ] Your role in each (Sharpe Fellows is "Technology Vice President"; ResLife is "Resident Assistant")
+
+### 4. Laptop: software projects (`dorm.laptop`)
 - [ ] Cold email automator: what it is, why you built it, your role, the stack
 - [ ] Saved posts scroller: what it is, why you built it, your role, the stack
 - [ ] Ateball (Creative Labs): what it is, why you built it with CL, your role, link if public
 - [ ] Ateball UI screenshots (3 slots)
 
-### 4. Trophy and binder: consulting (`dorm.trophy`)
+### 5. "Consulting stuff" binder: consulting (`dorm.binder`)
 - [ ] Genesis Alternative Ventures description (client, problem, what your team did, outcome)
 - [ ] Genesis slide screenshots (3 slots)
 - [ ] L.E.K. Case Competition description (the case, your recommendation, the year)
 - [ ] L.E.K. slide screenshots (3 slots)
 
-### 5. Camera: club marketing (`dorm.camera`)
+### 6. Phone: club marketing (`dorm.phone`)
 - [ ] DSP: your role, description, skills used, measurable results
 - [ ] DSP Vogue campaign graphics (3 slots) and website screenshot
 - [ ] DSP rush video (YouTube id, or a compressed MP4)
@@ -63,13 +84,7 @@ Everything the site still needs from Daniel. Every item here shows up on the sit
 - [ ] IBB rush video
 - [ ] IBB website link
 
-### 6. Pennants: student orgs (`dorm.pennants`)
-- [ ] One line on each org: Sharpe Fellows, Delta Sigma Pi, the entertainment association, IBB, UBS Technology Committee, ResLife
-- [ ] Your role in each (Sharpe Fellows is already "Technology Vice President"; ResLife is "Resident Assistant")
-
-### 7. Drawers: education (`dorm.drawers`)
-- [ ] Confirm major wording
-- [ ] Royce Hall photo
+### 7. Grad cap: Upper Canada College (`dorm.gradcap`)
 - [ ] UCC hat toss photo
 - [ ] Business Club and Asian Heritage Club photos
 - [ ] Extended essay link
@@ -79,40 +94,50 @@ Everything the site still needs from Daniel. Every item here shows up on the sit
 - [ ] A sentence or two on what the job is like
 - [ ] RA photo
 
+### 9. Hope For Hearing shirt (`dorm.shirt`)
+- [ ] Role and years
+- [ ] Founding story (meeting Roy on the subway), 2 to 4 sentences
+- [ ] What it does and the impact so far
+- [ ] What it taught you
+- [ ] Milestones and stats
+- [ ] Funding grants won (names, amounts if shareable)
+- [ ] Gallery photos with captions (4 slots now; add as many as you like)
+
 ---
 
-## Home (personal)
+## Home: North York, Toronto (personal)
 
 ### 1. Window: North York (`home.window`)
 - [ ] Names of the library and cafe (optional)
 - [ ] Gallery photos (3 slots)
 
 ### 2. Shelf (`home.shelf`)
-- [ ] Rowing: boat, year, a line on what it was like; photos (2 slots)
-- [ ] Award plaque photos: DECA, FBLA CNLC, FBLA NLC (3 slots)
-- [ ] Anime and webtoons: done (text titles only, no franchise art)
+- [ ] Rowing: boat, year, a line on what it was like; trophy and oar photos (2 slots)
+- [ ] Award plaque photos: DECA, FBLA CNLC, FBLA NLC (3 slots). Once these exist, the three pixel plaques get redrawn to look like the real ones.
+- [ ] Favorite reads: done (plain text titles only, no franchise art)
 
 ### 3. Pull up tower: exercise (`home.pullup`)
 - [ ] A line on why, or a current goal
 - [ ] Photos or short clips: muscle up, trap bar deadlift, physique
 
-### 4. Laptop with clapperboard: acting (`home.laptop`)
-- [ ] The music video's YouTube URL (the 70M views must link to it)
-- [ ] Song and artist, and your part in it
-
-### 5. Headphones: dubstep and EDM (`home.headphones`)
+### 4. Speaker: dubstep and EDM (`home.speaker`)
 - [ ] Why you love it, a sentence or two
 - [ ] Spotify playlist URL (and its id for the embed)
 
+### 5. Camera: photography (`home.camera`) *(new)*
+- [ ] 2 to 3 sentences on why you love photography
+- [ ] What you like to shoot, and with what
+- [ ] A gallery of your own photos with captions (4 slots now)
+
 ### 6. Nightstand: family (`home.nightstand`)
 - [ ] A few sentences about your parents and sister
-- [ ] Family photos (3 slots)
+- [ ] Family photos (3 slots), plus `family-photo.png` for the frame on the nightstand
 
 ### 7. Piano (`home.piano`)
 - [ ] Exact ARCT credential name and a precise description (see "Wording to confirm")
 - [ ] Recital photos (2 slots)
 
-### 8. Baked goods: baking and cooking (`home.baking`)
+### 8. Apple crisp pie: baking and cooking (`home.pie`)
 - [ ] Favourite things to make
 - [ ] Food photos and photos of you cooking or baking (4 slots)
 
@@ -134,11 +159,10 @@ Everything the site still needs from Daniel. Every item here shows up on the sit
 - **Major.** The notes say "UCLA Economics major". You have also described a B.A. Business Economics and B.S. Cognitive Science double major. The site uses `[TODO: confirm major]` for now.
 - **Org name.** The notes say "Business in Entertainment Association". Confirm the exact official name.
 - **ARCT.** "Highest nonprofessional degree possible in Canada" is left out. Give the exact credential name and a verifiable description.
-- **"70M views."** Kept as written. Tie it to the linked video so it is verifiable.
 - **"We won the national rowing championship."** Kept as written. Consider naming the regatta or event and year so it reads as specific, not general.
 - **"Honours student."** Kept from the notes. Confirm the exact program name if there is one.
 - **Resident Assistant vs Residential Assistant.** The notes say "Residential", the spec says "Resident". The site uses "Resident Assistant". Use whatever UCLA calls it.
-- **Solo Leveling.** The notes spell it "solo levelling". The site uses the official English title.
+- **Solo Levelling.** Spelled the way you wrote it (the official English title is "Solo Leveling"). Your call.
 
 ## Consider adding (on the resume, not in the content notes)
 
@@ -156,5 +180,5 @@ Not added. Decide whether you want any of them. The work table's spare slot or a
 - [ ] Custom domain
 - [ ] Whether to add any "Consider adding" items
 - [ ] What goes in the spare work table slot (home)
-- [ ] Sound on or off by default (currently off, per spec)
-- [ ] Mirror vs lamp in the dorm (mirror now, so the intro is reached first)
+- [ ] Final outfit colours for the closet
+- [ ] Sound on or off by default (off, per spec)

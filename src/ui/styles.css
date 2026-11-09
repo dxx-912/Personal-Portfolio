@@ -373,9 +373,27 @@ a.link:hover { background: #eef4ff; text-decoration: underline; }
     .portrait .stat { width: 104px; }
 }
 
+/* narrow phones held upright: stack the HUD so nothing overlaps */
+@media (max-width: 560px) {
+    .portrait { padding: 4px 6px 4px 4px; gap: 6px; }
+    .portrait .face { width: 32px; height: 26px; }
+    .portrait .stat { width: 84px; height: 11px; }
+    .portrait .stat .txt { font-size: 9px; line-height: 11px; }
+    .hud-row { flex-wrap: wrap; justify-content: flex-end; max-width: 150px; gap: 4px; }
+    .hud-row .counter { order: 3; }
+    .counter, .hud-btn { font-size: 13px; padding: 5px 8px; }
+    .hud-btn { min-height: 30px; }
+    .mm-room { width: 44px; height: 24px; font-size: 10px; }
+    .title-card { top: 140px; }
+    body.touch .rotate-hint { top: 196px; }
+    .title-card { font-size: 16px; }
+    .plain-link { font-size: 13px; }
+}
+
 @media (prefers-reduced-motion: reduce) {
     *, *::before, *::after { animation: none !important; transition: none !important; }
     .panel { transform: none; }
+    .title-card.show { opacity: 1; }
 }
 
 /* short landscape phones: keep the room clear */

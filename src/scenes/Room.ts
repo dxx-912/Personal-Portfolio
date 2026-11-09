@@ -1111,15 +1111,16 @@ export class Room extends Phaser.Scene {
             if (t === this.focus) currentScore = score;
             if (score < bestScore) { bestScore = score; best = t; }
         }
-        if (best && this.focus && currentScore !== Infinity && best !== this.focus && bestScore > currentScore - 3) return this.focus;
-        if (best) return best;
+        if (best && this.focus && currentScore !== Infinity && best !== this.focus && bestScore > currentScore - 3) best = this.focus;
+        // the cat wins only when he is nearer than any static item in range
         if (catT && this.cat) {
-            const near = this.cat.onBed
-                ? Math.hypot(catT.spot.x - px, catT.spot.y - py) <= (this.focus === catT ? ZONE_EXIT : ZONE_ENTER + 2)
-                : Math.hypot(this.cat.x - px, this.cat.y - py) <= (this.focus === catT ? CAT_ZONE + 4 : CAT_ZONE);
-            if (near) return catT;
+            const spotD = Math.hypot(catT.spot.x - px, catT.spot.y - py);
+            const catD = this.cat.onBed ? spotD : Math.min(spotD, Math.hypot(this.cat.x - px, this.cat.y - py) - 6);
+            const limit = this.cat.onBed ? (this.focus === catT ? ZONE_EXIT : ZONE_ENTER + 2) : (this.focus === catT ? CAT_ZONE - 2 : CAT_ZONE - 6);
+            const bestD = best ? Math.hypot(best.spot.x - px, best.spot.y - py) : Infinity;
+            if (catD <= limit && catD < bestD - (this.focus === catT ? -3 : 3)) return catT;
         }
-        return null;
+        return best;
     }
 
     private updateHighlights(focus: Target | null, time: number) {

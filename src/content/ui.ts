@@ -60,9 +60,7 @@ export const ui = {
     snapSave: 'Save photo',
     snapTitle: 'Snapshot',
     pianoTitle: 'Piano',
-    pianoHint: 'Click the keys, or press 1 to 8. Esc to stop.',
-    readStory: 'Read the story',
-    homeBedBusy: 'Not tired yet.'
+    pianoHint: 'Click the keys, or press 1 to 8. Esc to stop.'
 };
 
 export const completion: Entry = {
