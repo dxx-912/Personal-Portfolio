@@ -1,0 +1,18 @@
+# Decor image slots (optional)
+
+Drop image files here with these exact names. The game draws them in the room, scaled down with
+nearest neighbour sampling. Until a file exists, an original placeholder is shown instead.
+Restart `npm run dev` after adding a file.
+
+| File | Where it shows |
+|---|---|
+| `poster-graduation.png` | Dorm back wall above the desk, P1 |
+| `poster-damn.png` | Dorm back wall above the desk, P2 |
+| `poster-duck.png` | Dorm closet door, P3 |
+| `poster-caricature.png` | Dorm wall, optional extra frame (hidden until the file exists) |
+| `hoodie-logo.png` | Home hoodie on the wall hook, chest area |
+| `speaker-logo.png` | Home speaker badge |
+| `phone-screen.png` | Dorm phone screen |
+| `family-photo.png` | Home nightstand photo frame |
+
+Portrait images work best for the posters (about 3:4). Small, simple images read best at this size.

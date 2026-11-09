@@ -17,12 +17,15 @@ export function getEntry(room: RoomKey, id: string): Entry {
     return e;
 }
 
-/** Every counted interactable, in display order. */
+/** Every counted item, in display order. */
 export const allEntryKeys: string[] = (Object.keys(content) as RoomKey[]).flatMap(
     (room) => Object.keys(content[room]).map((id) => contentKey(room, id))
 );
 
-export const TOTAL_ITEMS = allEntryKeys.length; // 18
+export const TOTAL_ITEMS = allEntryKeys.length; // 19
+
+/** The About me entry lives on the HUD portrait, not in a room. */
+export const ABOUT_KEY = contentKey('dorm', 'about');
 
 export { profile } from './profile';
 export { ui, completion } from './ui';

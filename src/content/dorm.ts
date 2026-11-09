@@ -1,13 +1,14 @@
 import type { Entry } from './types';
 import { profile } from './profile';
 
-// Dorm room: everything professional. Keyed by interactable id (see src/rooms/dorm.ts).
+// Dorm room (Rieber Hall, UCLA): everything professional. Keyed by item id (see src/rooms/dorm.ts).
 // Never invent facts. Unknowns are "[TODO: ...]" and are listed in TODO_ASSETS.md.
 
 export const dormContent: Record<string, Entry> = {
-    mirror: {
-        id: 'mirror',
-        prompt: 'Mirror, about me',
+    // 1. HUD portrait (top left of the screen, not in the room). Opens with a click or I.
+    about: {
+        id: 'about',
+        prompt: 'About me',
         plainGroup: 'intro',
         title: "Hi, I'm Daniel",
         subtitle: '[TODO: confirm major] at UCLA',
@@ -19,34 +20,78 @@ export const dormContent: Record<string, Entry> = {
         links: profile.links
     },
 
-    pinboard: {
-        id: 'pinboard',
-        prompt: 'Pin board, Hope For Hearing',
-        plainGroup: 'projects',
-        title: 'Hope For Hearing',
-        subtitle: '[TODO: my role and the years]',
-        body: [
-            '[TODO: how it started. I met Roy on the subway, by chance. 2 to 4 sentences.]',
-            '[TODO: what Hope For Hearing does and the impact so far]',
-            '[TODO: what it taught me and why it shaped who I am today]'
-        ],
-        facts: [
-            { label: 'Milestones', value: '[TODO: key milestones]' },
-            { label: 'Stats', value: '[TODO: numbers worth showing]' }
-        ],
-        list: [{ title: 'Funding grants won', items: ['[TODO: grant names, and amounts if shareable]'] }],
-        gallery: 'polaroid',
-        images: [
-            { alt: 'Hope For Hearing photo 1', caption: '[TODO: caption]' },
-            { alt: 'Hope For Hearing photo 2', caption: '[TODO: caption]' },
-            { alt: 'Hope For Hearing photo 3', caption: '[TODO: caption]' },
-            { alt: 'Hope For Hearing photo 4', caption: '[TODO: caption]' }
+    // 2. Big UCLA pennant
+    pennant: {
+        id: 'pennant',
+        prompt: 'UCLA',
+        plainGroup: 'education',
+        title: 'UCLA',
+        subtitle: '[TODO: confirm major]. Honours student.',
+        images: [{ alt: 'Daniel in front of Royce Hall' }],
+        list: [{
+            title: 'Courses',
+            items: [
+                'Advanced micro theory',
+                'Advanced macro theory',
+                'Intro to C++',
+                'Accounting fundamentals'
+            ]
+        }]
+    },
+
+    // 3. TO DO pin board: student orgs, one sticky note each
+    todo: {
+        id: 'todo',
+        prompt: 'Student orgs',
+        plainGroup: 'experience',
+        title: 'To do: student orgs',
+        plainTitle: 'Student orgs',
+        subtitle: 'Pick a sticky note.',
+        tabStyle: 'notes',
+        tabs: [
+            {
+                id: 'sharpe',
+                title: 'William F. Sharpe Fellows',
+                subtitle: 'Technology Vice President',
+                body: ['[TODO: one line on what the org is]']
+            },
+            {
+                id: 'dsp-org',
+                title: 'Delta Sigma Pi',
+                subtitle: '[TODO: my role]',
+                body: ['[TODO: one line on what the org is]']
+            },
+            {
+                id: 'bea',
+                title: 'Business in Entertainment Association',
+                subtitle: '[TODO: confirm the exact official org name] [TODO: my role]',
+                body: ['[TODO: one line on what the org is]']
+            },
+            {
+                id: 'ibb-org',
+                title: 'International Business for Bruins',
+                subtitle: '[TODO: my role]',
+                body: ['[TODO: one line on what the org is]']
+            },
+            {
+                id: 'ubs',
+                title: 'UBS Technology Committee',
+                subtitle: '[TODO: my role]',
+                body: ['[TODO: one line on what the org is]']
+            },
+            {
+                id: 'reslife',
+                title: 'UCLA ResLife',
+                subtitle: 'Resident Assistant',
+                body: ['[TODO: one line on what ResLife is]']
+            }
         ]
     },
 
+    // 4. Laptop on the desk
     laptop: {
         id: 'laptop',
-        prompt: 'Laptop, projects',
+        prompt: 'Projects',
         plainGroup: 'projects',
         title: 'Software projects',
         tabStyle: 'tabs',
@@ -90,9 +135,10 @@ export const dormContent: Record<string, Entry> = {
         ]
     },
 
-    trophy: {
-        id: 'trophy',
-        prompt: 'Trophy and binder, consulting',
+    // 5. Binder labeled "Consulting stuff"
+    binder: {
+        id: 'binder',
+        prompt: 'Consulting',
         plainGroup: 'projects',
         title: 'Consulting',
         tabStyle: 'tabs',
@@ -124,12 +170,13 @@ export const dormContent: Record<string, Entry> = {
         ]
     },
 
-    camera: {
-        id: 'camera',
-        prompt: 'Camera, club marketing',
+    // 6. Phone with a feed on screen
+    phone: {
+        id: 'phone',
+        prompt: 'Club marketing',
         plainGroup: 'projects',
         title: 'Club marketing',
-        tabStyle: 'tabs',
+        tabStyle: 'phone',
         tabs: [
             {
                 id: 'dsp',
@@ -172,102 +219,36 @@ export const dormContent: Record<string, Entry> = {
         ]
     },
 
-    pennants: {
-        id: 'pennants',
-        prompt: 'Pennants, student orgs',
-        plainGroup: 'experience',
-        title: 'Student orgs',
-        subtitle: 'Pick a pennant.',
-        tabStyle: 'pennants',
-        tabs: [
-            {
-                id: 'sharpe',
-                title: 'William F. Sharpe Fellows',
-                subtitle: 'Technology Vice President',
-                body: ['[TODO: one line on what the org is]']
-            },
-            {
-                id: 'dsp-org',
-                title: 'Delta Sigma Pi',
-                subtitle: '[TODO: my role]',
-                body: ['[TODO: one line on what the org is]']
-            },
-            {
-                id: 'bea',
-                title: 'Business in Entertainment Association',
-                subtitle: '[TODO: confirm the exact official org name] [TODO: my role]',
-                body: ['[TODO: one line on what the org is]']
-            },
-            {
-                id: 'ibb-org',
-                title: 'International Business for Bruins',
-                subtitle: '[TODO: my role]',
-                body: ['[TODO: one line on what the org is]']
-            },
-            {
-                id: 'ubs',
-                title: 'UBS Technology Committee',
-                subtitle: '[TODO: my role]',
-                body: ['[TODO: one line on what the org is]']
-            },
-            {
-                id: 'reslife',
-                title: 'UCLA ResLife',
-                subtitle: 'Resident Assistant',
-                body: ['[TODO: one line on what ResLife is]']
-            }
-        ]
-    },
-
-    drawers: {
-        id: 'drawers',
-        prompt: 'Drawers, education',
+    // 7. Grad cap on the dresser: high school only
+    gradcap: {
+        id: 'gradcap',
+        prompt: 'High school',
         plainGroup: 'education',
-        title: 'Education',
-        tabStyle: 'halves',
-        tabs: [
-            {
-                id: 'ucla',
-                title: 'UCLA',
-                subtitle: '[TODO: confirm major]. Honours student.',
-                images: [{ alt: 'Daniel in front of Royce Hall' }],
-                list: [{
-                    title: 'Courses',
-                    items: [
-                        'Advanced micro theory',
-                        'Advanced macro theory',
-                        'Intro to C++',
-                        'Accounting fundamentals'
-                    ]
-                }]
-            },
-            {
-                id: 'ucc',
-                title: 'Upper Canada College',
-                subtitle: 'International Baccalaureate Diploma',
-                images: [
-                    { alt: 'Graduating class throwing their hats' },
-                    { alt: 'Daniel leading Business Club' },
-                    { alt: 'Daniel leading Asian Heritage Club' }
-                ],
-                facts: [
-                    { label: 'IB score', value: '40/45' },
-                    { label: 'SAT', value: '1560' }
-                ],
-                list: [
-                    { title: 'Higher level', items: ['Mathematics A&I', 'English L&L', 'Economics'] },
-                    { title: 'Standard level', items: ['Mandarin B', 'Global Politics', 'ESS'] },
-                    { title: 'Leadership', items: ['Business Club President', 'Asian Heritage Club President'] }
-                ],
-                body: ["Extended essay: the geopolitical implications of Taiwan's semiconductor industry."],
-                links: [{ label: 'Read the extended essay' /* href: '[TODO]' */ }]
-            }
+        title: 'Upper Canada College',
+        subtitle: 'International Baccalaureate Diploma',
+        facts: [
+            { label: 'IB score', value: '40/45' },
+            { label: 'SAT', value: '1560' }
+        ],
+        list: [
+            { title: 'Higher level', items: ['Mathematics A&I', 'English L&L', 'Economics'] },
+            { title: 'Standard level', items: ['Mandarin B', 'Global Politics', 'ESS'] },
+            { title: 'Leadership', items: ['Business Club President', 'Asian Heritage Club President'] }
+        ],
+        body: ["Extended essay: the geopolitical implications of Taiwan's semiconductor industry."],
+        links: [{ label: 'Read the extended essay' /* href: '[TODO]' */ }],
+        gallery: 'grid',
+        images: [
+            { alt: 'Graduating class throwing their hats' },
+            { alt: 'Daniel leading Business Club' },
+            { alt: 'Daniel leading Asian Heritage Club' }
         ]
     },
 
+    // 8. Closet (E changes outfit)
     closet: {
         id: 'closet',
-        prompt: 'Closet, RA lanyard',
+        prompt: 'Resident Assistant',
         plainGroup: 'experience',
         title: 'Resident Assistant',
         subtitle: 'UCLA ResLife',
@@ -276,5 +257,31 @@ export const dormContent: Record<string, Entry> = {
             '[TODO: a sentence or two on what the job is like]'
         ],
         images: [{ alt: 'Daniel as an RA' }]
+    },
+
+    // 9. Folded "Hope For Hearing" shirt on the dresser
+    shirt: {
+        id: 'shirt',
+        prompt: 'Hope For Hearing',
+        plainGroup: 'projects',
+        title: 'Hope For Hearing',
+        subtitle: '[TODO: my role and the years]',
+        body: [
+            '[TODO: how it started. I met Roy on the subway, by chance. 2 to 4 sentences.]',
+            '[TODO: what Hope For Hearing does and the impact so far]',
+            '[TODO: what it taught me and why it shaped who I am today]'
+        ],
+        facts: [
+            { label: 'Milestones', value: '[TODO: key milestones]' },
+            { label: 'Stats', value: '[TODO: numbers worth showing]' }
+        ],
+        list: [{ title: 'Funding grants won', items: ['[TODO: grant names, and amounts if shareable]'] }],
+        gallery: 'polaroid',
+        images: [
+            { alt: 'Hope For Hearing photo 1', caption: '[TODO: caption]' },
+            { alt: 'Hope For Hearing photo 2', caption: '[TODO: caption]' },
+            { alt: 'Hope For Hearing photo 3', caption: '[TODO: caption]' },
+            { alt: 'Hope For Hearing photo 4', caption: '[TODO: caption]' }
+        ]
     }
 };

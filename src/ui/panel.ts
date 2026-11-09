@@ -1,4 +1,5 @@
 // HTML panels over the canvas. Real text, real links, keyboard and screen reader friendly.
+// Also hosts small overlays (piano keyboard, snapshot) that pause the game the same way.
 
 import type { Entry, Section } from '../content/types';
 import { ui } from '../content';
@@ -6,38 +7,58 @@ import { state } from '../state';
 import { esc, rich, renderSection } from './render';
 import { sfx } from '../audio';
 
-let current: { root: HTMLElement; onClose?: () => void; prevFocus: Element | null } | null = null;
+interface Open {
+    root: HTMLElement;
+    onClose?: () => void;
+    onKey?: (e: KeyboardEvent) => boolean | void;
+}
+let current: Open | null = null;
 
 const sectionHtml = (s: Section, heading: number) =>
     renderSection(s, { mode: 'panel', heading, comingSoonImage: ui.todoImage, comingSoonVideo: ui.todoVideo });
 
 export function isPanelOpen() { return current !== null; }
 
-export function openPanel(entry: Entry, onClose?: () => void) {
+function tabsHtml(entry: Entry) {
+    const tabs = entry.tabs ?? [];
+    if (!tabs.length) return '';
+    const style = entry.tabStyle ?? 'tabs';
+    const tabButtons = tabs.map((t, i) => `
+        <button role="tab" id="tab-${esc(t.id)}" aria-controls="tp-${esc(t.id)}" aria-selected="${i === 0}"
+            tabindex="${i === 0 ? 0 : -1}" class="tab tab-${style}" data-i="${i}" style="--i: ${i}">
+            ${style === 'notes' ? '<span class="check" aria-hidden="true">✓</span>' : ''}<span>${rich(t.title)}</span>
+        </button>`).join('');
+    const tabPanels = tabs.map((t, i) => `
+        <div role="tabpanel" id="tp-${esc(t.id)}" aria-labelledby="tab-${esc(t.id)}" class="tabpanel" tabindex="0"${i === 0 ? '' : ' hidden'}>
+            ${sectionHtml(t, 3)}
+        </div>`).join('');
+    return `<div class="tabs-wrap tabs-${style}"><div role="tablist" aria-label="${esc(entry.title)}" class="tablist">${tabButtons}</div><div class="tabpanels">${tabPanels}</div></div>`;
+}
+
+function mount(html: string, open: Omit<Open, 'root'>, focusSel?: string) {
     if (current) closePanel(true);
     const root = document.createElement('div');
     root.className = 'panel-backdrop';
-    const titleId = `panel-title-${entry.id}`;
-    const tabs = entry.tabs ?? [];
+    root.innerHTML = html;
+    document.getElementById('ui-root')!.appendChild(root);
+    current = { root, ...open };
+    state.setModal('panel');
+    root.addEventListener('pointerdown', (e) => { if (e.target === root) closePanel(); });
+    root.querySelector('.panel-close')?.addEventListener('click', () => closePanel());
+    root.addEventListener('keydown', (e) => onKey(e, root));
+    requestAnimationFrame(() => {
+        root.classList.add('open');
+        const f = (focusSel && root.querySelector<HTMLElement>(focusSel)) || root.querySelector<HTMLElement>('.panel-close');
+        f?.focus({ preventScroll: true });
+    });
+    sfx('open');
+    return root;
+}
+
+export function openPanel(entry: Entry, onClose?: () => void) {
     const style = entry.tabStyle ?? 'tabs';
-
-    let inner = '';
-    if (tabs.length && style === 'halves') {
-        inner = `<div class="halves">${tabs.map((t) => `<section class="half">${sectionHtml(t, 3)}</section>`).join('')}</div>`;
-    } else if (tabs.length) {
-        const tabButtons = tabs.map((t, i) => `
-            <button role="tab" id="tab-${esc(t.id)}" aria-controls="tp-${esc(t.id)}" aria-selected="${i === 0}"
-                tabindex="${i === 0 ? 0 : -1}" class="tab tab-${style}" data-i="${i}"${style === 'pennants' ? ` style="--pc: var(--pennant-${i % 6})"` : ''}>
-                <span>${rich(t.title)}</span>
-            </button>`).join('');
-        const tabPanels = tabs.map((t, i) => `
-            <div role="tabpanel" id="tp-${esc(t.id)}" aria-labelledby="tab-${esc(t.id)}" class="tabpanel" tabindex="0"${i === 0 ? '' : ' hidden'}>
-                ${sectionHtml(t, 3)}
-            </div>`).join('');
-        inner = `<div class="tabs-wrap tabs-${style}"><div role="tablist" aria-label="${esc(entry.title)}" class="tablist">${tabButtons}</div><div class="tabpanels">${tabPanels}</div></div>`;
-    }
-
-    root.innerHTML = `
+    const titleId = `panel-title-${entry.id}`;
+    const root = mount(`
         <section class="panel panel-${style}" role="dialog" aria-modal="true" aria-labelledby="${titleId}">
             <header class="panel-head">
                 <h2 id="${titleId}">${rich(entry.title)}</h2>
@@ -45,28 +66,27 @@ export function openPanel(entry: Entry, onClose?: () => void) {
             </header>
             <div class="panel-body">
                 ${sectionHtml({ ...entry, title: entry.title }, 0)}
-                ${inner}
+                ${tabsHtml(entry)}
             </div>
-        </section>`;
+        </section>`, { onClose }, '[role="tab"]');
+    root.querySelectorAll<HTMLButtonElement>('[role="tab"]').forEach((btn) =>
+        btn.addEventListener('click', () => selectTab(root, Number(btn.dataset.i))));
+}
 
-    document.getElementById('ui-root')!.appendChild(root);
-    current = { root, onClose, prevFocus: document.activeElement };
-    state.setModal('panel');
-
-    const panel = root.querySelector<HTMLElement>('.panel')!;
-    root.addEventListener('pointerdown', (e) => { if (e.target === root) closePanel(); });
-    root.querySelector('.panel-close')!.addEventListener('click', () => closePanel());
-    root.addEventListener('keydown', (e) => onKey(e, panel));
-
-    const tabEls = [...root.querySelectorAll<HTMLButtonElement>('[role="tab"]')];
-    tabEls.forEach((btn) => btn.addEventListener('click', () => selectTab(root, Number(btn.dataset.i))));
-
-    requestAnimationFrame(() => {
-        root.classList.add('open');
-        const focusTarget = tabEls[0] ?? root.querySelector<HTMLElement>('.panel-close');
-        focusTarget?.focus({ preventScroll: true });
-    });
-    sfx('open');
+/** A custom overlay (piano, snapshot). `body` is trusted HTML built by our code. */
+export function openOverlay(opts: {
+    title: string; className: string; body: string;
+    onClose?: () => void; onKey?: (e: KeyboardEvent) => boolean | void; focus?: string;
+}) {
+    const id = `ov-${opts.className}`;
+    return mount(`
+        <section class="panel ${esc(opts.className)}" role="dialog" aria-modal="true" aria-labelledby="${id}">
+            <header class="panel-head">
+                <h2 id="${id}">${esc(opts.title)}</h2>
+                <button class="panel-close" aria-label="${esc(ui.close)}" title="${esc(ui.close)} (Esc)">✕</button>
+            </header>
+            <div class="panel-body">${opts.body}</div>
+        </section>`, { onClose: opts.onClose, onKey: opts.onKey }, opts.focus);
 }
 
 function selectTab(root: HTMLElement, i: number) {
@@ -81,20 +101,22 @@ function selectTab(root: HTMLElement, i: number) {
     sfx('tick');
 }
 
-function onKey(e: KeyboardEvent, panel: HTMLElement) {
+function onKey(e: KeyboardEvent, root: HTMLElement) {
     if (e.key === 'Escape') { e.preventDefault(); e.stopPropagation(); closePanel(); return; }
+    if (current?.onKey?.(e)) return;
     const target = e.target as HTMLElement;
     if (target.getAttribute('role') === 'tab') {
         const i = Number(target.dataset.i);
         const vertical = target.classList.contains('tab-shelf');
         const prev = vertical ? 'ArrowUp' : 'ArrowLeft';
         const next = vertical ? 'ArrowDown' : 'ArrowRight';
-        if (e.key === next || e.key === (vertical ? 'ArrowRight' : 'ArrowDown')) { e.preventDefault(); selectTab(current!.root, i + 1); }
-        if (e.key === prev || e.key === (vertical ? 'ArrowLeft' : 'ArrowUp')) { e.preventDefault(); selectTab(current!.root, i - 1); }
-        if (e.key === 'Home') { e.preventDefault(); selectTab(current!.root, 0); }
-        if (e.key === 'End') { e.preventDefault(); selectTab(current!.root, -1); }
+        if (e.key === next || e.key === (vertical ? 'ArrowRight' : 'ArrowDown')) { e.preventDefault(); selectTab(root, i + 1); }
+        if (e.key === prev || e.key === (vertical ? 'ArrowLeft' : 'ArrowUp')) { e.preventDefault(); selectTab(root, i - 1); }
+        if (e.key === 'Home') { e.preventDefault(); selectTab(root, 0); }
+        if (e.key === 'End') { e.preventDefault(); selectTab(root, -1); }
     }
     if (e.key === 'Tab') {
+        const panel = root.querySelector<HTMLElement>('.panel')!;
         const focusables = [...panel.querySelectorAll<HTMLElement>(
             'a[href], button:not([disabled]), iframe, video, [tabindex]:not([tabindex="-1"]):not([hidden])'
         )].filter((el) => el.offsetParent !== null);

@@ -1,78 +1,107 @@
 import Phaser from 'phaser';
+import decorFiles from 'virtual:decor-files';
 import {
-    CAT_ZONE, FLOOR_H, FLOOR_W, FLOOR_X, FLOOR_Y, ROOM_H, ROOM_W, TILE, VIEW_MARGIN, ZONE_ENTER, ZONE_EXIT,
+    CAT_ZONE, FLOOR_H, FLOOR_W, FLOOR_X, FLOOR_Y, RIDE_SPEED, ROOM_H, ROOM_W, TILE, ZONE_ENTER, ZONE_EXIT,
     isTouchDevice, prefersReducedMotion, tx, ty
 } from '../config';
-import { completion, contentKey, getEntry, ui, type Entry, type RoomKey } from '../content';
+import { ABOUT_KEY, completion, contentKey, getEntry, profile, ui, type Entry, type RoomKey } from '../content';
 import { hlKey } from '../assets/manifest';
+import { DANIEL_FRAMES } from '../assets/placeholders';
 import { ROOMS } from '../rooms';
-import type { DoorDef, InteractableDef, RoomDef } from '../rooms/types';
-import { bus, state } from '../state';
-import { Player, FACING_VEC } from '../game/Player';
+import type { ActionKind, DoorDef, Facing, InteractableDef, LabelDef, RoomDef } from '../rooms/types';
+import { bus, state, type GameMode } from '../state';
+import { Player, FACING_VEC, OUTFITS } from '../game/Player';
 import { Cat } from '../game/Cat';
+import { Lighting } from '../game/Lighting';
 import { NavGrid, type Pt, type Rect } from '../game/nav';
-import { moveVector, onAction } from '../ui/input';
+import { lastInputAt, markInput, moveVector, onAction, type Action } from '../ui/input';
 import { closePanel, openPanel } from '../ui/panel';
-import { setPrompt, showCounter, showMessage, toast } from '../ui/hud';
-import { sfx } from '../audio';
+import {
+    hideBubble, moveBubble, setPortrait, setPrompt, setWakeButton, showBubble, showMessage, showTitle, toast,
+    type PromptSpec
+} from '../ui/hud';
+import { flash, openPiano, openSnapshot } from '../ui/overlays';
+import { isMusicOn, sfx, startAmbient, startMusic, step, stopAmbient, stopMusic } from '../audio';
 
-type Entry_ = 'sleep' | 'wake' | RoomKey;
+type EntryMode = 'sleep' | 'wake' | RoomKey;
+type Sprite = Phaser.GameObjects.Sprite | Phaser.GameObjects.Image;
 
 interface Target {
     kind: 'item' | 'door';
     def?: InteractableDef;
     door?: DoorDef;
-    /** Counted content key, e.g. "dorm.laptop". Null for decorative and doors. */
+    /** Counted content key, e.g. "dorm.laptop", when the item has an F panel. */
     key: string | null;
-    sprite: Phaser.GameObjects.Sprite | Phaser.GameObjects.Image;
-    hl?: Phaser.GameObjects.Image | Phaser.GameObjects.Sprite;
-    sparkle?: Phaser.GameObjects.Sprite;
+    sprite: Sprite;
+    hl?: Phaser.GameObjects.Sprite;
+    marker?: Phaser.GameObjects.Image;
     spot: Pt;
-    prompt: string;
+    facing: Facing;
 }
 
-const DARK = 0x06050b;
+const IDLE_THOUGHT_MS = 12000;
 
 export class Room extends Phaser.Scene {
     private def!: RoomDef;
-    private entryMode!: Entry_;
+    private entryMode!: EntryMode;
     private player!: Player;
     private cat: Cat | null = null;
     private nav!: NavGrid;
     private solids: Rect[] = [];
-    private sprites = new Map<string, Phaser.GameObjects.Image | Phaser.GameObjects.Sprite>();
+    private wallRects: Rect[] = [];
+    private sprites = new Map<string, Sprite>();
     private targets: Target[] = [];
     private focus: Target | null = null;
+    /** After a click-walk to an item with both E and F, keep it focused so its two buttons stay up. */
+    private pinned: Target | null = null;
     private sleeping = false;
-    private busy = false; // waking, transitioning, or celebrating
-    private darkness!: Phaser.GameObjects.RenderTexture;
-    private cones: Phaser.GameObjects.Image[] = [];
-    private coneTints: Phaser.GameObjects.Image[] = [];
-    private glow: Phaser.GameObjects.Image | null = null;
+    private busy = false;
+    private mode: GameMode = 'free';
+    private lighting!: Lighting;
     private sleepSprite: Phaser.GameObjects.Sprite | null = null;
     private zTimer: Phaser.Time.TimerEvent | null = null;
     private hintUntil = 0;
     private offs: (() => void)[] = [];
     private rm = false;
+    private zoom = 1;
+    private zoomBoost = 1;
+    private camPos = { x: ROOM_W / 2, y: ROOM_H / 2 };
+    private labels: Phaser.GameObjects.Text[] = [];
+    private labelRes = 0;
+    private clockG: Phaser.GameObjects.Graphics | null = null;
+    private lastStepAt = 0;
+    private thinkUntil = 0;
+    private sayUntil = 0;
+    private seat: Target | null = null;
+    private pull = { reps: 0, busy: false, target: null as Target | null, timer: null as Phaser.Time.TimerEvent | null };
+    private lastBump = 0;
+    /** A key-cap prompt is showing above Daniel's head: bubbles stack above it. */
+    private promptAtHead = false;
+    private snapping = false;
 
     constructor() { super('Room'); }
 
-    init(data: { room: RoomKey; entry: Entry_ }) {
+    init(data: { room: RoomKey; entry: EntryMode }) {
         this.def = ROOMS[data.room];
         this.entryMode = data.entry;
         state.room = data.room;
         this.solids = [];
+        this.wallRects = [];
         this.sprites.clear();
         this.targets = [];
         this.focus = null;
-        this.cones = [];
-        this.coneTints = [];
-        this.glow = null;
+        this.pinned = null;
         this.cat = null;
         this.sleepSprite = null;
         this.busy = false;
         this.sleeping = false;
+        this.setMode('free');
         this.rm = prefersReducedMotion();
+        this.labels = [];
+        this.labelRes = 0;
+        this.clockG = null;
+        this.zoomBoost = 1;
+        this.seat = null;
     }
 
     create() {
@@ -82,52 +111,71 @@ export class Room extends Phaser.Scene {
         this.buildDoors();
         this.buildWalls();
         this.nav = new NavGrid(this.solids);
-        this.buildLights();
-        this.buildTargets();
+        this.lighting = new Lighting(this, this.def);
+        this.sprites.forEach((s, id) => { if (id === 'window' && s instanceof Phaser.GameObjects.Image) s.setFrame(this.lighting.tod); });
+        this.buildClock();
 
-        // player
         const arrival = this.arrivalPoint();
-        this.player = new Player(this, arrival.x, arrival.y);
+        this.player = new Player(this, arrival.x, arrival.y, state.outfit);
         this.player.face(arrival.facing);
-        this.physics.add.collider(this.player.sprite, this.solidBodies());
+        this.physics.add.collider(this.player.sprite, this.solidBodies(), () => this.onBump());
         this.ensureFree();
 
-        if (this.def.catWaypoints) this.cat = new Cat(this, this.def.catWaypoints);
-        this.attachCatTarget();
+        if (this.def.catWaypoints) this.makeCat();
+        this.buildTargets();
+
+        const src = this.textures.get('daniel').getSourceImage() as CanvasImageSource;
+        setPortrait(src, 1, 0, 15, 13);
 
         this.fitCamera();
         this.scale.on('resize', this.fitCamera, this);
 
-        this.offs.push(onAction((a) => {
-            if (a === 'interact') this.onInteract();
-            if (a === 'hint') this.showHint();
+        this.offs.push(onAction((a) => this.onAction(a)));
+        this.offs.push(bus.on('modal', (m) => {
+            if (m) { this.player.cancelPath(); if (this.mode === 'free' || this.mode === 'ride') this.player.stop(); setPrompt(null); }
         }));
-        this.offs.push(bus.on('modal', (m) => { if (m) { this.player.cancelPath(); this.player.stop(); setPrompt(null); } }));
+        this.offs.push(bus.on('travel', () => this.travel()));
         this.input.on('pointerdown', this.onPointerDown, this);
         this.input.on('pointermove', this.onPointerMove, this);
         this.events.once('shutdown', () => {
             this.offs.forEach((f) => f()); this.offs = [];
             this.scale.off('resize', this.fitCamera, this);
             this.zTimer?.remove();
+            stopMusic();
+            stopAmbient();
+            ['say', 'think', 'act', 'cat'].forEach(hideBubble);
             setPrompt(null);
         });
 
+        bus.emit('room', this.def.key);
         if (this.entryMode === 'sleep' && this.def.sleep) this.enterSleep();
         else {
-            this.setLight(0.2, 1, 0);
-            showCounter(true);
+            this.lighting.lit();
+            state.setAwake(true);
             this.cameras.main.fadeIn(this.rm ? 80 : 260, 6, 5, 11);
+            showTitle(ui.roomTitles[this.def.key]);
+            startAmbient(this.def.key);
         }
     }
+
+    private setMode(m: GameMode) { this.mode = m; state.mode = m; }
 
     // ---------- building ----------
 
     private buildProps() {
         this.def.props.forEach((p, i) => {
-            const img = this.add.image(tx(p.x), ty(p.y), p.texture).setOrigin(0);
+            const img: Sprite = p.anim
+                ? this.add.sprite(tx(p.x), ty(p.y), p.texture, 0).setOrigin(0)
+                : this.add.image(tx(p.x), ty(p.y), p.texture).setOrigin(0);
+            if (p.anim && img instanceof Phaser.GameObjects.Sprite) img.anims.play({ key: p.anim, delay: Math.random() * 600 });
             if (p.flipX) img.setFlipX(true);
             const bottom = ty(p.y) + img.height;
-            img.setDepth(p.layer === 'wall' ? 1 + i * 0.001 : (p.depthRow !== undefined ? FLOOR_Y + p.depthRow * TILE : bottom));
+            const on = p.on ? this.sprites.get(p.on) : undefined;
+            const depth = p.layer === 'decal' ? 0.5 + i * 0.001
+                : p.layer === 'wall' ? 1 + i * 0.001
+                : on ? on.depth + 0.01 + i * 0.0001
+                : (p.depthRow !== undefined ? FLOOR_Y + p.depthRow * TILE : bottom);
+            img.setDepth(depth);
             this.sprites.set(p.id, img);
             if (p.solid) this.solids.push({ x: tx(p.solid.x), y: ty(p.solid.y), w: p.solid.w * TILE, h: p.solid.h * TILE });
         });
@@ -142,7 +190,7 @@ export class Room extends Phaser.Scene {
     private buildDoors() {
         this.def.doors.forEach((d) => {
             const { x, top, bottom } = this.doorPx(d);
-            const img = this.add.image(d.side === 'right' ? x - 2 : x + 2, bottom + 2, 'door_side')
+            const img = this.add.sprite(d.side === 'right' ? x - 2 : x + 2, bottom + 2, 'door_side', 0)
                 .setOrigin(d.side === 'right' ? 0 : 1, 1)
                 .setFlipX(d.side === 'left');
             img.setDisplaySize(10, bottom - top + 10);
@@ -154,9 +202,8 @@ export class Room extends Phaser.Scene {
     private buildWalls() {
         const T = 16;
         const add = (x: number, y: number, w: number, h: number) => this.wallRects.push({ x, y, w, h });
-        this.wallRects = [];
-        add(FLOOR_X - T, FLOOR_Y - T, FLOOR_W + 2 * T, T); // back
-        add(FLOOR_X - T, FLOOR_Y + FLOOR_H, FLOOR_W + 2 * T, T); // front
+        add(FLOOR_X - T, FLOOR_Y - T, FLOOR_W + 2 * T, T);
+        add(FLOOR_X - T, FLOOR_Y + FLOOR_H, FLOOR_W + 2 * T, T);
         (['left', 'right'] as const).forEach((side) => {
             const x = side === 'left' ? FLOOR_X - T : FLOOR_X + FLOOR_W;
             const door = this.def.doors.find((d) => d.side === side);
@@ -164,11 +211,9 @@ export class Room extends Phaser.Scene {
             const { top, bottom } = this.doorPx(door);
             add(x, FLOOR_Y, T, top - FLOOR_Y);
             add(x, bottom, T, FLOOR_Y + FLOOR_H - bottom);
-            // backstop a few pixels into the doorway
             add(side === 'left' ? x - 4 : x + 8, top, T, bottom - top);
         });
     }
-    private wallRects: Rect[] = [];
 
     private solidBodies() {
         return [...this.solids, ...this.wallRects].map((r) => {
@@ -178,138 +223,75 @@ export class Room extends Phaser.Scene {
         });
     }
 
-    private buildLights() {
-        this.def.lights.forEach((l, i) => {
-            const key = `cone-${this.def.key}-${i}`;
-            if (!this.textures.exists(key)) this.makeConeTexture(key, l.poly.map((p) => ({ x: tx(p.x), y: ty(p.y) })));
-            const tint = this.add.image(0, 0, key).setOrigin(0).setDepth(2).setBlendMode(Phaser.BlendModes.ADD).setTint(l.color);
-            this.coneTints.push(tint);
-            this.cones.push(this.make.image({ x: 0, y: 0, key, add: false }).setOrigin(0));
+    private buildClock() {
+        const c = this.def.clock;
+        if (!c) return;
+        const cx = tx(c.x), cy = ty(c.y);
+        this.add.image(cx - 6, cy - 6, 'wall_clock').setOrigin(0).setDepth(1.5);
+        this.clockG = this.add.graphics().setDepth(1.51);
+        const draw = () => {
+            const d = new Date();
+            const g = this.clockG!;
+            g.clear();
+            const hand = (angle: number, len: number, color: number) => {
+                g.fillStyle(color, 1);
+                for (let i = 0; i <= len; i += 0.5) g.fillRect(Math.round(cx + Math.sin(angle) * i) - 0.5 + 0.5, Math.round(cy - Math.cos(angle) * i) - 0.5 + 0.5, 1, 1);
+            };
+            const m = d.getMinutes(), h = (d.getHours() % 12) + m / 60;
+            hand((m / 60) * Math.PI * 2, 4, 0x2a2130);
+            hand((h / 12) * Math.PI * 2, 2.5, 0xc8423b);
+        };
+        draw();
+        this.time.addEvent({ delay: 5000, loop: true, callback: draw });
+    }
+
+    private makeCat() {
+        const avoid = this.def.interactables.filter((i) => i.target !== 'cat' && i.target !== 'longboard').map((i) => ({ x: tx(i.spot.x), y: ty(i.spot.y) }));
+        this.def.doors.forEach((d) => { const { x, top, bottom } = this.doorPx(d); avoid.push({ x: d.side === 'right' ? x - 12 : x + 12, y: (top + bottom) / 2 }); });
+        const bed = this.sprites.get('bed');
+        this.cat = new Cat(this, {
+            waypoints: this.def.catWaypoints!, avoid, nap: this.def.catNap,
+            bedDepth: bed?.depth,
+            knock: this.def.key === 'home' ? { at: { x: tx(14.15), y: ty(5.8) }, onKnock: () => this.knockPencil() } : undefined
         });
-        if (!this.textures.exists('glow')) this.makeGlowTexture();
-        this.darkness = this.add.renderTexture(-VIEW_MARGIN, -VIEW_MARGIN, ROOM_W + VIEW_MARGIN * 2, ROOM_H + VIEW_MARGIN * 2)
-            .setOrigin(0).setDepth(9000);
-        if (!this.textures.exists('vignette')) this.makeVignette();
-        this.add.image(ROOM_W / 2, ROOM_H / 2, 'vignette').setDepth(9100).setAlpha(0.85);
-    }
-
-    private makeConeTexture(key: string, poly: Pt[]) {
-        const c = document.createElement('canvas');
-        c.width = ROOM_W; c.height = ROOM_H;
-        const ctx = c.getContext('2d')!;
-        const minY = Math.min(...poly.map((p) => p.y)), maxY = Math.max(...poly.map((p) => p.y));
-        const g = ctx.createLinearGradient(0, minY, 0, maxY);
-        g.addColorStop(0, 'rgba(255,255,255,0.55)');
-        g.addColorStop(1, 'rgba(255,255,255,0.08)');
-        ctx.fillStyle = g;
-        ctx.beginPath();
-        poly.forEach((p, i) => (i ? ctx.lineTo(p.x, p.y) : ctx.moveTo(p.x, p.y)));
-        ctx.closePath();
-        ctx.fill();
-        this.textures.addCanvas(key, c);
-    }
-
-    private makeGlowTexture() {
-        const s = 64;
-        const c = document.createElement('canvas');
-        c.width = s; c.height = s;
-        const ctx = c.getContext('2d')!;
-        const g = ctx.createRadialGradient(s / 2, s / 2, 2, s / 2, s / 2, s / 2);
-        g.addColorStop(0, 'rgba(255,255,255,1)');
-        g.addColorStop(1, 'rgba(255,255,255,0)');
-        ctx.fillStyle = g;
-        ctx.fillRect(0, 0, s, s);
-        this.textures.addCanvas('glow', c);
-    }
-
-    private makeVignette() {
-        const w = ROOM_W + VIEW_MARGIN * 2, h = ROOM_H + VIEW_MARGIN * 2;
-        const c = document.createElement('canvas');
-        c.width = w; c.height = h;
-        const ctx = c.getContext('2d')!;
-        const g = ctx.createRadialGradient(w / 2, h / 2, h * 0.45, w / 2, h / 2, w * 0.62);
-        g.addColorStop(0, 'rgba(6,5,11,0)');
-        g.addColorStop(1, 'rgba(6,5,11,0.75)');
-        ctx.fillStyle = g;
-        ctx.fillRect(0, 0, w, h);
-        this.textures.addCanvas('vignette', c);
-    }
-
-    /** Darkness level (0 lit, 1 black), cone strength (0..1), glow around the sleeper (0..1). */
-    private setLight(dark: number, cone: number, glow: number) {
-        const rt = this.darkness;
-        rt.clear();
-        rt.fill(DARK, dark);
-        this.cones.forEach((c) => { c.setAlpha(Math.min(1, cone * 1.6)); rt.erase(c, VIEW_MARGIN, VIEW_MARGIN); });
-        if (glow > 0 && this.def.sleep) {
-            this.glow ??= this.make.image({ x: 0, y: 0, key: 'glow', add: false });
-            this.glow.setAlpha(glow).setScale(1.3);
-            rt.erase(this.glow, tx(this.def.sleep.x + 0.9) + VIEW_MARGIN, ty(this.def.sleep.y + 0.4) + VIEW_MARGIN);
-        }
-        this.coneTints.forEach((t) => t.setAlpha(0.22 * cone));
     }
 
     private buildTargets() {
         const room = this.def.key;
         this.def.interactables.forEach((d) => {
-            if (d.kind === 'cat') return; // attached after the cat exists
-            const sprite = this.sprites.get(d.target);
-            if (!sprite) throw new Error(`Interactable ${d.id} has no prop ${d.target}`);
-            const counted = d.kind !== 'say';
-            const entry = counted ? getEntry(room, d.id) : null;
+            const sprite = d.target === 'cat' ? this.cat?.sprite : this.sprites.get(d.target);
+            if (!sprite) { if (d.target !== 'cat') throw new Error(`Interactable ${d.id} has no prop ${d.target}`); return; }
+            if (d.info) getEntry(room, d.info); // fail fast on missing content
             const t: Target = {
-                kind: 'item', def: d, key: counted ? contentKey(room, d.id) : null, sprite,
-                spot: { x: tx(d.spot.x), y: ty(d.spot.y) },
-                prompt: entry ? entry.prompt : (d.prompt ?? '')
+                kind: 'item', def: d, key: d.info ? contentKey(room, d.info) : null, sprite,
+                spot: { x: tx(d.spot.x), y: ty(d.spot.y) }, facing: d.facing
             };
+            if (d.target === 'longboard') this.updateBoardSpot(t);
             this.decorate(t);
             this.targets.push(t);
         });
         this.def.doors.forEach((door) => {
             const { x, top, bottom } = this.doorPx(door);
-            const sprite = this.sprites.get(`door-${door.side}`)!;
             this.targets.push({
-                kind: 'door', door, key: null, sprite,
+                kind: 'door', door, key: null, sprite: this.sprites.get(`door-${door.side}`)!,
                 spot: { x: door.side === 'right' ? x - 9 : x + 9, y: Math.round((top + bottom) / 2) + 4 },
-                prompt: door.to === 'home' ? ui.doorToHome : ui.doorToDorm
+                facing: door.side
             });
         });
     }
 
-    private attachCatTarget() {
-        const d = this.def.interactables.find((i) => i.kind === 'cat');
-        if (!d || !this.cat) return;
-        const entry = getEntry(this.def.key, d.id);
-        const t: Target = {
-            kind: 'item', def: d, key: contentKey(this.def.key, d.id), sprite: this.cat.sprite,
-            spot: { x: this.cat.x, y: this.cat.y }, prompt: entry.prompt
-        };
-        this.decorate(t);
-        this.targets.push(t);
-    }
-
-    /** Highlight ring and discoverability sparkle. Decorative things never sparkle. */
+    /** Pulsing outline when focused; a bobbing arrow while an F item is still unfound. Decor never gets either. */
     private decorate(t: Target) {
         const tex = t.sprite.texture.key;
-        if (this.textures.exists(hlKey(tex))) {
-            const hl = this.add.sprite(0, 0, hlKey(tex), 0).setVisible(false);
-            t.hl = hl;
-            this.syncHighlight(t);
-        }
+        if (this.textures.exists(hlKey(tex))) t.hl = this.add.sprite(0, 0, hlKey(tex), 0).setVisible(false);
         if (t.key) {
-            const b = t.sprite.getBounds();
-            const sp = this.add.sprite(Math.round(b.centerX), Math.round(b.top) - 3, 'sparkle', 0).setDepth(8000);
-            sp.anims.play({ key: 'sparkle', delay: Math.random() * 1500 });
-            if (!this.rm && t.def?.kind !== 'cat') this.tweens.add({ targets: sp, y: sp.y - 2, duration: 700, yoyo: true, repeat: -1, ease: 'Sine.easeInOut' });
-            t.sparkle = sp;
+            t.marker = this.add.image(0, 0, 'fx_arrow').setDepth(8800).setOrigin(0.5, 1);
             this.refreshSeen(t);
         }
     }
 
     private refreshSeen(t: Target) {
-        if (!t.sparkle || !t.key) return;
-        const seen = state.found.has(t.key);
-        t.sparkle.setAlpha(seen ? 0 : 1);
+        if (t.marker && t.key) t.marker.setVisible(!state.found.has(t.key));
     }
 
     private syncHighlight(t: Target) {
@@ -319,14 +301,30 @@ export class Room extends Phaser.Scene {
         t.hl.setOrigin(0, 0);
         t.hl.setDisplayOrigin(s.displayOriginX + 1, s.displayOriginY + 1);
         t.hl.setFlipX(s.flipX);
-        if (s.frame && typeof s.frame.name === 'number' && t.hl instanceof Phaser.GameObjects.Sprite) t.hl.setFrame(s.frame.name);
+        if (s.frame && typeof s.frame.name === 'number') t.hl.setFrame(s.frame.name);
         t.hl.setDepth(s.depth - 0.001);
+    }
+
+    private buildLabels() {
+        const R = Math.max(1, Math.ceil(this.cameras.main.zoom));
+        if (R === this.labelRes) return;
+        this.labelRes = R;
+        this.labels.forEach((l) => l.destroy());
+        this.labels = [];
+        (this.def.labels ?? []).forEach((l: LabelDef) => {
+            if (l.unlessSlot && decorFiles.includes(l.unlessSlot)) return;
+            const on = this.sprites.get(l.on);
+            const t = this.add.text(tx(l.x), ty(l.y), l.text, {
+                fontFamily: '"Pixelify Sans", ui-monospace, monospace', fontSize: `${l.size * R}px`,
+                fontStyle: l.bold ? 'bold' : 'normal', color: l.color, align: 'center', lineSpacing: -l.size * R * 0.25
+            }).setOrigin(0.5).setScale(1 / R).setAngle(l.angle ?? 0).setDepth((on?.depth ?? 2) + 0.02);
+            this.labels.push(t);
+        });
     }
 
     private arrivalPoint() {
         const a = this.entryMode === 'sleep' ? this.def.arrivals.wake : this.def.arrivals[this.entryMode];
-        const fallback = this.def.arrivals.wake ?? Object.values(this.def.arrivals)[0]!;
-        const p = a ?? fallback;
+        const p = a ?? this.def.arrivals.wake ?? Object.values(this.def.arrivals)[0]!;
         return { x: tx(p.x), y: ty(p.y), facing: p.facing };
     }
 
@@ -339,13 +337,42 @@ export class Room extends Phaser.Scene {
 
     // ---------- camera ----------
 
+    /** Integer zoom that fills the window. If one step bigger only crops a little, use it and follow the player. */
     private fitCamera() {
-        const cam = this.cameras.main;
         const w = this.scale.width, h = this.scale.height;
-        const fit = Math.min(w / (ROOM_W + VIEW_MARGIN * 2), h / (ROOM_H + VIEW_MARGIN * 2 + 24));
-        const zoom = fit >= 2 ? Math.floor(fit) : Math.max(0.5, fit);
-        cam.setZoom(zoom);
-        cam.centerOn(ROOM_W / 2, ROOM_H / 2);
+        const fit = Math.min(w / ROOM_W, h / ROOM_H);
+        let z: number;
+        if (fit >= 1.5) {
+            z = Math.max(1, Math.floor(fit));
+            const up = z + 1;
+            if (ROOM_W * up <= w * 1.12 && ROOM_H * up <= h * 1.16) z = up;
+        } else z = Math.max(0.5, fit);
+        this.zoom = z;
+        this.cameras.main.setZoom(z * this.zoomBoost);
+        this.updateCamera(0, true);
+        this.buildLabels();
+    }
+
+    private updateCamera(dt: number, snap = false) {
+        const cam = this.cameras.main;
+        const vw = this.scale.width / cam.zoom, vh = this.scale.height / cam.zoom;
+        const focusX = this.player?.x ?? ROOM_W / 2, focusY = (this.player?.y ?? ROOM_H / 2) - 12;
+        const clampAxis = (p: number, view: number, size: number) =>
+            view >= size ? size / 2 : Phaser.Math.Clamp(p, view / 2, size - view / 2);
+        const tx_ = clampAxis(focusX, vw, ROOM_W), ty_ = clampAxis(focusY, vh, ROOM_H);
+        const k = snap ? 1 : 1 - Math.pow(0.88, dt / 16.7);
+        this.camPos.x += (tx_ - this.camPos.x) * k;
+        this.camPos.y += (ty_ - this.camPos.y) * k;
+        cam.centerOn(Math.round(this.camPos.x * cam.zoom) / cam.zoom, Math.round(this.camPos.y * cam.zoom) / cam.zoom);
+    }
+
+    private easeZoom(boost: number) {
+        if (this.rm) return;
+        this.tweens.add({
+            targets: this, zoomBoost: boost, duration: 500, ease: 'Sine.easeInOut',
+            onUpdate: () => this.cameras.main.setZoom(this.zoom * this.zoomBoost),
+            onComplete: () => this.cameras.main.setZoom(this.zoom * this.zoomBoost)
+        });
     }
 
     /** World point to page coordinates (for HTML overlays). */
@@ -363,17 +390,20 @@ export class Room extends Phaser.Scene {
 
     private enterSleep() {
         this.sleeping = true;
+        state.setAwake(false);
+        setWakeButton(true);
         this.player.sprite.setVisible(false);
         const s = this.def.sleep!;
         this.sleepSprite = this.add.sprite(tx(s.x), ty(s.y), 'daniel_sleep', 0).setOrigin(0).setDepth(9050);
         this.sleepSprite.anims.play('sleep');
-        this.setLight(0.97, 0, 0.55);
+        this.lighting.set(0.97, 0, 0.55, this.sleeperAt());
         this.zTimer = this.time.addEvent({ delay: 1100, loop: true, callback: () => this.puffZ() });
         this.puffZ();
-        showCounter(false);
         showMessage(isTouchDevice() ? ui.wakeTouch : ui.wakeKeys, 'wake');
         this.cameras.main.fadeIn(this.rm ? 80 : 500, 6, 5, 11);
     }
+
+    private sleeperAt() { const s = this.def.sleep!; return { x: tx(s.x + 0.9), y: ty(s.y + 0.4) }; }
 
     private puffZ() {
         if (!this.sleepSprite || this.rm) return;
@@ -390,23 +420,22 @@ export class Room extends Phaser.Scene {
         this.busy = true;
         this.zTimer?.remove();
         showMessage(null);
+        setWakeButton(false);
         sfx('wake');
         const fast = this.rm;
         const sleeper = this.sleepSprite!;
-        const level = { dark: 0.97, cone: 0, glow: 0.55 };
-        const relight = () => this.setLight(level.dark, level.cone, level.glow);
-
-        // 1. stir
+        const target = this.lighting.baseDark;
+        const level = { dark: 0.97, light: 0, glow: 0.55 };
+        const relight = () => this.lighting.set(level.dark, level.light, level.glow, this.sleeperAt());
         this.tweens.add({
             targets: sleeper, x: sleeper.x + 1, duration: 60, yoyo: true, repeat: fast ? 0 : 3,
             onComplete: () => {
-                // 2. window light, then room light
-                this.tweens.add({ targets: level, cone: 1, duration: fast ? 60 : 450, ease: 'Sine.easeIn', onUpdate: relight });
+                // window light first, then the lamps and the room
+                this.tweens.add({ targets: level, light: 0.6, duration: fast ? 60 : 450, ease: 'Sine.easeIn', onUpdate: relight });
                 this.tweens.add({
-                    targets: level, dark: 0.2, glow: 0, delay: fast ? 0 : 380, duration: fast ? 100 : 650, ease: 'Sine.easeInOut',
-                    onUpdate: relight, onComplete: relight
+                    targets: level, dark: target, light: 1, glow: 0, delay: fast ? 0 : 380, duration: fast ? 100 : 700, ease: 'Sine.easeInOut',
+                    onUpdate: relight, onComplete: () => this.lighting.lit()
                 });
-                // 3. hop out of bed
                 this.time.delayedCall(fast ? 50 : 300, () => this.hopOut(sleeper));
             }
         });
@@ -437,32 +466,74 @@ export class Room extends Phaser.Scene {
                 state.woke = true;
                 state.save();
                 this.busy = false;
-                showCounter(true);
-                showMessage(isTouchDevice() ? ui.controlsTouch : ui.controlsKeys, 'tip');
-                this.time.delayedCall(4500, () => showMessage(null));
+                state.setAwake(true);
+                showTitle(ui.roomTitles[this.def.key]);
+                this.say(profile.wakeLine, 5000);
+                if (!state.seenTips) {
+                    showMessage(isTouchDevice() ? ui.controlsTouch : ui.controlsKeys, 'tip');
+                    this.time.delayedCall(7000, () => showMessage(null));
+                    state.seenTips = true;
+                    state.save();
+                }
+                this.pulseDoor();
+                startAmbient(this.def.key);
+                markInput();
             }
         });
+    }
+
+    /** Draws the eye to the door once: the sign bobs, the light leak brightens. */
+    private pulseDoor() {
+        const door = this.def.doors[0];
+        if (!door) return;
+        const sign = this.sprites.get('sign');
+        if (sign && !this.rm) this.tweens.add({ targets: sign, y: sign.y - 2, duration: 180, yoyo: true, repeat: 3, delay: 900 });
+        this.time.delayedCall(900, () => this.lighting.pulse(door.side === 'right' ? 19.7 : 0.3, (door.rowTop + door.rowBottom) / 2));
+    }
+
+    private say(text: string, ms: number) {
+        showBubble('say', text, 'speech');
+        this.sayUntil = this.time.now + ms;
     }
 
     // ---------- input ----------
 
     private canAct() { return !this.sleeping && !this.busy && !state.modal; }
 
-    private onInteract() {
+    private onAction(a: Action) {
         if (state.modal) return;
+        if (a === 'about') { this.openAbout(); return; }
+        if (a === 'hint') { if (this.canAct()) this.hintUntil = this.time.now + 1600; return; }
+        if (a === 'konami') { this.flip(); return; }
+        if (a === 'escape') {
+            if (this.mode === 'sit') this.standUp();
+            else if (this.mode === 'ride') this.dismount();
+            else if (this.mode === 'pullup') this.endPullups();
+            return;
+        }
+        if (a !== 'act' && a !== 'info') return;
         if (this.sleeping) { this.wake(); return; }
         if (!this.canAct()) return;
-        if (this.focus) this.activate(this.focus);
+        if (this.mode === 'pullup') { if (a === 'act') this.rep(); return; }
+        if (this.mode === 'sit') { if (a === 'act') this.standUp(); return; }
+        if (this.mode === 'ride') { if (a === 'act') this.dismount(); return; }
+        if (this.mode !== 'free') return;
+        const t = this.focus;
+        if (!t) return;
+        if (t.kind === 'door') { this.goThrough(t.door!); return; }
+        if (a === 'act' && t.def?.action) this.doAction(t, t.def.action);
+        else if (a === 'info' && t.def?.info) this.openInfo(t);
     }
 
     private hitTest(wx: number, wy: number): Target | null {
         const hits = this.targets.filter((t) => {
+            if (!t.sprite.visible) return false;
             const b = t.sprite.getBounds();
             Phaser.Geom.Rectangle.Inflate(b, 2, 2);
             return b.contains(wx, wy);
         });
         if (!hits.length) return null;
-        // topmost first, then smallest (desk items beat the desk area around them)
+        // topmost first, then smallest (desk items beat the desk around them)
         hits.sort((a, b) => (b.sprite.depth - a.sprite.depth) || (a.sprite.width * a.sprite.height - b.sprite.width * b.sprite.height));
         return hits[0];
     }
@@ -475,17 +546,34 @@ export class Room extends Phaser.Scene {
 
     private onPointerDown(p: Phaser.Input.Pointer) {
         if (state.modal) return;
+        markInput();
         if (this.sleeping) { this.wake(); return; }
         if (!this.canAct()) return;
+        if (this.mode === 'pullup') { this.rep(); return; }
         const w = p.positionToCamera(this.cameras.main) as Phaser.Math.Vector2;
         const hit = this.hitTest(w.x, w.y);
-        if (hit) { this.walkToTarget(hit); return; }
-        if (w.x >= FLOOR_X && w.x <= FLOOR_X + FLOOR_W && w.y >= FLOOR_Y - 4 && w.y <= FLOOR_Y + FLOOR_H + 4) {
-            const dest = this.nav.nearestFreePoint({ x: w.x, y: w.y + 2 });
-            const path = this.nav.findPath({ x: this.player.x, y: this.player.y }, dest);
-            if (path) this.player.walkTo(path);
-            this.markClick(dest);
+        if (this.mode === 'ride') {
+            const onMe = this.player.sprite.getBounds().contains(w.x, w.y) || hit?.def?.target === 'longboard';
+            if (onMe) { this.dismount(); return; }
+            this.walkToPoint(w.x, w.y);
+            return;
         }
+        if (this.mode === 'sit') {
+            if (hit === this.seat) { this.standUp(); return; }
+            this.standUp();
+        }
+        if (this.mode !== 'free') return;
+        this.pinned = null;
+        if (hit) { this.walkToTarget(hit); return; }
+        this.walkToPoint(w.x, w.y);
+    }
+
+    private walkToPoint(wx: number, wy: number) {
+        if (wx < FLOOR_X || wx > FLOOR_X + FLOOR_W || wy < FLOOR_Y - 4 || wy > FLOOR_Y + FLOOR_H + 4) return;
+        const dest = this.nav.nearestFreePoint({ x: wx, y: wy + 2 });
+        const path = this.nav.findPath({ x: this.player.x, y: this.player.y }, dest);
+        if (path) this.player.walkTo(path);
+        this.markClick(dest);
     }
 
     private markClick(p: Pt) {
@@ -496,48 +584,48 @@ export class Room extends Phaser.Scene {
 
     private walkToTarget(t: Target) {
         let spot = t.spot;
-        if (t.def?.kind === 'cat' && this.cat) {
-            const side = this.player.x < this.cat.x ? -1 : 1;
-            spot = this.nav.nearestFreePoint({ x: this.cat.x + side * 14, y: this.cat.y + 1 });
-        }
+        if (t.def?.target === 'cat' && this.cat) spot = this.nav.nearestFreePoint(this.cat.standingSpot(this.player.x).spot);
         const path = this.nav.findPath({ x: this.player.x, y: this.player.y }, spot);
         if (!path) return;
         this.markClick(spot);
-        this.player.walkTo(path, () => {
-            if (t.kind === 'door') { this.goThrough(t.door!); return; }
-            if (t.def?.kind === 'cat' && this.cat) {
-                this.player.face(Math.abs(this.cat.x - this.player.x) > Math.abs(this.cat.y - this.player.y)
-                    ? (this.cat.x > this.player.x ? 'right' : 'left') : (this.cat.y > this.player.y ? 'down' : 'up'));
-            } else if (t.def) this.player.face(t.def.facing);
-            this.activate(t);
-        });
+        this.player.walkTo(path, () => this.arrive(t));
     }
 
-    // ---------- interactions ----------
-
-    private activate(t: Target) {
+    /** Click-walk arrival: one option, do it; two options, keep the item focused so both buttons show. */
+    private arrive(t: Target) {
         if (t.kind === 'door') { this.goThrough(t.door!); return; }
+        this.faceTarget(t);
+        const d = t.def!;
+        if (d.action && d.info) { this.pinned = t; return; }
+        if (d.action) this.doAction(t, d.action);
+        else if (d.info) this.openInfo(t);
+    }
+
+    private faceTarget(t: Target) {
+        if (t.def?.target === 'cat' && this.cat) {
+            const dx = this.cat.x - this.player.x, dy = this.cat.y - this.player.y;
+            this.player.face(Math.abs(dx) > Math.abs(dy) ? (dx > 0 ? 'right' : 'left') : (dy > 0 ? 'down' : 'up'));
+        } else this.player.face(t.facing);
+    }
+
+    // ---------- F: panels ----------
+
+    private openInfo(t: Target) {
         const d = t.def!;
         this.player.squash();
         this.bounce(t.sprite);
         sfx('tick');
-        if (d.kind === 'say') {
-            toast(ui[d.say as 'homeBed'] ?? '');
-            return;
-        }
-        const entry = getEntry(this.def.key, d.id);
-        if (d.kind === 'cat') {
-            this.petCat();
-            this.time.delayedCall(this.rm ? 0 : 500, () => this.open(t, entry));
-            return;
-        }
-        this.open(t, entry);
+        this.openEntry(getEntry(this.def.key, d.info!), t.key!, t);
     }
 
-    private open(t: Target, entry: Entry) {
-        const isNew = state.markFound(t.key!);
-        if (isNew) sfx('found');
-        this.refreshSeen(t);
+    private openAbout() {
+        if (!state.awake || this.sleeping || this.busy) return;
+        this.openEntry(getEntry('dorm', 'about'), ABOUT_KEY);
+    }
+
+    private openEntry(entry: Entry, key: string, t?: Target) {
+        if (state.markFound(key)) sfx('found');
+        if (t) this.refreshSeen(t);
         if (this.cat) this.cat.held = true;
         openPanel(entry, () => {
             if (this.cat) this.cat.held = false;
@@ -545,23 +633,293 @@ export class Room extends Phaser.Scene {
         });
     }
 
-    private bounce(o: Phaser.GameObjects.Image | Phaser.GameObjects.Sprite) {
-        if (this.rm) return;
-        const y = o.y;
-        this.tweens.add({ targets: o, y: y - 2, duration: 70, yoyo: true, ease: 'Quad.easeOut', onComplete: () => o.setY(y) });
+    // ---------- E: actions ----------
+
+    private verb(t: Target): string | undefined {
+        const a = t.def?.action;
+        if (!a) return undefined;
+        if (a === 'music') return isMusicOn() ? ui.verbs.musicOff : ui.verbs.musicOn;
+        const map: Record<Exclude<ActionKind, 'music'>, string> = {
+            sit: ui.verbs.sit, outfit: ui.verbs.outfit, pullup: ui.verbs.pullup, snap: ui.verbs.snap,
+            piano: ui.verbs.piano, pet: ui.verbs.pet, ride: ui.verbs.ride
+        };
+        return map[a];
+    }
+
+    private doAction(t: Target, a: ActionKind) {
+        this.pinned = null;
+        switch (a) {
+            case 'sit': this.sitDown(t); break;
+            case 'outfit': this.changeOutfit(t); break;
+            case 'pullup': this.startPullups(t); break;
+            case 'music': this.toggleMusic(t); break;
+            case 'snap': this.snapPhoto(t); break;
+            case 'piano': this.playPiano(t); break;
+            case 'pet': this.petCat(); break;
+            case 'ride': this.mount(t); break;
+        }
+    }
+
+    private body() { return this.player.sprite.body as Phaser.Physics.Arcade.Body; }
+
+    private sitDown(t: Target) {
+        const seat = t.def?.seat;
+        if (!seat) return;
+        this.setMode('sit');
+        this.seat = t;
+        this.player.cancelPath();
+        this.player.stop();
+        this.body().enable = false;
+        const sink = seat.pose === 'sink' ? 2 : 0;
+        this.player.teleport(tx(seat.x), ty(seat.y) + sink);
+        this.player.pose(DANIEL_FRAMES.sit);
+        this.player.sprite.setDepth(t.sprite.depth + 1);
+        if (!this.rm) this.tweens.add({ targets: t.sprite, scaleY: 0.96, duration: 90, yoyo: true });
+        sfx('hop');
+        this.easeZoom(1.12);
+        markInput();
+    }
+
+    private standUp() {
+        const t = this.seat;
+        if (this.mode !== 'sit' || !t) return;
+        this.seat = null;
+        this.player.pose(null);
+        this.player.teleport(t.spot.x, t.spot.y);
+        this.body().enable = true;
+        this.player.face(t.facing === 'up' ? 'down' : 'down');
+        this.ensureFree();
+        this.setMode('free');
+        this.easeZoom(1);
+        hideBubble('think');
+    }
+
+    private changeOutfit(t: Target) {
+        state.outfit = (state.outfit + 1) % OUTFITS.length;
+        state.save();
+        this.player.setOutfit(state.outfit);
+        this.player.squash();
+        this.bounce(t.sprite);
+        sfx('puff');
+        const puff = this.add.sprite(this.player.x, this.player.y - 6, 'fx_puff', 0).setDepth(this.player.y + 1);
+        puff.anims.play('puff');
+        this.tweens.add({ targets: puff, alpha: 0, y: puff.y - 4, duration: 450, delay: 150, onComplete: () => puff.destroy() });
+        showBubble('act', ui.outfitPuff, 'small');
+        this.time.delayedCall(1200, () => { if (this.mode === 'free') hideBubble('act'); });
+    }
+
+    private startPullups(t: Target) {
+        const tower = this.sprites.get('pullup');
+        if (!tower) return;
+        this.setMode('pullup');
+        this.pull = { reps: 0, busy: false, target: t, timer: null };
+        this.player.cancelPath();
+        this.player.stop();
+        this.body().enable = false;
+        const barY = tower.y + 3;
+        this.player.teleport(Math.round(tower.x + tower.width / 2), barY + 21);
+        this.player.pose(DANIEL_FRAMES.hang);
+        this.player.sprite.setDepth(tower.depth + 1);
+        sfx('hop');
+        showBubble('act', isTouchDevice() ? ui.pullupHintTouch : ui.pullupHint, 'small');
+        this.pull.timer = this.time.delayedCall(5000, () => this.endPullups());
+    }
+
+    private rep() {
+        if (this.mode !== 'pullup' || this.pull.busy) return;
+        this.pull.busy = true;
+        this.pull.reps++;
+        sfx('rep');
+        showBubble('act', ui.pullupCount(this.pull.reps), 'small');
+        const s = this.player.sprite, y = s.y;
+        this.player.pose(DANIEL_FRAMES.hangStrain);
+        this.tweens.add({
+            targets: s, y: y - 7, duration: 110, yoyo: true, ease: 'Quad.easeOut',
+            onComplete: () => { s.setY(y); if (this.mode === 'pullup') this.player.pose(DANIEL_FRAMES.hang); this.pull.busy = false; }
+        });
+    }
+
+    private endPullups() {
+        if (this.mode !== 'pullup') return;
+        this.pull.timer?.remove();
+        const t = this.pull.target!;
+        const reps = this.pull.reps;
+        showBubble('act', ui.pullupDone(reps), 'small');
+        if (reps > 0) sfx('nice');
+        this.busy = true;
+        this.time.delayedCall(350, () => {
+            this.player.pose(null);
+            this.player.teleport(t.spot.x, t.spot.y);
+            this.body().enable = true;
+            this.player.face('down');
+            this.ensureFree();
+            this.busy = false;
+            this.setMode('free');
+            this.time.delayedCall(1300, () => hideBubble('act'));
+        });
+    }
+
+    private toggleMusic(t: Target) {
+        this.bounce(t.sprite);
+        if (!state.sound) {
+            toast(ui.soundIsOff, 5000, { label: ui.turnSoundOn, onClick: () => { state.setSound(true); this.startSpeaker(); } });
+            return;
+        }
+        if (isMusicOn()) { stopMusic(); sfx('tick'); }
+        else this.startSpeaker();
+    }
+
+    private startSpeaker() {
+        const sp = this.sprites.get('speaker');
+        if (!sp) return;
+        const y0 = sp.y;
+        startMusic((beat) => {
+            if (!this.scene.isActive()) return;
+            if (!this.rm) this.tweens.add({ targets: sp, y: y0 - 1, scaleX: 1.04, duration: 70, yoyo: true, onComplete: () => sp.setY(y0).setScale(1) });
+            if (beat % 2 === 0 && !this.rm) {
+                const n = this.add.image(sp.x + 4 + Math.random() * (sp.width - 8), sp.y, 'fx_note').setDepth(8600);
+                this.tweens.add({ targets: n, y: n.y - 14, x: n.x + (Math.random() - 0.5) * 8, alpha: 0, duration: 1100, onComplete: () => n.destroy() });
+            }
+        });
+    }
+
+    private snapPhoto(t: Target) {
+        this.bounce(t.sprite);
+        sfx('shutter');
+        flash(this.rm);
+        // hide game UI drawn in the canvas for the shot
+        this.targets.forEach((x) => { x.hl?.setVisible(false); x.marker?.setVisible(false); });
+        const cam = this.cameras.main;
+        const r = {
+            x: Math.max(0, Math.round((0 - cam.worldView.x) * cam.zoom)),
+            y: Math.max(0, Math.round((0 - cam.worldView.y) * cam.zoom))
+        };
+        const w = Math.min(this.scale.width - r.x, Math.round((ROOM_W - Math.max(0, cam.worldView.x)) * cam.zoom));
+        const h = Math.min(this.scale.height - r.y, Math.round((ROOM_H - Math.max(0, cam.worldView.y)) * cam.zoom));
+        this.busy = true;
+        this.snapping = true;
+        this.game.renderer.snapshotArea(r.x, r.y, w, h, (img) => {
+            this.snapping = false;
+            this.busy = false;
+            const el = img as HTMLImageElement;
+            const go = () => openSnapshot(el.src, () => undefined);
+            if (el.complete) go(); else el.onload = go;
+        });
+    }
+
+    private playPiano(t: Target) {
+        this.bounce(t.sprite);
+        this.setMode('piano');
+        openPiano(() => this.setMode('free'));
     }
 
     private petCat() {
         if (!this.cat) return;
-        sfx('meow');
-        this.cat.held = true;
-        for (let i = 0; i < (this.rm ? 1 : 4); i++) {
-            const h = this.add.image(this.cat.x - 4 + i * 3, this.cat.y - 12, 'fx_heart').setDepth(8500);
+        const t = this.targets.find((x) => x.def?.target === 'cat');
+        if (t) this.faceTarget(t);
+        const r = this.cat.pet();
+        const cat = this.cat;
+        this.player.pose(DANIEL_FRAMES.crouch);
+        this.time.delayedCall(650, () => { if (this.mode === 'free') this.player.pose(null); });
+        const hearts = r === 'asleep' ? 1 : (this.rm ? 1 : 4);
+        for (let i = 0; i < hearts; i++) {
+            const h = this.add.image(cat.x - 4 + i * 3, cat.y - 13, 'fx_heart').setDepth(8500);
             this.tweens.add({
-                targets: h, y: h.y - 12 - i * 2, x: h.x + (i % 2 ? 3 : -3), alpha: 0, delay: i * 90, duration: 700,
+                targets: h, y: h.y - 12 - i * 2, x: h.x + (i % 2 ? 3 : -3), alpha: 0, delay: i * 90, duration: 800,
                 onComplete: () => h.destroy()
             });
         }
+        if (r === 'asleep') { sfx('purr'); showBubble('cat', ui.purr, 'small'); }
+        else { sfx('meow'); if (!state.sound) showBubble('cat', ui.meow, 'small'); else hideBubble('cat'); }
+        this.time.delayedCall(1300, () => hideBubble('cat'));
+    }
+
+    // ---------- longboard ----------
+
+    private board() { return this.sprites.get('longboard'); }
+
+    private updateBoardSpot(t: Target) {
+        const b = this.board();
+        if (!b) return;
+        t.spot = this.nav.nearestFreePoint({ x: Math.round(b.x + b.width / 2), y: Math.round(b.y + b.height + 7) });
+    }
+
+    private mount(t: Target) {
+        const b = this.board();
+        if (!b) return;
+        this.player.cancelPath();
+        this.player.stop();
+        const on = this.nav.nearestFreePoint({ x: Math.round(b.x + b.width / 2), y: Math.round(b.y + 8) });
+        this.busy = true;
+        sfx('hop');
+        const from = { x: this.player.x, y: this.player.y };
+        const prog = { t: 0 };
+        this.tweens.add({
+            targets: prog, t: 1, duration: this.rm ? 60 : 260, ease: 'Sine.easeInOut',
+            onUpdate: () => this.player.sprite.setPosition(
+                Math.round(from.x + (on.x - from.x) * prog.t), Math.round(from.y + (on.y - from.y) * prog.t - Math.sin(prog.t * Math.PI) * 6)),
+            onComplete: () => {
+                this.player.teleport(on.x, on.y);
+                this.body().setBounce(0.55, 0.55);
+                this.busy = false;
+                this.setMode('ride');
+                if (t.marker) t.marker.setVisible(false);
+            }
+        });
+    }
+
+    private dismount() {
+        if (this.mode !== 'ride') return;
+        const b = this.board()!;
+        this.body().setBounce(0, 0);
+        this.player.stop();
+        const off = this.nav.nearestFreePoint({ x: Math.round(b.x + b.width / 2), y: Math.round(b.y + b.height + 8) });
+        sfx('hop');
+        this.player.teleport(off.x, off.y);
+        this.player.face('up');
+        this.setMode('free');
+        const t = this.targets.find((x) => x.def?.target === 'longboard');
+        if (t) { this.updateBoardSpot(t); this.refreshSeen(t); }
+    }
+
+    private onBump() {
+        if (this.mode !== 'ride') return;
+        const now = this.time.now;
+        if (now - this.lastBump < 250) return;
+        const v = this.body().velocity;
+        if (Math.hypot(v.x, v.y) < 30) return;
+        this.lastBump = now;
+        sfx('bump');
+        if (!this.rm) this.cameras.main.shake(80, 0.002);
+    }
+
+    // ---------- little extras ----------
+
+    private bounce(o: Sprite) {
+        if (this.rm || this.tweens.isTweening(o)) return;
+        const y = o.y;
+        this.tweens.add({ targets: o, y: y - 2, duration: 70, yoyo: true, ease: 'Quad.easeOut', onComplete: () => o.setY(y) });
+    }
+
+    private flip() {
+        if (!this.canAct() || this.mode !== 'free') return;
+        const s = this.player.sprite;
+        sfx('hop');
+        if (this.rm) return;
+        this.busy = true;
+        this.tweens.add({
+            targets: s, angle: 360, duration: 520, ease: 'Sine.easeInOut',
+            onComplete: () => { s.setAngle(0); this.busy = false; }
+        });
+        this.tweens.add({ targets: s, y: s.y - 10, duration: 260, yoyo: true, ease: 'Quad.easeOut' });
+    }
+
+    private knockPencil() {
+        const p = this.add.image(tx(13.35), ty(5.95), 'pencil').setDepth(ty(9)).setOrigin(0.5);
+        this.tweens.add({
+            targets: p, x: tx(13.95), y: ty(6.6), angle: 200, duration: 420, ease: 'Quad.easeIn',
+            onComplete: () => { p.setDepth(ty(6.6)); sfx('tick'); }
+        });
     }
 
     private celebrate() {
@@ -570,26 +928,33 @@ export class Room extends Phaser.Scene {
         this.busy = true;
         const s = this.player.sprite;
         const y = s.y;
+        this.player.pose(DANIEL_FRAMES.cheer);
         if (!this.rm) {
-            for (let i = 0; i < 14; i++) {
-                const sp = this.add.sprite(s.x, s.y - 10, 'sparkle', 1).setDepth(8600).setTint([0xffe27a, 0x7fd1ff, 0xff8aa8, 0x9dffb0][i % 4]);
-                const ang = (i / 14) * Math.PI * 2;
-                this.tweens.add({ targets: sp, x: sp.x + Math.cos(ang) * 26, y: sp.y + Math.sin(ang) * 18 - 8, alpha: 0, duration: 900, ease: 'Quad.easeOut', onComplete: () => sp.destroy() });
+            for (let i = 0; i < 18; i++) {
+                const sp = this.add.sprite(s.x, s.y - 12, 'sparkle', 1).setDepth(8600).setTint([0xffe27a, 0x7fd1ff, 0xff8aa8, 0x9dffb0][i % 4]);
+                const ang = (i / 18) * Math.PI * 2;
+                this.tweens.add({ targets: sp, x: sp.x + Math.cos(ang) * 30, y: sp.y + Math.sin(ang) * 20 - 10, alpha: 0, duration: 1000, ease: 'Quad.easeOut', onComplete: () => sp.destroy() });
             }
         }
+        sfx('nice');
         this.tweens.add({
-            targets: s, y: y - 6, duration: 140, yoyo: true, repeat: this.rm ? 0 : 2, ease: 'Quad.easeOut',
+            targets: s, y: y - 6, duration: 140, yoyo: true, repeat: this.rm ? 0 : 3, ease: 'Quad.easeOut',
             onComplete: () => {
                 s.setY(y);
+                this.player.pose(null);
                 this.busy = false;
                 openPanel(completion);
             }
         });
     }
 
-    private showHint() {
+    private travel() {
         if (!this.canAct()) return;
-        this.hintUntil = this.time.now + 1600;
+        if (this.mode === 'sit') this.standUp();
+        if (this.mode === 'ride') this.dismount();
+        if (this.mode !== 'free') return;
+        const door = this.targets.find((t) => t.kind === 'door');
+        if (door) this.walkToTarget(door);
     }
 
     private goThrough(door: DoorDef) {
@@ -609,34 +974,103 @@ export class Room extends Phaser.Scene {
 
     // ---------- per frame ----------
 
-    update(_time: number, delta: number) {
+    update(time: number, delta: number) {
         const dt = Math.min(delta, 50);
-        const feet = { x: this.player.x, y: this.player.y };
+        const feet = { x: this.player.x, y: this.player.y, moving: this.player.moving };
         this.cat?.update(dt, feet);
+        this.updateCamera(dt);
+        this.updateBubbles();
+        this.promptAtHead = false;
 
         if (!this.canAct()) {
-            if (!this.busy) { this.player.sprite.setVelocity(0, 0); }
-            this.updateHighlights(null);
+            if (!this.busy && this.mode !== 'ride') this.player.sprite.setVelocity(0, 0);
+            if (this.mode === 'ride' && state.modal) this.player.sprite.setVelocity(0, 0);
+            this.updateHighlights(null, time);
             if (!state.modal) setPrompt(null);
             return;
         }
 
+        switch (this.mode) {
+            case 'pullup':
+                this.updateHighlights(null, time);
+                this.promptAtPlayer({ act: ui.verbs.pullup });
+                return;
+            case 'sit': {
+                const mv = moveVector();
+                if (mv.x || mv.y) { this.standUp(); return; }
+                this.updateHighlights(null, time);
+                this.promptAtPlayer({ act: ui.verbs.stand });
+                this.idleThoughts();
+                return;
+            }
+            case 'ride': {
+                this.player.update(moveVector(), dt, RIDE_SPEED, 0.07);
+                const b = this.board()!;
+                b.setPosition(Math.round(this.player.x - b.width / 2), Math.round(this.player.y - b.height + 3));
+                b.setDepth(this.player.y - 0.5);
+                if (this.cat && Math.hypot(this.cat.x - this.player.x, this.cat.y - this.player.y) < 24 && this.player.moving) this.cat.batAt(this.player.x);
+                this.updateHighlights(null, time);
+                this.promptAtPlayer({ act: ui.verbs.dismount });
+                return;
+            }
+            case 'piano':
+                return;
+        }
+
         this.player.update(moveVector(), dt);
-        // Arriving on a click-walk can open a panel or start a transition this frame.
-        if (!this.canAct()) { setPrompt(null); this.updateHighlights(null); return; }
+        if (!this.canAct()) { setPrompt(null); this.updateHighlights(null, time); return; }
+        this.footsteps(time);
         this.checkDoors();
         const f = this.pickFocus();
         this.focus = f;
-        this.updateHighlights(f);
+        this.updateHighlights(f, time);
         if (f) {
-            // Above the object, or above the character's head if the object is lower (never over the face).
+            const spec: PromptSpec = f.kind === 'door'
+                ? { door: f.door!.side === 'right' ? `${ui.doorToHome} →` : `← ${ui.doorToDorm}` }
+                : { act: this.verb(f), info: f.def?.info ? getEntry(this.def.key, f.def.info).prompt : undefined };
             const b = f.sprite.getBounds();
-            const objTop = (f.kind === 'door' ? b.top + 6 : b.top) - (f.sparkle && f.sparkle.alpha > 0 ? 7 : 2);
+            const objTop = (f.kind === 'door' ? b.top + 6 : b.top) - 3;
             const headTop = this.player.sprite.getBounds().top - 2;
-            const below = objTop > headTop;
-            const p = this.toPage(below ? this.player.x : b.centerX, below ? headTop : objTop);
-            setPrompt(f.prompt, p.x, p.y);
+            // above the object; above Daniel's head if the object is lower, or very tall (closet, shelf)
+            const useHead = objTop > headTop || headTop - objTop > 34;
+            const p = this.toPage(useHead ? this.player.x : b.centerX, useHead ? headTop : objTop);
+            setPrompt(spec, p.x, p.y);
+            this.promptAtHead = useHead;
         } else setPrompt(null);
+        this.idleThoughts();
+    }
+
+    private promptAtPlayer(spec: PromptSpec) {
+        const p = this.toPage(this.player.x, this.player.sprite.getBounds().top - 2);
+        setPrompt(spec, p.x, p.y);
+        this.promptAtHead = true;
+    }
+
+    private updateBubbles() {
+        const now = this.time.now;
+        if (this.sayUntil && (now > this.sayUntil || this.player.moving)) { hideBubble('say'); this.sayUntil = 0; }
+        if (this.thinkUntil && (now > this.thinkUntil || this.player.moving || state.modal)) { hideBubble('think'); this.thinkUntil = 0; }
+        const head = this.toPage(this.player.x, this.player.sprite.getBounds().top - 2);
+        if (this.promptAtHead) head.y -= 40;
+        moveBubble('say', head.x, head.y);
+        moveBubble('think', head.x, head.y);
+        moveBubble('act', head.x, head.y);
+        if (this.cat) { const c = this.toPage(this.cat.x, this.cat.y - 14); moveBubble('cat', c.x, c.y); }
+    }
+
+    private idleThoughts() {
+        if (state.modal || this.busy || this.thinkUntil || this.sayUntil || !profile.idleThoughts.length) return;
+        if (performance.now() - lastInputAt < IDLE_THOUGHT_MS) return;
+        const line = profile.idleThoughts[Math.floor(Math.random() * profile.idleThoughts.length)];
+        showBubble('think', line, 'thought');
+        this.thinkUntil = this.time.now + 4500;
+        markInput();
+    }
+
+    private footsteps(time: number) {
+        if (!state.sound || !this.player.moving || time - this.lastStepAt < 300) return;
+        this.lastStepAt = time;
+        step(this.def.key === 'dorm' ? 'carpet' : 'wood');
     }
 
     private checkDoors() {
@@ -650,18 +1084,23 @@ export class Room extends Phaser.Scene {
         }
     }
 
-    /** Rule 1: one object, one standing spot, nearest wins, with hysteresis. Cat only if nothing static is in range. */
+    /** One item, one standing spot; nearest wins, with hysteresis. The cat only if nothing static is in range. */
     private pickFocus(): Target | null {
         const px = this.player.x, py = this.player.y;
+        if (this.pinned) {
+            const t = this.pinned;
+            const d = t.def?.target === 'cat' && this.cat ? Math.hypot(this.cat.x - px, this.cat.y - py) : Math.hypot(t.spot.x - px, t.spot.y - py);
+            if (d <= (t.def?.target === 'cat' ? CAT_ZONE + 6 : ZONE_EXIT)) return t;
+            this.pinned = null;
+        }
         const fv = FACING_VEC[this.player.facing];
         let best: Target | null = null, bestScore = Infinity, currentScore = Infinity;
         let catT: Target | null = null;
         for (const t of this.targets) {
-            if (t.def?.kind === 'cat') { catT = t; continue; }
+            if (t.def?.target === 'cat') { catT = t; continue; }
             const d = Math.hypot(t.spot.x - px, t.spot.y - py);
             const limit = t === this.focus ? ZONE_EXIT : ZONE_ENTER;
             if (d > limit) continue;
-            // roughly facing: the object must not be behind the character
             const b = t.sprite.getBounds();
             const ox = Phaser.Math.Clamp(px, b.left, b.right) - px;
             const oy = Phaser.Math.Clamp(py - 4, b.top, b.bottom) - (py - 4);
@@ -675,25 +1114,33 @@ export class Room extends Phaser.Scene {
         if (best && this.focus && currentScore !== Infinity && best !== this.focus && bestScore > currentScore - 3) return this.focus;
         if (best) return best;
         if (catT && this.cat) {
-            const d = Math.hypot(this.cat.x - px, this.cat.y - py);
-            if (d <= (this.focus === catT ? CAT_ZONE + 4 : CAT_ZONE)) return catT;
+            const near = this.cat.onBed
+                ? Math.hypot(catT.spot.x - px, catT.spot.y - py) <= (this.focus === catT ? ZONE_EXIT : ZONE_ENTER + 2)
+                : Math.hypot(this.cat.x - px, this.cat.y - py) <= (this.focus === catT ? CAT_ZONE + 4 : CAT_ZONE);
+            if (near) return catT;
         }
         return null;
     }
 
-    private updateHighlights(focus: Target | null) {
-        const hint = this.time.now < this.hintUntil;
-        const blink = Math.floor(this.time.now / 160) % 2 === 0;
+    private updateHighlights(focus: Target | null, time: number) {
+        const hint = time < this.hintUntil;
+        const blink = Math.floor(time / 160) % 2 === 0;
+        const pulse = 0.7 + 0.3 * Math.sin(time / 170);
+        const bob = this.rm ? 0 : Math.round(Math.sin(time / 260) * 1.5);
+        const showMarkers = !this.sleeping && !this.snapping;
         for (const t of this.targets) {
-            if (!t.hl) continue;
-            if (t.def?.kind === 'cat') { t.spot = { x: this.cat!.x, y: this.cat!.y }; }
-            this.syncHighlight(t);
-            const unfound = t.key !== null && !state.found.has(t.key);
-            const show = t === focus || (hint && unfound && blink);
-            t.hl.setVisible(show);
-            t.hl.setAlpha(t === focus ? (t.key && state.found.has(t.key) ? 0.7 : 1) : 0.8);
-            if (t.sparkle && t.def?.kind === 'cat') {
-                t.sparkle.setPosition(Math.round(this.cat!.x), Math.round(this.cat!.y) - 15);
+            if (t.def?.target === 'cat' && this.cat) t.spot = this.cat.standingSpot(this.player.x).spot;
+            if (t.hl) {
+                this.syncHighlight(t);
+                const unfound = t.key !== null && !state.found.has(t.key);
+                t.hl.setVisible(t === focus || (hint && unfound && blink));
+                t.hl.setAlpha(t === focus ? pulse : 0.85);
+            }
+            if (t.marker && t.marker.visible !== (!!t.key && !state.found.has(t.key) && !(t.def?.target === 'longboard' && this.mode === 'ride'))) this.refreshSeen(t);
+            if (t.marker && (!showMarkers || t === focus)) t.marker.setVisible(false);
+            if (t.marker?.visible) {
+                const b = t.sprite.getBounds();
+                t.marker.setPosition(Math.round(b.centerX), Math.round(b.top) - 2 + bob);
             }
         }
     }

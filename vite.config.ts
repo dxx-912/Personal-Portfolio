@@ -1,5 +1,22 @@
 import { createServer, defineConfig, type Plugin } from 'vite';
 import { resolve } from 'node:path';
+import { existsSync, readdirSync } from 'node:fs';
+
+// Lists the image files Daniel has dropped into public/assets/decor/ so the game only requests
+// files that exist (no 404s). Restart the dev server after adding a file.
+const decorFiles = (): Plugin => {
+    const id = 'virtual:decor-files';
+    return {
+        name: 'decor-files',
+        resolveId(source) { return source === id ? '\0' + id : null; },
+        load(source) {
+            if (source !== '\0' + id) return null;
+            const dir = resolve(__dirname, 'public/assets/decor');
+            const files = existsSync(dir) ? readdirSync(dir).filter((f) => /\.(png|webp|jpe?g|gif)$/i.test(f)) : [];
+            return `export default ${JSON.stringify(files)};`;
+        }
+    };
+};
 
 // Serve /plain (no trailing slash) in dev and preview, like Vercel does in production.
 const plainRoute = (): Plugin => {
@@ -40,7 +57,7 @@ const plainPrerender = (): Plugin => ({
 
 export default defineConfig({
     base: '/',
-    plugins: [plainRoute(), plainPrerender()],
+    plugins: [plainRoute(), plainPrerender(), decorFiles()],
     build: {
         target: 'es2020',
         rollupOptions: {

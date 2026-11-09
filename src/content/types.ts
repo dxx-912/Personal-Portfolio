@@ -43,22 +43,42 @@ export interface Section {
     links?: LinkItem[];
 }
 
-export type TabStyle = 'tabs' | 'pennants' | 'shelf' | 'halves';
+/**
+ * How an entry's tabs look in the panel.
+ * tabs: plain tabs. notes: sticky notes on a TO DO board. shelf: three shelf tiers. phone: a phone feed.
+ */
+export type TabStyle = 'tabs' | 'notes' | 'shelf' | 'phone';
 
 export interface Entry extends Section {
-    /** Label after "F: " in the in-game prompt, e.g. "Laptop, projects". */
+    /** Short label after "F" in the in-game prompt, e.g. "UCLA" or "About him". */
     prompt: string;
     /** Where this lives on /plain. */
     plainGroup: PlainGroup;
+    /** Title on /plain when the in-game title only makes sense in the room. */
+    plainTitle?: string;
     tabs?: Section[];
     tabStyle?: TabStyle;
 }
 
-export type PlainGroup = 'intro' | 'projects' | 'experience' | 'education' | 'personal';
+export type PlainGroup = 'intro' | 'education' | 'projects' | 'experience' | 'personal';
+
+export interface HudStat {
+    label: string;
+    value: number;
+    max: number;
+    /** Bar colour. */
+    color: string;
+}
 
 export interface Profile {
     name: string;
     tagline: string;
     location: string;
     links: LinkItem[];
+    /** Joke stat bars beside the HUD portrait. */
+    stats: HudStat[];
+    /** What Daniel says in a speech bubble right after waking up. */
+    wakeLine: string;
+    /** Thought bubbles when the visitor stands still for a while. */
+    idleThoughts: string[];
 }

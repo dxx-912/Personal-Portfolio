@@ -22,15 +22,16 @@ export const FLOOR_H = FLOOR_ROWS * TILE;
 export const ROOM_W = SIDE_W * 2 + FLOOR_W;
 export const ROOM_H = FLOOR_Y + FLOOR_H + RIM_H;
 
-/** Dark margin kept around the room when choosing a zoom level (world pixels). */
+/** Dark margin drawn around the room (world pixels). */
 export const VIEW_MARGIN = 14;
 
 /** Character sprite frame and its foot collider. */
 export const CHAR_FRAME = { w: 16, h: 22 };
 export const CHAR_BODY = { w: 10, h: 6 };
-export const CAT_FRAME = { w: 16, h: 12 };
+export const CAT_FRAME = { w: 18, h: 14 };
 
 export const WALK_SPEED = 72;
+export const RIDE_SPEED = 130;
 export const CAT_SPEED = 18;
 
 /** Interaction zone radii (pixels, measured at the feet). Exit > enter gives hysteresis. */

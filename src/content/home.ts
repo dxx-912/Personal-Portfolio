@@ -1,12 +1,13 @@
 import type { Entry } from './types';
 
-// Home bedroom: everything personal. Keyed by interactable id (see src/rooms/home.ts).
+// Home bedroom (North York, Toronto): everything personal. Keyed by interactable id (see src/rooms/home.ts).
 // Never invent facts. Unknowns are "[TODO: ...]" and are listed in TODO_ASSETS.md.
 
 export const homeContent: Record<string, Entry> = {
+    // 1. Window with the Toronto skyline
     window: {
         id: 'window',
-        prompt: 'Window, North York',
+        prompt: 'North York',
         plainGroup: 'personal',
         title: 'North York',
         subtitle: 'Toronto',
@@ -23,18 +24,20 @@ export const homeContent: Record<string, Entry> = {
         ]
     },
 
+    // 2. Three tier shelf: rowing, awards, favorite reads
     shelf: {
         id: 'shelf',
-        prompt: 'Shelf, rowing, awards, anime',
+        prompt: 'The shelf',
         plainGroup: 'personal',
         title: 'The shelf',
+        plainTitle: 'Rowing, awards, and favorite reads',
         subtitle: 'Pick a tier.',
         tabStyle: 'shelf',
         tabs: [
             {
                 id: 'rowing',
                 title: 'Rowing',
-                subtitle: 'High school varsity',
+                subtitle: 'High school varsity. Top shelf: the trophy and the oar.',
                 body: [
                     'We won the national rowing championship.',
                     '[TODO: boat, year, and a line on what rowing was like]'
@@ -45,7 +48,7 @@ export const homeContent: Record<string, Entry> = {
             {
                 id: 'awards',
                 title: 'Awards',
-                subtitle: 'Three plaques',
+                subtitle: 'Middle shelf: three plaques',
                 list: [{
                     items: [
                         'DECA Provincial Champion',
@@ -61,20 +64,21 @@ export const homeContent: Record<string, Entry> = {
                 ]
             },
             {
-                id: 'anime',
-                title: 'Anime and webtoons',
-                subtitle: 'Favourites',
+                id: 'reads',
+                title: 'Favorite reads',
+                subtitle: 'Bottom shelf',
                 list: [
                     { title: 'Anime', items: ['Attack on Titan'] },
-                    { title: 'Webtoons', items: ['Sweet Home', 'Lookism', 'Solo Leveling'] }
+                    { title: 'Webtoons', items: ['Lookism', 'Sweet Home', 'Solo Levelling'] }
                 ]
             }
         ]
     },
 
+    // 3. Pull up tower (E does pull ups)
     pullup: {
         id: 'pullup',
-        prompt: 'Pull up tower, exercise',
+        prompt: 'Exercise',
         plainGroup: 'personal',
         title: 'Exercise',
         body: [
@@ -89,21 +93,10 @@ export const homeContent: Record<string, Entry> = {
         ]
     },
 
-    laptop: {
-        id: 'laptop',
-        prompt: 'Laptop, acting',
-        plainGroup: 'personal',
-        title: 'Acting',
-        body: [
-            'I used to be a professional actor. My peak was acting in a music video with 70M views.',
-            '[TODO: the song and artist, and my part in it]'
-        ],
-        videos: [{ kind: 'youtube', title: 'The music video' /* id: '[TODO: YouTube id]' */ }]
-    },
-
-    headphones: {
-        id: 'headphones',
-        prompt: 'Headphones, music',
+    // 4. Big black speaker (E toggles a short loop)
+    speaker: {
+        id: 'speaker',
+        prompt: 'Music',
         plainGroup: 'personal',
         title: 'Dubstep and EDM',
         body: ['I love dubstep and EDM.', '[TODO: why, in a sentence or two]'],
@@ -111,9 +104,29 @@ export const homeContent: Record<string, Entry> = {
         links: [{ label: 'My dubstep playlist on Spotify' /* href: '[TODO]' */ }]
     },
 
+    // 5. Camera on the work table (E snaps a photo of the room)
+    camera: {
+        id: 'camera',
+        prompt: 'Photography',
+        plainGroup: 'personal',
+        title: 'Photography',
+        body: [
+            '[TODO: 2 to 3 sentences on why you love photography]',
+            '[TODO: what you like to shoot, and with what]'
+        ],
+        gallery: 'grid',
+        images: [
+            { alt: 'Photo by Daniel 1', caption: '[TODO: caption]' },
+            { alt: 'Photo by Daniel 2', caption: '[TODO: caption]' },
+            { alt: 'Photo by Daniel 3', caption: '[TODO: caption]' },
+            { alt: 'Photo by Daniel 4', caption: '[TODO: caption]' }
+        ]
+    },
+
+    // 6. Nightstand with the lamp and the family photo
     nightstand: {
         id: 'nightstand',
-        prompt: 'Family photo',
+        prompt: 'Family',
         plainGroup: 'personal',
         title: 'Family',
         body: ['[TODO: a few sentences about my parents and my sister]'],
@@ -125,6 +138,7 @@ export const homeContent: Record<string, Entry> = {
         ]
     },
 
+    // 7. Digital piano (E plays it)
     piano: {
         id: 'piano',
         prompt: 'Piano',
@@ -139,9 +153,10 @@ export const homeContent: Record<string, Entry> = {
         images: [{ alt: 'Recital photo 1' }, { alt: 'Recital photo 2' }]
     },
 
-    baking: {
-        id: 'baking',
-        prompt: 'Baked goods, cooking',
+    // 8. Apple crisp pie with a slice served
+    pie: {
+        id: 'pie',
+        prompt: 'Baking',
         plainGroup: 'personal',
         title: 'Baking and cooking',
         body: ['I love baking and cooking for my family.', '[TODO: favourite things to make]'],
@@ -154,9 +169,10 @@ export const homeContent: Record<string, Entry> = {
         ]
     },
 
+    // 9. The cat (E pets him)
     cat: {
         id: 'cat',
-        prompt: 'Cat',
+        prompt: 'About him',
         plainGroup: 'personal',
         title: 'My cat',
         subtitle: '[TODO: his name]',
@@ -168,9 +184,10 @@ export const homeContent: Record<string, Entry> = {
         images: [{ alt: 'Cat photo 1' }, { alt: 'Cat photo 2' }, { alt: 'Cat photo 3' }]
     },
 
+    // 10. Longboard (E rides it)
     longboard: {
         id: 'longboard',
-        prompt: 'Longboard',
+        prompt: 'The build',
         plainGroup: 'personal',
         title: 'Longboard build',
         body: [

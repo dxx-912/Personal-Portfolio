@@ -1,7 +1,8 @@
-// HUD: found counter, sound and pause buttons, prompt label, messages, pause menu, touch controls.
+// HUD: About me portrait, minimap, found counter, sound and pause, prompts, bubbles, title cards,
+// messages, pause menu, touch controls. All plain HTML over the canvas.
 
-import { TOTAL_ITEMS, ui } from '../content';
-import { isTouchDevice } from '../config';
+import { TOTAL_ITEMS, ABOUT_KEY, profile, ui, type RoomKey } from '../content';
+import { isTouchDevice, prefersReducedMotion } from '../config';
 import { bus, state } from '../state';
 import { clearHeld, onAction, stick, trigger } from './input';
 import { esc } from './render';
@@ -9,28 +10,70 @@ import { sfx } from '../audio';
 
 const $ = <T extends HTMLElement = HTMLElement>(sel: string) => document.querySelector<T>(sel)!;
 
-let promptEl: HTMLElement, msgEl: HTMLElement, toastEl: HTMLElement, counterEl: HTMLElement;
-let toastTimer = 0;
+let promptEl: HTMLElement, msgEl: HTMLElement, toastEl: HTMLElement, counterEl: HTMLElement, titleEl: HTMLElement;
+let portraitBtn: HTMLButtonElement, minimapEl: HTMLElement;
+let toastTimer = 0, titleTimer = 0;
 let pauseRoot: HTMLElement | null = null;
+let actBtn: HTMLButtonElement | null = null, infoBtn: HTMLButtonElement | null = null;
 
 export function initHud() {
     const root = $('#ui-root');
     root.insertAdjacentHTML('beforeend', `
-        <div class="hud-top-right">
-            <span class="counter" aria-live="polite" hidden></span>
-            <button class="hud-btn sound-btn" aria-pressed="false"></button>
-            <button class="hud-btn pause-btn" aria-label="Pause menu" title="Pause (P)">II</button>
+        <div class="hud-top-left">
+            <button class="portrait" hidden aria-label="${esc(ui.aboutButton)}" title="${esc(ui.aboutButton)}">
+                <canvas class="face" width="16" height="13" aria-hidden="true"></canvas>
+                <span class="stats">${profile.stats.map((s) => `
+                    <span class="stat" style="--c: ${esc(s.color)}; --f: ${Math.max(0, Math.min(1, s.value / s.max))}">
+                        <span class="bar"></span><span class="txt">${esc(s.label)} ${s.value}/${s.max}</span>
+                    </span>`).join('')}
+                </span>
+            </button>
         </div>
-        <div class="prompt" aria-hidden="true" hidden></div>
+        <div class="hud-top-right">
+            <div class="hud-row">
+                <span class="counter" aria-live="polite" hidden></span>
+                <button class="hud-btn sound-btn" aria-pressed="false"></button>
+                <button class="hud-btn pause-btn" aria-label="Pause menu" title="Pause (P)">II</button>
+            </div>
+            <nav class="minimap" hidden aria-label="Map">
+                <button class="mm-room" data-room="dorm"><span>UCLA</span></button>
+                <span class="mm-door" aria-hidden="true"></span>
+                <button class="mm-room" data-room="home"><span>Home</span></button>
+            </nav>
+        </div>
+        <div class="title-card" aria-live="polite" hidden></div>
+        <div class="prompt" hidden></div>
         <div class="message" role="status" aria-live="polite" hidden></div>
         <div class="toast" role="status" aria-live="polite" hidden></div>
         <div class="rotate-hint">${esc(ui.rotateHint)}</div>
     `);
+    // The plain version link lives in index.html (works without JS). Tuck it under the portrait.
+    const plain = document.querySelector('.plain-link');
+    if (plain) $('.hud-top-left').appendChild(plain);
+
     promptEl = $('.prompt');
     msgEl = $('.message');
     toastEl = $('.toast');
     counterEl = $('.counter');
-    msgEl.addEventListener('click', () => { if (msgEl.classList.contains('wake')) trigger('interact'); });
+    titleEl = $('.title-card');
+    portraitBtn = $<HTMLButtonElement>('.portrait');
+    minimapEl = $('.minimap');
+    msgEl.addEventListener('click', () => { if (msgEl.classList.contains('wake')) trigger('act'); });
+
+    promptEl.addEventListener('click', (e) => {
+        const b = (e.target as HTMLElement).closest<HTMLButtonElement>('button[data-a]');
+        if (!b) return;
+        e.stopPropagation();
+        trigger(b.dataset.a as 'act' | 'info');
+    });
+
+    portraitBtn.addEventListener('click', () => { portraitBtn.blur(); trigger('about'); });
+    minimapEl.addEventListener('click', (e) => {
+        const b = (e.target as HTMLElement).closest<HTMLButtonElement>('.mm-room');
+        if (!b) return;
+        b.blur();
+        if (b.dataset.room !== state.room) bus.emit('travel', undefined);
+    });
 
     const soundBtn = $<HTMLButtonElement>('.sound-btn');
     const renderSound = () => {
@@ -45,13 +88,21 @@ export function initHud() {
 
     $('.pause-btn').addEventListener('click', (e) => { (e.currentTarget as HTMLElement).blur(); openPause(); });
 
-    bus.on('found', ({ count }) => setFound(count));
+    bus.on('found', ({ count }) => { setFound(count); renderPortraitSeen(); });
     bus.on('modal', () => clearHeld());
+    bus.on('room', renderMinimap);
+    bus.on('awake', (a) => {
+        portraitBtn.hidden = !a;
+        minimapEl.hidden = !a;
+        counterEl.hidden = !a;
+        if (a) renderPortraitSeen();
+    });
     setFound(state.found.size);
 
     onAction((a) => {
         if (a === 'pause' && !state.modal) openPause();
         else if (a === 'escape' && state.modal === 'pause') closePause();
+        else if (a === 'escape' && !state.modal && state.mode === 'free') openPause();
     });
 
     if (isTouchDevice()) initTouch(root);
@@ -61,7 +112,39 @@ export function setFound(n: number) {
     counterEl.textContent = ui.found(n, TOTAL_ITEMS);
 }
 
-export function showCounter(show: boolean) { counterEl.hidden = !show; }
+function renderPortraitSeen() {
+    portraitBtn.classList.toggle('unseen', !state.found.has(ABOUT_KEY));
+}
+
+function renderMinimap(room: RoomKey) {
+    minimapEl.querySelectorAll<HTMLElement>('.mm-room').forEach((b) => {
+        const here = b.dataset.room === room;
+        b.classList.toggle('here', here);
+        b.setAttribute('aria-current', here ? 'location' : 'false');
+        b.setAttribute('aria-label', here ? `${ui.roomTitles[b.dataset.room as RoomKey]} (you are here)` : `Go to ${ui.roomTitles[b.dataset.room as RoomKey]}`);
+    });
+}
+
+/** Paints the HUD portrait from the character texture (its head), so final art shows up automatically. */
+export function setPortrait(src: CanvasImageSource, sx: number, sy: number, sw: number, sh: number) {
+    const c = portraitBtn.querySelector<HTMLCanvasElement>('canvas')!;
+    c.width = sw; c.height = sh;
+    const ctx = c.getContext('2d')!;
+    ctx.imageSmoothingEnabled = false;
+    ctx.clearRect(0, 0, sw, sh);
+    ctx.drawImage(src, sx, sy, sw, sh, 0, 0, sw, sh);
+}
+
+/** Room name banner that fades in and out. */
+export function showTitle(text: string) {
+    window.clearTimeout(titleTimer);
+    titleEl.textContent = text;
+    titleEl.hidden = false;
+    titleEl.classList.remove('show');
+    void titleEl.offsetWidth;
+    titleEl.classList.add('show');
+    titleTimer = window.setTimeout(() => { titleEl.hidden = true; titleEl.classList.remove('show'); }, prefersReducedMotion() ? 2200 : 3000);
+}
 
 /** Center message (wake prompt, controls tip). Pass null to hide. */
 export function showMessage(text: string | null, className = '') {
@@ -71,24 +154,91 @@ export function showMessage(text: string | null, className = '') {
     msgEl.hidden = false;
 }
 
-/** Floating label above the focused object, at page coordinates. */
-export function setPrompt(text: string | null, x = 0, y = 0) {
-    if (!text) { promptEl.hidden = true; return; }
-    if (promptEl.dataset.text !== text) {
-        const key = isTouchDevice() ? ui.promptTouch : ui.promptKey;
-        promptEl.innerHTML = `<kbd>${esc(key)}</kbd> ${esc(text)}`;
-        promptEl.dataset.text = text;
+export interface PromptSpec {
+    /** E verb, e.g. "Pet". */
+    act?: string;
+    /** F label, e.g. "About him". */
+    info?: string;
+    /** Door label: walking in (or clicking) goes through. */
+    door?: string;
+}
+
+/** Floating key-cap prompt above the focused object, at page coordinates. Each chip is also a button. */
+export function setPrompt(spec: PromptSpec | null, x = 0, y = 0) {
+    setActionButtons(spec);
+    if (!spec || (!spec.act && !spec.info && !spec.door)) { promptEl.hidden = true; return; }
+    const key = `${spec.act ?? ''}|${spec.info ?? ''}|${spec.door ?? ''}`;
+    if (promptEl.dataset.key !== key) {
+        const touch = isTouchDevice();
+        const chip = (a: 'act' | 'info', k: string, label: string) =>
+            `<button type="button" class="chip chip-${a}" data-a="${a}" tabindex="-1">${touch ? '' : `<kbd>${esc(k)}</kbd>`}<span>${esc(label)}</span></button>`;
+        promptEl.innerHTML = spec.door
+            ? `<button type="button" class="chip chip-door" data-a="act" tabindex="-1"><span>${esc(spec.door)}</span></button>`
+            : [
+            spec.act ? chip('act', ui.keyAct, spec.act) : '',
+            spec.info ? chip('info', ui.keyInfo, spec.info) : ''
+        ].join('');
+        promptEl.dataset.key = key;
     }
-    promptEl.style.transform = `translate(${Math.round(x)}px, ${Math.round(y)}px) translate(-50%, -100%)`;
+    // keep it on screen and never under the HUD corners
+    const w = promptEl.offsetWidth || 120, ph = promptEl.offsetHeight || 34;
+    const cx = Math.max(w / 2 + 8, Math.min(window.innerWidth - w / 2 - 8, x));
+    let minY = ph + 8;
+    document.querySelectorAll<HTMLElement>('.hud-top-left, .hud-top-right').forEach((el) => {
+        const r = el.getBoundingClientRect();
+        if (cx + w / 2 > r.left && cx - w / 2 < r.right) minY = Math.max(minY, r.bottom + ph + 6);
+    });
+    const cy = Math.max(minY, Math.min(window.innerHeight - 8, y));
+    promptEl.style.transform = `translate(${Math.round(cx)}px, ${Math.round(cy)}px) translate(-50%, -100%)`;
     promptEl.hidden = false;
 }
 
-export function toast(text: string, ms = 1800) {
-    toastEl.textContent = text;
+export function toast(text: string, ms = 1800, button?: { label: string; onClick: () => void }) {
+    toastEl.innerHTML = `<span>${esc(text)}</span>${button ? ` <button type="button" class="toast-btn">${esc(button.label)}</button>` : ''}`;
+    toastEl.classList.toggle('has-btn', !!button);
+    if (button) toastEl.querySelector('button')!.addEventListener('click', (e) => {
+        (e.currentTarget as HTMLElement).blur();
+        toastEl.hidden = true;
+        button.onClick();
+    });
     toastEl.hidden = false;
     window.clearTimeout(toastTimer);
     toastTimer = window.setTimeout(() => { toastEl.hidden = true; }, ms);
 }
+
+// ---------- speech and thought bubbles (follow a world point; the scene repositions them) ----------
+
+const bubbles = new Map<string, HTMLElement>();
+
+export function showBubble(id: string, text: string, kind: 'speech' | 'thought' | 'small' = 'speech') {
+    let el = bubbles.get(id);
+    if (!el) {
+        el = document.createElement('div');
+        el.setAttribute('role', 'status');
+        el.setAttribute('aria-live', 'polite');
+        $('#ui-root').appendChild(el);
+        bubbles.set(id, el);
+    }
+    el.className = `bubble bubble-${kind}`;
+    el.textContent = text;
+    el.hidden = false;
+    return el;
+}
+
+export function moveBubble(id: string, x: number, y: number) {
+    const el = bubbles.get(id);
+    if (!el || el.hidden) return;
+    const w = el.offsetWidth;
+    const cx = Math.max(w / 2 + 6, Math.min(window.innerWidth - w / 2 - 6, x));
+    el.style.transform = `translate(${Math.round(cx)}px, ${Math.round(y)}px) translate(-50%, -100%)`;
+}
+
+export function hideBubble(id: string) {
+    const el = bubbles.get(id);
+    if (el) el.hidden = true;
+}
+
+export const bubbleVisible = (id: string) => !!bubbles.get(id) && !bubbles.get(id)!.hidden;
 
 // ---------- pause menu ----------
 
@@ -143,7 +293,10 @@ function initTouch(root: HTMLElement) {
     document.body.classList.add('touch');
     root.insertAdjacentHTML('beforeend', `
         <div class="joystick" aria-hidden="true"><div class="knob"></div></div>
-        <button class="act-btn" aria-label="Interact">F</button>
+        <div class="act-btns">
+            <button class="act-btn act-e" data-a="act" disabled>${esc(ui.actButton)}</button>
+            <button class="act-btn act-f" data-a="info" disabled>${esc(ui.infoButton)}</button>
+        </div>
     `);
     const base = root.querySelector<HTMLElement>('.joystick')!;
     const knob = base.querySelector<HTMLElement>('.knob')!;
@@ -166,8 +319,27 @@ function initTouch(root: HTMLElement) {
     base.addEventListener('pointermove', (e) => { if (e.pointerId === id) move(e); });
     base.addEventListener('pointerup', end);
     base.addEventListener('pointercancel', end);
-    root.querySelector<HTMLElement>('.act-btn')!.addEventListener('click', (e) => {
+    actBtn = root.querySelector<HTMLButtonElement>('.act-e');
+    infoBtn = root.querySelector<HTMLButtonElement>('.act-f');
+    [actBtn, infoBtn].forEach((b) => b!.addEventListener('click', (e) => {
         (e.currentTarget as HTMLElement).blur();
-        if (!state.modal) trigger('interact');
-    });
+        if (!state.modal) trigger(b!.dataset.a as 'act' | 'info');
+    }));
+}
+
+/** Labels the two mobile buttons with the current verbs; dims them when not applicable. */
+export function setActionButtons(spec: PromptSpec | null) {
+    if (!actBtn || !infoBtn) return;
+    const a = spec?.act ?? spec?.door, f = spec?.info;
+    if (actBtn.textContent !== (a ?? ui.actButton)) actBtn.textContent = a ?? ui.actButton;
+    actBtn.disabled = !a;
+    infoBtn.disabled = !f;
+    infoBtn.setAttribute('aria-label', f ? `${ui.infoButton}: ${f}` : ui.infoButton);
+}
+
+/** During sleep, the act button wakes up. */
+export function setWakeButton(on: boolean) {
+    if (!actBtn) return;
+    actBtn.disabled = !on;
+    if (on) actBtn.textContent = ui.wakeTouch.split(' ')[0];
 }

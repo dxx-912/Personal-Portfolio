@@ -6,7 +6,7 @@ import { esc, rich, renderLink, renderSection } from '../ui/render';
 const GROUPS: { id: PlainGroup; title: string }[] = [
     { id: 'intro', title: 'About' },
     { id: 'projects', title: 'Projects and work' },
-    { id: 'experience', title: 'Experience and orgs' },
+    { id: 'experience', title: 'Experience and student orgs' },
     { id: 'education', title: 'Education' },
     { id: 'personal', title: 'Outside work' }
 ];
@@ -15,7 +15,8 @@ const opts = (heading: number) => ({ mode: 'plain' as const, heading, comingSoon
 
 function renderEntry(e: Entry, room: RoomKey) {
     const tabs = (e.tabs ?? []).map((t) => `<section class="sub" id="${room}-${esc(e.id)}-${esc(t.id)}">${renderSection(t, opts(4))}</section>`).join('');
-    return `<article class="entry" id="${room}-${esc(e.id)}">${renderSection(e, opts(3))}${tabs}</article>`;
+    const head = { ...e, title: e.plainTitle ?? e.title, subtitle: e.tabs?.length && e.tabStyle !== 'tabs' ? undefined : e.subtitle };
+    return `<article class="entry" id="${room}-${esc(e.id)}">${renderSection(head, opts(3))}${tabs}</article>`;
 }
 
 export function renderPlainPage(): string {

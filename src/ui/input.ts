@@ -4,7 +4,8 @@
 import { state } from '../state';
 
 const held = new Set<string>();
-type Action = 'interact' | 'pause' | 'hint' | 'escape';
+/** act = E (do something), info = F (learn more). */
+export type Action = 'act' | 'info' | 'pause' | 'escape' | 'about' | 'hint' | 'konami';
 const listeners = new Set<(a: Action) => void>();
 
 const MOVE: Record<string, string> = {
@@ -12,8 +13,14 @@ const MOVE: Record<string, string> = {
     KeyA: 'left', ArrowLeft: 'left', KeyD: 'right', ArrowRight: 'right'
 };
 
+const KONAMI = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight', 'KeyB', 'KeyA'];
+let konamiAt = 0;
+
 /** Joystick vector from touch controls, each axis -1..1. */
 export const stick = { x: 0, y: 0 };
+
+/** Time of the last movement input, for idle thoughts. */
+export let lastInputAt = performance.now();
 
 function isFormish(t: EventTarget | null) {
     const el = t as HTMLElement | null;
@@ -24,21 +31,29 @@ function isFormish(t: EventTarget | null) {
 export function initInput() {
     window.addEventListener('keydown', (e) => {
         if (e.metaKey || e.ctrlKey || e.altKey) return;
-        // Pause / escape work when no panel is open (panels handle their own Esc).
+        // Panels and overlays handle their own keys (Esc, Tab, number keys...).
         if (state.modal === 'panel') return;
         if (state.modal === 'pause') {
             if (e.code === 'Escape' || e.code === 'KeyP') { e.preventDefault(); emit('escape'); }
             return;
         }
         if (isFormish(e.target) && (e.code === 'Enter' || e.code === 'Space')) return;
+        lastInputAt = performance.now();
+        trackKonami(e.code);
         const dir = MOVE[e.code];
         if (dir) { held.add(dir); e.preventDefault(); return; }
         if (e.repeat) return;
         switch (e.code) {
-            case 'KeyF': case 'KeyE': case 'Space': case 'Enter': case 'NumpadEnter':
-                e.preventDefault(); emit('interact'); break;
-            case 'KeyP': case 'Escape':
+            case 'KeyE': case 'Space':
+                e.preventDefault(); emit('act'); break;
+            case 'KeyF': case 'Enter': case 'NumpadEnter':
+                e.preventDefault(); emit('info'); break;
+            case 'KeyP':
                 e.preventDefault(); emit('pause'); break;
+            case 'Escape':
+                e.preventDefault(); emit('escape'); break;
+            case 'KeyI':
+                emit('about'); break;
             case 'KeyH':
                 emit('hint'); break;
         }
@@ -47,14 +62,23 @@ export function initInput() {
     window.addEventListener('blur', clearHeld);
 }
 
+function trackKonami(code: string) {
+    if (code === KONAMI[konamiAt]) {
+        konamiAt++;
+        if (konamiAt === KONAMI.length) { konamiAt = 0; emit('konami'); }
+    } else konamiAt = code === KONAMI[0] ? 1 : 0;
+}
+
 function emit(a: Action) { listeners.forEach((fn) => fn(a)); }
 
 export function onAction(fn: (a: Action) => void) { listeners.add(fn); return () => listeners.delete(fn); }
 
 /** Fire an action from on-screen buttons. */
-export function trigger(a: Action) { emit(a); }
+export function trigger(a: Action) { lastInputAt = performance.now(); emit(a); }
 
 export function clearHeld() { held.clear(); stick.x = 0; stick.y = 0; }
+
+export function markInput() { lastInputAt = performance.now(); }
 
 /** Movement vector from keys or joystick, normalized to length <= 1. */
 export function moveVector(): { x: number; y: number } {
