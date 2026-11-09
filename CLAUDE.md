@@ -1,322 +1,374 @@
-# CLAUDE.md: Daniel Xing's pixel room portfolio
+# CLAUDE.md: Daniel Xing's pixel room portfolio (iteration 2)
 
-Read this whole file before writing code. It is the spec, the design record, and the working agreement for this repo. Images referenced here live in `reference/`. Markdown does not render them for you, so open each one with the Read tool when a section points to it.
+Read this whole file before writing code. It replaces the iteration 1 version. It is the spec, the design record, and the working agreement for this repo. Images live in `reference/`. Markdown does not render them for you, so open each one with the Read tool when a section points to it.
+
+Start of every session: read this file, open every image in `reference/`, read `TODO_ASSETS.md`, then write a short plan before touching code.
+
+---
+
+## 0. Status and what changed
+
+**Iteration 1 is built and committed.** Both rooms, the wake up sequence, 18 interactables with panels, click to walk, the found counter, `/plain`, mobile controls, and `TODO_ASSETS.md` all work and were verified with Playwright playthroughs. Keep what works. Iteration 1 decisions that stand:
+- Phaser 3.90 is pinned (the template now ships Phaser 4; do not upgrade).
+- Room layouts are typed files in `src/rooms/*.ts` in tile units, not Tiled maps.
+- Assets load by key from `src/assets/manifest.ts`.
+- Returning visitors skip the sleep scene; "Start over" in the pause menu resets.
+- `reference/soul-knight-lobby-reference.png` stays out of git.
+
+Screenshots of iteration 1 as it looks now: `reference/current-dorm-iteration-1.png` and `reference/current-home-iteration-1.png`. Daniel's written feedback on it: `reference/iteration-2-feedback.pdf`. This file folds all of that feedback in, plus additional design decisions agreed afterwards.
+
+**The four problems iteration 2 solves:**
+1. The rooms feel bare, too big, and not cozy.
+2. A visitor cannot tell they are in a UCLA dorm, or that the right door leads somewhere.
+3. Several objects do not read as what they represent, or hold the wrong content.
+4. There is only one way to interact (F). Iteration 2 splits "do something" (E) from "learn more" (F).
 
 ---
 
 ## 1. The vision in one paragraph
 
-A personal portfolio that plays like a tiny Soul Knight style game. The visitor loads into a dark dorm room where only a pixel version of Daniel is visible, asleep in bed. A prompt says "Press F to wake up." The lights fade up and reveal his UCLA dorm room, which holds everything professional. A door on the right wall leads to his childhood bedroom in North York, Toronto, which holds everything personal. The visitor walks with WASD, presses F near objects, and each object opens a pixel styled panel with real content: projects, experience, photos, videos, links. The goal is memorability for recruiters (product management, 2027 cycle) without ever making the facts hard to reach.
+A personal portfolio that plays like a tiny Soul Knight style game. The visitor loads into a dark room where only a pixel Daniel is visible, asleep. "Press F to wake up." The lights fade up, Daniel hops out of bed and says hi in a speech bubble, a title card reads "Rieber Hall, UCLA", and the visitor is standing in a cozy, slightly messy, clearly UCLA dorm that holds everything professional. A glowing door with a "Home, Toronto" sign leads to his childhood bedroom in North York, which holds everything personal. Every meaningful object can be acted on with E (pet the cat, ride the longboard, do pull ups, sit, play piano) and learned about with F (a pixel panel with real content). The goal is memorability for product management recruiters in the 2027 cycle, without ever making the facts hard to reach.
 
 Priority order when trade offs come up:
-1. It works and the content is easy to reach (functional portfolio first).
-2. It feels like Soul Knight (art, motion, feedback, cozy room vibe).
-3. It resembles Daniel's real rooms (nice to have, never at the cost of 1 or 2).
+1. It works and the content is easy to reach.
+2. It feels like Soul Knight: cozy, alive, responsive.
+3. It resembles Daniel's real rooms and life. Nice to have, never at the cost of 1 or 2.
 
 ---
 
 ## 2. How to work in this repo
 
 ### Your latitude
-Daniel wants you to have creative freedom on implementation and precision on content and structure.
-
 | You decide | Fixed by this file (ask before changing) |
 |---|---|
-| Code architecture, file layout inside `src/`, state management | Two rooms only, and which room holds which items (section 7) |
-| Tile size, exact pixel dimensions, camera scale | Which furniture exists and which wall it sits on (section 6) |
-| Animation timing, easing, particles, screen polish | The interaction rules in section 8 |
-| Panel visual design within the pixel style | Controls (section 9) and the plain version link |
-| Placeholder art style | Content text: never invent facts (section 11) |
-| Sound design (muted by default) | No ripped Soul Knight assets, ever |
+| Code architecture, refactors, file layout inside `src/` | Which room holds which item, and the item list (section 7) |
+| Tile size, sprite sizes, camera zoom, exact furniture coordinates | Which furniture and decor exist and roughly where (section 6, layout images) |
+| Animation timing, easing, particles, lighting implementation | The E and F interaction model (section 8) |
+| Panel visual design within the pixel style | The interaction and readability rules (section 9) |
+| Placeholder art, original decor art | Content facts: never invent any (section 12) |
+| Sound design and sourcing (muted by default) | Third party art policy (section 5.4) |
 
-If something in this file is impossible or clearly worse in practice, build the closest good version, then tell Daniel what you changed and why in your summary. Do not stall waiting for approval on reversible choices.
+If something here is impossible or clearly worse in practice, build the closest good version, then tell Daniel what you changed and why. Do not stall on reversible choices.
 
 ### Working method
-1. Plan first: read this file, look at every image in `reference/`, then write a short plan (phases, files) before coding.
-2. Build in the phases in section 13. Finish and verify each phase before starting the next. Commit at the end of each phase with a clear message.
-3. Verify visually. Run the dev server and look at the game in a browser (use a browser tool or Playwright screenshots if available). Reading code is not enough for layout, depth sorting, and overlap bugs.
-4. Everything content related goes through the data files in `src/content/` (section 11). No copy hardcoded inside scenes.
-5. Every missing asset gets a visible placeholder plus an entry in `TODO_ASSETS.md` (section 14). Never block on missing photos or art.
-6. Keep the bundle lean: no heavy UI frameworks inside the game unless they clearly pay for themselves.
+1. Plan first, then build in the order in section 14. Commit at the end of each step with a clear message. Push after each step.
+2. Verify visually with the Playwright MCP after every step: screenshot both rooms (asleep, awake, near each item, each panel open), compare against `reference/dorm-layout.png` and `reference/home-layout.png`, and fix overlap, depth sorting, readability, and clutter problems you see. Re-run the three playthroughs (keyboard only, mouse only, touch only) at the end of the iteration.
+3. All content goes through `src/content/`. No copy hardcoded in scenes.
+4. Every missing asset gets a visible placeholder plus a line in `TODO_ASSETS.md`. Never block on missing photos or art.
+5. If an Aseprite MCP is connected (live or batch backend), use it for editing, recoloring, slicing, and exporting sprites. Placeholder and decor art can be drawn in code as now.
 
 ---
 
 ## 3. Tech stack
 
-- Phaser 3 + TypeScript + Vite. Start from the official template `phaserjs/template-vite-ts`.
-- Arcade Physics for movement and collision.
-- Rooms: either Tiled JSON maps (preferred, so Daniel can move furniture himself later in the free Tiled editor) or a typed layout config. Your call, but furniture positions must live in data, not scattered through scene code.
-- Hosting: Vercel, static build.
-- Node 20+.
-- Optional MCP: if an Aseprite MCP server is connected, use it for recoloring, slicing, editing, and exporting sprite sheets. Do not attempt the final hero character with it. Commissioned or pack art will replace placeholders.
-- Optional skill: a Phaser skill may be installed under `.claude/skills/`. Use it if present, but this file wins on any conflict.
+Unchanged: Phaser 3.90 + TypeScript + Vite, Arcade Physics, typed room layouts, static build on Vercel, Node 20+. Panels are DOM overlays over the canvas. Optional MCPs: Playwright (verification), Aseprite (sprite work).
 
 ---
 
 ## 4. Art direction: Soul Knight, specifically
 
-Open `reference/soul-knight-lobby-reference.png`. This is the target look and camera.
+Open `reference/soul-knight-lobby-reference.png`. That is the target camera, scale, lighting, and HUD feel.
 
-What to copy in spirit (never copy the actual assets):
-- **Camera:** three quarter top down. The floor is seen from above, but the back wall is drawn as a tall vertical face you can see, hang things on, and stand in front of. Side walls are thin strips. The front wall is a thin rim. This is the core of the look.
-- **Characters:** small and chunky, big head, roughly 16x16 to 32x32 pixels. A one pixel dark outline around every sprite.
-- **Rendering:** pixel perfect. Integer scaling only, `pixelArt: true`, `roundPixels: true`, no smoothing, no subpixel jitter.
-- **Lighting:** dark room with warm pools of light. Soul Knight rooms are moody, so use a dark vignette and light cones from windows and lamps. The wake up sequence is the showcase of this.
-- **Life:** constant small motion. Idle bobbing, screen flicker on laptops, dust in the light beam, the cat wandering, a blinking cursor.
-- **Feedback:** small squash on interact, a sparkle or bounce on interactables, a soft click sound, a quick panel pop in.
-- **Palette:** limited per room. Saturated accent colors against muted walls and floors.
+- **Camera:** three quarter top down. The back wall is a tall visible face you can hang things on. Side walls are thin strips; the front wall is a thin rim.
+- **Characters:** small, chunky, big heads, one pixel dark outline.
+- **Rendering:** pixel perfect, integer scaling, no smoothing.
+- **Lighting:** a dim room lit by several warm point lights. This is the single biggest lever for "cozy". See section 6.3.
+- **Life:** constant small motion: idle bob, screen flicker, dust in light beams, fairy lights twinkling, the cat wandering.
+- **Feedback:** squash on interact, hearts and sparkles, small sounds, quick panel pop in.
+- **HUD:** Soul Knight puts a character portrait with stat bars top left and a minimap top right. We do the same (section 10).
 
-### Soul Knight lobby lessons (why the rooms work the way they do)
-Soul Knight's hub (the living room, with garden plots outside and a cellar in some versions) is the closest model for this portfolio, because it is a small cozy space where every object does something.
-- The hub is one room where you walk up to things (heroes, a handbook beside the chest, machines) and interact. Our rooms do the same: every meaningful object is a door into content.
-- The garden plots outside are a separate small zone with their own purpose. Our second room plays this role: a distinct space with a distinct theme, reached by walking.
-- The cellar or basement is a place where you place items for display. Our trophy shelf and pin board follow this "collection on display" idea.
-- Lobbies are full of small easter eggs and ambient life (critters walking by, objects that react when poked). Our cat, the longboard, and hidden extras (section 10) follow this.
-
-Further visual reference (links for Daniel or for you to read; do not download or embed their images in the build):
-- Living room overview: https://www.yekbot.com/soul-knight-living-room-walkthrough/
-- Lobby easter eggs and ambient details (Prequel ocean lobby): https://itemlevel.net/soul-knight-prequel-ocean-lobby-features-easter-eggs-season-1/
-- Basement used as a display space (Prequel): https://itemlevel.net/?p=165437
-
-### Asset strategy
-- Phase 1 uses placeholder art you make yourself: simple pixel shapes in the correct palette, sized like the final sprites. It should already look intentional.
-- Final art will come from one itch.io asset pack (Daniel's choice, pending) plus a commissioned character sheet. The pack's tile size (16 or 32) is the source of truth once chosen. Write the code so that tile size and sprite frame sizes come from one config file.
-- Every asset is loaded by a stable key from one manifest file (for example `src/assets/manifest.ts`). Swapping placeholder for final art must mean replacing files, not code.
-- Keep each pack's license file in `public/assets/<pack>/LICENSE`. Add credits in the plain version page footer if the license requires it.
-- Never use ripped Soul Knight sprites, music, or fonts. Do not draw Honour of Kings, Attack on Titan, Solo Leveling, or other franchise characters or logos. Use generic shapes and plain text titles instead.
+Soul Knight lobby lessons, still the model: one small hub where you walk up to things and they respond; a second themed zone reached by walking; collections on display; ambient critters and easter eggs. Links for reading only, do not download or embed their images:
+- https://www.yekbot.com/soul-knight-living-room-walkthrough/
+- https://itemlevel.net/soul-knight-prequel-ocean-lobby-features-easter-eggs-season-1/
+- https://itemlevel.net/?p=165437
 
 ---
 
-## 5. Experience flow
+## 5. Assets
 
-1. **Loading:** a tiny pixel loading bar or a dark screen with a blinking "zzz". Keep it under about 2 seconds on a normal connection.
-2. **Sleep state:** the dorm is pitch black except for Daniel asleep in bed (slow two frame breathing loop, floating "Z"s). A prompt reads "Press F to wake up". On touch devices it says "Tap to wake up". It also accepts click, Space, and Enter.
-3. **Wake up:** the character stirs, the lights fade up over about 1 second (light cone from the window first, then room light), and the character hops out of bed to the open floor beside the bed. A small tooltip shows the controls once: "WASD to move, F to interact".
-4. **Dorm:** free exploration. A discreet counter in a corner reads "Found 0 of 18".
-5. **Door transition:** walking into the right wall door triggers a short fade or pixel wipe, then the character appears at the left door of the home room facing in. Walking back reverses it. No loading screen between rooms.
-6. **Home:** free exploration.
-7. **Completion:** when all 18 are found, a small celebratory moment (confetti, or the character does a little dance) plus a "Thanks for exploring, let's talk" panel with contact links.
+### 5.1 Strategy
+- Placeholder and decor art drawn in code or with Aseprite, in each room's palette, at final sizes.
+- Final art: one itch.io pack (Daniel's choice, pending) plus a commissioned character and cat. Tile and frame sizes come from one config file.
+- Every asset loads by a stable key from `src/assets/manifest.ts`. Swapping placeholder for final art means replacing files, not code.
+- Keep each pack's license in `public/assets/<pack>/LICENSE`.
 
-The "Plain version" link (section 9) is visible during all of these steps, including before waking up.
+### 5.2 The character sprite (Daniel)
+Open `reference/daniel-photos.png`. Current placeholder does not look like him. Update it now:
+- East Asian young man, warm skin tone, big friendly smile.
+- Dark, curly, permed hair: short on the sides with volume and loose curls on top. Shorter than the right hand photo, closer to the left hand one.
+- Default outfit: plain white tee (his usual), dark shorts or pants.
+- Build the sprite with the shirt on its own layer or palette slot so outfits can be recolored (section 8.4, closet).
 
-Returning visitors: remember "woke up already" and the found set in `localStorage` (wrapped in try/catch). Offer a small "Start over" button in the pause menu. Optional: skip the sleep state automatically on return visits.
+Commission list for the artist (update `TODO_ASSETS.md`): idle, walk in four directions, sleep, wake, sit, pet (crouch), ride longboard, pull up, snap photo (optional), with the shirt on a separate layer.
+
+### 5.3 The cat sprite
+Open `reference/daniel-photos.png` (right photo). The cat is a fluffy cream and golden longhair with a round face and big green eyes, not an orange tabby. Rebuild the placeholder to match: rounder, fluffier silhouette, cream base with golden shading, green eyes. States: idle, walk, sit, sit with eyes closed (petted), curled up asleep, bat paw. His name and story are TODO.
+
+### 5.4 Third party art: image slots, never recreations
+Daniel wants some real world art and brand items in the rooms. The site is private for now. Handle all of these as **image slots**: a frame or surface in the room that renders whatever file Daniel places at the listed path. Do not draw, trace, or approximate any album cover, poster artwork, or brand logo yourself, in code or with Aseprite, even as a placeholder. Until a file exists, render an original placeholder: an abstract pixel design in the listed colors with no text, figures, or logos from the real work.
+
+| Slot key | File path | Where it appears | Placeholder |
+|---|---|---|---|
+| `poster-graduation` | `public/assets/decor/poster-graduation.png` | Dorm back wall above the desk, P1 | Abstract pink and purple pixel pattern |
+| `poster-damn` | `public/assets/decor/poster-damn.png` | Dorm back wall above the desk, P2 | Abstract red and white pixel pattern |
+| `poster-duck` | `public/assets/decor/poster-duck.png` | Dorm closet door, P3 | Abstract yellow and white pixel pattern |
+| `hoodie-logo` | `public/assets/decor/hoodie-logo.png` | Home wall hook hoodie, chest area | Plain "TORONTO" in a generic pixel font |
+| `speaker-logo` | `public/assets/decor/speaker-logo.png` | Home speaker grille badge | Small plain orange badge |
+| `phone-screen` | `public/assets/decor/phone-screen.png` | Dorm phone screen (and the phone panel header) | Generic grid of colored squares |
+| `poster-caricature` (optional) | `public/assets/decor/poster-caricature.png` | Dorm wall, optional extra frame | Empty frame, hidden until the file exists |
+
+Slot rules: scale the image down to the slot with nearest neighbour sampling, optionally reduce it to the room palette so it matches the pixel style, keep the frame and lighting consistent, and make slots purely decorative (no glow, no prompt). List every slot in `TODO_ASSETS.md` under "Decor images to provide (optional)".
+
+The UCLA pennant shows the plain text "UCLA" in a simple pixel font with blue and gold colors. Do not reproduce the official UCLA logo or script.
 
 ---
 
 ## 6. Room specifications
 
-### Dorm (professional)
-Open `reference/dorm-layout.png` (final layout) and `reference/dorm-original-sketch.jpg` (Daniel's rough sketch, for context only).
+Both rooms shrink in feel, not footprint: the floor gets filled with rugs, furniture, decor, and light so the walkable area is smaller and cozier, while every path and standing spot stays clear (section 9). If the room still reads as too large on screen, reduce the floor by one or two tiles in each direction.
 
-![Dorm layout](reference/dorm-layout.png)
+### 6.1 Dorm (professional): "Rieber Hall, UCLA"
+Open `reference/dorm-layout.png` (target) and `reference/current-dorm-iteration-1.png` (current).
 
-- **Size:** cozy, deliberately small. The floor is about 2.25 times as wide as it is deep. The back wall face is about 45% of the floor depth tall. At 16 pixel tiles, that is roughly 20 by 9 floor tiles. Tune for a cozy feel at 16:9 with a little dark margin around the room.
-- **Walls:** light beige (around `#ecdfc6`, cap `#c9b596`). Daniel pins things on his real walls, so the back wall reads as a pin friendly surface.
-- **Floor:** carpet (muted blue grey around `#6f7a8f` with sparse darker speckles), not tiles.
-- **Back wall, left to right:** window with a light cone falling onto the floor and a pennant string across its top (item 6); cork pin board with open floor directly in front of it (item 2); a squarish desk pushed fully against the back wall with three spaced item slots (items 3, 4, 5); a wide closet (item 8).
-- **Left side, front:** a standing mirror (item 1) beside the bed. It replaced a floor lamp. A small lamp glow can still exist as decoration.
-- **Front left:** a compact single bed. It is deliberately smaller than real life so it does not eat the room. It is the spawn point.
-- **Front right:** low drawers kept away from the right wall so the door approach stays clear (item 7).
-- **Right wall:** the door to home, centered between the closet and the drawers, with nothing overlapping it.
+![Dorm v2](reference/dorm-layout.png)
 
-### Home bedroom (personal)
-Open `reference/home-layout.png` and `reference/home-original-sketch.jpg`.
+- **Walls:** light beige, pin friendly. **Floor:** blue grey carpet with speckle texture.
+- **Back wall, left to right:**
+  - Window showing a sunset view of Royce Hall's two towers (an original silhouette, warm sky). Small succulent on the sill. Light cone onto the floor. Decor only.
+  - One big blue and gold UCLA pennant, hung on a dowel (item 2).
+  - Cork pin board styled as Daniel's to do list: a "TO DO" header card and sticky notes with checkboxes (item 3).
+  - Wall clock showing the visitor's local time (section 10).
+  - Two framed poster slots P1 and P2 above the desk (section 5.4). Decor only.
+  - Working desk against the back wall (replaces the iteration 1 desk with drawers). Interactive: laptop (item 4), a binder labeled "Consulting stuff" (item 5), phone propped up with the Instagram style screen (item 6). Non interactive clutter: desk lamp, mug, notebook, loose papers, pens, sticky notes, a small plant, a charging cable. LED strip glowing purple under the desk edge.
+  - Closet, narrower than before, with poster slot P3 taped to one door and a sleeve hanging out (item 8).
+- **Fairy lights** strung along the top of the back wall, twinkling.
+- **Top left floor:** a red beanbag you can sit in with E (action only, no panel).
+- **Front left:** warm floor lamp, then the bed (spawn). On the bed: a UCLA hoodie (blue with a gold chest stripe), a Bruin bear plush (tan bear). E to sit on the bed.
+- **Center:** round soft rug in a muted lilac.
+- **Front right:** a bigger dresser holding the grad cap (item 7, high school), a folded white "Hope For Hearing" shirt (item 9), black over ear headphones (decor), a potted plant (decor).
+- **Mess:** a small clothes pile and a sock on the floor between the bed and the dresser, kept off paths and standing spots.
+- **Right wall:** the door to home, with warm light leaking from under it, a doormat in front, and a small hanging sign "Home, Toronto" with an arrow. It pulses once after the visitor wakes.
 
-![Home layout](reference/home-layout.png)
+### 6.2 Home bedroom (personal): "North York, Toronto"
+Open `reference/home-layout.png` (target) and `reference/current-home-iteration-1.png` (current).
 
-- **Size:** same footprint as the dorm.
-- **Walls:** light pastel green (around `#d3ecda`, cap `#a9cfb6`).
-- **Floor:** warm wood planks (around `#8a6244`).
-- **Back wall, left to right:** a tall three tier wooden shelf (item 2); a window with dark blue curtains (`#22396b`) showing a Toronto skyline (item 1); a freestanding pull up tower in the top right corner (item 3).
-- **Right wall:** a work table running along the wall (vertical orientation), reached from its left side. It holds the laptop (item 4), headphones (item 5), and one spare slot.
-- **Front left corner:** a compact bed, decorative here. A nightstand sits directly above the bed at the pillow end (on Daniel's left when lying in it). It holds a lamp and a family photo frame (item 6).
-- **Front, between the bed and the work table:** desk and drawers with a digital piano (item 7) and a tray of baked goods (item 8).
-- **Left wall:** the door back to the dorm, placed evenly between the back wall and the nightstand. Nothing overlaps it.
-- **Open floor:** the middle lane, where the longboard (item 10) is parked and the cat (item 9) wanders. Keep it clear.
-- No wall shelves floating above furniture in either room (they create ambiguous interactions; see section 8).
+![Home v2](reference/home-layout.png)
+
+- **Walls:** light pastel green. **Floor:** warm wood planks.
+- **Back wall, left to right:**
+  - Three tier shelf (item 2). Top tier: the trophy moved to the left, a blue and white striped oar to its right; remove the two white sticks. Middle tier: three plaques (keep for now; once Daniel uploads plaque photos, redraw each pixel plaque to resemble its real plaque). Bottom tier: exactly four books standing upright with readable spine text "AOT", "Lookism", "Sweet Home", "Solo Levelling" (book shaped, not binder shaped; plain text titles only, no franchise art).
+  - Potted floor plant between the shelf and the window. Decor.
+  - Wall clock showing the visitor's local time.
+  - Window with dark blue curtains, a Toronto skyline view, and a small plant on the sill (item 1).
+  - A hoodie on a wall hook with the `hoodie-logo` slot (section 5.4). Decor.
+  - Pull up tower in the top right corner (item 3).
+- **Right wall:** work table along the wall, reached from the left. Big black speaker with the `speaker-logo` slot (item 4), camera (item 5), one spare dashed slot. The laptop and the acting item are removed entirely.
+- **Front left:** nightstand directly above the bed's pillow end with a lamp that visibly glows (item 6 is the nightstand: family). The photo frame shows a clear placeholder outline of a photo (silhouettes of people) until Daniel's family photo is provided, then a pixelated thumbnail of it. Below it, the bed with two plush toys; E to sit. The cat's nap spot is on this bed.
+- **Center:** a rug runner along the open lane where the longboard is parked (item 10) and the cat wanders (item 9).
+- **Front middle:** desk and drawers with the digital piano (item 7) and a large apple crisp pie with one slice served on a plate with a fork beside it (item 8), so it reads as baking at a glance.
+- **Left wall:** the door back to the dorm with a light leak, a doormat, and a small sign "Back to UCLA" with an arrow.
+
+### 6.3 Cozy interior design rules (apply to both rooms)
+- **Layered warm light:** at least three warm light sources per room (lamp, fairy lights or LED strip, window), on top of a slightly dimmed base. Use additive light sprites or a light mask. Avoid one flat bright fill.
+- **Texture and softness:** rugs, bedding, plush toys, clothing, beanbag.
+- **Plants:** at least three per room at different heights.
+- **Personal items in clusters:** group clutter on surfaces and near walls in odd numbered clusters, not scattered evenly.
+- **Vertical interest on the back wall:** posters, pennant, clock, lights at varied heights.
+- **Palette:** roughly 60% wall and floor base, 30% wood and fabric, 10% saturated accents (UCLA blue and gold in the dorm, Toronto blues and warm wood at home).
+- **Messy but readable:** Daniel is messy in real life, so some lived in mess is welcome (clothes, papers, a cable). Mess never sits on a path, a standing spot, or in front of an interactive item, and never competes visually with interactive items.
 
 ---
 
-## 7. Interactables (18 total)
+## 7. Interactables (19 total)
 
-Each object has exactly one standing spot (the yellow numbers in the layout images) unless noted. Content comes from `reference/content-outline.pdf` and `src/content/`.
+Each content item has exactly one standing spot (yellow numbers in the layout images). Keys: **E = action**, **F = learn more (panel)**. Items marked "F only" have no action.
 
-### Dorm (professional)
-| # | Object | Interaction | Panel content |
+### Dorm (professional), 9 items
+| # | Object | E action | F panel content |
 |---|---|---|---|
-| Start | Bed | Wake up sequence | (none) |
-| 1 | Standing mirror | F, panel | **Intro.** Headshot shown as the reflection. Who Daniel is and what he is interested in (growth, tech, startups), a short background, links (LinkedIn, email, resume download). Designed as the first thing a visitor reaches. |
-| 2 | Cork pin board | F, panel with gallery | **Hope For Hearing.** Milestones and stats, impact, the founding story (meeting Roy on the subway), funding grants won, what it taught him, and a photo gallery styled as pinned polaroids. |
-| 3 | Laptop on desk | F, panel with tabs | **Software projects.** Tabs: Cold email automator (live link https://cold-email-automator-two.vercel.app/), Saved posts scroller (live link https://morning-scroller.vercel.app/), Ateball at Creative Labs (UI screenshots). Each tab: what it is, why he built it, his role, and a link. Links open in a new tab. |
-| 4 | Trophy and binder on desk | F, panel with tabs | **Consulting.** Genesis Alternative Ventures (Project Manager) and the L.E.K. Case Competition win. Each has a description and slide screenshots in a small image viewer. |
-| 5 | Camera on desk | F, panel with tabs | **Club marketing.** Tabs DSP and IBB. Each: description, skills used, measurable results, graphics grid (DSP: Vogue campaign), rush video, and website build (screenshots plus a link out; do not iframe the live site). |
-| 6 | Pennant string over window | F, close up of pennants | **Student orgs.** One pennant each: William F. Sharpe Fellows (technology vice president), Delta Sigma Pi, the entertainment association (exact name pending, see section 12), International Business for Bruins, UBS Technology Committee, UCLA ResLife. Selecting a pennant shows a one line description of the org and Daniel's role. |
-| 7 | Drawers with grad cap, diploma, textbooks | F, close up with two halves | **Education.** UCLA half: major (exact wording pending), Royce Hall photo, courses (advanced micro theory, advanced macro theory, intro to C++, accounting fundamentals), honours student. Upper Canada College half: IB Diploma, hat toss photo, 40/45, 1560 SAT, HL Math A&I, English L&L, Economics; SL Mandarin B, Global Politics, ESS; extended essay on the geopolitical implications of Taiwan's semiconductor industry (link); Business Club President and Asian Heritage Club President with photos. |
-| 8 | Closet with RA lanyard | F, panel | **Resident Assistant.** Photo, and why: it saves money and it is genuinely fun. |
-| | Right door | Walk into it | Transition to home |
+| 1 | HUD portrait (top left of screen, not in the room) | none | **About me.** Headshot, who Daniel is, what he is interested in (growth, tech, startups), short background, links (LinkedIn, email, resume download). Opens by clicking the portrait or pressing I. Counts as found when opened. |
+| 2 | Big UCLA pennant | none (F only) | **UCLA education.** Major `[TODO: confirm major]`, Royce Hall photo, courses (advanced micro theory, advanced macro theory, intro to C++, accounting fundamentals), honours student. |
+| 3 | "TO DO" pin board | none (F only) | **Student orgs**, shown as a close up of the board where each sticky note is an org with a checked box: William F. Sharpe Fellows (technology vice president), Delta Sigma Pi, the entertainment association (exact name `[TODO]`), International Business for Bruins, UBS Technology Committee, UCLA ResLife. Selecting a note shows a one line description of the org and Daniel's role. |
+| 4 | Laptop on the desk | none (F only) | **Software projects.** Tabs: Cold email automator (https://cold-email-automator-two.vercel.app/), Saved posts scroller (https://morning-scroller.vercel.app/), Ateball at Creative Labs (UI screenshots). What, why, role, link. |
+| 5 | Binder labeled "Consulting stuff" | none (F only) | **Consulting.** Genesis Alternative Ventures (Project Manager) and the L.E.K. Case Competition win, with slide screenshots. No trophy anywhere. |
+| 6 | Phone with an Instagram style screen | none (F only) | **Club marketing.** The panel is styled like a phone feed (original styling, see 5.4 for the screen image slot). Tabs DSP and IBB: description, skills used, measurable results, graphics grid (DSP Vogue campaign), rush video, website build (screenshots plus a link out). |
+| 7 | Grad cap on the dresser | none (F only) | **High school only: Upper Canada College IB Diploma.** Hat toss photo, 40/45, 1560 SAT, HL Math A&I, English L&L, Economics; SL Mandarin B, Global Politics, ESS; extended essay on the geopolitical implications of Taiwan's semiconductor industry (link); Business Club President and Asian Heritage Club President with photos. UCLA content moves to item 2. |
+| 8 | Closet | **Change outfit**: cycles the character's shirt through a few colors (white, black, UCLA blue, a graphic tee color), with a small wardrobe puff effect. Persist the choice in localStorage. | **Resident Assistant.** Photo, and why: it saves money and it is genuinely fun. |
+| 9 | Folded white "Hope For Hearing" shirt on the dresser | none (F only) | **Hope For Hearing.** Milestones and stats, impact, the founding story (meeting Roy on the subway), grants won, what it taught him, and a photo gallery. |
+| E only | Beanbag | Sit (character sinks in, small idle animation) | none |
+| E only | Dorm bed | Sit on the edge | none |
+| | Right door | Walk in to go home | |
 
-### Home (personal)
-| # | Object | Interaction | Panel content |
+### Home (personal), 10 items
+| # | Object | E action | F panel content |
 |---|---|---|---|
-| 1 | Window (Toronto skyline) | F, panel with gallery | **North York.** 18 years there, the same library and cafe throughout high school, and a gallery. |
-| 2 | Three tier shelf | F, then a shelf close up where each tier item is selectable | Top tier: **rowing** trophy and oars (high school varsity, national championship, photos). Middle tier: three separate **award plaques** (DECA Provincial Champion; FBLA Business Management National Champion at CNLC; FBLA International 6th place at NLC), each with a photo where available. Bottom tier: **anime and webtoons** shelf (Attack on Titan; Sweet Home, Lookism, Solo Leveling), plain spines with text titles only. |
-| 3 | Pull up tower | F, a mini game, then a panel | **Exercise.** Mini game: press F repeatedly (or tap) to do reps with a counter and a little strain animation, capped at a few seconds. Then: lifts and sprints or runs almost every day, plus photos and videos (muscle up, trap bar deadlift, physique). |
-| 4 | Laptop with clapperboard | F, panel | **Acting.** Former professional actor, peak was a music video with 70M views. Embed the YouTube video using the privacy enhanced `youtube-nocookie.com` domain, and load it only after the panel opens. |
-| 5 | Headphones | F, plays a short loop and opens a panel | **Dubstep and EDM.** Why he loves it, plus a Spotify playlist link (or Spotify embed, loaded only on open). |
-| 6 | Nightstand with family photo | F, panel with gallery | **Family.** Parents and sister, and a gallery. |
-| 7 | Digital piano | F, panel with playable keys | **Piano.** Twelve years of piano, RCM ARCT Diploma (wording pending, see section 12), and recital photos. A one octave playable keyboard (mouse, touch, or number keys) with soft synthesized tones is the fun part. |
-| 8 | Baked goods tray | F, panel with gallery | **Baking and cooking.** Cooks and bakes for his family, with food photos and photos of him cooking. |
-| 9 | Cat | F (pet, heart particles, meow), then a panel | **Cat.** Photos, how they got him, his name, his personality. |
-| 10 | Longboard | F to ride, F again to get off and open a panel | **Longboard build.** Originally meant to be electric, the build process, soldering photos, and the battery that got destroyed. |
-| | Left door | Walk into it | Transition to dorm |
-| | Work table spare slot | Empty for now | Reserved (candidate: longboard parts as a second entry to item 10, or a future item). Do not count it toward 18. |
-| | Bed (home) | Decorative | Optional easter egg: F says "Not tired yet." |
+| 1 | Window (Toronto skyline) | none (F only) | **North York.** 18 years there, the same library and cafe through high school, a gallery. |
+| 2 | Three tier shelf | none | Shelf close up with three selectable tiers. Top: **rowing** (high school varsity, national championship, trophy and oar photos). Middle: three **award plaques** (DECA Provincial Champion; FBLA Business Management National Champion at CNLC; FBLA International 6th place at NLC). Bottom: **favorite reads**, Attack on Titan and the webtoons Lookism, Sweet Home, Solo Levelling. |
+| 3 | Pull up tower | **Do pull ups**: mash E (or tap) to do reps with a counter and strain animation for a few seconds, then a "nice" pop | **Exercise.** Lifts and sprints or runs almost every day; photos and videos (muscle up, trap bar deadlift, physique). |
+| 4 | Big black speaker | **Toggle music**: plays a short original EDM loop with a bass bump animation on the speaker. If master sound is off, show "Sound is off" with a one click "turn on" button. | **Dubstep and EDM.** Why he loves it, and his Spotify playlist link (embed loads only when the panel opens). |
+| 5 | Camera | **Snap a photo**: white flash, then a polaroid of the current game view slides in, downloadable as a PNG | **Photography.** His love of photography and a gallery of his photos. All content `[TODO]`. |
+| 6 | Nightstand (glowing lamp, family photo frame) | none (F only) | **Family.** Parents and sister, and a gallery. |
+| 7 | Digital piano | **Play**: opens a one octave playable keyboard (mouse, touch, or number keys 1 to 8) with soft synthesized tones | **Piano.** Twelve years, RCM ARCT Diploma (wording `[TODO]`), recital photos. |
+| 8 | Apple crisp pie with a slice on a plate | none (F only) | **Baking and cooking.** Cooks and bakes for his family; food photos and photos of him cooking. |
+| 9 | Cat | **Pet**: the cat stops, sits, closes its eyes, hearts float up, and it meows (sound if on, a "meow" text bubble if off). Petting a sleeping cat gives a sleepy purr and a single heart. | **Cat.** Photos, how they got him, his name, his personality. |
+| 10 | Longboard | **Ride**: E to hop on, E again to hop off | **Longboard build.** Originally meant to be electric, the build process, soldering photos, the destroyed battery. F works only while not riding. |
+| E only | Home bed | Sit on the edge | none |
+| | Left door | Walk in to go back to the dorm | |
+| | Work table spare slot | reserved, not counted | |
 
-Honour of Kings was intentionally removed. Do not add it.
+Removed for good: acting (item, laptop, YouTube embed, content, `/plain` section, TODO entries), the dorm mirror, the dorm floor lamp as an item (it is decor now), the multiple pennants, the L.E.K. trophy, the camera in the dorm, the headphones item (black headphones remain as dorm decor), Honour of Kings.
 
----
-
-## 8. Interaction system rules (non negotiable)
-
-These came from walking through every way a visitor could get confused or stuck.
-
-1. **One object, one standing spot.** An interactable is active only when the character is within its standing zone (about one tile) and roughly facing it. Only the nearest active object highlights. Use a small hysteresis so the highlight does not flicker between two neighbors.
-2. **Prompt label names the thing.** Show "F: Laptop, projects" style labels above the highlighted object, never a bare "Press F".
-3. **No stacked choices.** Items stacked vertically (shelf tiers, things on a wall above a desk) are never separate floor interactables. The furniture is one interactable that opens a close up view, where the visitor picks the item with mouse, touch, or arrow keys. This applies to the shelf (home 2), the pennants (dorm 6), and the drawers (dorm 7).
-4. **Wall items need floor in front.** Anything on the back wall must have walkable floor directly in front of it. If something sits on the wall above furniture, it belongs to that furniture's interaction.
-5. **Surface spacing.** No more than three items per desk or table. They must be at least one character width apart, each with its own standing spot. The work table is reached from the left, so its items run top to bottom.
-6. **Walkways.** Every gap the character must pass through is at least about 1.5 character widths. Collision boxes are the furniture footprint on the floor, not the full sprite height, so the character can stand right up against the front edge of a desk.
-7. **Doors stay clear.** No furniture or collision box overlaps a door or its approach tile. Door triggers fire on walking in, not on F, but F also works.
-8. **Depth sorting.** Y sort every sprite (character, cat, longboard, furniture) by its foot position. Tall objects (closet, shelf, pull up tower) only stand against the back wall, so the character never disappears behind them. Verify this visually.
-9. **Moving things.** The cat wanders on a simple waypoint or random walk limited to open floor, avoids standing spots and door approaches, pauses when the player is close, and only becomes the active interactable when no static object is nearer. The longboard never moves on its own.
-10. **Modes.** While riding the longboard: faster movement with gentle acceleration and coasting, bump into furniture with a small bounce (no damage, no getting stuck), all other interactions disabled, and F dismounts. Dismount opens the build story the first time only; afterwards there is a small "read the story" prompt.
-11. **Panels pause the game.** When a panel is open, movement stops, game input is ignored, and Esc, clicking outside, or the X closes it. Focus returns to the game on close. Panels are keyboard navigable (Tab, arrows, Enter) and scroll inside themselves if long.
-12. **Discoverability.** Interactables have a subtle idle sparkle or bounce until visited, then a dimmer "seen" state. Decorative objects never glow. Found counter "Found X of 18" in a corner. An optional hint key (H) briefly outlines any unfound object.
-13. **Click to walk.** Clicking or tapping an interactable makes the character walk there (simple pathfinding on the tile grid) and opens it on arrival. Clicking empty floor walks there. Many recruiters will never touch the keyboard.
-14. **Never trap the player.** No soft locks: the spawn, the door arrivals, and the dismount positions are always on free tiles. If the character ends up inside a collider, nudge them out.
+The found counter reads "Found X of 19". Update `/plain` to match this item list and grouping.
 
 ---
 
-## 9. Controls, accessibility, and devices
+## 8. Interaction model: E acts, F explains
 
-- **Move:** WASD and arrow keys. **Interact:** F, plus E, Space, and Enter as aliases. **Close:** Esc. **Pause menu:** P or Esc when no panel is open (sound toggle, start over, plain version).
-- **Mobile:** a virtual joystick bottom left, an interact button bottom right (Soul Knight's own mobile layout, visible in the reference image), and tap to walk. Test portrait and landscape. In portrait, show the room letterboxed or invite rotation; either way the plain version link stays reachable.
-- **Plain version:** a persistent, small, clearly labeled "Plain version" link (top corner) to `/plain`. This is a fast, normal HTML page that renders all the same content from `src/content/` (intro, projects, experience, education, personal, contact, resume download). Build it as part of phase 1, not as an afterthought. It also serves screen reader users and SEO.
-- **Accessibility:** panels use real HTML (DOM overlay over the canvas) for readable text, selectable links, and screen reader support. Respect `prefers-reduced-motion` by cutting screen shake, particles, and long fades. Text in panels is at least 16px equivalent. Contrast passes WCAG AA.
-- **Audio:** muted by default with a visible speaker toggle. Browsers block sound until a user gesture; the first F press or click counts, so unmute only if the visitor turns sound on. Videos never autoplay with sound before a click.
-- **Resize:** the game scales to fit the window at integer multiples where possible, with dark letterboxing.
+### 8.1 Keys
+- **E** (alias Space) = the object's action. **F** (alias Enter) = open the object's panel. Remove the iteration 1 behavior where E was an alias of F.
+- Esc closes panels and exits modes; P or Esc (with nothing open) opens the pause menu; I opens About me; H briefly outlines unfound items.
+- The wake up prompt still accepts F, E, Space, Enter, click, and tap.
 
----
+### 8.2 Prompts
+- The prompt above the active object shows only the keys that apply, with verbs: "E Pet  F About him", "E Ride  F The build", "F UCLA". Keep it short and readable, with key caps drawn as small pixel buttons.
+- Never show an E prompt on an F only item, or the reverse.
 
-## 10. Polish and extras (after the core works)
+### 8.3 Mouse and touch
+- Clicking or tapping an object walks the character to its standing spot. On arrival: if it has only one option, do it. If it has both, show a small two button bubble ("Pet", "About him") at the object. Clicking an E only object performs the action.
+- Mobile: two buttons bottom right, labeled with the current verbs (for example "Pet" and "Info"), dimmed when not applicable, plus the joystick and tap to walk.
 
-- Window light changes with the visitor's local time (day, sunset, night).
-- A real time clock somewhere in the dorm (LA time) and in home (Toronto time).
-- Footsteps that change sound on carpet versus wood.
-- Easter eggs: the Konami code makes the character do a flip; poking the home bed; the cat knocking something off the desk now and then.
-- Completion celebration (section 5).
-- Open Graph image: a screenshot of the lit dorm room for link previews.
-
----
-
-## 11. Content system and writing rules
-
-- All content lives in typed data files under `src/content/` (for example `dorm.ts`, `home.ts`, `profile.ts`), keyed by interactable id. Scenes and panels only read from them. `/plain` reads the same files.
-- Every content entry supports: title, subtitle or role, body paragraphs, a list of facts or stats, images (with alt text), video embeds, and external links.
-- Media goes in `public/media/<item-id>/`. Images are WebP, at most about 1600px on the long edge, and lazy loaded when the panel opens.
-- **Never invent facts, numbers, dates, names, or quotes.** Where content is missing, write a clearly marked placeholder like `[TODO: 2 to 3 sentences on why you built the cold email automator]` and list it in `TODO_ASSETS.md`.
-- Voice: first person, plain, direct, no buzzwords. Daniel dislikes the long dash character, so do not use it anywhere in user facing copy.
-- Flag overclaiming. If a phrase in the source notes could read as an exaggeration, keep it as written but list it under "Wording to confirm" in `TODO_ASSETS.md`.
+### 8.4 Modes
+- **Sitting** (beanbag, beds): E or any movement stands up. While sitting, the camera eases in slightly and idle thoughts can appear.
+- **Riding** (longboard): faster movement with acceleration and coasting, a soft bounce off furniture, no other interactions, E dismounts. The cat bats a paw if the board passes close by.
+- **Pull ups:** the input is captured for a few seconds, then control returns.
+- **Piano:** keyboard overlay captures input until Esc or a close button.
+- **Outfit change:** instant, no mode.
 
 ---
 
-## 12. Known caveats and decisions to confirm
+## 9. Interaction and readability rules (non negotiable)
 
-These are already known. Use the safest wording until Daniel confirms.
-
-- **Major wording:** the content notes say "UCLA Economics major", but Daniel has also described himself as a B.A. Business Economics and B.S. Cognitive Science double major. Use a `[TODO: confirm major]` placeholder in the intro and education panels.
-- **Org name:** the notes say "Business in Entertainment Association". Confirm the exact official name before shipping.
-- **ARCT wording:** "highest nonprofessional degree possible in Canada" should be replaced with the exact credential name and a precise, verifiable description. Placeholder until confirmed.
-- **"70M views":** keep the number tied to the specific video and link it, so it is verifiable.
-- **Items on the resume that are not in the content notes:** NST internship (CEO's Office, 2026 Hong Kong Award Summit), LionChase investment banking analyst, Bruin Finance Society senior editor, Creative Labs project lead this quarter, the NST summit site, and the IBB and DSP site rebuilds as projects in their own right. Do not add them unasked. List them in `TODO_ASSETS.md` under "Consider adding" so Daniel can decide. The work table spare slot or a fourth tab on the laptop could hold them without changing the layout.
-- **Mirror versus lamp:** the dorm mirror replaced a lamp so the intro is the first thing reached. Easy to swap back if Daniel prefers.
-- **Spare work table slot:** reserved, see section 7.
-- **Third party embeds** (YouTube, Spotify) load only after a panel opens, to protect load time and privacy.
-
----
-
-## 13. Build phases and definition of done
-
-### Phase 1: Skeleton and flow (do this first, in one pass)
-- Scaffold from the official template; folders for `src/scenes`, `src/content`, `src/ui`, `src/assets`, `public/assets`, `public/media`.
-- Placeholder art for every piece of furniture and every interactable, in each room's palette, at final sizes.
-- Both rooms laid out per section 6, with collisions, y sorting, and the door transitions.
-- Sleep state and wake up sequence (section 5).
-- Movement, the interaction system (section 8, all rules), click to walk, panels, the found counter.
-- All 18 interactables wired to content entries, with placeholders where content is missing.
-- The `/plain` page.
-- Mobile controls.
-- `TODO_ASSETS.md` generated.
-
-**Done means:** a visitor can wake up, visit all 18 items in both rooms with the keyboard, the mouse only, and touch only; every panel opens and closes; nothing overlaps a door; the character is never hidden behind furniture; `/plain` shows everything; `npm run build` passes with no type errors; a production build loads quickly.
-
-### Phase 2: Special interactions
-The longboard ride, the cat AI, the pull up mini game, the playable piano, the headphones audio loop, the shelf, pennant, and drawer close ups.
-
-### Phase 3: Juice
-Light cones, ambient motion, particles, sounds, the completion moment, reduced motion handling.
-
-### Phase 4: Art swap (needs Daniel's assets)
-Replace placeholders with the chosen pack and the commissioned character. Recolor to the room palettes. If an Aseprite MCP is available, use it for slicing, recoloring, and exporting.
-
-### Phase 5: Content fill and ship
-Fill real copy and media, resolve every TODO, run a Lighthouse pass (performance, accessibility), set the Open Graph tags, deploy to Vercel.
+1. **One item, one standing spot.** Active only within about one tile and roughly facing it. Nearest wins, with hysteresis.
+2. **No stacked choices.** Vertically stacked things (shelf tiers, pin board notes) are one interactable that opens a close up where the visitor picks.
+3. **Wall items need floor in front.** Anything on the back wall that is interactive has walkable floor right in front of it. Wall art above furniture is decor or belongs to that furniture.
+4. **Surface spacing.** At most three interactive items per surface, at least one character width apart, each with its own standing spot. The work table is reached from its left side.
+5. **Walkways.** At least about 1.5 character widths everywhere the player must pass. Collision boxes are floor footprints only. Decor has tiny or no collision unless it is furniture.
+6. **Doors stay clear.** No furniture, decor, rug edge collider, or mess overlaps a door or its approach tile.
+7. **Depth sorting.** Y sort everything by foot position. Tall objects only against the back wall. The character is never hidden.
+8. **Interactive versus decor must be instantly distinguishable.** Interactive items: a clear pulsing outline when nearby and a small bobbing arrow or sparkle when unfound (bigger and higher contrast than the iteration 1 "+" sparkles). Decor: no outline, no sparkle, no prompt, ever. Decor never sits on a standing spot or between the player and an item.
+9. **Moving things.** The cat wanders on open floor only, avoids standing spots and doors, can follow the player briefly, pauses near the player, and periodically walks to the home bed nap spot to curl up and sleep for a while. Its standing spot moves with it; when it is on the bed it is petted from the floor beside the bed. It only becomes the active interactable when no static item is nearer.
+10. **Panels pause the game.** Esc, click outside, or X closes. Focus returns to the game. Keyboard navigable. Long content scrolls inside the panel.
+11. **Click to walk** with grid pathfinding; clicking empty floor walks there.
+12. **Never trap the player.** Spawn, door arrivals, dismount points, and stand up points are always free tiles; nudge out of colliders.
 
 ---
 
-## 14. The gap: what this first prompt delivers versus what the final portfolio needs
+## 10. Orientation, HUD, and life
 
-**What a first Claude Code session can deliver from this file alone:** phase 1, and likely much of phase 2. That means a fully playable, correctly laid out two room game with placeholder art, all interactions working, all panels wired with the content already in `reference/content-outline.pdf`, a working `/plain` page, and a clear list of everything missing.
+- **Wake up speech bubble:** right after the lights come up, Daniel says a short line in a pixel speech bubble, for example "Hey, I'm Daniel. Welcome to my dorm at UCLA." `[TODO: Daniel to confirm the line]`. Dismisses on movement or after a few seconds.
+- **Room title cards:** on wake up and on every room entry, a banner fades in and out: "Rieber Hall, UCLA" and "North York, Toronto".
+- **HUD portrait, top left (About me, item 1):** Soul Knight style portrait of Daniel's face with three short stat bars in red, grey, and blue. Default joke stats, editable in `src/content/profile.ts`: "Caffeine 7/7", "Sleep 2/6", "Curiosity 200/200" `[TODO: Daniel to pick]`. The portrait pulses gently until first opened. This makes About me the first and most visible thing on screen.
+- **Minimap, top right:** two small room boxes joined by a door line, the current room highlighted. Clicking the other room walks the character to the door.
+- **Door cues:** light leak under the door, doormat, small sign with an arrow, one pulse after waking. Also mentioned in the controls tooltip on first visit.
+- **Clocks:** one wall clock per room showing the visitor's local time (their timezone, from the browser). The window views shift between day, sunset, and night using the visitor's local time.
+- **Idle thoughts:** if the player stands still for about 12 seconds, a small thought bubble appears with one of a few lines `[TODO: Daniel to write 5 to 8 lines]`, for example "should probably do my readings". Not while a panel is open.
+- **Ambient sound** (only when sound is on): soft dorm hum and distant campus sounds in the dorm; quiet rain or wind and house sounds at home; footsteps that differ on carpet and wood. Use royalty free or self made sounds and record their sources and licenses in `public/assets/audio/CREDITS.md`.
+- **Camera and screen fill:** the room currently fills only about 60% of the window. Zoom in so the room fills most of the viewport height at an integer scale, or use a gently following camera with room bounds. HUD elements stay pinned to screen corners and never cover interactive items.
+- **Completion:** at 19 of 19, a small celebration (confetti, Daniel does a little dance) and a "Thanks for exploring, let's talk" panel with contact links.
+- **Easter eggs (keep or add):** Konami code flip; poking a sleeping cat; the cat occasionally pushes something off the desk.
 
-**What Daniel still needs to provide** (track all of this in `TODO_ASSETS.md`, grouped by interactable):
+---
 
-Art and identity
-- The chosen itch.io asset pack (link plus license), which fixes the tile size.
-- The commissioned character sprite sheet: idle, walk in four directions, sleeping, waking, riding the longboard, pull up. The cat sprite (idle, walk, sit, pet reaction) as well.
-- Front, side, and back photos of himself for the artist.
+## 11. Controls, accessibility, devices
 
-Content (copy)
-- Intro paragraph and a one line tagline.
-- For each software project: what it is, why he built it, his role, and the stack (2 to 4 sentences each).
-- Genesis Alternative Ventures and L.E.K. descriptions.
-- DSP and IBB marketing descriptions, skills used, and measurable results.
-- Hope For Hearing milestones, stats, grants (names and amounts if shareable), the Roy story, and lessons learned.
-- RA blurb, org one liners, North York, family, cat (name and story), rowing, awards, exercise, piano, music, baking, and acting blurbs.
+- Move: WASD and arrows. Act: E or Space. Learn more: F or Enter. Close: Esc. Pause: P. About me: I. Hints: H.
+- Mobile: joystick, two contextual action buttons, tap to walk. Test portrait and landscape.
+- Persistent "Plain version" link to `/plain`, which renders all 19 items from `src/content/`.
+- Panels are real HTML, text at least 16px equivalent, WCAG AA contrast, `prefers-reduced-motion` respected (cut shake, particles, long fades, twinkle).
+- Audio muted by default, visible toggle. No sound or video autoplays before a user action.
+
+---
+
+## 12. Content system and writing rules
+
+- All content lives in typed files in `src/content/` keyed by item id. Scenes, panels, and `/plain` read from the same files.
+- Media in `public/media/<item-id>/`, WebP, at most about 1600px long edge, lazy loaded on panel open.
+- **Never invent facts, numbers, names, dates, or quotes.** Missing content gets a marked placeholder like `[TODO: 2 to 3 sentences on why you love photography]` and a line in `TODO_ASSETS.md`.
+- Voice: first person, plain, direct, no buzzwords. Never use the long dash character in user facing copy.
+- Flag possible overclaiming under "Wording to confirm" in `TODO_ASSETS.md`.
+
+### Open wording items (use placeholders until confirmed)
+- Major: the notes say Economics; Daniel has also described a B.A. Business Economics and B.S. Cognitive Science double major.
+- The exact official name of the entertainment association.
+- ARCT description: replace "highest nonprofessional degree possible in Canada" with the exact credential and a verifiable description.
+- Items on his resume not in the content notes (NST internship, LionChase, Bruin Finance Society, Creative Labs project lead, NST summit site, DSP and IBB site rebuilds): keep under "Consider adding" in `TODO_ASSETS.md`. Do not add unasked.
+
+---
+
+## 13. Things to protect while adding all of this
+
+- Load time: keep the game ready in under about 2 seconds on a normal connection. Lazy load panel media, embeds, and the speaker loop.
+- Frame rate: lighting and particles must hold 60 fps on a mid range laptop and stay smooth on a phone. Provide a low effects fallback if needed.
+- Readability beats decoration every time (rule 9.8). If a screenshot looks busy enough that items are hard to spot, remove decor before adding highlight effects.
+- `/plain` stays fast, complete, and current.
+
+---
+
+## 14. Build order for iteration 2 and definition of done
+
+Do these in order, committing and pushing after each, verifying with Playwright screenshots each time.
+
+1. **Interaction model.** Split E and F (section 8), new prompts, two button bubble for click and tap, mobile buttons, I and P keys. Update the counter to 19 and the item registry.
+2. **Content remap.** Move content per section 7: pennant gets UCLA, pin board gets orgs, shirt gets Hope For Hearing, grad cap is high school only, binder replaces trophy, phone replaces camera in the dorm, acting removed, camera and speaker added at home, HUD About me. Update `/plain`.
+3. **Layout and furniture.** Rebuild both rooms per section 6 and the layout images: working desk, bigger dresser, beanbag, rugs, narrower closet, home work table contents, nightstand, shelf contents, pie, bed plushes, hoodie hook. Re-check every rule in section 9.
+4. **Decor and coziness.** Plants, fairy lights, LED strip, lamps, clutter clusters, mess, clocks, the image slots with original placeholders, layered lighting.
+5. **Orientation features.** Speech bubble, title cards, door cues, HUD portrait, minimap, camera zoom.
+6. **Actions.** Sit, outfit change, pull ups, speaker toggle, camera snap, piano play, cat petting and cat AI including the bed nap, longboard ride.
+7. **Sprites.** Updated Daniel placeholder (hair, white tee, recolorable shirt), new cat placeholder.
+8. **Life and polish.** Idle thoughts, ambient sound, window time of day, easter eggs, completion.
+9. **Final verification.** Three full playthroughs to 19 of 19 (keyboard only, mouse only, touch only on a phone sized screen). Screenshots of every item and panel. `npm run build` with no type errors. Load time check. Update `TODO_ASSETS.md`.
+
+**Done means:** a first time visitor can tell within five seconds that they are in Daniel's UCLA dorm and that there is a second room; every one of the 19 items is reachable and readable with all three input methods; both rooms look full, warm, and cozy without any item being hard to spot; nothing overlaps a door or standing spot; the character and cat are never hidden; all removed items are gone everywhere, including `/plain`.
+
+---
+
+## 15. The gap: what Daniel still needs to provide
+
+Keep this list current in `TODO_ASSETS.md`, grouped by item.
+
+**Art**
+- The itch.io pack choice (link and license), which fixes the tile size.
+- The commissioned character sheet (section 5.2 list) and cat sheet (section 5.3).
+- Optional decor image files for the slots in section 5.4.
+
+**Copy**
+- The wake up line, the HUD stat names, and 5 to 8 idle thoughts.
+- About me paragraph and tagline.
+- Descriptions for every item in section 7, especially the new ones: photography, the TO DO board org one liners, Hope For Hearing.
+- The cat's name and story.
 - Confirmations from section 12.
 
-Media
-- Headshot; Royce Hall photo; UCC hat toss photo; club leadership photos; SAT proof only if he wants it shown (optional, probably skip).
-- Ateball UI screenshots; consulting slide screenshots; DSP and IBB graphics, rush videos (hosted on YouTube or as compressed MP4), website screenshots.
-- Hope For Hearing gallery; RA photo; North York gallery; family gallery; cat photos; rowing photos; award plaque photos; exercise photos or short clips; recital photos; food photos; longboard build and soldering photos.
-- Links: resume PDF, LinkedIn, email, GitHub, extended essay, Spotify playlist, music video URL.
+**Media**
+- Headshot; Royce Hall photo; UCC hat toss and club photos; Ateball screenshots; consulting slides; DSP and IBB graphics, rush videos, website screenshots; Hope For Hearing gallery; RA photo; North York gallery; family photo and gallery; cat photos; rowing, plaque, exercise, recital, food photos; longboard build photos; a gallery of his own photography.
+- Links: resume PDF, LinkedIn, email, GitHub, extended essay, Spotify playlist.
 
-Decisions
-- Custom domain.
-- Whether to add the "Consider adding" items from section 12.
-- What goes in the spare work table slot.
-- Sound on or off by default (spec says off).
+**Decisions**
+- Custom domain; what fills the spare work table slot; whether to add the "Consider adding" items; final outfit colors for the closet.
 
 ---
 
-## 15. Reference files
+## 16. Reference files
 
 | File | What it is |
 |---|---|
-| `reference/dorm-layout.png` / `.svg` | Final dorm layout, three quarter view, numbered standing spots |
-| `reference/home-layout.png` / `.svg` | Final home layout, three quarter view, numbered standing spots |
-| `reference/dorm-original-sketch.jpg` | Daniel's rough top down sketch of his real dorm (context only) |
-| `reference/home-original-sketch.jpg` | Daniel's rough top down sketch of his real home bedroom (context only) |
-| `reference/soul-knight-lobby-reference.png` | Soul Knight screenshot supplied by Daniel: camera angle, scale, lighting, and UI reference. Do not ship it or trace it. |
-| `reference/content-outline.pdf` | Daniel's full content outline for both rooms |
+| `reference/dorm-layout.png` / `.svg` | Iteration 2 target layout for the dorm, with HUD, minimap, title card, numbered standing spots, E only spots, poster slots |
+| `reference/home-layout.png` / `.svg` | Iteration 2 target layout for the home bedroom |
+| `reference/current-dorm-iteration-1.png` | Screenshot of the dorm as built in iteration 1 |
+| `reference/current-home-iteration-1.png` | Screenshot of the home bedroom as built in iteration 1 |
+| `reference/iteration-2-feedback.pdf` | Daniel's written feedback on iteration 1 |
+| `reference/daniel-photos.png` | Photos of Daniel (hair, face, outfit) and his cat, for the sprites |
+| `reference/content-outline.pdf` | Daniel's original content outline |
+| `reference/dorm-original-sketch.jpg`, `reference/home-original-sketch.jpg` | His rough sketches of the real rooms (context only) |
+| `reference/soul-knight-lobby-reference.png` | Soul Knight screenshot from Daniel: camera, scale, lighting, HUD reference. Not in git, never shipped or traced |
 
-The layout images are the source of truth for which furniture exists and where it sits relative to the walls and the other furniture. They are not pixel exact. Adjust sizes as needed to satisfy section 8.
+The layout images are the source of truth for what exists and roughly where. They are not pixel exact. Adjust sizes and positions as needed to satisfy section 9.
