@@ -30,6 +30,9 @@ const pageRoutes = (): Plugin => {
         if (req.url === '/portfolio' || req.url?.startsWith('/portfolio?')) {
             req.url = req.url.replace('/portfolio', '/portfolio/index.html');
         }
+        if (req.url === '/fonts' || req.url?.startsWith('/fonts?')) {
+            req.url = req.url.replace('/fonts', '/fonts/index.html');
+        }
         next();
     };
     return {
@@ -69,9 +72,10 @@ const audioFiles = (): Plugin => {
 const portfolioPrerender = (): Plugin => ({
     name: 'portfolio-prerender',
     async transformIndexHtml(html, ctx) {
-        if (!ctx.path.endsWith('/portfolio/index.html')) return html;
-        const entry = '/src/portfolio/page.ts';
-        type Mod = { renderPortfolio: (o: { production: boolean }) => { head: string; body: string; todos: string[] } };
+        const fontsPage = ({ '/fonts/index.html': 'renderFontsIndex', '/fonts/game.html': 'renderFontsGame', '/fonts/quick.html': 'renderFontsQuick' } as Record<string, string>)[ctx.path];
+        if (!ctx.path.endsWith('/portfolio/index.html') && !fontsPage) return html;
+        const entry = fontsPage ? '/src/fonts/page.ts' : '/src/portfolio/page.ts';
+        type Mod = { renderPortfolio: (o: { production: boolean }) => { head: string; body: string; todos: string[] } } & Record<string, () => string>;
         let mod: Mod;
         if (ctx.server) {
             mod = await ctx.server.ssrLoadModule(entry) as Mod;
@@ -83,6 +87,7 @@ const portfolioPrerender = (): Plugin => ({
             try { mod = await server.ssrLoadModule(entry) as Mod; }
             finally { await server.close(); }
         }
+        if (fontsPage) return html.replace('<!--fonts-content-->', mod[fontsPage]());
         const production = !ctx.server;
         const out = mod.renderPortfolio({ production });
         if (production && out.todos.length) {
@@ -103,7 +108,10 @@ export default defineConfig({
             input: {
                 main: resolve(__dirname, 'index.html'),
                 portfolio: resolve(__dirname, 'portfolio/index.html'),
-                plain: resolve(__dirname, 'plain/index.html')
+                plain: resolve(__dirname, 'plain/index.html'),
+                fonts: resolve(__dirname, 'fonts/index.html'),
+                fontsGame: resolve(__dirname, 'fonts/game.html'),
+                fontsQuick: resolve(__dirname, 'fonts/quick.html')
             },
             output: {
                 manualChunks: { phaser: ['phaser'] }

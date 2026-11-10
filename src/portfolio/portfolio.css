@@ -380,3 +380,32 @@ a.clink:hover span { text-decoration: underline; text-underline-offset: 4px; }
     a.card:hover, a.card:focus-visible { transform: none; }
     .inv-in { transition: none; }
 }
+
+
+/* ---------- iteration 4 type: labels, nav, and subheadings in the label font; text in the body font ---------- */
+
+.stamp, .lbl, .wl, .glance dt, .facts dt, .list-h, .pv-sib .px, .stat-l, .more, .sub-h, .pop-name, .pop-role {
+    font-family: var(--font-lbl); font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase;
+}
+.stamp { font-size: 13px; }
+.lbl { font-size: 12px; }
+.wl { font-size: 12px; }
+.glance dt, .facts dt { font-size: 11px; }
+.list-h { font-size: 12px; }
+.stat-l { font-size: 10px; letter-spacing: 0.06em; }
+.more { font-size: 11px; }
+.sub-h { font-size: 14px; }
+.pv-sib .px { font-size: 10px; }
+.pop-name, .pop-role { font-size: 12px; text-transform: none; letter-spacing: 0.02em; }
+.nav-links a, .nav-game { font: 700 13px var(--font-lbl); text-transform: uppercase; letter-spacing: 0.08em; }
+.card-title { font: 700 18px/1.35 var(--font-lbl); letter-spacing: -0.01em; }
+.face { font-size: 17px; line-height: 1.55; }
+.btn { font-family: var(--font-lbl); font-weight: 700; font-size: 15px; letter-spacing: 0.02em; }
+.tag { font-family: var(--font-lbl); font-weight: 700; font-size: 12px; letter-spacing: 0.04em; }
+.clink { font-family: var(--font-lbl); font-weight: 700; font-size: 14px; letter-spacing: 0.04em; }
+.inv-l { font-family: var(--font-lbl); font-weight: 700; font-size: 14px; }
+.inv-back { font-size: 14px; }
+.num-l { font-family: var(--font-lbl); font-size: 13px; }
+.lede { font-size: clamp(18px, 1.7vw, 20px); }
+.d-context { font-size: 17px; }
+.writeup p, .detail > p, .d-extra p, .d-sub p { font-size: 17px; line-height: 1.65; }

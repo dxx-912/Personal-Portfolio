@@ -1,10 +1,7 @@
 // Portfolio view enhancements. The page is complete without this file (static HTML from page.ts);
 // this adds motion (A1 to A9), the walking rail sprite, and the detail panels.
 
-import '@fontsource/press-start-2p/latin-400.css';
-import '@fontsource/inter/latin-400.css';
-import '@fontsource/inter/latin-500.css';
-import '@fontsource/inter/latin-600.css';
+import '../fonts.css';
 import './tokens.css';
 import './portfolio.css';
 import { ASSETS } from '../assets/manifest';

@@ -16,6 +16,8 @@ export interface RenderResult {
     body: string;
     /** Every TODO left in the content shown on this page, for the build log. */
     todos: string[];
+    /** Pieces of the page, for the temporary /fonts comparison. */
+    parts: { nav: string; morning: string; work: string; evening: string; night: string; detail: (id: string) => string };
 }
 
 /** Which prev/next group a section's items belong to. */
@@ -359,5 +361,6 @@ ${details}
 </main>
 ${data}`;
 
-    return { head, body, todos };
+    const detailHtml = (id: string) => { const i = all.find((x) => x.id === id); return i ? detail(i) : ''; };
+    return { head, body, todos, parts: { nav, morning, work, evening, night, detail: detailHtml } };
 }

@@ -36,16 +36,18 @@
     --hud-blue: #3d7fd4;
 
     /* type */
-    --font-px: 'Press Start 2P', ui-monospace, monospace;
-    --font-sans: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+    /* big headings stay pixel; labels and body text follow the pairing in src/fonts.css */
+    --font-px: var(--font-heading);
+    --font-sans: var(--font-body);
+    --font-lbl: var(--font-label);
     --fs-hero: clamp(26px, 4.4vw, 46px);
     --fs-h2: clamp(15px, 1.9vw, 20px);
     --fs-h3: 18px;
     --fs-stamp: 11px;
     --fs-label: 10px;
-    --fs-body: 17px;
-    --fs-small: 15px;
-    --lh-body: 1.6;
+    --fs-body: 18px;
+    --fs-small: 17px;
+    --lh-body: 1.65;
 
     /* space */
     --gutter: clamp(16px, 4vw, 40px);

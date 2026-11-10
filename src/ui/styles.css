@@ -467,3 +467,25 @@ a.link:hover { background: #eef4ff; text-decoration: underline; }
     .counter, .hud-btn { font-size: 11px; padding: 3px 0; }
     .mm-room { width: 36px; height: 18px; font-size: 8px; }
 }
+
+
+/* ---------- iteration 4: panel and prompt type (pairing from src/fonts.css). The in-room HUD and bubbles stay pixel. ---------- */
+
+.panel { font-family: var(--font-body); font-size: 17px; line-height: 1.65; }
+.panel-head h2 { font: 400 15px/1.5 var(--font-heading); }
+.panel-body p, .media figcaption, .list li, .piano-hint, .pause-hint { font-family: var(--font-body); }
+.subtitle { font: 700 14px/1.5 var(--font-label); letter-spacing: 0.02em; color: var(--muted); }
+.sec-title { font: 700 19px/1.3 var(--font-label); }
+.list-title { font: 700 13px var(--font-label); text-transform: uppercase; letter-spacing: 0.08em; }
+.facts dt { font: 700 11px var(--font-label); text-transform: uppercase; letter-spacing: 0.08em; }
+.facts dd { font-family: var(--font-body); }
+.tags .tag { font: 700 12px var(--font-label); letter-spacing: 0.04em; }
+.tab, .tab-notes { font-family: var(--font-label); font-weight: 700; font-size: 14px; letter-spacing: 0.02em; }
+.link, .toast-btn, .sound-off, .sound-off .link { font-family: var(--font-label); font-weight: 700; font-size: 14px; }
+.menu-btn { font: 700 15px var(--font-label); letter-spacing: 0.04em; }
+.now-playing { font: 400 12px var(--font-label); }
+.writeup strong, .fun-fact strong { font-family: var(--font-label); font-size: 13px; text-transform: uppercase; letter-spacing: 0.06em; }
+.chip { font: 700 13px var(--font-label); letter-spacing: 0.02em; }
+.chip kbd { font: 700 12px var(--font-label); }
+.polaroid figcaption { font: 700 14px var(--font-label); }
+.todo { font-family: var(--font-body); }

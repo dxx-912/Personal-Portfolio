@@ -1,0 +1,11 @@
+/* Temporary /fonts demo pages: show panels in place instead of as overlays. */
+html, body.fx-game, body.fx-quick { height: auto; overflow: auto; }
+body.fx-game { background: #3a3346; padding: 20px; }
+.fx-game .panel { transform: none; max-height: none; width: 100%; }
+.fx-quick .rail, .fx-quick .progress, .fx-quick .skip { display: none; }
+.fx-quick .nav { position: static; }
+.fx-quick .wrap { padding-left: var(--gutter); }
+.fx-quick .sky-work { padding: 40px 0; }
+.fx-quick .details { padding-top: 8px; }
+.fx-quick .nav-links span { position: static; width: auto; height: auto; overflow: visible; clip: auto; white-space: nowrap; }
+.fx-quick .nav-in { gap: 12px; }

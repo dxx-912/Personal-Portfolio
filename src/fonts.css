@@ -1,0 +1,35 @@
+/* Fonts for the game panels and the quick view. Self hosted (Latin subsets); a font file downloads
+   only when something on the page actually uses it. */
+
+@import '@fontsource/press-start-2p/latin-400.css';
+@import '@fontsource/space-mono/latin-400.css';
+@import '@fontsource/space-mono/latin-700.css';
+@import '@fontsource/nunito/latin-400.css';
+@import '@fontsource/nunito/latin-600.css';
+@import '@fontsource/nunito/latin-700.css';
+@import '@fontsource/space-grotesk/latin-400.css';
+@import '@fontsource/space-grotesk/latin-500.css';
+@import '@fontsource/space-grotesk/latin-700.css';
+@import '@fontsource/ibm-plex-mono/latin-400.css';
+@import '@fontsource/ibm-plex-mono/latin-600.css';
+
+:root {
+    /* the three candidate pairings (CLAUDE.md 0.1 G) */
+    --A-label: 'Space Mono', ui-monospace, monospace;
+    --A-body: 'Nunito', system-ui, sans-serif;
+    --B-label: 'Space Grotesk', system-ui, sans-serif;
+    --B-body: 'Space Grotesk', system-ui, sans-serif;
+    --C-label: 'IBM Plex Mono', ui-monospace, monospace;
+    --C-body: 'Nunito', system-ui, sans-serif;
+
+    /* big headings stay pixel */
+    --font-heading: 'Press Start 2P', ui-monospace, monospace;
+}
+
+/* THE pairing for the whole site. To switch, change A to B or C on the next line. */
+:root { --font-label: var(--A-label); --font-body: var(--A-body); }
+
+/* used by the temporary /fonts comparison page only */
+[data-pair='A'] { --font-label: var(--A-label); --font-body: var(--A-body); }
+[data-pair='B'] { --font-label: var(--B-label); --font-body: var(--B-body); }
+[data-pair='C'] { --font-label: var(--C-label); --font-body: var(--C-body); }
