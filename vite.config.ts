@@ -81,7 +81,7 @@ const portfolioPrerender = (): Plugin => ({
             mod = await ctx.server.ssrLoadModule(entry) as Mod;
         } else {
             const server = await createServer({
-                configFile: false, logLevel: 'silent', appType: 'custom',
+                configFile: false, logLevel: 'silent', appType: 'custom', plugins: [decorFiles()],
                 server: { middlewareMode: true, hmr: false }
             });
             try { mod = await server.ssrLoadModule(entry) as Mod; }

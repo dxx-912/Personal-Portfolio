@@ -1,4 +1,12 @@
 import type { Profile } from './types';
+import decorFiles from 'virtual:decor-files';
+
+// From Daniel (iteration 5 feedback). The logo is the instagram-logo image slot (section 5.4): only used once the file exists.
+const instagram = {
+    handle: '@dxx_912',
+    url: 'https://www.instagram.com/dxx_912/',
+    logo: decorFiles.includes('instagram-logo.png') ? '/assets/decor/instagram-logo.png' : undefined
+};
 
 // Contact details, HUD stats, and the little lines Daniel says.
 // Leave href empty until confirmed; it renders as a visible TODO.
@@ -10,6 +18,7 @@ export const profile: Profile = {
         { label: 'LinkedIn' /* href: '[TODO: LinkedIn URL]' */ },
         { label: 'Email' /* href: 'mailto:[TODO]' */ },
         { label: 'GitHub' /* href: '[TODO: GitHub URL]' */ },
+        { label: 'Instagram', href: instagram.url, icon: instagram.logo },
         { label: 'Resume (PDF)', download: true /* href: '/media/resume/daniel-xing-resume.pdf' */ }
     ],
 
@@ -21,8 +30,8 @@ export const profile: Profile = {
         { label: 'Creativity', value: 200, max: 200, color: '#3d7fd4' }
     ],
 
-    // From Daniel (iteration 5 feedback): the home phone shows this.
-    instagram: { handle: '@dxx_912', url: 'https://www.instagram.com/dxx_912/' },
+    // The home phone card, the dorm phone panel, and the contact links show this.
+    instagram,
 
     // [TODO: Daniel to confirm the line]
     wakeLine: "Hey, I'm Daniel. Welcome to my dorm at UCLA.",

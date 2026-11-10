@@ -35,7 +35,7 @@ Never drawn by us. Until the file exists, an original abstract placeholder shows
 | `poster-caricature.png` | Not placed in the room right now (the wall above the desk is full); say where you want it | Hidden until the file exists |
 | `hoodie-logo.png` | Home hoodie on the wall hook, chest | Plain "TORONTO" text |
 | `speaker-logo.png` | Home speaker badge | Small plain orange badge |
-| `instagram-logo.png` | Dorm phone screen (item 6) and the home phone screen (bonus); also on the home phone's card | Plain coloured rounded square, no symbol |
+| `instagram-logo.png` | Dorm phone screen (item 6) and the home phone screen (bonus); also on the home phone card, the Club marketing panel header, and the Instagram contact link (About me, completion panel, quick view footer) | Plain coloured rounded square, no symbol |
 | `can-logo.png` | The Red Bull can that pops up when Daniel drinks from the dorm fridge | Plain blue and silver can |
 | `volleyball-logo.png` (optional) | Volleyball on the home shelf, top tier | No logo |
 | `family-photo.png` | Home nightstand photo frame | Outline silhouettes of people |

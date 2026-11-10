@@ -48,14 +48,19 @@ function renderVideo(v: VideoItem, mode: RenderMode, comingSoon: string) {
     return `<div class="embed ${ratio}"><iframe src="${esc(src)}" title="${esc(v.title)}" loading="lazy" allow="encrypted-media; picture-in-picture; fullscreen" referrerpolicy="strict-origin-when-cross-origin"></iframe></div>`;
 }
 
+/** A link's optional image icon (decorative, so empty alt). */
+export const linkIcon = (l: LinkItem, cls = 'link-ico') =>
+    l.icon ? `<img class="${cls}" src="${esc(l.icon)}" alt="" width="18" height="18" loading="lazy" decoding="async" />` : '';
+
 export function renderLink(l: LinkItem) {
     if (isTodo(l.href)) {
         return `<span class="link todo-link">${rich(l.label)} <span class="todo">[TODO: link]</span></span>`;
     }
     const href = esc(l.href!);
-    if (l.download) return `<a class="link" href="${href}" download>${rich(l.label)}</a>`;
+    const ico = linkIcon(l);
+    if (l.download) return `<a class="link" href="${href}" download>${ico}${rich(l.label)}</a>`;
     const external = /^https?:/.test(l.href!);
-    return `<a class="link" href="${href}"${external ? ' target="_blank" rel="noopener noreferrer"' : ''}>${rich(l.label)}${external ? ' <span aria-hidden="true">↗</span><span class="sr">(opens in a new tab)</span>' : ''}</a>`;
+    return `<a class="link" href="${href}"${external ? ' target="_blank" rel="noopener noreferrer"' : ''}>${ico}${rich(l.label)}${external ? ' <span aria-hidden="true">↗</span><span class="sr">(opens in a new tab)</span>' : ''}</a>`;
 }
 
 export interface RenderOpts {

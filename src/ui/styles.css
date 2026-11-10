@@ -257,6 +257,7 @@ body.touch .message { bottom: 160px; }
     font-weight: 600; text-decoration: none; box-shadow: 0 2px 0 var(--edge);
 }
 a.link:hover { background: #eef4ff; text-decoration: underline; }
+.link-ico { width: 18px; height: 18px; margin-right: 6px; vertical-align: -3px; border-radius: 5px; image-rendering: auto; }
 .todo-link { color: var(--muted); }
 .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 
@@ -602,5 +603,8 @@ body.title-on .plain-link { opacity: 0.85; visibility: visible; pointer-events: 
 .ig-card { display: grid; justify-items: center; gap: 8px; text-align: center; padding: 6px 0 4px; }
 .ig-logo { width: 56px; height: 56px; border-radius: 14px; image-rendering: auto; }
 .ig-ph { display: block; background: #c8417e; }
+/* the club marketing panel's header shows the Instagram logo like an app icon */
+.panel-phone .panel-head .head-logo { width: 28px; height: 28px; border-radius: 8px; margin-right: 10px; flex: none; image-rendering: auto; }
+.panel-phone .panel-head h2 { display: flex; align-items: center; }
 .ig-handle { margin: 0; font: 700 22px var(--font-label); color: var(--ink); }
 .ig-line { margin: 0; }

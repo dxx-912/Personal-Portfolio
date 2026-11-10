@@ -103,6 +103,7 @@ export const portfolioCopy = {
     linkedin: 'LinkedIn',
     email: 'Email',
     github: 'GitHub',
+    instagram: 'Instagram',
     game: 'Game',
     viewMore: 'View more',
     flipHint: 'Tap again to open',

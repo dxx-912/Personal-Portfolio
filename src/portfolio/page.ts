@@ -6,7 +6,7 @@ import { dormContent } from '../content/dorm';
 import { profile } from '../content/profile';
 import { itemsIn, portfolioCopy as C, type PortfolioItem, type PortfolioSection } from '../content/portfolio';
 import type { ImageItem, LinkItem, Section } from '../content/types';
-import { esc } from '../ui/render';
+import { esc, linkIcon } from '../ui/render';
 import { icon } from './icons';
 
 const TODO_RE = /\[TODO[^\]]*\]/g;
@@ -41,7 +41,7 @@ export function renderPortfolio(opts: { production: boolean }): RenderResult {
 
     const linkByLabel = (label: string) => profile.links.find((l) => l.label.toLowerCase().startsWith(label.toLowerCase()));
     const link = (l: LinkItem | undefined, text: string, cls: string, iconName?: Parameters<typeof icon>[0], where = 'contact') => {
-        const ic = iconName ? icon(iconName) : '';
+        const ic = iconName ? icon(iconName) : l ? linkIcon(l, 'clink-ico') : '';
         if (!l?.href || l.href.includes('[TODO')) {
             todos.push(`${where}: ${text} link`);
             return prod ? '' : `<span class="${cls} is-todo">${ic}<span>${esc(text)}</span> <span class="todo">[TODO: link]</span></span>`;
@@ -241,6 +241,7 @@ export function renderPortfolio(opts: { production: boolean }): RenderResult {
         ${link(linkByLabel('LinkedIn'), C.linkedin, 'clink', 'linkedin')}
         ${link(linkByLabel('Resume'), C.resume, 'clink', 'file')}
         ${link(linkByLabel('GitHub'), C.github, 'clink', 'github')}
+        ${link(linkByLabel('Instagram'), C.instagram, 'clink')}
         <a class="clink clink-game" href="/" data-track="game-footer">${icon('gamepad')}<span>${esc(C.game)}</span></a>
       </p>
       <p class="foot-note">${esc(C.footerNote)}</p>

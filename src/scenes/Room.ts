@@ -1487,7 +1487,7 @@ export class Room extends Phaser.Scene {
         sfx('tick');
         state.markSecret('phone');
         if (this.cat) this.cat.held = true;
-        const logo = decorFiles.includes('instagram-logo.png') ? 'assets/decor/instagram-logo.png' : null;
+        const logo = profile.instagram.logo ?? null;
         openPhoneCard(logo, () => { if (this.cat) this.cat.held = false; });
     }
 

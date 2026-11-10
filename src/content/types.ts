@@ -26,6 +26,8 @@ export interface LinkItem {
     /** Omit until known; renders as a TODO. */
     href?: string;
     download?: boolean;
+    /** Optional small image shown before the label (an image slot file, e.g. the Instagram logo). */
+    icon?: string;
 }
 
 export interface Fact {
@@ -108,7 +110,7 @@ export interface Profile {
     /** Joke stat bars beside the HUD portrait. */
     stats: HudStat[];
     /** The home phone (a bonus) shows this. */
-    instagram: { handle: string; url: string };
+    instagram: { handle: string; url: string; /** The instagram-logo slot file, when Daniel has added one. */ logo?: string };
     /** What Daniel says in a speech bubble right after waking up. */
     wakeLine: string;
     /** Thought bubbles when the visitor stands still for a while. */

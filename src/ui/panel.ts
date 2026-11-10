@@ -2,7 +2,7 @@
 // Also hosts small overlays (piano keyboard, snapshot) that pause the game the same way.
 
 import type { Entry, Section } from '../content/types';
-import { ui } from '../content';
+import { profile, ui } from '../content';
 import { state } from '../state';
 import { esc, rich, renderSection } from './render';
 import { duck, sfx } from '../audio';
@@ -70,7 +70,7 @@ export function openPanel(entry: Entry, onClose?: () => void) {
     const root = mount(`
         <section class="panel panel-${style}" role="dialog" aria-modal="true" aria-labelledby="${titleId}">
             <header class="panel-head">
-                <h2 id="${titleId}">${rich(entry.title)}</h2>
+                <h2 id="${titleId}">${style === 'phone' && profile.instagram.logo ? `<img class="head-logo" src="${esc(profile.instagram.logo)}" alt="" width="28" height="28" />` : ''}${rich(entry.title)}</h2>
                 <button class="panel-close" aria-label="${esc(ui.close)}" title="${esc(ui.close)} (Esc)">✕</button>
             </header>
             <div class="panel-body">
