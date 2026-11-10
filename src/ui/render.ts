@@ -17,7 +17,8 @@ const isTodo = (s?: string) => !s || s.includes('[TODO');
 function renderImage(img: ImageItem, mode: RenderMode, comingSoon: string) {
     const cap = img.caption ? `<figcaption>${rich(img.caption)}</figcaption>` : '';
     if (img.src) {
-        return `<figure class="media"><img src="${esc(img.src)}" alt="${esc(img.alt)}" loading="lazy" decoding="async" />${cap}</figure>`;
+        const size = img.width && img.height ? ` width="${img.width}" height="${img.height}"` : '';
+        return `<figure class="media"><img src="${esc(img.src)}" alt="${esc(img.alt)}"${size} loading="lazy" decoding="async" />${cap}</figure>`;
     }
     const label = mode === 'panel' ? `${esc(img.alt)}<br><span class="todo">[TODO: ${esc(comingSoon.toLowerCase())}]</span>` : esc(img.alt);
     return `<figure class="media"><div class="ph-img" role="img" aria-label="${esc(img.alt)} (${esc(comingSoon.toLowerCase())})"><span>${label}</span></div>${cap}</figure>`;

@@ -1,5 +1,7 @@
 # Decor image slots (optional)
 
+Easiest way: drop the image into its folder in `photos/3 Room decor (optional)/` and run `npm run photos`. It lands here with the right name.
+
 Drop image files here with these exact names. The game draws them in the room, scaled down with
 nearest neighbour sampling. Until a file exists, an original placeholder is shown instead.
 Restart `npm run dev` after adding a file.

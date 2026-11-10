@@ -3,9 +3,9 @@
 Everything the site still needs from Daniel. Every item here shows up on the site as a visible yellow `[TODO: ...]`, a striped "photo coming soon" box, or an original placeholder until it is filled.
 
 - Copy lives in `src/content/` (`profile.ts`, `dorm.ts`, `home.ts`, `ui.ts`).
-- Photos go in `public/media/<item-id>/` as WebP, at most about 1600px on the long edge. Then set `src: '/media/<item-id>/<file>.webp'` on the matching image in the content file.
+- **Photos: drag them into the matching folder in `photos/`, then run `npm run photos`.** Every photo listed below has its own folder there, in the same order. The script converts, resizes, and wires them in; see `photos/README.md`.
 - Final art goes in `public/assets/<pack>/`. Then set `url` on the matching entry in `src/assets/manifest.ts` (keep `w`, `h`, `frames` matching the file).
-- Decor images (posters, logos) go in `public/assets/decor/` with the exact names below. Restart `npm run dev` after adding one.
+- Decor images (posters, logos) go in `photos/3 Room decor (optional)/`. Restart `npm run dev` after adding one.
 
 ---
 
@@ -18,7 +18,7 @@ Everything the site still needs from Daniel. Every item here shows up on the sit
 
 ## Decor images to provide (optional)
 
-Never drawn by us. Until the file exists, an original abstract placeholder shows.
+Never drawn by us. Until the file exists, an original abstract placeholder shows. Drop each into its folder in `photos/3 Room decor (optional)/` (it becomes the file below).
 
 | File in `public/assets/decor/` | Where | Placeholder now |
 |---|---|---|

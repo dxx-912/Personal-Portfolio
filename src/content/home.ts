@@ -1,9 +1,10 @@
 import type { Entry } from './types';
+import { withMedia } from './media';
 
 // Home bedroom (North York, Toronto): everything personal. Keyed by interactable id (see src/rooms/home.ts).
 // Never invent facts. Unknowns are "[TODO: ...]" and are listed in TODO_ASSETS.md.
 
-export const homeContent: Record<string, Entry> = {
+export const homeContent: Record<string, Entry> = withMedia({
     // 1. Window with the Toronto skyline
     window: {
         id: 'window',
@@ -19,9 +20,9 @@ export const homeContent: Record<string, Entry> = {
         ],
         gallery: 'grid',
         images: [
-            { alt: 'North York photo 1' },
-            { alt: 'North York photo 2' },
-            { alt: 'North York photo 3' }
+            { alt: 'North York photo 1', slot: 'window/gallery' },
+            { alt: 'North York photo 2', slot: 'window/gallery' },
+            { alt: 'North York photo 3', slot: 'window/gallery' }
         ]
     },
 
@@ -45,7 +46,7 @@ export const homeContent: Record<string, Entry> = {
                     '[TODO: boat, year, and a line on what rowing was like]'
                 ],
                 gallery: 'grid',
-                images: [{ alt: 'Rowing photo 1' }, { alt: 'Rowing photo 2' }]
+                images: [{ alt: 'Rowing photo 1', slot: 'shelf/rowing' }, { alt: 'Rowing photo 2', slot: 'shelf/rowing' }]
             },
             {
                 id: 'awards',
@@ -60,9 +61,9 @@ export const homeContent: Record<string, Entry> = {
                 }],
                 gallery: 'grid',
                 images: [
-                    { alt: 'DECA Provincial Champion plaque' },
-                    { alt: 'FBLA Business Management National Champion plaque' },
-                    { alt: 'FBLA International 6th Place plaque' }
+                    { alt: 'DECA Provincial Champion plaque', slot: 'shelf/deca' },
+                    { alt: 'FBLA Business Management National Champion plaque', slot: 'shelf/fbla-cnlc' },
+                    { alt: 'FBLA International 6th Place plaque', slot: 'shelf/fbla-nlc' }
                 ]
             },
             {
@@ -90,9 +91,9 @@ export const homeContent: Record<string, Entry> = {
         ],
         gallery: 'grid',
         images: [
-            { alt: 'Muscle up', caption: 'Muscle up' },
-            { alt: 'Trap bar deadlift', caption: 'Trap bar deadlift' },
-            { alt: 'Physique photo' }
+            { alt: 'Muscle up', caption: 'Muscle up', slot: 'pullup/muscle-up' },
+            { alt: 'Trap bar deadlift', caption: 'Trap bar deadlift', slot: 'pullup/deadlift' },
+            { alt: 'Physique photo', slot: 'pullup/physique' }
         ]
     },
 
@@ -121,10 +122,10 @@ export const homeContent: Record<string, Entry> = {
         ],
         gallery: 'grid',
         images: [
-            { alt: 'Photo by Daniel 1', caption: '[TODO: caption]' },
-            { alt: 'Photo by Daniel 2', caption: '[TODO: caption]' },
-            { alt: 'Photo by Daniel 3', caption: '[TODO: caption]' },
-            { alt: 'Photo by Daniel 4', caption: '[TODO: caption]' }
+            { alt: 'Photo by Daniel 1', caption: '[TODO: caption]', slot: 'camera/gallery' },
+            { alt: 'Photo by Daniel 2', caption: '[TODO: caption]', slot: 'camera/gallery' },
+            { alt: 'Photo by Daniel 3', caption: '[TODO: caption]', slot: 'camera/gallery' },
+            { alt: 'Photo by Daniel 4', caption: '[TODO: caption]', slot: 'camera/gallery' }
         ]
     },
 
@@ -138,9 +139,9 @@ export const homeContent: Record<string, Entry> = {
         body: ['[TODO: a few sentences about my parents and my sister]'],
         gallery: 'grid',
         images: [
-            { alt: 'Family photo 1' },
-            { alt: 'Family photo 2' },
-            { alt: 'Family photo 3' }
+            { alt: 'Family photo 1', slot: 'nightstand/gallery' },
+            { alt: 'Family photo 2', slot: 'nightstand/gallery' },
+            { alt: 'Family photo 3', slot: 'nightstand/gallery' }
         ]
     },
 
@@ -157,7 +158,7 @@ export const homeContent: Record<string, Entry> = {
             '[TODO: a precise, verifiable description of the ARCT credential]'
         ],
         gallery: 'grid',
-        images: [{ alt: 'Recital photo 1' }, { alt: 'Recital photo 2' }]
+        images: [{ alt: 'Recital photo 1', slot: 'piano/recitals' }, { alt: 'Recital photo 2', slot: 'piano/recitals' }]
     },
 
     // 8. Apple crisp pie with a slice served
@@ -170,10 +171,10 @@ export const homeContent: Record<string, Entry> = {
         body: ['I love baking and cooking for my family.', '[TODO: favourite things to make]'],
         gallery: 'grid',
         images: [
-            { alt: 'Food photo 1' },
-            { alt: 'Food photo 2' },
-            { alt: 'Daniel cooking' },
-            { alt: 'Daniel baking' }
+            { alt: 'Food photo 1', slot: 'pie/food' },
+            { alt: 'Food photo 2', slot: 'pie/food' },
+            { alt: 'Daniel cooking', slot: 'pie/cooking' },
+            { alt: 'Daniel baking', slot: 'pie/baking' }
         ]
     },
 
@@ -190,7 +191,7 @@ export const homeContent: Record<string, Entry> = {
             '[TODO: his personality]'
         ],
         gallery: 'grid',
-        images: [{ alt: 'Cat photo 1' }, { alt: 'Cat photo 2' }, { alt: 'Cat photo 3' }]
+        images: [{ alt: 'Cat photo 1', slot: 'cat/gallery' }, { alt: 'Cat photo 2', slot: 'cat/gallery' }, { alt: 'Cat photo 3', slot: 'cat/gallery' }]
     },
 
     // 10. Longboard (E rides it)
@@ -207,9 +208,9 @@ export const homeContent: Record<string, Entry> = {
         ],
         gallery: 'grid',
         images: [
-            { alt: 'Building the longboard' },
-            { alt: 'Soldering' },
-            { alt: 'The destroyed battery' }
+            { alt: 'Building the longboard', slot: 'longboard/building' },
+            { alt: 'Soldering', slot: 'longboard/soldering' },
+            { alt: 'The destroyed battery', slot: 'longboard/battery' }
         ]
     }
-};
+});

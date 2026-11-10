@@ -2,10 +2,14 @@
 // Any string may contain "[TODO: ...]" markers. They render as visible placeholders.
 
 export interface ImageItem {
-    /** Path under /media/<item-id>/..., WebP preferred. Omit until the file exists. */
+    /** Path under /media/..., WebP. Filled in automatically from photos/ (npm run photos). */
     src?: string;
     alt: string;
     caption?: string;
+    /** Drop folder this photo comes from (scripts/photo-slots.json). Placeholders sharing a slot form one gallery. */
+    slot?: string;
+    width?: number;
+    height?: number;
 }
 
 export interface VideoItem {

@@ -20,7 +20,7 @@ Node 20+. Deploys to Vercel as a static site (`vercel.json`).
 | To change | Edit |
 |---|---|
 | Any text on the site | `src/content/*.ts` (`profile.ts`, `dorm.ts`, `home.ts`, `ui.ts`) |
-| Photos and videos | `public/media/<item-id>/`, then set `src` in the content file |
+| Photos | Drag into the matching folder in `photos/`, then `npm run photos` (see `photos/README.md`) |
 | Furniture positions, standing spots, doors | `src/rooms/dorm.ts`, `src/rooms/home.ts` (tile units) |
 | Art | `public/assets/<pack>/`, then set `url` in `src/assets/manifest.ts` |
 | Posters, logos, the family photo frame | Drop the file in `public/assets/decor/` (names in its README) |

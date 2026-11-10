@@ -1,10 +1,11 @@
 import type { Entry } from './types';
 import { profile } from './profile';
+import { withMedia } from './media';
 
 // Dorm room (Rieber Hall, UCLA): everything professional. Keyed by item id (see src/rooms/dorm.ts).
 // Never invent facts. Unknowns are "[TODO: ...]" and are listed in TODO_ASSETS.md.
 
-export const dormContent: Record<string, Entry> = {
+export const dormContent: Record<string, Entry> = withMedia({
     // 1. HUD portrait (top left of the screen, not in the room). Opens with a click or I.
     about: {
         id: 'about',
@@ -16,7 +17,7 @@ export const dormContent: Record<string, Entry> = {
             "I'm interested in growth, tech, and startups.",
             '[TODO: 2 to 3 sentences of background and experience]'
         ],
-        images: [{ alt: 'Headshot of Daniel Xing' }],
+        images: [{ alt: 'Headshot of Daniel Xing', slot: 'about/headshot' }],
         links: profile.links
     },
 
@@ -28,7 +29,7 @@ export const dormContent: Record<string, Entry> = {
         title: 'UCLA',
         subtitle: '[TODO: confirm major]. Honours student.',
         summary: '[TODO: confirm major]. Honours student.',
-        images: [{ alt: 'Daniel in front of Royce Hall' }],
+        images: [{ alt: 'Daniel in front of Royce Hall', slot: 'pennant/royce-hall' }],
         list: [{
             title: 'Courses',
             items: [
@@ -113,6 +114,11 @@ export const dormContent: Record<string, Entry> = {
                     '[TODO: what it is, 1 to 2 sentences]',
                     '[TODO: why I built it, 1 to 2 sentences]'
                 ],
+                gallery: 'viewer',
+                images: [
+                    { alt: 'Cold email automator screenshot 1', slot: 'laptop/cold-email' },
+                    { alt: 'Cold email automator screenshot 2', slot: 'laptop/cold-email' }
+                ],
                 links: [{ label: 'Open the live app', href: 'https://cold-email-automator-two.vercel.app/' }]
             },
             {
@@ -124,6 +130,11 @@ export const dormContent: Record<string, Entry> = {
                 body: [
                     '[TODO: what it is, 1 to 2 sentences]',
                     '[TODO: why I built it, 1 to 2 sentences]'
+                ],
+                gallery: 'viewer',
+                images: [
+                    { alt: 'Saved posts scroller screenshot 1', slot: 'laptop/saved-posts' },
+                    { alt: 'Saved posts scroller screenshot 2', slot: 'laptop/saved-posts' }
                 ],
                 links: [{ label: 'Open the live app', href: 'https://morning-scroller.vercel.app/' }]
             },
@@ -141,9 +152,9 @@ export const dormContent: Record<string, Entry> = {
                 ],
                 gallery: 'viewer',
                 images: [
-                    { alt: 'Ateball UI screenshot 1' },
-                    { alt: 'Ateball UI screenshot 2' },
-                    { alt: 'Ateball UI screenshot 3' }
+                    { alt: 'Ateball UI screenshot 1', slot: 'laptop/ateball' },
+                    { alt: 'Ateball UI screenshot 2', slot: 'laptop/ateball' },
+                    { alt: 'Ateball UI screenshot 3', slot: 'laptop/ateball' }
                 ],
                 links: [{ label: '[TODO: link to Ateball, if public]' }]
             }
@@ -168,9 +179,9 @@ export const dormContent: Record<string, Entry> = {
                 body: ['[TODO: the client, the problem, what my team did, the outcome]'],
                 gallery: 'viewer',
                 images: [
-                    { alt: 'Genesis Alternative Ventures slide 1' },
-                    { alt: 'Genesis Alternative Ventures slide 2' },
-                    { alt: 'Genesis Alternative Ventures slide 3' }
+                    { alt: 'Genesis Alternative Ventures slide 1', slot: 'binder/genesis' },
+                    { alt: 'Genesis Alternative Ventures slide 2', slot: 'binder/genesis' },
+                    { alt: 'Genesis Alternative Ventures slide 3', slot: 'binder/genesis' }
                 ]
             },
             {
@@ -182,9 +193,9 @@ export const dormContent: Record<string, Entry> = {
                 body: ['[TODO: the case, our recommendation, the year]'],
                 gallery: 'viewer',
                 images: [
-                    { alt: 'L.E.K. Case Competition slide 1' },
-                    { alt: 'L.E.K. Case Competition slide 2' },
-                    { alt: 'L.E.K. Case Competition slide 3' }
+                    { alt: 'L.E.K. Case Competition slide 1', slot: 'binder/lek' },
+                    { alt: 'L.E.K. Case Competition slide 2', slot: 'binder/lek' },
+                    { alt: 'L.E.K. Case Competition slide 3', slot: 'binder/lek' }
                 ]
             }
         ]
@@ -212,10 +223,10 @@ export const dormContent: Record<string, Entry> = {
                 ],
                 gallery: 'grid',
                 images: [
-                    { alt: 'DSP Vogue campaign graphic 1', caption: 'Vogue campaign' },
-                    { alt: 'DSP Vogue campaign graphic 2', caption: 'Vogue campaign' },
-                    { alt: 'DSP Vogue campaign graphic 3', caption: 'Vogue campaign' },
-                    { alt: 'DSP website screenshot', caption: 'Website build' }
+                    { alt: 'DSP Vogue campaign graphic 1', caption: 'Vogue campaign', slot: 'phone/dsp-vogue' },
+                    { alt: 'DSP Vogue campaign graphic 2', caption: 'Vogue campaign', slot: 'phone/dsp-vogue' },
+                    { alt: 'DSP Vogue campaign graphic 3', caption: 'Vogue campaign', slot: 'phone/dsp-vogue' },
+                    { alt: 'DSP website screenshot', caption: 'Website build', slot: 'phone/dsp-website' }
                 ],
                 videos: [{ kind: 'youtube', title: 'DSP rush video' /* id: '[TODO]' */ }],
                 links: [{ label: 'DSP website (the one I built)' /* href: '[TODO]' */ }]
@@ -231,10 +242,10 @@ export const dormContent: Record<string, Entry> = {
                 ],
                 gallery: 'grid',
                 images: [
-                    { alt: 'IBB graphic 1' },
-                    { alt: 'IBB graphic 2' },
-                    { alt: 'IBB graphic 3' },
-                    { alt: 'IBB website screenshot', caption: 'Website build' }
+                    { alt: 'IBB graphic 1', slot: 'phone/ibb-graphics' },
+                    { alt: 'IBB graphic 2', slot: 'phone/ibb-graphics' },
+                    { alt: 'IBB graphic 3', slot: 'phone/ibb-graphics' },
+                    { alt: 'IBB website screenshot', caption: 'Website build', slot: 'phone/ibb-website' }
                 ],
                 videos: [{ kind: 'youtube', title: 'IBB rush video' /* id: '[TODO]' */ }],
                 links: [{ label: 'IBB website (the one I built)' /* href: '[TODO]' */ }]
@@ -263,9 +274,9 @@ export const dormContent: Record<string, Entry> = {
         links: [{ label: 'Read the extended essay' /* href: '[TODO]' */ }],
         gallery: 'grid',
         images: [
-            { alt: 'Graduating class throwing their hats' },
-            { alt: 'Daniel leading Business Club' },
-            { alt: 'Daniel leading Asian Heritage Club' }
+            { alt: 'Graduating class throwing their hats', slot: 'gradcap/hat-toss' },
+            { alt: 'Daniel leading Business Club', slot: 'gradcap/business-club' },
+            { alt: 'Daniel leading Asian Heritage Club', slot: 'gradcap/asian-heritage-club' }
         ]
     },
 
@@ -280,7 +291,7 @@ export const dormContent: Record<string, Entry> = {
             "Why I do it: it saves money, and it's genuinely fun.",
             '[TODO: a sentence or two on what the job is like]'
         ],
-        images: [{ alt: 'Daniel as an RA' }]
+        images: [{ alt: 'Daniel as an RA', slot: 'closet/ra' }]
     },
 
     // 9. Folded "Hope For Hearing" shirt on the dresser
@@ -309,10 +320,10 @@ export const dormContent: Record<string, Entry> = {
         list: [{ title: 'Funding grants won', items: ['[TODO: grant names, and amounts if shareable]'] }],
         gallery: 'polaroid',
         images: [
-            { alt: 'Hope For Hearing photo 1', caption: '[TODO: caption]' },
-            { alt: 'Hope For Hearing photo 2', caption: '[TODO: caption]' },
-            { alt: 'Hope For Hearing photo 3', caption: '[TODO: caption]' },
-            { alt: 'Hope For Hearing photo 4', caption: '[TODO: caption]' }
+            { alt: 'Hope For Hearing photo 1', caption: '[TODO: caption]', slot: 'shirt/gallery' },
+            { alt: 'Hope For Hearing photo 2', caption: '[TODO: caption]', slot: 'shirt/gallery' },
+            { alt: 'Hope For Hearing photo 3', caption: '[TODO: caption]', slot: 'shirt/gallery' },
+            { alt: 'Hope For Hearing photo 4', caption: '[TODO: caption]', slot: 'shirt/gallery' }
         ]
     }
-};
+});

@@ -112,7 +112,7 @@ export function renderPortfolio(opts: { production: boolean }): RenderResult {
 
     const headshot: ImageItem | undefined = dormContent.about.images?.[0];
     const shot = headshot?.src
-        ? `<img class="shot-img" src="${esc(headshot.src)}" alt="${esc(headshot.alt)}" width="320" height="320" />`
+        ? `<img class="shot-img" src="${esc(headshot.src)}" alt="${esc(headshot.alt)}" width="${headshot.width ?? 320}" height="${headshot.height ?? 320}" fetchpriority="high" />`
         : prod ? `<span class="sr">${esc(C.headshotAlt)}</span>`
             : `<span class="shot-ph">${esc(C.headshotAlt)}<br><span class="todo">[TODO: headshot]</span></span>`;
     if (!headshot?.src) todos.push('hero: headshot photo');
@@ -249,7 +249,7 @@ export function renderPortfolio(opts: { production: boolean }): RenderResult {
         const slides = list.map((im, k) => `
           <li class="gal-slide" aria-label="${esc(C.galleryLabel(k + 1, list.length))}">
             ${im.src
-                ? `<button type="button" class="gal-zoom" data-zoom="${esc(im.src)}" aria-label="${esc(C.enlarge)}: ${esc(im.alt)}"><img src="${esc(im.src)}" alt="${esc(im.alt)}" loading="lazy" decoding="async" width="800" height="500" /></button>`
+                ? `<button type="button" class="gal-zoom" data-zoom="${esc(im.src)}" aria-label="${esc(C.enlarge)}: ${esc(im.alt)}"><img src="${esc(im.src)}" alt="${esc(im.alt)}" loading="lazy" decoding="async" width="${im.width ?? 800}" height="${im.height ?? 500}" /></button>`
                 : `<div class="gal-ph"><span>${esc(im.alt)}</span><span class="todo">[TODO: photo coming soon]</span></div>`}
             ${im.caption ? `<p class="gal-cap">${t(im.caption, where)}</p>` : ''}
           </li>`).join('');

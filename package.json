@@ -8,6 +8,8 @@
     "node": ">=20"
   },
   "scripts": {
+    "photos": "node scripts/photos.mjs",
+    "predev": "node scripts/photos.mjs --quiet",
     "dev": "vite",
     "build": "tsc --noEmit && vite build",
     "preview": "vite preview",
@@ -19,6 +21,7 @@
     "phaser": "3.90.0"
   },
   "devDependencies": {
+    "sharp": "^0.34.5",
     "terser": "^5.39.0",
     "typescript": "~5.7.2",
     "vite": "^6.3.1"

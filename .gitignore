@@ -28,3 +28,9 @@ reference/soul-knight-lobby-reference.png
 
 # Playwright MCP screenshots, snapshots, and logs
 .playwright-mcp/
+
+# Photo drop folders: originals stay on this machine (the converted WebP copies in public/media are committed)
+photos/**
+!photos/**/
+!photos/**/.gitkeep
+!photos/README.md
