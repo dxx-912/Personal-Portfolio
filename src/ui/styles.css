@@ -505,3 +505,31 @@ body.title-on .plain-link { opacity: 0; visibility: hidden; pointer-events: none
     .plain-link, .hud-top-left .plain-link { top: calc(max(8px, env(safe-area-inset-top)) + 50px); left: 8px; transform: none; }
 }
 @media (prefers-reduced-motion: reduce) { .plain-link { transition: none; } }
+
+/* ---------- bigger top left HUD (the quick view link moved out), link styled like the room title card ---------- */
+
+.portrait { padding: 5px 10px 5px 5px; gap: 8px; border-width: 2px; box-shadow: 0 0 0 2px #1a1420, 0 3px 0 2px rgba(0, 0, 0, 0.4); }
+.portrait .face { width: 48px; height: 39px; border-width: 2px; }
+.portrait .stats { gap: 3px; }
+.portrait .stat { width: 136px; height: 14px; }
+.portrait .stat .txt { font-size: 11px; line-height: 14px; padding: 0 4px; }
+
+.plain-link, .hud-top-left .plain-link {
+    top: max(14px, env(safe-area-inset-top));
+    font: 600 20px var(--pixel); color: #fff6e0; background: #1a1420; padding: 8px 18px; text-decoration: none;
+    border: 2px solid #c9b596; border-radius: 0; box-shadow: 0 0 0 2px #1a1420, 0 4px 0 2px rgba(0, 0, 0, 0.4);
+}
+.plain-link:hover, .plain-link:focus-visible { background: #2c2440; text-decoration: underline; }
+
+@media (max-height: 500px) {
+    .plain-link, .hud-top-left .plain-link { font-size: 16px; padding: 5px 12px; }
+    .portrait .face { width: 36px; height: 29px; }
+    .portrait .stat { width: 104px; height: 12px; }
+    .portrait .stat .txt { font-size: 9px; line-height: 12px; }
+}
+@media (max-width: 560px) {
+    .portrait .face { width: 34px; height: 28px; }
+    .portrait .stat { width: 92px; height: 11px; }
+    .portrait .stat .txt { font-size: 9px; line-height: 11px; }
+    .plain-link, .hud-top-left .plain-link { top: calc(max(8px, env(safe-area-inset-top)) + 56px); left: 8px; transform: none; font-size: 14px; padding: 5px 10px; }
+}
