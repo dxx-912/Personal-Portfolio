@@ -682,7 +682,7 @@ const dormFloorLamp: Painter = (p, w, h) => {
     p.r(1, h - 3, w - 2, 3, '#2a2b31');
 };
 
-/** Compact bed. A UCLA hoodie (blue, gold chest stripe) and a tan bear plush sit on it. */
+/** Compact bed. A UCLA hoodie laid flat (hood, sleeves, "UCLA" in gold) and a tan bear plush sit on it. */
 const dormBed: Painter = (p, w, h) => {
     const topH = 44;
     p.box(0, 0, w, topH, WOOD.dark);
@@ -693,12 +693,40 @@ const dormBed: Painter = (p, w, h) => {
     p.box(4, 6, 20, 30, '#f7f3ea');
     p.r(6, 8, 16, 2, '#ffffff');
     p.r(0, 0, 3, topH, WOOD.deep);
-    // UCLA hoodie tossed on the blanket
-    p.box(44, 14, 22, 15, UCLA_BLUE);
-    p.r(40, 16, 5, 9, UCLA_BLUE); p.r(65, 17, 5, 8, UCLA_BLUE); // sleeves
-    p.r(51, 12, 8, 4, UCLA_BLUE_D); // hood
-    p.r(46, 19, 18, 2, UCLA_GOLD); // chest stripe
-    p.r(53, 23, 4, 4, UCLA_BLUE_D); // pocket
+    // UCLA hoodie laid flat on the blanket: hood with drawstrings, sleeves flopped out, "UCLA" across the chest
+    {
+        const ox = 38, oy = 7, cx = ox + 16;
+        const edge = '#16304f', blueL = '#4a8bc9', string = '#f4f1ea';
+        const shape: [number, number, number, number][] = [
+            [cx - 5, oy, 10, 1], [cx - 6, oy + 1, 12, 6], // hood
+            [ox + 4, oy + 6, 24, 20] // body
+        ];
+        // sleeves angle down and out, one pixel per three rows
+        for (let i = 0; i < 13; i++) {
+            const s = Math.floor(i / 3);
+            shape.push([ox - s, oy + 7 + i, 5, 1], [ox + 27 + s, oy + 7 + i, 5, 1]);
+        }
+        for (const [x, y, w2, h2] of shape) p.r(x - 1, y - 1, w2 + 2, h2 + 2, edge);
+        for (const [x, y, w2, h2] of shape) p.r(x, y, w2, h2, UCLA_BLUE);
+        // cuffs
+        for (const i of [11, 12]) {
+            const s = Math.floor(i / 3);
+            p.r(ox - s, oy + 7 + i, 5, 1, UCLA_BLUE_D); p.r(ox + 27 + s, oy + 7 + i, 5, 1, UCLA_BLUE_D);
+        }
+        // hood opening and drawstrings
+        p.r(cx - 4, oy + 2, 8, 4, UCLA_BLUE_D); p.r(cx - 3, oy + 3, 6, 2, '#1b4470');
+        p.r(ox + 5, oy + 6, cx - 6 - (ox + 5), 1, blueL); p.r(cx + 6, oy + 6, ox + 27 - (cx + 6), 1, blueL); // shoulders
+        p.r(cx - 2, oy + 6, 1, 3, string); p.r(cx + 1, oy + 6, 1, 3, string);
+        // UCLA in gold with a soft shadow
+        pixelText(p, 'UCLA', cx - 7, oy + 11, UCLA_BLUE_D);
+        pixelText(p, 'UCLA', cx - 7, oy + 10, UCLA_GOLD);
+        // kangaroo pocket
+        p.r(ox + 9, oy + 17, 14, 6, '#2a69a6');
+        p.r(ox + 9, oy + 17, 14, 1, UCLA_BLUE_D); p.r(ox + 9, oy + 17, 1, 6, UCLA_BLUE_D); p.r(ox + 22, oy + 17, 1, 6, UCLA_BLUE_D);
+        // ribbed hem
+        p.r(ox + 4, oy + 24, 24, 2, UCLA_BLUE_D);
+        for (let x = ox + 5; x < ox + 28; x += 2) p.r(x, oy + 24, 1, 2, '#1e4d7c');
+    }
     // tan bear plush, sitting near the wall end
     const bear = '#c99a62', bearD = '#a87a46';
     p.r(78, 7, 10, 9, bear); p.r(77, 6, 3, 3, bear); p.r(86, 6, 3, 3, bear);
@@ -854,13 +882,24 @@ const dormBackpack: Painter = (p, w, h) => {
     p.r(x0 + 1, h - 2, 11, 1, '#8a2822');
 };
 
-/** A small pile of clothes and a lone sock. */
+/** A lone sock, then jeans tossed on the floor with a white tee draped over them. */
 const dormClothes: Painter = (p) => {
-    p.r(1, 5, 14, 6, '#55606f'); p.r(3, 3, 10, 3, '#55606f'); p.r(4, 4, 4, 2, '#6b7686');
-    p.r(9, 6, 10, 5, '#3f5f8f'); p.r(10, 6, 7, 1, '#5a7aa8');
-    p.r(5, 8, 7, 3, '#e8e6df');
-    // sock
-    p.r(24, 8, 6, 2, '#f2f0ea'); p.r(28, 6, 2, 3, '#f2f0ea'); p.r(24, 8, 1, 2, '#c8423b');
+    // sock, lying on its side to the left
+    const sock = '#f2f0ea', sockD = '#cfcabe';
+    p.r(0, 11, 6, 2, sock); p.r(4, 7, 2, 5, sock); p.r(4, 7, 2, 1, '#c8423b'); p.r(4, 9, 2, 1, '#c8423b');
+    p.p(0, 12, sockD); p.p(5, 12, sockD);
+    // jeans: waistband with a gold button on the left, one long leg stretched out to the right
+    const jean = '#3f5f8f', jeanD = '#2f4a72', jeanL = '#5a7aa8';
+    p.r(8, 7, 11, 6, jean); p.r(8, 7, 11, 1, jeanD); p.p(10, 7, '#e3b867');
+    p.r(18, 9, 12, 4, jean); p.r(18, 10, 11, 1, jeanL); p.r(29, 9, 1, 4, jeanD); p.r(18, 12, 12, 1, jeanD);
+    p.r(9, 12, 9, 1, jeanD);
+    // white tee draped on top: a clear T with both sleeves and a collar
+    const tee = '#ecebe4', teeD = '#c9c6bd';
+    p.r(12, 2, 8, 7, tee); // body
+    p.r(8, 2, 4, 3, tee); p.r(20, 2, 4, 3, tee); // sleeves
+    p.r(8, 4, 4, 1, teeD); p.r(20, 4, 4, 1, teeD); // sleeve hems
+    p.p(14, 2, teeD); p.p(17, 2, teeD); p.r(15, 3, 2, 1, teeD); // collar
+    p.r(13, 6, 3, 1, teeD); p.r(17, 7, 2, 1, teeD); p.r(12, 8, 8, 1, teeD); // crumples and hem
 };
 
 // ---------- home ----------

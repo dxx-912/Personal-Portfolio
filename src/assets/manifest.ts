@@ -91,7 +91,7 @@ export const ASSETS = {
     dorm_dresser: { w: 112, h: 62, paint: painters.dormDresser, outline: true },
     dorm_gradcap: { w: 16, h: 13, paint: painters.dormGradcap, outline: true, highlight: true },
     dorm_shirt: { w: 24, h: 15, paint: painters.dormShirt, outline: true, highlight: true },
-    dorm_clothes: { w: 31, h: 12, paint: painters.dormClothes, outline: true },
+    dorm_clothes: { w: 30, h: 14, paint: painters.dormClothes, outline: true },
     dorm_fridge: { w: 16, h: 26, paint: painters.dormFridge, outline: true },
     dorm_trash: { w: 18, h: 18, paint: painters.dormTrash, outline: true },
     dorm_laundry: { w: 22, h: 18, paint: painters.dormLaundry, outline: true },

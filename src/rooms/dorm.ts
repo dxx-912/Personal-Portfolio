@@ -46,7 +46,7 @@ export const dorm: RoomDef = {
         { id: 'bed', texture: 'dorm_bed', x: 1.6, y: 5.6, layer: 'floor', solid: { x: 1.6, y: 6.0, w: 6, h: 3 } },
 
         // a little mess between the bed and the dresser (off every path)
-        { id: 'clothes', texture: 'dorm_clothes', x: 8.25, y: 7.9, layer: 'floor' },
+        { id: 'clothes', texture: 'dorm_clothes', x: 7.9, y: 7.8, layer: 'floor' },
         { id: 'bag', texture: 'dorm_bag', x: 9.85, y: 8.15, layer: 'floor' },
         // sneakers by the door, below its approach
         { id: 'sneakers', texture: 'dorm_sneakers', x: 18.55, y: 5.75, layer: 'floor' },
