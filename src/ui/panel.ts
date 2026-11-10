@@ -5,12 +5,13 @@ import type { Entry, Section } from '../content/types';
 import { ui } from '../content';
 import { state } from '../state';
 import { esc, rich, renderSection } from './render';
-import { sfx } from '../audio';
+import { duck, sfx } from '../audio';
 
 interface Open {
     root: HTMLElement;
     onClose?: () => void;
     onKey?: (e: KeyboardEvent) => boolean | void;
+    cleanup?: () => void;
 }
 let current: Open | null = null;
 
@@ -36,16 +37,24 @@ function tabsHtml(entry: Entry) {
 }
 
 function mount(html: string, open: Omit<Open, 'root'>, focusSel?: string) {
+    open = { ...open };
     if (current) closePanel(true);
     const root = document.createElement('div');
     root.className = 'panel-backdrop';
     root.innerHTML = html;
     document.getElementById('ui-root')!.appendChild(root);
     current = { root, ...open };
+    const cur = current;
     state.setModal('panel');
     root.addEventListener('pointerdown', (e) => { if (e.target === root) closePanel(); });
     root.querySelector('.panel-close')?.addEventListener('click', () => closePanel());
     root.addEventListener('keydown', (e) => onKey(e, root));
+    // duck the lofi while a video in this panel plays (MP4 events, or focus moving into an embed)
+    root.addEventListener('play', (e) => { if ((e.target as HTMLElement).tagName === 'VIDEO') duck('video', true); }, true);
+    root.addEventListener('pause', (e) => { if ((e.target as HTMLElement).tagName === 'VIDEO') duck('video', false); }, true);
+    const onBlur = () => window.setTimeout(() => { if (document.activeElement?.tagName === 'IFRAME' && root.contains(document.activeElement)) duck('video', true); }, 0);
+    window.addEventListener('blur', onBlur);
+    cur.cleanup = () => { window.removeEventListener('blur', onBlur); duck('video', false); };
     requestAnimationFrame(() => {
         root.classList.add('open');
         const f = (focusSel && root.querySelector<HTMLElement>(focusSel)) || root.querySelector<HTMLElement>('.panel-close');
@@ -129,8 +138,9 @@ function onKey(e: KeyboardEvent, root: HTMLElement) {
 
 export function closePanel(silent = false) {
     if (!current) return;
-    const { root, onClose } = current;
+    const { root, onClose, cleanup } = current;
     current = null;
+    cleanup?.();
     root.classList.remove('open');
     root.classList.add('closing');
     // Remove right away for state, let the CSS fade finish visually.

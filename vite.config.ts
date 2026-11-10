@@ -1,6 +1,6 @@
 import { createServer, defineConfig, type Plugin } from 'vite';
 import { resolve } from 'node:path';
-import { existsSync, readdirSync } from 'node:fs';
+import { existsSync, readdirSync, readFileSync } from 'node:fs';
 
 // Lists the image files Daniel has dropped into public/assets/decor/ so the game only requests
 // files that exist (no 404s). Restart the dev server after adding a file.
@@ -39,6 +39,31 @@ const pageRoutes = (): Plugin => {
     };
 };
 
+// Lists the music files in public/assets/audio/lofi and featured (Daniel drops MP3s there).
+// Warns at build time about files missing from CREDITS.md. Empty folders are fine.
+const audioFiles = (): Plugin => {
+    const id = 'virtual:audio-files';
+    const AUDIO = /\.(mp3|m4a|aac|ogg|oga|opus|wav|flac)$/i;
+    const list = (dir: string) => {
+        const d = resolve(__dirname, 'public/assets/audio', dir);
+        return existsSync(d) ? readdirSync(d).filter((f) => AUDIO.test(f)).sort() : [];
+    };
+    return {
+        name: 'audio-files',
+        resolveId(source) { return source === id ? '\0' + id : null; },
+        load(source) {
+            if (source !== '\0' + id) return null;
+            const files = { lofi: list('lofi'), featured: list('featured') };
+            const creditsPath = resolve(__dirname, 'public/assets/audio/CREDITS.md');
+            const credits = existsSync(creditsPath) ? readFileSync(creditsPath, 'utf8') : '';
+            [...files.lofi.map((f) => `lofi/${f}`), ...files.featured.map((f) => `featured/${f}`)]
+                .filter((f) => !credits.includes(f))
+                .forEach((f) => this.warn(`${f} is not listed in public/assets/audio/CREDITS.md`));
+            return `export default ${JSON.stringify(files)};`;
+        }
+    };
+};
+
 // Render /portfolio to static HTML from src/content at build time (and on each dev request).
 // Production builds hide [TODO] text and list every remaining TODO in the build log.
 const portfolioPrerender = (): Plugin => ({
@@ -71,7 +96,7 @@ const portfolioPrerender = (): Plugin => ({
 
 export default defineConfig({
     base: '/',
-    plugins: [pageRoutes(), portfolioPrerender(), decorFiles()],
+    plugins: [pageRoutes(), portfolioPrerender(), decorFiles(), audioFiles()],
     build: {
         target: 'es2020',
         rollupOptions: {

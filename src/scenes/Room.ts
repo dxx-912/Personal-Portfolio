@@ -21,7 +21,7 @@ import {
     type PromptSpec
 } from '../ui/hud';
 import { flash, openPiano, openSnapshot } from '../ui/overlays';
-import { isMusicOn, sfx, startAmbient, startMusic, step, stopAmbient, stopMusic } from '../audio';
+import { featuredLevel, hasFeatured, isFeaturedOn, playFeatured, sfx, startAmbient, step, stopAmbient, stopFeatured } from '../audio';
 
 type EntryMode = 'sleep' | 'wake' | RoomKey;
 type Sprite = Phaser.GameObjects.Sprite | Phaser.GameObjects.Image;
@@ -92,6 +92,7 @@ export class Room extends Phaser.Scene {
         this.focus = null;
         this.pinned = null;
         this.cat = null;
+        this.speakerY0 = null;
         this.sleepSprite = null;
         this.busy = false;
         this.sleeping = false;
@@ -141,7 +142,7 @@ export class Room extends Phaser.Scene {
             this.offs.forEach((f) => f()); this.offs = [];
             this.scale.off('resize', this.fitCamera, this);
             this.zTimer?.remove();
-            stopMusic();
+            stopFeatured();
             stopAmbient();
             ['say', 'think', 'act', 'cat'].forEach(hideBubble);
             setPrompt(null);
@@ -640,7 +641,7 @@ export class Room extends Phaser.Scene {
     private verb(t: Target): string | undefined {
         const a = t.def?.action;
         if (!a) return undefined;
-        if (a === 'music') return isMusicOn() ? ui.verbs.musicOff : ui.verbs.musicOn;
+        if (a === 'music') return isFeaturedOn() ? ui.verbs.musicOff : ui.verbs.musicOn;
         const map: Record<Exclude<ActionKind, 'music'>, string> = {
             sit: ui.verbs.sit, outfit: ui.verbs.outfit, pullup: ui.verbs.pullup, snap: ui.verbs.snap,
             piano: ui.verbs.piano, pet: ui.verbs.pet, ride: ui.verbs.ride
@@ -767,22 +768,31 @@ export class Room extends Phaser.Scene {
             toast(ui.soundIsOff, 5000, { label: ui.turnSoundOn, onClick: () => { state.setSound(true); this.startSpeaker(); } });
             return;
         }
-        if (isMusicOn()) { stopMusic(); sfx('tick'); }
+        if (isFeaturedOn()) { stopFeatured(); sfx('tick'); }
         else this.startSpeaker();
     }
 
     private startSpeaker() {
+        if (!hasFeatured()) { toast(ui.noTrack, 2600); return; }
+        playFeatured(() => undefined);
+    }
+
+    /** The speaker bumps to the real loudness of the music; notes float up on the loud bits. */
+    private speakerY0: number | null = null;
+    private lastNote = 0;
+    private animateSpeaker(time: number) {
         const sp = this.sprites.get('speaker');
         if (!sp) return;
-        const y0 = sp.y;
-        startMusic((beat) => {
-            if (!this.scene.isActive()) return;
-            if (!this.rm) this.tweens.add({ targets: sp, y: y0 - 1, scaleX: 1.04, duration: 70, yoyo: true, onComplete: () => sp.setY(y0).setScale(1) });
-            if (beat % 2 === 0 && !this.rm) {
-                const n = this.add.image(sp.x + 4 + Math.random() * (sp.width - 8), sp.y, 'fx_note').setDepth(8600);
-                this.tweens.add({ targets: n, y: n.y - 14, x: n.x + (Math.random() - 0.5) * 8, alpha: 0, duration: 1100, onComplete: () => n.destroy() });
-            }
-        });
+        this.speakerY0 ??= sp.y;
+        if (!isFeaturedOn() || this.rm) { if (sp.y !== this.speakerY0) sp.setY(this.speakerY0).setScale(1); return; }
+        const level = featuredLevel();
+        sp.setY(this.speakerY0 - Math.round(level * 2));
+        sp.setScale(1 + level * 0.06, 1);
+        if (level > 0.55 && time - this.lastNote > 420) {
+            this.lastNote = time;
+            const n = this.add.image(sp.x + 4 + Math.random() * (sp.width - 8), sp.y, 'fx_note').setDepth(8600);
+            this.tweens.add({ targets: n, y: n.y - 14, x: n.x + (Math.random() - 0.5) * 8, alpha: 0, duration: 1100, onComplete: () => n.destroy() });
+        }
     }
 
     private snapPhoto(t: Target) {
@@ -980,6 +990,7 @@ export class Room extends Phaser.Scene {
         const dt = Math.min(delta, 50);
         const feet = { x: this.player.x, y: this.player.y, moving: this.player.moving };
         this.cat?.update(dt, feet);
+        this.animateSpeaker(time);
         this.updateCamera(dt);
         this.updateBubbles();
         this.promptAtHead = false;

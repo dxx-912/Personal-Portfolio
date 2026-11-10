@@ -34,3 +34,9 @@ photos/**
 !photos/**/
 !photos/**/.gitkeep
 !photos/README.md
+
+# Music files: unlicensed recordings stay local (PRIVATE ONLY, see public/assets/audio/CREDITS.md)
+public/assets/audio/lofi/*
+public/assets/audio/featured/*
+!public/assets/audio/lofi/.gitkeep
+!public/assets/audio/featured/.gitkeep

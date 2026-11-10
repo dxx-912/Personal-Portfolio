@@ -1,6 +1,8 @@
-// Tiny synthesized sounds. Muted by default; nothing plays unless the visitor turns sound on.
-// Everything here is generated in the browser (no audio files), see public/assets/audio/CREDITS.md.
+// Game audio. Muted by default; nothing plays unless the visitor turns sound on.
+// Short sounds are synthesized in the browser; music comes from public/assets/audio/ (see CREDITS.md).
 
+import audioFiles from 'virtual:audio-files';
+import { music } from './content/music';
 import { bus, state } from './state';
 
 let ctx: AudioContext | null = null;
@@ -117,101 +119,187 @@ export function pianoNote(freq: number) {
     return true;
 }
 
-// ---------- the speaker's EDM loop (original, generated here) ----------
+// ---------- music files: background lofi and the speaker's featured track ----------
+// Played through <audio> elements routed into Web Audio, so volume and ducking also work on iOS.
 
-let musicTimer = 0;
-let musicOn = false;
-let beatCb: ((beat: number) => void) | null = null;
+const trackName = (url: string) => decodeURIComponent(url.split('/').pop() ?? '').replace(/\.[a-z0-9]+$/i, '');
 
-/** Starts the loop. onBeat fires on every quarter note (for the speaker bump). */
-export function startMusic(onBeat: (beat: number) => void) {
+interface Track { el: HTMLAudioElement; gain: GainNode; url: string }
+
+function makeTrack(a: AudioContext, url: string, dest: AudioNode): Track {
+    const el = new Audio();
+    el.preload = 'auto';
+    el.src = url;
+    const gain = a.createGain();
+    gain.gain.value = 0;
+    a.createMediaElementSource(el).connect(gain).connect(dest);
+    return { el, gain, url };
+}
+
+let lofiBus: GainNode | null = null;
+let lofi: Track | null = null;
+let lofiQueue: string[] = [];
+let lofiLast = '';
+let lofiFading = false;
+const ducks = new Set<string>();
+
+function lofiTarget() { return music.lofiVolume * (ducks.size ? music.duckTo : 1); }
+
+function nextLofiUrl(): string | null {
+    const all = audioFiles.lofi.map((f) => `/assets/audio/lofi/${encodeURIComponent(f)}`);
+    if (!all.length) return null;
+    if (!lofiQueue.length) {
+        lofiQueue = [...all].sort(() => Math.random() - 0.5);
+        if (lofiQueue.length > 1 && lofiQueue[0] === lofiLast) lofiQueue.push(lofiQueue.shift()!);
+    }
+    lofiLast = lofiQueue.shift()!;
+    return lofiLast;
+}
+
+/** Starts (or resumes) the shuffled lofi. Safe to call often; browsers may need a click first. */
+export function startLofi() {
     const a = ac();
-    if (!a || !master || musicOn) return false;
-    musicOn = true;
-    beatCb = onBeat;
-    const bpm = 140, q = 60 / bpm, s16 = q / 4;
-    let next = a.currentTime + 0.08, i = 0;
-    const out = a.createGain();
-    out.gain.value = 0.55;
-    out.connect(master);
-    const bass = [43.65, 43.65, 51.91, 38.89]; // F1, F1, G#1, D#1
-    const tick = () => {
-        if (!musicOn || !ctx) return;
-        while (next < ctx.currentTime + 0.12) {
-            const t = next, bar = Math.floor(i / 16) % 4, pos = i % 16;
-            // half time kick and snare
-            if (pos === 0 || pos === 10) { const o = ctx.createOscillator(), g = ctx.createGain(); o.frequency.setValueAtTime(140, t); o.frequency.exponentialRampToValueAtTime(42, t + 0.12); g.gain.setValueAtTime(0.9, t); g.gain.exponentialRampToValueAtTime(0.0001, t + 0.22); o.connect(g).connect(out); o.start(t); o.stop(t + 0.25); }
-            if (pos === 8) { const sN = ctx.createBufferSource(), f = ctx.createBiquadFilter(), g = ctx.createGain(); sN.buffer = noise(ctx); f.type = 'bandpass'; f.frequency.value = 1800; g.gain.setValueAtTime(0.5, t); g.gain.exponentialRampToValueAtTime(0.0001, t + 0.18); sN.connect(f).connect(g).connect(out); sN.start(t, 0.3); sN.stop(t + 0.2); }
-            if (pos % 2 === 1) { const sN = ctx.createBufferSource(), f = ctx.createBiquadFilter(), g = ctx.createGain(); sN.buffer = noise(ctx); f.type = 'highpass'; f.frequency.value = 7000; g.gain.setValueAtTime(0.12, t); g.gain.exponentialRampToValueAtTime(0.0001, t + 0.04); sN.connect(f).connect(g).connect(out); sN.start(t, 0.7); sN.stop(t + 0.05); }
-            // wobble bass, one note per bar
-            if (pos === 0) {
-                const o = ctx.createOscillator(), o2 = ctx.createOscillator(), f = ctx.createBiquadFilter(), g = ctx.createGain(), lfo = ctx.createOscillator(), lg = ctx.createGain();
-                o.type = 'sawtooth'; o2.type = 'square'; o.frequency.value = bass[bar]; o2.frequency.value = bass[bar] * 1.005;
-                f.type = 'lowpass'; f.frequency.value = 500; f.Q.value = 8;
-                lfo.frequency.value = bar % 2 ? 6 / (q * 4) * 2 : 4 / (q * 4) * 2; lg.gain.value = 420;
-                lfo.connect(lg).connect(f.frequency);
-                g.gain.setValueAtTime(0.0001, t); g.gain.exponentialRampToValueAtTime(0.22, t + 0.02); g.gain.setValueAtTime(0.22, t + q * 4 - 0.05); g.gain.exponentialRampToValueAtTime(0.0001, t + q * 4);
-                o.connect(f); o2.connect(f); f.connect(g).connect(out);
-                [o, o2, lfo].forEach((n) => { n.start(t); n.stop(t + q * 4 + 0.02); });
-            }
-            // chord stab on the offbeat of bar 2 and 4
-            if ((bar === 1 || bar === 3) && pos === 14) {
-                [349.2, 415.3, 523.3].forEach((fr) => { const o = ctx!.createOscillator(), g = ctx!.createGain(); o.type = 'square'; o.frequency.value = fr; g.gain.setValueAtTime(0.04, t); g.gain.exponentialRampToValueAtTime(0.0001, t + 0.3); o.connect(g).connect(out); o.start(t); o.stop(t + 0.32); });
-            }
-            if (pos % 4 === 0) {
-                const beat = Math.floor(i / 4);
-                const delay = Math.max(0, (t - ctx.currentTime) * 1000);
-                window.setTimeout(() => { if (musicOn) beatCb?.(beat); }, delay);
-            }
-            next += s16; i++;
-        }
-    };
-    musicTimer = window.setInterval(tick, 25);
-    tick();
+    if (!a || !master) return;
+    if (!lofiBus) { lofiBus = a.createGain(); lofiBus.gain.value = lofiTarget(); lofiBus.connect(master); }
+    if (lofi) { void lofi.el.play().catch(() => undefined); return; }
+    const url = nextLofiUrl();
+    if (!url) return;
+    playLofi(url, true);
+}
+
+function playLofi(url: string, first: boolean) {
+    const a = ctx!;
+    const t = makeTrack(a, url, lofiBus!);
+    const single = audioFiles.lofi.length === 1;
+    t.el.addEventListener('loadedmetadata', () => {
+        // long mixes start somewhere random so every visit sounds different
+        if ((first || single) && t.el.duration > 600) t.el.currentTime = Math.random() * (t.el.duration - 300);
+    }, { once: true });
+    t.el.addEventListener('timeupdate', () => {
+        if (lofi !== t || lofiFading || !t.el.duration) return;
+        if (t.el.duration - t.el.currentTime < music.crossfade) crossfadeLofi();
+    });
+    t.el.addEventListener('ended', () => { if (lofi === t) crossfadeLofi(); });
+    const now = a.currentTime;
+    t.gain.gain.setValueAtTime(0, now);
+    t.gain.gain.linearRampToValueAtTime(1, now + (first ? 2 : music.crossfade));
+    void t.el.play().catch(() => undefined);
+    lofi = t;
+    bus.emit('track', trackName(url));
+}
+
+function crossfadeLofi() {
+    if (!ctx || !lofi) return;
+    lofiFading = true;
+    const old = lofi;
+    const now = ctx.currentTime;
+    old.gain.gain.cancelScheduledValues(now);
+    old.gain.gain.setValueAtTime(old.gain.gain.value, now);
+    old.gain.gain.linearRampToValueAtTime(0, now + music.crossfade);
+    window.setTimeout(() => { old.el.pause(); old.el.removeAttribute('src'); old.el.load(); }, music.crossfade * 1000 + 200);
+    const url = nextLofiUrl();
+    if (url) playLofi(url, false);
+    lofiFading = false;
+}
+
+export function pauseLofi() { lofi?.el.pause(); }
+
+/** Current lofi track title, for the pause menu. */
+export const nowPlaying = () => (lofi && state.sound ? trackName(lofi.url) : null);
+
+/** Lofi drops to near silence while any source is active (speaker, piano, video). */
+export function duck(source: string, on: boolean) {
+    if (on) ducks.add(source); else ducks.delete(source);
+    if (!ctx || !lofiBus) return;
+    const now = ctx.currentTime;
+    lofiBus.gain.cancelScheduledValues(now);
+    lofiBus.gain.setValueAtTime(lofiBus.gain.value, now);
+    lofiBus.gain.linearRampToValueAtTime(lofiTarget(), now + (on ? 0.6 : 2.5));
+}
+
+// featured track (the speaker)
+let featured: Track | null = null;
+let analyser: AnalyserNode | null = null;
+let levels: Uint8Array | null = null;
+let onFeaturedEnd: (() => void) | null = null;
+
+export const hasFeatured = () => audioFiles.featured.length > 0;
+export const isFeaturedOn = () => !!featured && !featured.el.paused;
+
+/** Plays the speaker's track. Returns false if sound is off or there is no file. */
+export function playFeatured(onEnd: () => void): boolean {
+    const a = ac();
+    if (!a || !master || !hasFeatured()) return false;
+    stopFeatured();
+    analyser ??= a.createAnalyser();
+    analyser.fftSize = 512;
+    analyser.connect(master);
+    levels = new Uint8Array(analyser.frequencyBinCount);
+    const url = `/assets/audio/featured/${encodeURIComponent(audioFiles.featured[0])}`;
+    const t = makeTrack(a, url, analyser);
+    t.el.addEventListener('loadedmetadata', () => {
+        if (t.el.duration > music.featuredStart + 10) t.el.currentTime = music.featuredStart;
+    }, { once: true });
+    t.el.addEventListener('ended', () => { stopFeatured(); onEnd(); });
+    t.gain.gain.setValueAtTime(0, a.currentTime);
+    t.gain.gain.linearRampToValueAtTime(music.featuredVolume, a.currentTime + 1.2);
+    void t.el.play().catch(() => undefined);
+    featured = t;
+    onFeaturedEnd = onEnd;
+    duck('speaker', true);
     return true;
 }
 
-export function stopMusic() {
-    musicOn = false;
-    beatCb = null;
-    window.clearInterval(musicTimer);
+export function stopFeatured() {
+    if (!featured) return;
+    const t = featured;
+    featured = null;
+    if (ctx) {
+        const now = ctx.currentTime;
+        t.gain.gain.cancelScheduledValues(now);
+        t.gain.gain.setValueAtTime(t.gain.gain.value, now);
+        t.gain.gain.linearRampToValueAtTime(0, now + 0.6);
+    }
+    window.setTimeout(() => { t.el.pause(); t.el.removeAttribute('src'); t.el.load(); }, 700);
+    duck('speaker', false);
+    const cb = onFeaturedEnd; onFeaturedEnd = null;
+    void cb;
 }
 
-export const isMusicOn = () => musicOn;
+/** Loudness of the featured track right now, 0..1 (drives the speaker bump). */
+export function featuredLevel(): number {
+    if (!analyser || !levels || !featured) return 0;
+    analyser.getByteFrequencyData(levels as Uint8Array<ArrayBuffer>);
+    let sum = 0;
+    const n = Math.min(24, levels.length); // low end: the bass and the orchestra's weight
+    for (let i = 1; i < n; i++) sum += levels[i];
+    return Math.min(1, sum / (n - 1) / 200);
+}
 
 // ---------- ambience ----------
 
 let ambient: { stop: () => void } | null = null;
 
-/** Quiet room tone: a dorm hum with distant campus noise, or rain at home. */
+/** Quiet room tone: a soft hum and distant campus blips in the dorm. Home has none (no white noise). */
 export function startAmbient(room: 'dorm' | 'home') {
     stopAmbient();
     const a = ac();
-    if (!a || !master) return;
+    if (!a || !master || room !== 'dorm') return;
     const g = a.createGain();
     g.gain.setValueAtTime(0.0001, a.currentTime);
-    g.gain.exponentialRampToValueAtTime(room === 'dorm' ? 0.05 : 0.07, a.currentTime + 1.5);
+    g.gain.exponentialRampToValueAtTime(0.035, a.currentTime + 1.5);
     g.connect(master);
     const src = a.createBufferSource();
     src.buffer = noise(a); src.loop = true;
     const f = a.createBiquadFilter();
-    const nodes: AudioScheduledSourceNode[] = [src];
-    if (room === 'dorm') {
-        f.type = 'lowpass'; f.frequency.value = 320;
-        const hum = a.createOscillator(), hg = a.createGain();
-        hum.frequency.value = 60; hg.gain.value = 0.15;
-        hum.connect(hg).connect(g); hum.start(); nodes.push(hum);
-    } else {
-        f.type = 'bandpass'; f.frequency.value = 1600; f.Q.value = 0.6;
-    }
+    f.type = 'lowpass'; f.frequency.value = 260;
+    const hum = a.createOscillator(), hg = a.createGain();
+    hum.frequency.value = 60; hg.gain.value = 0.15;
+    hum.connect(hg).connect(g); hum.start();
     src.connect(f).connect(g);
     src.start();
-    // occasional distant sounds: campus chatter blips in the dorm, a creak at home
-    const t = window.setInterval(() => {
-        if (!state.sound) return;
-        if (room === 'dorm') blip(900 + Math.random() * 400, 0.12, 'sine', 0.006, 700);
-        else blip(90, 0.3, 'triangle', 0.012, 70);
-    }, 7000);
+    const nodes: AudioScheduledSourceNode[] = [src, hum];
+    const t = window.setInterval(() => { if (state.sound) blip(900 + Math.random() * 400, 0.12, 'sine', 0.006, 700); }, 7000);
     ambient = {
         stop: () => {
             window.clearInterval(t);
@@ -223,7 +311,16 @@ export function startAmbient(room: 'dorm' | 'home') {
 
 export function stopAmbient() { ambient?.stop(); ambient = null; }
 
+if (import.meta.env.DEV) {
+    (window as unknown as { __audio: unknown }).__audio = {
+        nowPlaying, isFeaturedOn, featuredLevel, ducks, lofiGain: () => lofiBus?.gain.value, el: () => lofi?.el, featuredEl: () => featured?.el
+    };
+}
+
+// Browsers only allow audio after a click or key press: retry the lofi on the first one.
+['pointerdown', 'keydown'].forEach((ev) => window.addEventListener(ev, () => { if (state.sound) startLofi(); }, { passive: true }));
+
 bus.on('sound', (on) => {
-    if (!on) { stopMusic(); stopAmbient(); }
-    else startAmbient(state.room);
+    if (!on) { stopFeatured(); pauseLofi(); stopAmbient(); }
+    else { startAmbient(state.room); startLofi(); }
 });

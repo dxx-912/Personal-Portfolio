@@ -27,6 +27,65 @@ Screenshots of iteration 1 as it looks now: `reference/current-dorm-iteration-1.
 
 ---
 
+## 0.1 Iteration 4 changelist (current work)
+
+Iterations 2 and 3 are built. Daniel reviewed them; his notes are in `reference/iteration-4-feedback.pdf` and the current state is in `reference/current-dorm-iteration-3.png` and `reference/current-home-iteration-3.png`. Everything below is approved. Where it conflicts with older sections of this file, this section wins (those sections have been updated to match where practical). Work through the groups in order, commit and push after each group, verify each with Playwright screenshots.
+
+### A. Audio
+1. **Background lofi.** Shuffle every audio file in `public/assets/audio/lofi/` (Daniel drops MP3s there). Quiet and ambient but clearly present (start around 15 to 20% volume). Crossfade between tracks, shuffle without repeats until the list is exhausted, keep playing across the room change. Starts only when the visitor turns sound on (sound stays off by default). Show the current track title small in the pause menu.
+2. **Remove the white noise** ambience from the home room. Keep footsteps and object sounds.
+3. **Speaker E action** plays the file in `public/assets/audio/featured/` (Daniel will place Rachmaninoff's Piano Concerto No. 2, ending coda in C major, performed by Valentina Lisitsa). E again stops it. While it plays, the speaker bumps to the music, and the lofi ducks to near silence, then fades back after.
+4. **Audio ducking everywhere:** lofi ducks while the speaker, the piano overlay, or any panel video plays.
+5. **Credits:** record every file in `public/assets/audio/CREDITS.md` with title, artist, source, and license. Mark any file without a license for public use as `PRIVATE ONLY: replace before public launch`, and list those in `TODO_ASSETS.md`. Build must not fail if these folders are empty; the speaker shows "No track loaded yet" in that case.
+6. **Speaker F panel** now covers his music taste broadly: dubstep, EDM, classical, R&B, hip hop. Keep the Spotify playlist link(s). Add his lofi playlist link: https://open.spotify.com/playlist/0vvXsWCC9xrXsKd4FyS8kM
+
+### B. Daniel's sprite
+1. Lighter skin tone: a light warm East Asian complexion, clearly lighter than now. Check it against `reference/daniel-photos.png` and against the warm room lighting so it does not read as brown in the dim dorm.
+2. Eyes: restore the eye style from the iteration 1 sprite (check git history for the earlier placeholder).
+3. Neutral mouth: no teeth, no smile. A small closed mouth line.
+4. HUD portrait uses the same updated face.
+
+### C. Interactions
+1. **Apple crisp pie, E to eat:** Daniel faces the desk, a two second eating animation (fork to mouth, the slice shrinks), then a speech bubble "yum!". The slice is back on the next visit or after the room is re entered. F still opens baking.
+2. **Cat sounds:** a random soft meow every 45 to 90 seconds, only when the visitor is in the home room and sound is on; a meow when petted while awake; a purr loop for a few seconds when petted while asleep on the bed. With sound off, show small "meow" and "prrr" text bubbles instead.
+3. **Idle thought bubbles:** much smaller and subtler: about half the current size, lower opacity, smaller text, positioned close to Daniel's head, and they fade out sooner.
+4. **HUD stats:** Caffeine and Sleep are randomized on every visit (Caffeine 1 to 7 out of 7, Sleep 0 to 6 out of 6, weighted toward low sleep for the joke). Curiosity stays fixed at 200/200.
+
+### D. Dorm room
+1. **Top left still feels empty:** make the beanbag noticeably bigger; add a trash bin (with a crumpled paper or two); add a laundry basket with clothes spilling over the top. Also add: a mini fridge with a few magnets, a pair of sneakers near the door (off the approach tile), a small shoe or bag on the floor, and a wall shelf or hooks with a backpack hanging. Keep every walkway and standing spot clear (section 9).
+2. **Hope For Hearing shirt:** redraw as a clearly folded T shirt: visible collar, short sleeves folded in, soft fabric shading, small "Hope For Hearing" print. It must not read as paper.
+3. **Desk clutter (non interactive):** add a baseball cap, wired earbuds with the cable trailing, a spiral notebook, a few pens, sticky notes, a water bottle. Keep the laptop, binder, and phone clearly readable and their standing spots unchanged.
+4. **Door sign arrow:** the arrow on the "Home, Toronto" sign reads as a cross; remove the stray pixel and redraw it as a clean pixel arrow. Check the "Back to UCLA" arrow too.
+
+### E. Home room
+1. **Shelf, top tier ("Sports"):** replace the candy cane oar with an oar blade seen face on: a blade shape (straight top edge, angled tip) with blue and white vertical stripes, plus a short bit of handle. Add a beach volleyball. Rename the tier "Sports" in its close up; its panel covers rowing and beach volleyball (he plays beach volleyball in his free time; details and photos `[TODO]`).
+2. **Shelf, bottom tier (books):** center the books on the shelf, make them thinner, and vary them: some upright, one or two leaning, one or two lying flat. Spine titles stay readable: "AOT", "Lookism", "Sweet Home", "Solo Levelling".
+3. **Longboard rug:** replace the road looking runner with a soft fluffy beige rug (shaggy edge, no dashed center line).
+4. **Work table (right wall) looks too tidy:** make it naturally messy. Speaker angled and off center, camera set down casually with its strap draped, plus non interactive clutter: a mug, a notebook, pencils, a small plant, a charging cable, a lens cap, a few receipts or sticky notes. Remove the visible dotted spare slot outline. Keep the speaker and camera standing spots and prompts working.
+5. **Bed:** green and blue plaid blanket.
+6. **Wall decor:** add two or three empty poster frames on the home walls as image slots (`poster-home-1`, `poster-home-2`, `poster-home-3` at `public/assets/decor/`, original abstract placeholders until Daniel provides files, same rules as section 5.4).
+
+### F. Readability and polish (both rooms)
+1. **Arrow overload:** too many bouncing arrows at once. Make unfound arrows smaller, stagger their bob timing, and keep them subtle at a distance; they grow and brighten only when Daniel is near. H still highlights everything.
+2. **Camera crop and HUD:** the top of the back wall is cut off and the HUD covers the dorm window and pennant. Show the full back wall, and make the HUD smaller and partly transparent (fully opaque on hover). HUD and minimap must never cover an interactive item.
+3. **Fairy light glow:** smaller, warmer glow halos (less white).
+
+### G. Fonts (game panels and the portfolio view)
+The current description font looks too corporate. No pixel fonts for body text.
+1. Build a temporary page at `/fonts` showing one real panel (Ateball) and one quick view section rendered in three pairings:
+   - A (default): Space Mono for labels, nav, subheadings; Nunito for paragraphs.
+   - B: Space Grotesk for everything except big headings.
+   - C: IBM Plex Mono for labels, nav, subheadings; Nunito for paragraphs.
+   Big headings keep Press Start 2P. Paragraphs at 17 to 18px, generous line height.
+2. Ship pairing A everywhere (game panels, prompts, quick view, nav) until Daniel picks; make the choice a single token so switching is one line. Self host the fonts.
+
+### H. Quick view
+Apply the changes in `PORTFOLIO_VIEW.md` section 10.
+
+**Definition of done for iteration 4:** every item above is visible in fresh Playwright screenshots of both rooms and the quick view; the three playthroughs still reach 19 of 19; `/fonts` exists; `npm run build` passes; `TODO_ASSETS.md` and `CREDITS.md` are updated.
+
+---
+
 ## 1. The vision in one paragraph
 
 A personal portfolio that plays like a tiny Soul Knight style game. The visitor loads into a dark room where only a pixel Daniel is visible, asleep. "Press F to wake up." The lights fade up, Daniel hops out of bed and says hi in a speech bubble, a title card reads "Rieber Hall, UCLA", and the visitor is standing in a cozy, slightly messy, clearly UCLA dorm that holds everything professional. A glowing door with a "Home, Toronto" sign leads to his childhood bedroom in North York, which holds everything personal. Every meaningful object can be acted on with E (pet the cat, ride the longboard, do pull ups, sit, play piano) and learned about with F (a pixel panel with real content). The goal is memorability for product management recruiters in the 2027 cycle, without ever making the facts hard to reach.
@@ -117,6 +176,7 @@ Daniel wants some real world art and brand items in the rooms. The site is priva
 | `hoodie-logo` | `public/assets/decor/hoodie-logo.png` | Home wall hook hoodie, chest area | Plain "TORONTO" in a generic pixel font |
 | `speaker-logo` | `public/assets/decor/speaker-logo.png` | Home speaker grille badge | Small plain orange badge |
 | `phone-screen` | `public/assets/decor/phone-screen.png` | Dorm phone screen (and the phone panel header) | Generic grid of colored squares |
+| `poster-home-1`, `poster-home-2`, `poster-home-3` | `public/assets/decor/poster-home-N.png` | Home room walls | Abstract placeholders in the home palette |
 | `poster-caricature` (optional) | `public/assets/decor/poster-caricature.png` | Dorm wall, optional extra frame | Empty frame, hidden until the file exists |
 
 Slot rules: scale the image down to the slot with nearest neighbour sampling, optionally reduce it to the room palette so it matches the pixel style, keep the frame and lighting consistent, and make slots purely decorative (no glow, no prompt). List every slot in `TODO_ASSETS.md` under "Decor images to provide (optional)".
@@ -205,13 +265,13 @@ Each content item has exactly one standing spot (yellow numbers in the layout im
 | # | Object | E action | F panel content |
 |---|---|---|---|
 | 1 | Window (Toronto skyline) | none (F only) | **North York.** 18 years there, the same library and cafe through high school, a gallery. |
-| 2 | Three tier shelf | none | Shelf close up with three selectable tiers. Top: **rowing** (high school varsity, national championship, trophy and oar photos). Middle: three **award plaques** (DECA Provincial Champion; FBLA Business Management National Champion at CNLC; FBLA International 6th place at NLC). Bottom: **favorite reads**, Attack on Titan and the webtoons Lookism, Sweet Home, Solo Levelling. |
+| 2 | Three tier shelf | none | Shelf close up with three selectable tiers. Top, "Sports": **rowing** (high school varsity, national championship, trophy and oar blade photos) and **beach volleyball** (free time, `[TODO]`). Middle: three **award plaques** (DECA Provincial Champion; FBLA Business Management National Champion at CNLC; FBLA International 6th place at NLC). Bottom: **favorite reads**, Attack on Titan and the webtoons Lookism, Sweet Home, Solo Levelling. |
 | 3 | Pull up tower | **Do pull ups**: mash E (or tap) to do reps with a counter and strain animation for a few seconds, then a "nice" pop | **Exercise.** Lifts and sprints or runs almost every day; photos and videos (muscle up, trap bar deadlift, physique). |
-| 4 | Big black speaker | **Toggle music**: plays a short original EDM loop with a bass bump animation on the speaker. If master sound is off, show "Sound is off" with a one click "turn on" button. | **Dubstep and EDM.** Why he loves it, and his Spotify playlist link (embed loads only when the panel opens). |
+| 4 | Big black speaker | **Play featured track**: plays the file in `public/assets/audio/featured/` (Rachmaninoff, Piano Concerto No. 2, coda, Lisitsa), speaker bumps, lofi ducks; E again stops. If master sound is off, show "Sound is off" with a one click "turn on" button. | **Music.** Dubstep, EDM, classical, R&B, hip hop; why he loves them; Spotify playlist links including his lofi playlist. |
 | 5 | Camera | **Snap a photo**: white flash, then a polaroid of the current game view slides in, downloadable as a PNG | **Photography.** His love of photography and a gallery of his photos. All content `[TODO]`. |
 | 6 | Nightstand (glowing lamp, family photo frame) | none (F only) | **Family.** Parents and sister, and a gallery. |
 | 7 | Digital piano | **Play**: opens a one octave playable keyboard (mouse, touch, or number keys 1 to 8) with soft synthesized tones | **Piano.** Twelve years, RCM ARCT Diploma (wording `[TODO]`), recital photos. |
-| 8 | Apple crisp pie with a slice on a plate | none (F only) | **Baking and cooking.** Cooks and bakes for his family; food photos and photos of him cooking. |
+| 8 | Apple crisp pie with a slice on a plate | **Eat**: two second eating animation, then "yum!" |  **Baking and cooking.** Cooks and bakes for his family; food photos and photos of him cooking. |
 | 9 | Cat | **Pet**: the cat stops, sits, closes its eyes, hearts float up, and it meows (sound if on, a "meow" text bubble if off). Petting a sleeping cat gives a sleepy purr and a single heart. | **Cat.** Photos, how they got him, his name, his personality. |
 | 10 | Longboard | **Ride**: E to hop on, E again to hop off | **Longboard build.** Originally meant to be electric, the build process, soldering photos, the destroyed battery. F works only while not riding. |
 | E only | Home bed | Sit on the edge | none |
@@ -274,7 +334,7 @@ The found counter reads "Found X of 19". Update `/plain` to match this item list
 - **Door cues:** light leak under the door, doormat, small sign with an arrow, one pulse after waking. Also mentioned in the controls tooltip on first visit.
 - **Clocks:** one wall clock per room showing the visitor's local time (their timezone, from the browser). The window views shift between day, sunset, and night using the visitor's local time.
 - **Idle thoughts:** if the player stands still for about 12 seconds, a small thought bubble appears with one of a few lines `[TODO: Daniel to write 5 to 8 lines]`, for example "should probably do my readings". Not while a panel is open.
-- **Ambient sound** (only when sound is on): soft dorm hum and distant campus sounds in the dorm; quiet rain or wind and house sounds at home; footsteps that differ on carpet and wood. Use royalty free or self made sounds and record their sources and licenses in `public/assets/audio/CREDITS.md`.
+- **Ambient sound** (only when sound is on): background lofi from `public/assets/audio/lofi/` (section 0.1 A); soft dorm hum in the dorm; no white noise at home; footsteps that differ on carpet and wood. Use royalty free or self made sounds and record their sources and licenses in `public/assets/audio/CREDITS.md`.
 - **Camera and screen fill:** the room currently fills only about 60% of the window. Zoom in so the room fills most of the viewport height at an integer scale, or use a gently following camera with room bounds. HUD elements stay pinned to screen corners and never cover interactive items.
 - **Completion:** at 19 of 19, a small celebration (confetti, Daniel does a little dance) and a "Thanks for exploring, let's talk" panel with contact links.
 - **Easter eggs (keep or add):** Konami code flip; poking a sleeping cat; the cat occasionally pushes something off the desk.
@@ -368,6 +428,8 @@ Keep this list current in `TODO_ASSETS.md`, grouped by item.
 | `reference/current-dorm-iteration-1.png` | Screenshot of the dorm as built in iteration 1 |
 | `reference/current-home-iteration-1.png` | Screenshot of the home bedroom as built in iteration 1 |
 | `reference/iteration-2-feedback.pdf` | Daniel's written feedback on iteration 1 |
+| `reference/iteration-4-feedback.pdf` | Daniel's written feedback on iterations 2 and 3 (includes the oar blade reference image) |
+| `reference/current-dorm-iteration-3.png`, `reference/current-home-iteration-3.png` | Screenshots of both rooms after iteration 3 |
 | `reference/daniel-photos.png` | Photos of Daniel (hair, face, outfit) and his cat, for the sprites |
 | `reference/content-outline.pdf` | Daniel's original content outline |
 | `reference/dorm-original-sketch.jpg`, `reference/home-original-sketch.jpg` | His rough sketches of the real rooms (context only) |

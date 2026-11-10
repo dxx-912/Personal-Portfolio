@@ -31,6 +31,12 @@ Never drawn by us. Until the file exists, an original abstract placeholder shows
 | `phone-screen.png` | Dorm phone screen | Grid of coloured squares |
 | `family-photo.png` | Home nightstand photo frame | Outline silhouettes of people |
 
+## Audio (`public/assets/audio/`, credits in `CREDITS.md` there)
+
+- [ ] **PRIVATE ONLY: replace before public launch.** `lofi/Lofi Beats.mp3` and `featured/Rachmaninoff Piano Concerto No 2 Allegro Scherzando.mp3` have no license for public use. They play locally but are kept out of git, so the deployed site has no lofi and the speaker says "No track loaded yet" until licensed files are added. Fill in artist and source for each in `CREDITS.md`.
+- [ ] **Coda start time:** the speaker starts the featured track at 10:12 (`featuredStart` in `src/content/music.ts`), just before the C major Maestoso. Confirm by ear.
+- [ ] **Music panel:** a sentence on why you love it, and your dubstep playlist link (the lofi playlist is in).
+
 ## Little lines (`src/content/profile.ts`)
 
 - [ ] **Wake up line.** Now: "Hey, I'm Daniel. Welcome to my dorm at UCLA." Confirm or replace.
@@ -120,9 +126,9 @@ Never drawn by us. Until the file exists, an original abstract placeholder shows
 - [ ] A line on why, or a current goal
 - [ ] Photos or short clips: muscle up, trap bar deadlift, physique
 
-### 4. Speaker: dubstep and EDM (`home.speaker`)
-- [ ] Why you love it, a sentence or two
-- [ ] Spotify playlist URL (and its id for the embed)
+### 4. Speaker: music (`home.speaker`)
+- [ ] Why you love it, a sentence or two (dubstep, EDM, classical, R&B, hip hop)
+- [ ] Dubstep playlist URL (the lofi playlist is linked and embedded)
 
 ### 5. Camera: photography (`home.camera`) *(new)*
 - [ ] 2 to 3 sentences on why you love photography

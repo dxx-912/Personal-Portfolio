@@ -19,7 +19,7 @@ Inspiration: https://jin-kim-portfolio.vercel.app/ for its cohesive branding and
 ## 2. Name, route, and links
 
 - **Route:** `/portfolio`. Keep `/plain` as a redirect to `/portfolio` so old links work.
-- **Link label in the game** (top left, replacing "Plain version"): **"No time to play? Quick view :("**. Alternatives Daniel may swap in later, keep the label in one content constant: "Recruiter mode (no game, promise)", "Skip the game :(", "In a rush? Read it instead".
+- **Link label in the game** (top left, replacing "Plain version"): **"No time to play? Quick view"** (no sad face). Keep the label in one content constant.
 - **Link back to the game** from the portfolio view: the hero button "Play the game version", a gamepad link in the footer, and the nav bar.
 - On small screens where the game is cramped, the game shows a gentle one time suggestion: "On a phone? The quick view might be comfier," with both options.
 
@@ -90,7 +90,7 @@ Every work card, the Hope For Hearing card, the education cards, and every inven
 
 One cohesive identity shared with the game. Pixel styling as accent, not as costume.
 
-- **Type:** Press Start 2P (pixel font) only for small labels, section headings, card labels, big numbers, and the hero headline. Inter (or a similar clean sans) for all body text and anything longer than a line. Self host both fonts with `font-display: swap`.
+- **Type:** Press Start 2P only for big headings, the hero headline, and big numbers. Everything else follows CLAUDE.md section 0.1 G: default pairing Space Mono (labels, nav, subheadings) plus Nunito (paragraphs), switchable via one token after Daniel picks from `/fonts`. No pixel fonts for body text, and no plain corporate sans. Self host with `font-display: swap`.
 - **Shapes:** hard 2px outlines in `#1a1626`, square corners, offset block shadows with no blur (`4px 4px 0 #1a1626`). Cards on `#fffdf7`.
 - **Color:** the sky colors carry the mood per section (table in section 3). UCLA blue `#2774ae` is the main accent (primary button). Section accents: `#185fa5` day, `#993c1d` evening, `#85b7eb` night, `#f6c94a` for highlights and the active nav item. HUD bar colors match the game: red `#d4493a`, grey `#8a96a5`, blue `#3d7fd4`.
 - **Imagery:** real screenshots and photos inside a 2px outlined frame. The pixel sprite of Daniel and the game's palette tie everything back to the game. Reuse game sprites from `src/assets/manifest.ts` where possible.
@@ -156,3 +156,20 @@ Rules for all motion:
 6. Verify with Playwright: screenshots at 375, 768, 1280 px for every section and at least three open panels; a reduced motion pass; compare against the mockup; fix anything that looks default or unstyled. Update `TODO_ASSETS.md`. Commit and push.
 
 **Done means:** a recruiter can learn who Daniel is, what he has built, and how to reach him within 30 seconds on a phone or laptop; every card opens a detailed panel with a shareable link; the page feels unmistakably like the game's brand; nothing looks like default styling; it is fast and accessible.
+
+---
+
+## 10. Iteration 4 changes (current work)
+
+These are approved and override anything above that conflicts.
+
+1. **Link label:** "No time to play? Quick view" with no sad face, in the game and anywhere else it appears.
+2. **Fonts:** subheadings, descriptions, card text, panel text, and the Morning, Work, Evening, Night, and Play nav all move to the pairing in CLAUDE.md section 0.1 G. They currently look like default browser text and do not match the brand. Labels and nav in Space Mono can be small caps style with letter spacing; paragraphs in Nunito at 17 to 18px.
+3. **Leadership (evening section) becomes a swipeable card gallery,** styled and behaving like "Selected work": a horizontal row of cards that scrolls or swipes, with arrow buttons on desktop, snap points, and a peek of the next card. Every card opens a detail panel exactly like the work panels (section 4), with a deep link.
+   - Order: William F. Sharpe Fellows, technology vice president, first; then the other orgs (Delta Sigma Pi, IBB, the entertainment association `[TODO name]`, UBS Technology Committee, UCLA ResLife RA); **Hope For Hearing last**, as the largest card in the gallery with its counters, so it reads as the closing highlight.
+   - The separate org tag row goes away (the cards replace it). Education stays below the gallery.
+4. **Remove the footer line** "Same stories as the game, minus the walking."
+5. **More dynamic animation, tastefully:** gallery cards drift in with a slight stagger and settle; the active card in a gallery scales up a touch; section headings slide in with a short underline draw; inventory items wobble once on hover; panel images fade and scale in; the nav indicator slides between items instead of jumping. Keep every effect short (under 400ms), never block reading, and keep the reduced motion versions.
+6. **Sports:** add beach volleyball to the inventory (night section) with its own panel `[TODO content]`.
+7. **Music:** the music inventory item now reads "Music" and covers dubstep, EDM, classical, R&B, and hip hop.
+8. Re verify with Playwright at 375, 768, and 1280 px after the changes.

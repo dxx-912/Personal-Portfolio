@@ -100,13 +100,20 @@ export const homeContent: Record<string, Entry> = withMedia({
     // 4. Big black speaker (E toggles a short loop)
     speaker: {
         id: 'speaker',
-        short: 'Dubstep, EDM',
+        short: 'Music',
         prompt: 'Music',
         plainGroup: 'personal',
-        title: 'Dubstep and EDM',
-        body: ['I love dubstep and EDM.', '[TODO: why, in a sentence or two]'],
-        videos: [{ kind: 'spotify', title: 'My dubstep playlist' /* id: 'playlist/[TODO]' */ }],
-        links: [{ label: 'My dubstep playlist on Spotify' /* href: '[TODO]' */ }]
+        title: 'Music',
+        body: [
+            'I listen to a bit of everything: dubstep, EDM, classical, R&B, and hip hop.',
+            '[TODO: why you love it, and what you have on repeat right now]',
+            "Press E at the speaker for one of my favourites: the coda of Rachmaninoff's Piano Concerto No. 2, played by Valentina Lisitsa."
+        ],
+        videos: [{ kind: 'spotify', title: 'My lofi playlist', id: 'playlist/0vvXsWCC9xrXsKd4FyS8kM', url: 'https://open.spotify.com/playlist/0vvXsWCC9xrXsKd4FyS8kM' }],
+        links: [
+            { label: 'My lofi playlist on Spotify', href: 'https://open.spotify.com/playlist/0vvXsWCC9xrXsKd4FyS8kM' },
+            { label: 'My dubstep playlist on Spotify' /* href: '[TODO]' */ }
+        ]
     },
 
     // 5. Camera on the work table (E snaps a photo of the room)

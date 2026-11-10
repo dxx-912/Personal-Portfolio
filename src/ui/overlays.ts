@@ -2,7 +2,7 @@
 
 import { ui } from '../content';
 import { state } from '../state';
-import { pianoNote, sfx } from '../audio';
+import { duck, pianoNote, sfx } from '../audio';
 import { openOverlay } from './panel';
 import { esc } from './render';
 
@@ -23,8 +23,9 @@ export function openPiano(onClose: () => void) {
             ${WHITE.map((k, i) => `<button type="button" class="key white" data-f="${k.f}" aria-label="${k.n}${i === 7 ? ' (high)' : ''}, key ${i + 1}"><span>${i + 1}</span></button>`).join('')}
             ${BLACK.map((k) => `<button type="button" class="key black" data-f="${k.f}" style="--at: ${k.after + 1}" aria-label="Sharp after ${WHITE[k.after].n}"></button>`).join('')}
         </div>`;
+    duck('piano', true);
     const root = openOverlay({
-        title: ui.pianoTitle, className: 'piano', body, onClose, focus: '.key.white',
+        title: ui.pianoTitle, className: 'piano', body, onClose: () => { duck('piano', false); onClose(); }, focus: '.key.white',
         onKey: (e) => {
             const n = Number(e.key);
             if (n >= 1 && n <= 8) {

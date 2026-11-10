@@ -375,6 +375,7 @@ a.link:hover { background: #eef4ff; text-decoration: underline; }
 }
 .menu-btn:hover { background: #fff6c8; }
 .menu-btn.danger { color: var(--accent); }
+.now-playing { font: 600 13px var(--pixel); color: var(--muted); margin: 4px 0 0; text-align: center; }
 .pause-hint { font-size: 15px; color: var(--muted); margin: 6px 0 0; text-align: center; }
 
 @media (max-width: 640px) {

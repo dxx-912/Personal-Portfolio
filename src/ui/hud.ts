@@ -6,7 +6,7 @@ import { isTouchDevice, prefersReducedMotion } from '../config';
 import { bus, state } from '../state';
 import { clearHeld, onAction, stick, trigger } from './input';
 import { esc } from './render';
-import { sfx } from '../audio';
+import { nowPlaying, sfx } from '../audio';
 
 const $ = <T extends HTMLElement = HTMLElement>(sel: string) => document.querySelector<T>(sel)!;
 
@@ -277,6 +277,7 @@ function openPause() {
                 <button class="menu-btn" data-act="sound">${esc(state.sound ? ui.soundOn : ui.soundOff)}</button>
                 <a class="menu-btn" href="${esc(ui.quickViewHref)}">${esc(ui.quickView)}</a>
                 <button class="menu-btn danger" data-act="reset">${esc(ui.startOver)}</button>
+                ${nowPlaying() ? `<p class="now-playing">♪ ${esc(ui.nowPlaying(nowPlaying()!))}</p>` : ''}
                 <p class="pause-hint">${esc(ui.hint)}</p>
             </div>
         </section>`;

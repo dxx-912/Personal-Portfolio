@@ -27,6 +27,8 @@ interface BusEvents {
     awake: boolean;
     /** Minimap click: walk to the door into the other room. */
     travel: void;
+    /** A new lofi track started (its title). */
+    track: string;
 }
 
 class Bus {
