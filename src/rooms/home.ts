@@ -49,7 +49,7 @@ export const home: RoomDef = {
         { id: 'camera', target: 'camera', spot: { x: 15.95, y: 5.85 }, facing: 'right', info: 'camera', action: 'snap' },
         { id: 'nightstand', target: 'nightstand', spot: { x: 3.2, y: 5.35 }, facing: 'left', info: 'nightstand' },
         { id: 'piano', target: 'piano', spot: { x: 9.1, y: 5.45 }, facing: 'down', info: 'piano', action: 'piano' },
-        { id: 'pie', target: 'pie', spot: { x: 11.85, y: 5.45 }, facing: 'down', info: 'pie' },
+        { id: 'pie', target: 'pie', spot: { x: 11.85, y: 5.45 }, facing: 'down', info: 'pie', action: 'eat' },
         { id: 'cat', target: 'cat', spot: { x: 0, y: 0 }, facing: 'down', info: 'cat', action: 'pet' },
         { id: 'longboard', target: 'longboard', spot: { x: 0, y: 0 }, facing: 'up', info: 'longboard', action: 'ride' },
         {

@@ -135,8 +135,13 @@ body.touch .chip { padding-left: 9px; }
     content: ''; position: absolute; left: 50%; bottom: -8px; width: 10px; height: 8px; transform: translateX(-50%);
     background: #fffdf6; clip-path: polygon(0 0, 100% 0, 50% 100%);
 }
-.bubble-thought { font-style: italic; color: #4a4050; background: #f2eefc; border-style: dashed; border-radius: 12px; }
-.bubble-thought::after { width: 6px; height: 6px; bottom: -10px; border-radius: 50%; clip-path: none; background: #f2eefc; border: 2px solid #1a1420; }
+.bubble-thought {
+    font-size: 11px; line-height: 1.25; font-style: italic; padding: 2px 7px; max-width: 150px; opacity: 0.72;
+    color: #4a4050; background: #f2eefc; border: 1px dashed rgba(26, 20, 32, 0.6); border-radius: 9px; box-shadow: none;
+    animation: thought 2.8s ease-in-out forwards;
+}
+.bubble-thought::after { width: 4px; height: 4px; bottom: -6px; border-radius: 50%; clip-path: none; background: #f2eefc; border: 1px solid rgba(26, 20, 32, 0.6); }
+@keyframes thought { 0% { opacity: 0; } 12%, 75% { opacity: 0.72; } 100% { opacity: 0; } }
 .bubble-small { font-size: 14px; padding: 3px 8px; }
 
 .message {

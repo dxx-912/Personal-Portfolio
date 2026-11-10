@@ -110,7 +110,7 @@ export const ASSETS = {
     home_bed: { w: 100, h: 42, paint: painters.homeBed, outline: true, highlight: true },
     home_desk: { w: 100, h: 54, paint: painters.homeDesk, outline: true },
     home_piano: { w: 40, h: 14, paint: painters.homePiano, outline: true, highlight: true },
-    home_pie: { w: 34, h: 17, paint: painters.homePie, outline: true, highlight: true },
+    home_pie: { w: 34, h: 17, frames: 4, paint: painters.homePie, outline: true, highlight: true },
     home_rug: { w: 132, h: 24, paint: painters.homeRug, outline: false },
     home_longboard: { w: 48, h: 12, paint: painters.homeLongboard, outline: true, highlight: true }
 } satisfies Record<string, AssetDef>;

@@ -93,6 +93,7 @@ export class Room extends Phaser.Scene {
         this.pinned = null;
         this.cat = null;
         this.speakerY0 = null;
+        this.pieEaten = false;
         this.sleepSprite = null;
         this.busy = false;
         this.sleeping = false;
@@ -122,7 +123,7 @@ export class Room extends Phaser.Scene {
         this.physics.add.collider(this.player.sprite, this.solidBodies(), () => this.onBump());
         this.ensureFree();
 
-        if (this.def.catWaypoints) this.makeCat();
+        if (this.def.catWaypoints) { this.makeCat(); this.scheduleMeow(); }
         this.buildTargets();
 
         const src = this.textures.get('daniel').getSourceImage() as CanvasImageSource;
@@ -255,6 +256,18 @@ export class Room extends Phaser.Scene {
             waypoints: this.def.catWaypoints!, avoid, nap: this.def.catNap,
             bedDepth: bed?.depth,
             knock: this.def.key === 'home' ? { at: { x: tx(14.15), y: ty(5.8) }, onKnock: () => this.knockPencil() } : undefined
+        });
+    }
+
+    /** A soft meow every 45 to 90 seconds while the visitor is in the home room (text bubble if sound is off). */
+    private scheduleMeow() {
+        this.time.delayedCall(45000 + Math.random() * 45000, () => {
+            if (this.cat && !this.cat.onBed && !state.modal && !this.sleeping) {
+                if (state.sound) sfx('meow');
+                else showBubble('cat', ui.meow, 'small');
+                this.time.delayedCall(1300, () => hideBubble('cat'));
+            }
+            this.scheduleMeow();
         });
     }
 
@@ -644,7 +657,7 @@ export class Room extends Phaser.Scene {
         if (a === 'music') return isFeaturedOn() ? ui.verbs.musicOff : ui.verbs.musicOn;
         const map: Record<Exclude<ActionKind, 'music'>, string> = {
             sit: ui.verbs.sit, outfit: ui.verbs.outfit, pullup: ui.verbs.pullup, snap: ui.verbs.snap,
-            piano: ui.verbs.piano, pet: ui.verbs.pet, ride: ui.verbs.ride
+            piano: ui.verbs.piano, pet: ui.verbs.pet, ride: ui.verbs.ride, eat: ui.verbs.eat
         };
         return map[a];
     }
@@ -660,6 +673,7 @@ export class Room extends Phaser.Scene {
             case 'piano': this.playPiano(t); break;
             case 'pet': this.petCat(); break;
             case 'ride': this.mount(t); break;
+            case 'eat': this.eatPie(t); break;
         }
     }
 
@@ -819,6 +833,37 @@ export class Room extends Phaser.Scene {
         });
     }
 
+    /** E at the pie: two seconds of bites (the slice shrinks), then "yum!". The slice is back next visit. */
+    private pieEaten = false;
+    private eatPie(t: Target) {
+        if (this.pieEaten) { showBubble('act', ui.pieGone, 'small'); this.time.delayedCall(1600, () => hideBubble('act')); return; }
+        const pie = t.sprite as Phaser.GameObjects.Image;
+        this.busy = true;
+        this.player.cancelPath();
+        this.player.stop();
+        this.player.face('down');
+        let bite = 0;
+        const bites = 7, every = 2000 / bites;
+        this.time.addEvent({
+            delay: every, repeat: bites - 1, callback: () => {
+                bite++;
+                this.player.pose(bite % 2 ? DANIEL_FRAMES.eat : DANIEL_FRAMES.eatDown);
+                if (bite % 2) sfx('chomp');
+                pie.setFrame(Math.min(3, Math.floor((bite / bites) * 4)));
+            }
+        });
+        this.player.pose(DANIEL_FRAMES.eatDown);
+        this.time.delayedCall(2000 + 60, () => {
+            pie.setFrame(3);
+            this.player.pose(null);
+            this.player.face('down');
+            this.pieEaten = true;
+            this.busy = false;
+            showBubble('act', ui.yum, 'speech');
+            this.time.delayedCall(1700, () => hideBubble('act'));
+        });
+    }
+
     private playPiano(t: Target) {
         this.bounce(t.sprite);
         this.setMode('piano');
@@ -841,9 +886,9 @@ export class Room extends Phaser.Scene {
                 onComplete: () => h.destroy()
             });
         }
-        if (r === 'asleep') { sfx('purr'); showBubble('cat', ui.purr, 'small'); }
-        else { sfx('meow'); if (!state.sound) showBubble('cat', ui.meow, 'small'); else hideBubble('cat'); }
-        this.time.delayedCall(1300, () => hideBubble('cat'));
+        if (r === 'asleep') { sfx('purr'); if (!state.sound) showBubble('cat', ui.purr, 'small'); }
+        else { sfx('meow'); if (!state.sound) showBubble('cat', ui.meow, 'small'); }
+        this.time.delayedCall(r === 'asleep' ? 2600 : 1300, () => hideBubble('cat'));
     }
 
     // ---------- longboard ----------
@@ -998,7 +1043,7 @@ export class Room extends Phaser.Scene {
         if (!this.canAct()) {
             if (!this.busy && this.mode !== 'ride') this.player.sprite.setVelocity(0, 0);
             if (this.mode === 'ride' && state.modal) this.player.sprite.setVelocity(0, 0);
-            this.updateHighlights(null, time);
+            this.updateHighlights(this.busy ? this.focus : null, time);
             if (!state.modal) setPrompt(null);
             return;
         }
@@ -1076,7 +1121,7 @@ export class Room extends Phaser.Scene {
         if (performance.now() - lastInputAt < IDLE_THOUGHT_MS) return;
         const line = profile.idleThoughts[Math.floor(Math.random() * profile.idleThoughts.length)];
         showBubble('think', line, 'thought');
-        this.thinkUntil = this.time.now + 4500;
+        this.thinkUntil = this.time.now + 2800;
         markInput();
     }
 

@@ -11,6 +11,7 @@ import { ASSETS } from '../assets/manifest';
 import { makeCanvas, outlineRegion, Px } from '../assets/paint';
 import { DANIEL_FRAMES } from '../assets/placeholders';
 import { portfolioCopy as C } from '../content/portfolio';
+import { profile, rollStat } from '../content/profile';
 import { icon } from './icons';
 
 const rm = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -134,6 +135,15 @@ function initTyping() {
 // ---------- A5: HUD portrait sprite (shown on hover, or as the portrait until a headshot exists) ----------
 
 function initHud() {
+    // Caffeine and Sleep re-roll on every visit (the static HTML holds the default values)
+    $$('.stats li').forEach((li, i) => {
+        const s = profile.stats[i];
+        if (!s?.random) return;
+        const v = rollStat(s);
+        const l = $('.stat-l', li), bar = $('.bar', li);
+        if (l) l.textContent = `${s.label.toUpperCase()} ${v}/${s.max}`;
+        bar?.style.setProperty('--f', (v / s.max).toFixed(3));
+    });
     const c = $<HTMLCanvasElement>('.shot-sprite');
     if (!c) return;
     const draw = () => drawFrame(c, walk, DANIEL_FRAMES.down);

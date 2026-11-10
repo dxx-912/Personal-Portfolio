@@ -63,6 +63,8 @@ export const ui = {
 
     meow: 'meow',
     purr: 'prrr...',
+    yum: 'yum!',
+    pieGone: 'All gone. More next time.',
     pullupCount: (n: number) => `${n}`,
     pullupDone: (n: number) => (n > 0 ? `Nice! ${n} reps` : 'Maybe later'),
     pullupHint: 'Mash E!',

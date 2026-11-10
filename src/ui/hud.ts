@@ -2,6 +2,7 @@
 // messages, pause menu, touch controls. All plain HTML over the canvas.
 
 import { TOTAL_ITEMS, ABOUT_KEY, profile, ui, type RoomKey } from '../content';
+import { rollStat } from '../content/profile';
 import { isTouchDevice, prefersReducedMotion } from '../config';
 import { bus, state } from '../state';
 import { clearHeld, onAction, stick, trigger } from './input';
@@ -22,10 +23,10 @@ export function initHud() {
         <div class="hud-top-left">
             <button class="portrait" hidden aria-label="${esc(ui.aboutButton)}" title="${esc(ui.aboutButton)}">
                 <canvas class="face" width="16" height="13" aria-hidden="true"></canvas>
-                <span class="stats">${profile.stats.map((s) => `
-                    <span class="stat" style="--c: ${esc(s.color)}; --f: ${Math.max(0, Math.min(1, s.value / s.max))}">
-                        <span class="bar"></span><span class="txt">${esc(s.label)} ${s.value}/${s.max}</span>
-                    </span>`).join('')}
+                <span class="stats">${profile.stats.map((s) => { const v = rollStat(s); return `
+                    <span class="stat" style="--c: ${esc(s.color)}; --f: ${Math.max(0, Math.min(1, v / s.max))}">
+                        <span class="bar"></span><span class="txt">${esc(s.label)} ${v}/${s.max}</span>
+                    </span>`; }).join('')}
                 </span>
             </button>
         </div>

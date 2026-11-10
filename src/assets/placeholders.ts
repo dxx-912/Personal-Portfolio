@@ -208,7 +208,7 @@ function plantPot(p: Px, x: number, y: number, w: number, h: number) {
 // ---------- character ----------
 
 type Dir = 'down' | 'up' | 'side';
-type Pose = 'stand' | 'sit' | 'crouch' | 'hang' | 'cheer';
+type Pose = 'stand' | 'sit' | 'crouch' | 'hang' | 'cheer' | 'eat' | 'eatDown';
 
 // Light warm East Asian complexion (checked against the photos and the warm, dim room lighting).
 const SKIN = '#fde4cf', SKIN_D = '#f0c6a6', HAIR = '#2a1f24', HAIR_L = '#4d3b44', MOUTH = '#c48877', BLUSH = '#f6b8aa';
@@ -257,6 +257,9 @@ function drawDaniel(p: Px, dir: Dir, bob: number, step: number, pose: Pose, laye
             R(3, by, 1, 1, TEE_D, true); R(13, by, 1, 1, TEE_D, true);
             R(3, 0, 1, by, SKIN); R(13, 0, 1, by, SKIN);
             R(2, 0, 2, 1, SKIN); R(13, 0, 2, 1, SKIN);
+        } else if (pose === 'eat' || pose === 'eatDown') {
+            R(3, by, 1, 2, TEE_D, true); R(3, by + 2, 1, 2, SKIN); // left arm down
+            R(13, by, 1, 1, TEE_D, true); // right sleeve; the forearm and fork are drawn over the head below
         } else if (pose === 'crouch') {
             R(3, by, 1, 2, TEE_D, true); R(13, by, 1, 2, TEE_D, true);
             R(5, by + 3, 2, 1, SKIN); R(10, by + 3, 2, 1, SKIN); // hands forward
@@ -303,14 +306,24 @@ function drawDaniel(p: Px, dir: Dir, bob: number, step: number, pose: Pose, laye
         p.r(hx + 10, y0 + 9, 2, 1, MOUTH);
         p.p(hx + 9, y0 + 8, BLUSH);
     }
+    if (pose === 'eat') {
+        // fork up to the mouth
+        p.r(12, y0 + 10, 1, by - (y0 + 10) + 1, SKIN);
+        p.r(10, y0 + 9, 2, 2, SKIN);
+        p.r(8, y0 + 9, 2, 1, '#b7bfcc'); p.p(7, y0 + 8, '#b7bfcc');
+    } else if (pose === 'eatDown') {
+        // fork lowered, ready for the next bite
+        p.r(13, by + 1, 1, 2, SKIN); p.r(11, by + 2, 2, 1, SKIN);
+        p.r(10, by, 1, 3, '#b7bfcc');
+    }
 }
 
 /** Frame list for the character strip. Keep in sync with Boot's animations. */
 export const DANIEL_FRAMES = {
     down: 0, up: 6, side: 12, // each: idle0, idle1, walk0..3
-    sit: 18, crouch: 19, hang: 20, hangStrain: 21, cheer: 22
+    sit: 18, crouch: 19, hang: 20, hangStrain: 21, cheer: 22, eat: 23, eatDown: 24
 } as const;
-export const DANIEL_FRAME_COUNT = 23;
+export const DANIEL_FRAME_COUNT = 25;
 
 function danielStrip(layer: 'all' | 'shirt'): Painter {
     return (p) => {
@@ -328,6 +341,8 @@ function danielStrip(layer: 'all' | 'shirt'): Painter {
         drawDaniel(at(DANIEL_FRAMES.hang), 'down', 0, 0, 'hang', layer);
         drawDaniel(at(DANIEL_FRAMES.hangStrain), 'down', 1, 0, 'hang', layer);
         drawDaniel(at(DANIEL_FRAMES.cheer), 'down', 0, 0, 'cheer', layer);
+        drawDaniel(at(DANIEL_FRAMES.eat), 'down', 0, 0, 'eat', layer);
+        drawDaniel(at(DANIEL_FRAMES.eatDown), 'down', 0, 0, 'eatDown', layer);
     };
 }
 
@@ -924,20 +939,27 @@ const homePiano: Painter = (p, w, h) => {
 };
 
 /** A large apple crisp pie with one slice served on a plate, fork beside it. */
-const homePie: Painter = (p, w) => {
-    // pie dish
-    const dish = '#e7e2d8';
-    p.r(1, 3, 20, 12, dish); p.r(3, 2, 16, 14, dish);
-    p.r(3, 4, 16, 10, '#d9a04a'); p.r(2, 6, 18, 6, '#d9a04a');
-    // crumbly crisp top
-    const rand = rng(5);
-    for (let i = 0; i < 40; i++) p.p(3 + Math.floor(rand() * 16), 4 + Math.floor(rand() * 10), rand() < 0.5 ? '#f2c57a' : '#b9772f');
-    // the missing slice wedge
-    p.r(14, 8, 5, 4, '#8c5a2a'); p.r(16, 6, 3, 2, '#8c5a2a'); p.r(15, 9, 3, 2, '#e8d29a');
-    // plate with a slice and a fork
-    p.r(22, 6, 11, 9, '#f7f5f0'); p.r(23, 5, 9, 11, '#f7f5f0'); p.r(24, 7, 7, 7, '#e8e4dc');
-    p.r(25, 8, 5, 4, '#d9a04a'); p.r(25, 8, 5, 1, '#f2c57a'); p.r(26, 11, 3, 1, '#e8d29a');
-    p.r(w - 1, 6, 1, 9, '#b7bfcc'); p.r(w - 2, 5, 1, 3, '#b7bfcc');
+/** A large apple crisp pie with one slice served on a plate, fork beside it.
+ *  4 frames: the served slice is eaten bite by bite (frame 3 is an empty plate with crumbs). */
+const homePie: Painter = (p, w, h) => {
+    for (let f = 0; f < 4; f++) {
+        const q = p.at(f * w, 0);
+        const dish = '#e7e2d8';
+        q.r(1, 3, 20, 12, dish); q.r(3, 2, 16, 14, dish);
+        q.r(3, 4, 16, 10, '#d9a04a'); q.r(2, 6, 18, 6, '#d9a04a');
+        const rand = rng(5);
+        for (let i = 0; i < 40; i++) q.p(3 + Math.floor(rand() * 16), 4 + Math.floor(rand() * 10), rand() < 0.5 ? '#f2c57a' : '#b9772f');
+        q.r(14, 8, 5, 4, '#8c5a2a'); q.r(16, 6, 3, 2, '#8c5a2a'); q.r(15, 9, 3, 2, '#e8d29a');
+        // plate
+        q.r(22, 6, 11, 9, '#f7f5f0'); q.r(23, 5, 9, 11, '#f7f5f0'); q.r(24, 7, 7, 7, '#e8e4dc');
+        // the slice, smaller each frame
+        const sw = [5, 3, 2, 0][f];
+        if (sw) { q.r(25, 8, sw, 4, '#d9a04a'); q.r(25, 8, sw, 1, '#f2c57a'); q.r(26, 11, Math.max(1, sw - 2), 1, '#e8d29a'); }
+        else { q.p(26, 10, '#d9a04a'); q.p(28, 9, '#f2c57a'); q.p(29, 11, '#b9772f'); }
+        // fork
+        q.r(w - 1, 6, 1, 9, '#b7bfcc'); q.r(w - 2, 5, 1, 3, '#b7bfcc');
+        void h;
+    }
 };
 
 const homeRug: Painter = (p, w, h) => {

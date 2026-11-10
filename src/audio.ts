@@ -65,7 +65,7 @@ function hiss(dur: number, vol: number, filter: BiquadFilterType, freq: number, 
 }
 
 export type Sfx = 'open' | 'close' | 'tick' | 'found' | 'door' | 'wake' | 'meow' | 'purr' | 'puff' | 'shutter'
-    | 'rep' | 'nice' | 'bump' | 'hop';
+    | 'rep' | 'nice' | 'bump' | 'hop' | 'chomp';
 
 export function sfx(name: Sfx) {
     switch (name) {
@@ -76,7 +76,8 @@ export function sfx(name: Sfx) {
         case 'door': blip(220, 0.18, 'triangle', 0.08, 110); break;
         case 'wake': blip(392, 0.12, 'triangle', 0.06, 784); break;
         case 'meow': blip(700, 0.12, 'sawtooth', 0.025, 980); blip(980, 0.28, 'sawtooth', 0.025, 560, 0.1); break;
-        case 'purr': for (let i = 0; i < 8; i++) blip(48, 0.09, 'sawtooth', 0.04, 40, i * 0.1); break;
+        case 'purr': purr(2.6); break;
+        case 'chomp': hiss(0.07, 0.06, 'bandpass', 900); blip(140, 0.05, 'triangle', 0.03, 110); break;
         case 'puff': hiss(0.25, 0.08, 'bandpass', 1800); break;
         case 'shutter': hiss(0.05, 0.12, 'highpass', 3000); hiss(0.06, 0.1, 'highpass', 2200, 0.07); break;
         case 'rep': blip(330 + Math.random() * 40, 0.06, 'square', 0.035); break;
@@ -84,6 +85,24 @@ export function sfx(name: Sfx) {
         case 'bump': blip(120, 0.08, 'triangle', 0.08, 80); break;
         case 'hop': blip(300, 0.08, 'square', 0.04, 600); break;
     }
+}
+
+/** A soft purr loop: a low rumble pulsing about 25 times a second. */
+function purr(seconds: number) {
+    const a = ac();
+    if (!a || !master) return;
+    const t = a.currentTime;
+    const o = a.createOscillator(), f = a.createBiquadFilter(), g = a.createGain(), lfo = a.createOscillator(), lg = a.createGain();
+    o.type = 'sawtooth'; o.frequency.value = 46;
+    f.type = 'lowpass'; f.frequency.value = 280;
+    lfo.frequency.value = 24; lg.gain.value = 0.025;
+    g.gain.setValueAtTime(0.0001, t);
+    g.gain.linearRampToValueAtTime(0.03, t + 0.3);
+    g.gain.setValueAtTime(0.03, t + seconds - 0.5);
+    g.gain.linearRampToValueAtTime(0.0001, t + seconds);
+    lfo.connect(lg).connect(g.gain);
+    o.connect(f).connect(g).connect(master);
+    [o, lfo].forEach((n) => { n.start(t); n.stop(t + seconds + 0.05); });
 }
 
 /** Soft footstep. Carpet is a muffled thud, wood a brighter tap. */
