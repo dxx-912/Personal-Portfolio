@@ -10,7 +10,7 @@ Restart `npm run dev` after adding a file.
 |---|---|
 | `poster-graduation.png` | Dorm back wall above the desk, P1 |
 | `poster-damn.png` | Dorm back wall above the desk, P2 |
-| `poster-duck.png` | Dorm wardrobe, P3 (big) |
+| `poster-duck.png` | Dorm wardrobe left door, P3 |
 | `poster-igor.png` | Dorm wall above the desk, P4 |
 | `poster-caricature.png` | Dorm wall, optional extra frame (hidden until the file exists) |
 | `hoodie-logo.png` | Home hoodie on the wall hook, chest area |

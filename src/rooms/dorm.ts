@@ -29,8 +29,8 @@ export const dorm: RoomDef = {
 
         // closet in the back right corner, poster P3 taped to its door
         { id: 'closet', texture: 'dorm_closet', x: 16.45, y: -4.0, layer: 'floor', solid: { x: 16.45, y: 0, w: 3.5, h: 2.5 } },
-        // the big duck poster taped across the wardrobe doors
-        { id: 'poster3', texture: 'slot_poster_duck', x: 16.825, y: -3.4, layer: 'floor', on: 'closet' },
+        // the duck poster taped to the wardrobe's left door (the seam, handles, and sleeve stay visible)
+        { id: 'poster3', texture: 'slot_poster_duck', x: 16.52, y: -3.45, layer: 'floor', on: 'closet' },
 
         // top left: beanbag in the window light
         { id: 'beanbag', texture: 'dorm_beanbag', x: 0.2, y: 0.55, layer: 'floor', solid: { x: 0.35, y: 1.45, w: 2.7, h: 1.3 } },

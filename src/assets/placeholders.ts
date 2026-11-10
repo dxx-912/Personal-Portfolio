@@ -659,10 +659,10 @@ const dormCloset: Painter = (p, w, h) => {
     p.r(mid, 9, 1, h - 16, WOOD.deep);
     p.r(3, 10, 1, h - 20, WOOD.light);
     p.r(mid + 3, 10, 1, h - 20, WOOD.light);
-    p.r(mid - 4, 74, 2, 8, '#e3b867');
-    p.r(mid + 3, 74, 2, 8, '#e3b867');
-    // sleeve hanging out between the doors, below the big poster
-    p.r(mid - 1, 72, 3, 18, '#3f6fd0'); p.r(mid - 1, 72, 1, 18, '#5a8ae6'); p.r(mid - 1, 90, 3, 3, '#2f5aa8'); // cuff
+    p.r(mid - 4, 50, 2, 8, '#e3b867');
+    p.r(mid + 3, 50, 2, 8, '#e3b867');
+    // sleeve hanging out between the doors
+    p.r(mid - 1, 40, 3, 22, '#3f6fd0'); p.r(mid - 1, 40, 1, 22, '#5a8ae6'); p.r(mid - 1, 62, 3, 3, '#2f5aa8'); // cuff
     p.r(1, h - 5, w - 2, 4, WOOD.deep);
 };
 

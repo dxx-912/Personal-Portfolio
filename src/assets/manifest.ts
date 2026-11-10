@@ -65,7 +65,7 @@ export const ASSETS = {
     // image slots (see the note at the top)
     slot_poster_graduation: { w: 18, h: 24, paint: painters.slotGraduation, outline: true, slot: { file: 'poster-graduation.png' } },
     slot_poster_damn: { w: 18, h: 24, paint: painters.slotDamn, outline: true, slot: { file: 'poster-damn.png' } },
-    slot_poster_duck: { w: 44, h: 60, paint: painters.slotDuck, outline: true, slot: { file: 'poster-duck.png' } },
+    slot_poster_duck: { w: 25, h: 34, paint: painters.slotDuck, outline: true, slot: { file: 'poster-duck.png' } },
     slot_poster_igor: { w: 18, h: 24, paint: painters.slotIgor, outline: true, slot: { file: 'poster-igor.png' } },
     slot_poster_home_1: { w: 18, h: 24, paint: painters.slotHome1, outline: true, slot: { file: 'poster-home-1.png' } },
     slot_poster_home_2: { w: 16, h: 20, paint: painters.slotHome2, outline: true, slot: { file: 'poster-home-2.png' } },
