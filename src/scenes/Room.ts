@@ -17,7 +17,7 @@ import { NavGrid, type Pt, type Rect } from '../game/nav';
 import { lastInputAt, markInput, moveVector, onAction, type Action } from '../ui/input';
 import { closePanel, openPanel } from '../ui/panel';
 import {
-    hideBubble, moveBubble, setPortrait, setPrompt, setWakeButton, showBubble, showMessage, showTitle, toast,
+    hideBubble, maybeSuggestQuickView, moveBubble, setPortrait, setPrompt, setWakeButton, showBubble, showMessage, showTitle, toast,
     type PromptSpec
 } from '../ui/hud';
 import { flash, openPiano, openSnapshot } from '../ui/overlays';
@@ -155,6 +155,7 @@ export class Room extends Phaser.Scene {
             this.cameras.main.fadeIn(this.rm ? 80 : 260, 6, 5, 11);
             showTitle(ui.roomTitles[this.def.key]);
             startAmbient(this.def.key);
+            this.time.delayedCall(3000, maybeSuggestQuickView);
         }
     }
 
@@ -477,6 +478,7 @@ export class Room extends Phaser.Scene {
                 }
                 this.pulseDoor();
                 startAmbient(this.def.key);
+                this.time.delayedCall(5500, maybeSuggestQuickView);
                 markInput();
             }
         });

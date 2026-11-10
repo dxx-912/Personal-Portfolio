@@ -27,6 +27,7 @@ export const dormContent: Record<string, Entry> = {
         plainGroup: 'education',
         title: 'UCLA',
         subtitle: '[TODO: confirm major]. Honours student.',
+        summary: '[TODO: confirm major]. Honours student.',
         images: [{ alt: 'Daniel in front of Royce Hall' }],
         list: [{
             title: 'Courses',
@@ -51,36 +52,42 @@ export const dormContent: Record<string, Entry> = {
         tabs: [
             {
                 id: 'sharpe',
+                short: 'Sharpe Fellows, tech VP',
                 title: 'William F. Sharpe Fellows',
                 subtitle: 'Technology Vice President',
                 body: ['[TODO: one line on what the org is]']
             },
             {
                 id: 'dsp-org',
+                short: 'Delta Sigma Pi',
                 title: 'Delta Sigma Pi',
                 subtitle: '[TODO: my role]',
                 body: ['[TODO: one line on what the org is]']
             },
             {
                 id: 'bea',
+                short: 'BEA [TODO: confirm name]',
                 title: 'Business in Entertainment Association',
                 subtitle: '[TODO: confirm the exact official org name] [TODO: my role]',
                 body: ['[TODO: one line on what the org is]']
             },
             {
                 id: 'ibb-org',
+                short: 'IBB',
                 title: 'International Business for Bruins',
                 subtitle: '[TODO: my role]',
                 body: ['[TODO: one line on what the org is]']
             },
             {
                 id: 'ubs',
+                short: 'UBS Tech Committee',
                 title: 'UBS Technology Committee',
                 subtitle: '[TODO: my role]',
                 body: ['[TODO: one line on what the org is]']
             },
             {
                 id: 'reslife',
+                short: 'ResLife RA',
                 title: 'UCLA ResLife',
                 subtitle: 'Resident Assistant',
                 body: ['[TODO: one line on what ResLife is]']
@@ -99,6 +106,8 @@ export const dormContent: Record<string, Entry> = {
             {
                 id: 'cold-email',
                 title: 'Cold email automator',
+                summary: '[TODO: what it does, why I built it]',
+                tags: ['Builder', 'Live'],
                 subtitle: '[TODO: my role and the stack]',
                 body: [
                     '[TODO: what it is, 1 to 2 sentences]',
@@ -109,6 +118,8 @@ export const dormContent: Record<string, Entry> = {
             {
                 id: 'saved-posts',
                 title: 'Saved posts scroller',
+                summary: '[TODO: what it does, why I built it]',
+                tags: ['Builder', 'Live'],
                 subtitle: '[TODO: my role and the stack]',
                 body: [
                     '[TODO: what it is, 1 to 2 sentences]',
@@ -119,7 +130,11 @@ export const dormContent: Record<string, Entry> = {
             {
                 id: 'ateball',
                 title: 'Ateball',
-                subtitle: 'Creative Labs. [TODO: my role]',
+                subtitle: 'Creative Labs. Project manager.',
+                org: 'Creative Labs, UCLA',
+                role: 'Project manager',
+                summary: '[TODO: one line result]',
+                tags: ['PM'],
                 body: [
                     '[TODO: what Ateball is, 1 to 2 sentences]',
                     '[TODO: why I built it with Creative Labs]'
@@ -147,6 +162,9 @@ export const dormContent: Record<string, Entry> = {
                 id: 'genesis',
                 title: 'Genesis Alternative Ventures',
                 subtitle: 'Project Manager',
+                role: 'Project manager',
+                summary: '[TODO: scope, result]',
+                tags: ['Slides'],
                 body: ['[TODO: the client, the problem, what my team did, the outcome]'],
                 gallery: 'viewer',
                 images: [
@@ -159,6 +177,8 @@ export const dormContent: Record<string, Entry> = {
                 id: 'lek',
                 title: 'L.E.K. Case Competition',
                 subtitle: 'Winner',
+                summary: 'Winner. [TODO: the problem and our answer]',
+                tags: ['Winner'],
                 body: ['[TODO: the case, our recommendation, the year]'],
                 gallery: 'viewer',
                 images: [
@@ -177,6 +197,9 @@ export const dormContent: Record<string, Entry> = {
         plainGroup: 'projects',
         title: 'Club marketing',
         tabStyle: 'phone',
+        short: 'DSP and IBB',
+        summary: 'Campaigns, rush videos, website rebuilds. [TODO: metrics]',
+        tags: ['Brand', 'Web'],
         tabs: [
             {
                 id: 'dsp',
@@ -226,6 +249,7 @@ export const dormContent: Record<string, Entry> = {
         plainGroup: 'education',
         title: 'Upper Canada College',
         subtitle: 'International Baccalaureate Diploma',
+        summary: 'IB Diploma 40/45. SAT 1560.',
         facts: [
             { label: 'IB score', value: '40/45' },
             { label: 'SAT', value: '1560' }
@@ -265,7 +289,14 @@ export const dormContent: Record<string, Entry> = {
         prompt: 'Hope For Hearing',
         plainGroup: 'projects',
         title: 'Hope For Hearing',
-        subtitle: '[TODO: my role and the years]',
+        subtitle: 'Founder. [TODO: the years]',
+        role: 'Founder',
+        summary: 'Started after meeting Roy on the subway. [TODO: mission line]',
+        // From the approved portfolio mockup. [TODO: Daniel to confirm these are current]
+        counters: [
+            { value: 500, suffix: '+', label: 'members' },
+            { value: 12, label: 'institutions' }
+        ],
         body: [
             '[TODO: how it started. I met Roy on the subway, by chance. 2 to 4 sentences.]',
             '[TODO: what Hope For Hearing does and the impact so far]',

@@ -154,6 +154,22 @@ Never drawn by us. Until the file exists, an original abstract placeholder shows
 
 ---
 
+## Portfolio view (`/portfolio`)
+
+The quick view reads the same stories as the game, so filling an item above fills both. A production build hides any field that is still a TODO and prints the full list in the build log (`npm run build`). These are the extra fields the quick view uses (all in `src/content/dorm.ts` and `home.ts`, on the matching section):
+
+- [ ] **Tagline** (`profile.tagline`) and confirm the hero line: "UCLA student building products, campaigns, and communities. Looking for product management roles in 2027." (`profile.focus`, from the mockup)
+- [ ] **Work card order** (`cardOrder` in `src/content/portfolio.ts`). Draft: cold email automator, saved posts scroller, Ateball, Genesis, L.E.K., DSP and IBB.
+- [ ] **For each work card** (cold email automator, saved posts scroller, Ateball, Genesis, L.E.K., DSP and IBB): `summary` (one line for the card face), `role`, `team`, `timeline`, `problem`, `whatIDid`, `result`, and 2 to 4 screenshots.
+- [ ] **Confirm** Ateball role "Project manager" and Hope For Hearing role "Founder" (both from the spec).
+- [ ] **Confirm the Hope For Hearing counters** "500+ members" and "12 institutions" are current (from the mockup), plus its `team`, `timeline`, `problem`, `whatIDid`, `result`, and a one line mission for the card.
+- [ ] **Org tag names**: the entertainment association's exact name (shows as "BEA" for now).
+- [ ] **Inventory labels** (`short` on each hobby): Rowing, national champ; Piano, ARCT; Built a longboard; Cat dad; Photography; Baking; Dubstep, EDM; Lift and sprint; North York; Family. Drafts, edit freely.
+- [ ] **A one line fun fact for each hobby** (`funFact`): shown when a box flips over. Until then the flip shows a real line from the story where one exists.
+- [ ] **Site URL** (`profile.siteUrl`) once the domain is chosen. Then canonical and absolute Open Graph URLs turn on.
+- [ ] **Open Graph image**: `public/og/portfolio.png` is a screenshot of the hero today. Retake it once the headshot and tagline are in.
+- [ ] Not shown in the quick view (in the game only): the award plaques and favorite reads on the shelf. Say if you want them as inventory boxes.
+
 ## Wording to confirm
 
 - **Major.** The notes say "UCLA Economics major". You have also described a B.A. Business Economics and B.S. Cognitive Science double major. The site uses `[TODO: confirm major]` for now.

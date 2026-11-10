@@ -1,0 +1,71 @@
+/* Portfolio view design tokens. Retune the whole page from here. See PORTFOLIO_VIEW.md section 5. */
+:root {
+    /* ink and paper */
+    --ink: #1a1626;
+    --paper: #fffdf7;
+    --cream: #f1efe8;
+    --muted: #5f5e5a;
+
+    /* the sky, one per time of day */
+    --sky-morning: #fde6c8;
+    --sky-noon: #bfe0f5;
+    --sky-sunset: #f7b98a;
+    --sky-night: #141a33;
+
+    /* text on each sky (all WCAG AA or better) */
+    --on-morning: #2a1c12;
+    --on-noon: #0c2a40;
+    --on-sunset: #4a1b0c;
+    --on-night: #e6f1fb;
+
+    /* section accents. The *-sky variants are darkened to pass AA on their own sky. */
+    --acc-morning: #b0602a;
+    --acc-morning-sky: #8a4618;
+    --acc-day: #185fa5;
+    --acc-evening: #993c1d;
+    --acc-evening-sky: #6e2810;
+    --acc-night: #85b7eb;
+
+    --ucla: #2774ae;
+    --ucla-dark: #1d5a88;
+    --hl: #f6c94a;
+
+    /* HUD bars, same as the game */
+    --hud-red: #d4493a;
+    --hud-grey: #8a96a5;
+    --hud-blue: #3d7fd4;
+
+    /* type */
+    --font-px: 'Press Start 2P', ui-monospace, monospace;
+    --font-sans: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+    --fs-hero: clamp(26px, 4.4vw, 46px);
+    --fs-h2: clamp(15px, 1.9vw, 20px);
+    --fs-h3: 18px;
+    --fs-stamp: 11px;
+    --fs-label: 10px;
+    --fs-body: 17px;
+    --fs-small: 15px;
+    --lh-body: 1.6;
+
+    /* space */
+    --gutter: clamp(16px, 4vw, 40px);
+    --rail-w: 56px;
+    --max-w: 1080px;
+    --gap: 18px;
+    --sec-pad: clamp(56px, 9vw, 112px);
+    --blend: 110px; /* height of the sky blend at the top of each section */
+
+    /* shapes */
+    --line: 2px;
+    --shadow: 4px 4px 0 var(--ink);
+    --shadow-hover: 7px 7px 0 var(--ink);
+    --shadow-btn: 3px 3px 0 var(--ink);
+
+    /* motion */
+    --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+    --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+    --dur-fast: 140ms;
+    --dur-mid: 300ms;
+    --dur-slow: 700ms;
+    --stagger: 70ms;
+}

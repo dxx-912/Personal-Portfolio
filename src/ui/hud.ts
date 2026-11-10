@@ -48,8 +48,12 @@ export function initHud() {
         <div class="rotate-hint">${esc(ui.rotateHint)}</div>
     `);
     // The plain version link lives in index.html (works without JS). Tuck it under the portrait.
-    const plain = document.querySelector('.plain-link');
-    if (plain) $('.hud-top-left').appendChild(plain);
+    const plain = document.querySelector<HTMLAnchorElement>('.plain-link');
+    if (plain) {
+        plain.textContent = ui.quickView;
+        plain.href = ui.quickViewHref;
+        $('.hud-top-left').appendChild(plain);
+    }
 
     promptEl = $('.prompt');
     msgEl = $('.message');
@@ -133,6 +137,25 @@ export function setPortrait(src: CanvasImageSource, sx: number, sy: number, sw: 
     ctx.imageSmoothingEnabled = false;
     ctx.clearRect(0, 0, sw, sh);
     ctx.drawImage(src, sx, sy, sw, sh, 0, 0, sw, sh);
+}
+
+/** Once, on cramped screens: suggest the quick view, with both options. */
+export function maybeSuggestQuickView() {
+    const cramped = Math.min(window.innerWidth, window.innerHeight) < 500 || window.innerWidth < 700;
+    if (!cramped) return;
+    try {
+        if (localStorage.getItem('dx-quickview-suggested')) return;
+        localStorage.setItem('dx-quickview-suggested', '1');
+    } catch { /* storage blocked: still show it once this visit */ }
+    const el = document.createElement('div');
+    el.className = 'suggest';
+    el.setAttribute('role', 'dialog');
+    el.setAttribute('aria-label', ui.phoneSuggest);
+    el.innerHTML = `<p>${esc(ui.phoneSuggest)}</p>
+        <p class="suggest-btns"><a class="menu-btn" href="${esc(ui.quickViewHref)}">${esc(ui.phoneSuggestGo)}</a>
+        <button type="button" class="menu-btn">${esc(ui.phoneSuggestStay)}</button></p>`;
+    el.querySelector('button')!.addEventListener('click', () => el.remove());
+    $('#ui-root').appendChild(el);
 }
 
 /** Room name banner that fades in and out. */
@@ -252,7 +275,7 @@ function openPause() {
             <div class="panel-body pause-body">
                 <button class="menu-btn" data-act="resume">${esc(ui.resume)}</button>
                 <button class="menu-btn" data-act="sound">${esc(state.sound ? ui.soundOn : ui.soundOff)}</button>
-                <a class="menu-btn" href="/plain">${esc(ui.plainVersion)}</a>
+                <a class="menu-btn" href="${esc(ui.quickViewHref)}">${esc(ui.quickView)}</a>
                 <button class="menu-btn danger" data-act="reset">${esc(ui.startOver)}</button>
                 <p class="pause-hint">${esc(ui.hint)}</p>
             </div>

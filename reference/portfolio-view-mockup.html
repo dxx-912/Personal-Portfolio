@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Portfolio view mockup (reference only, not production code)</title>
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/dist/tabler-icons.min.css">
+<style>
+body{margin:0;background:#ddd;padding:24px;font-family:Inter,sans-serif}
+.note{max-width:720px;margin:0 auto 16px;font-size:14px;color:#333}
+.pf,.wrap{max-width:720px;margin:0 auto 40px;border:1px solid #1a1626;overflow:hidden}
+.px{font-family:'Press Start 2P',monospace}
+.sec{position:relative;padding:28px 26px 30px 54px}
+.pin{display:inline-block;font-size:11px;background:#f6c94a;color:#412402;border:1px solid #1a1626;padding:1px 5px;margin-left:6px;vertical-align:middle;font-family:monospace}
+.rail{position:absolute;left:18px;top:0;bottom:0;width:2px;background:rgba(26,22,38,.25)}
+.spr{position:absolute;left:10px;width:18px;height:22px}
+.card{background:#fffdf7;border:2px solid #1a1626;box-shadow:4px 4px 0 #1a1626;padding:12px 14px;color:#1a1626}
+.tag{font-size:11px;padding:2px 6px;border:1px solid currentColor;display:inline-block;margin:0 4px 4px 0}
+.btn{font-size:12px;padding:7px 12px;border:2px solid #1a1626;background:#fffdf7;color:#1a1626;box-shadow:3px 3px 0 #1a1626;display:inline-block;margin:0 8px 8px 0}
+.grid{display:grid;gap:14px}
+.bk{border:2px solid #1a1626;box-shadow:4px 4px 0 #1a1626;background:#fffdf7;color:#1a1626}
+.nb{font-size:12px;padding:6px 10px;border:2px solid #1a1626;background:#fffdf7;color:#1a1626;box-shadow:3px 3px 0 #1a1626;cursor:pointer}
+.lbl{font-size:9px;color:#185fa5;margin:0 0 6px}
+</style>
+</head>
+<body>
+<p class="note">Reference mockup for PORTFOLIO_VIEW.md. Static draft: the yellow pins (A1 to A9) refer to the animation spec. Not production code.</p>
+
+<div class="pf">
+<div style="background:#1a1626;color:#f1efe8;padding:10px 16px;display:flex;justify-content:space-between;align-items:center">
+<span class="px" style="font-size:10px">DANIEL XING</span>
+<span style="font-size:12px;display:flex;gap:14px"><span style="color:#f6c94a"><i class="ti ti-sun"></i> Morning</span><span><i class="ti ti-briefcase"></i> Work</span><span><i class="ti ti-sunset"></i> Evening</span><span><i class="ti ti-moon"></i> Night</span><span class="pin" style="margin:0">A1</span></span>
+</div>
+<div class="sec" style="background:#fde6c8;color:#2a1c12">
+<div class="rail"></div>
+<div class="spr" style="top:40px"><div style="height:8px;background:#1c1410"></div><div style="height:7px;background:#f0c9a0"></div><div style="height:7px;background:#f8f8f4;border:1px solid #1a1626"></div></div>
+<p class="px" style="font-size:10px;margin:0 0 10px;color:#b0602a">07:30 AM, RIEBER HALL <span class="pin">A2</span></p>
+<div style="display:flex;gap:18px;align-items:flex-start;flex-wrap:wrap">
+<div style="flex:1 1 300px;min-width:0">
+<p class="px" style="font-size:22px;line-height:1.5;margin:0 0 12px">Hi, I'm<br>Daniel.<span class="pin">A3</span></p>
+<p style="font-size:15px;line-height:1.6;margin:0 0 14px">[TODO: tagline] UCLA student building products, campaigns, and communities. Looking for product management roles in 2027.</p>
+<span class="btn">Resume</span><span class="btn">LinkedIn</span><span class="btn" style="background:#2774ae;color:#fff">Play the game version</span><span class="pin">A4</span>
+</div>
+<div class="card" style="width:170px">
+<div style="height:120px;background:#e8dcc4;border:2px dashed #8a7656;display:flex;align-items:center;justify-content:center;font-size:12px;color:#6b5a40">headshot</div>
+<p class="px" style="font-size:8px;margin:10px 0 6px">CAFFEINE 7/7</p><div style="height:8px;background:#d4493a"></div>
+<p class="px" style="font-size:8px;margin:8px 0 6px">SLEEP 2/6</p><div style="height:8px;width:33%;background:#8a96a5"></div>
+<p class="px" style="font-size:8px;margin:8px 0 6px">CURIOSITY 200/200</p><div style="height:8px;background:#3d7fd4"></div>
+<span class="pin" style="margin:8px 0 0">A5</span>
+</div>
+</div>
+</div>
+<div class="sec" style="background:#bfe0f5;color:#0c2a40">
+<div class="rail"></div>
+<p class="px" style="font-size:10px;margin:0 0 6px;color:#185fa5">12:00 PM, AT WORK</p>
+<p class="px" style="font-size:15px;margin:0 0 16px">Selected work<span class="pin">A6</span></p>
+<div class="grid" style="grid-template-columns:repeat(2,minmax(0,1fr))">
+<div class="card"><p class="px" style="font-size:9px;margin:0 0 6px;color:#185fa5">[01] SOFTWARE</p><p style="font-weight:500;margin:0 0 4px">Cold email automator</p><p style="font-size:13px;margin:0 0 8px">[TODO: what it does, why I built it]</p><span class="tag">Builder</span><span class="tag">Live</span></div>
+<div class="card"><p class="px" style="font-size:9px;margin:0 0 6px;color:#185fa5">[02] SOFTWARE</p><p style="font-weight:500;margin:0 0 4px">Saved posts scroller</p><p style="font-size:13px;margin:0 0 8px">[TODO: what it does, why I built it]</p><span class="tag">Builder</span><span class="tag">Live</span></div>
+<div class="card"><p class="px" style="font-size:9px;margin:0 0 6px;color:#185fa5">[03] PRODUCT</p><p style="font-weight:500;margin:0 0 4px">Ateball, Creative Labs</p><p style="font-size:13px;margin:0 0 8px">Project manager. [TODO: result]</p><span class="tag">PM</span></div>
+<div class="card"><p class="px" style="font-size:9px;margin:0 0 6px;color:#185fa5">[04] CONSULTING</p><p style="font-weight:500;margin:0 0 4px">Genesis Alternative Ventures</p><p style="font-size:13px;margin:0 0 8px">Project manager. [TODO: scope, result]</p><span class="tag">Slides</span></div>
+<div class="card"><p class="px" style="font-size:9px;margin:0 0 6px;color:#185fa5">[05] CASE COMP</p><p style="font-weight:500;margin:0 0 4px">L.E.K. Case Competition</p><p style="font-size:13px;margin:0 0 8px">Winner. [TODO: the problem and our answer]</p><span class="tag">Winner</span></div>
+<div class="card"><p class="px" style="font-size:9px;margin:0 0 6px;color:#185fa5">[06] MARKETING</p><p style="font-weight:500;margin:0 0 4px">DSP and IBB</p><p style="font-size:13px;margin:0 0 8px">Campaigns, rush videos, website rebuilds. [TODO: metrics]</p><span class="tag">Brand</span><span class="tag">Web</span></div>
+</div>
+</div>
+<div class="sec" style="background:#f7b98a;color:#4a1b0c">
+<div class="rail"></div>
+<p class="px" style="font-size:10px;margin:0 0 6px;color:#993c1d">06:00 PM, AFTER CLASS</p>
+<p class="px" style="font-size:15px;margin:0 0 16px">Leadership<span class="pin">A7</span></p>
+<div class="card" style="margin-bottom:14px;display:flex;gap:16px;flex-wrap:wrap">
+<div style="flex:1 1 220px"><p class="px" style="font-size:9px;margin:0 0 6px;color:#993c1d">FOUNDER</p><p style="font-weight:500;margin:0 0 6px">Hope For Hearing</p><p style="font-size:13px;margin:0">Started after meeting Roy on the subway. [TODO: mission line]</p></div>
+<div style="display:flex;gap:18px"><div><p class="px" style="font-size:18px;margin:0">500+</p><p style="font-size:12px;margin:4px 0 0">members</p></div><div><p class="px" style="font-size:18px;margin:0">12</p><p style="font-size:12px;margin:4px 0 0">institutions</p></div></div>
+</div>
+<div style="margin-bottom:16px"><span class="tag">Sharpe Fellows, tech VP</span><span class="tag">Delta Sigma Pi</span><span class="tag">IBB</span><span class="tag">BEA [TODO name]</span><span class="tag">UBS Tech Committee</span><span class="tag">ResLife RA</span></div>
+<p class="px" style="font-size:12px;margin:0 0 12px">Education</p>
+<div class="grid" style="grid-template-columns:repeat(2,minmax(0,1fr))">
+<div class="card"><p style="font-weight:500;margin:0 0 4px">UCLA</p><p style="font-size:13px;margin:0">[TODO: confirm major]. Honours student.</p></div>
+<div class="card"><p style="font-weight:500;margin:0 0 4px">Upper Canada College</p><p style="font-size:13px;margin:0">IB Diploma 40/45. SAT 1560.</p></div>
+</div>
+</div>
+<div class="sec" style="background:#141a33;color:#e6f1fb">
+<div class="rail" style="background:rgba(230,241,251,.2)"></div>
+<p class="px" style="font-size:10px;margin:0 0 6px;color:#85b7eb">11:00 PM, OFF THE CLOCK</p>
+<p class="px" style="font-size:15px;margin:0 0 16px">Inventory<span class="pin">A8</span></p>
+<div class="grid" style="grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-bottom:22px">
+<div style="border:2px solid #85b7eb;padding:10px;text-align:center"><i class="ti ti-trophy" style="font-size:20px"></i><p style="font-size:12px;margin:6px 0 0">Rowing, national champ</p></div>
+<div style="border:2px solid #85b7eb;padding:10px;text-align:center"><i class="ti ti-piano" style="font-size:20px"></i><p style="font-size:12px;margin:6px 0 0">Piano, ARCT</p></div>
+<div style="border:2px solid #85b7eb;padding:10px;text-align:center"><i class="ti ti-skateboard" style="font-size:20px"></i><p style="font-size:12px;margin:6px 0 0">Built a longboard</p></div>
+<div style="border:2px solid #85b7eb;padding:10px;text-align:center"><i class="ti ti-cat" style="font-size:20px"></i><p style="font-size:12px;margin:6px 0 0">Cat dad</p></div>
+<div style="border:2px solid #85b7eb;padding:10px;text-align:center"><i class="ti ti-camera" style="font-size:20px"></i><p style="font-size:12px;margin:6px 0 0">Photography</p></div>
+<div style="border:2px solid #85b7eb;padding:10px;text-align:center"><i class="ti ti-chef-hat" style="font-size:20px"></i><p style="font-size:12px;margin:6px 0 0">Baking</p></div>
+<div style="border:2px solid #85b7eb;padding:10px;text-align:center"><i class="ti ti-headphones" style="font-size:20px"></i><p style="font-size:12px;margin:6px 0 0">Dubstep, EDM</p></div>
+<div style="border:2px solid #85b7eb;padding:10px;text-align:center"><i class="ti ti-barbell" style="font-size:20px"></i><p style="font-size:12px;margin:6px 0 0">Lift and sprint</p></div>
+</div>
+<div style="border-top:2px dashed #85b7eb;padding-top:18px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px">
+<p class="px" style="font-size:13px;margin:0">Let's talk.<span class="pin">A9</span></p>
+<span style="font-size:13px;display:flex;gap:16px"><span><i class="ti ti-mail"></i> Email</span><span><i class="ti ti-brand-linkedin"></i> LinkedIn</span><span><i class="ti ti-file"></i> Resume</span><span style="color:#f6c94a"><i class="ti ti-device-gamepad-2"></i> Game</span></span>
+</div>
+</div>
+</div>
+
+<p class="note">Detail panel, opened from the [03] Ateball card.</p>
+<div class="wrap" style="background:#bfe0f5">
+<div style="background:#1a1626;color:#85b7eb;font-family:monospace;font-size:12px;padding:7px 14px">danielxing.com/portfolio#ateball</div>
+<div style="display:flex;min-height:560px">
+<div style="flex:0 0 150px;padding:18px 14px;background:rgba(26,22,38,.45)">
+<div class="bk" style="padding:8px;opacity:.55;margin-bottom:10px"><p class="px" style="font-size:7px;margin:0 0 4px">[01]</p><p style="font-size:11px;margin:0">Cold email automator</p></div>
+<div class="bk" style="padding:8px;opacity:.55;margin-bottom:10px"><p class="px" style="font-size:7px;margin:0 0 4px">[02]</p><p style="font-size:11px;margin:0">Saved posts scroller</p></div>
+<div class="bk" style="padding:8px;border-color:#f6c94a;box-shadow:4px 4px 0 #f6c94a"><p class="px" style="font-size:7px;margin:0 0 4px">[03]</p><p style="font-size:11px;margin:0">Ateball</p></div>
+</div>
+<div class="bk" style="flex:1;min-width:0;margin:14px 14px 14px 0;padding:18px 20px">
+<div style="display:flex;justify-content:space-between;align-items:flex-start"><div><p class="px lbl">[03] PRODUCT</p><p class="px" style="font-size:16px;margin:0 0 8px">Ateball</p><p style="font-size:13px;color:#5f5e5a;margin:0">Creative Labs, UCLA. Project manager.</p></div><button class="nb"><i class="ti ti-x"></i></button></div>
+<div style="margin:16px 0;height:190px;border:2px solid #1a1626;background:#e6f1fb;display:flex;align-items:center;justify-content:center;font-size:13px;color:#185fa5">Gallery: 2 to 4 screenshots, arrows, dots, swipe</div>
+<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:16px">
+<div style="background:#e6f1fb;padding:10px"><p class="px" style="font-size:7px;margin:0 0 6px;color:#185fa5">ROLE</p><p style="font-size:13px;margin:0">Project manager</p></div>
+<div style="background:#e6f1fb;padding:10px"><p class="px" style="font-size:7px;margin:0 0 6px;color:#185fa5">TEAM</p><p style="font-size:13px;margin:0">[TODO]</p></div>
+<div style="background:#e6f1fb;padding:10px"><p class="px" style="font-size:7px;margin:0 0 6px;color:#185fa5">TIMELINE</p><p style="font-size:13px;margin:0">[TODO]</p></div>
+</div>
+<p class="px lbl">THE PROBLEM</p><p style="font-size:14px;margin:0 0 12px">[TODO]</p>
+<p class="px lbl">WHAT I DID</p><p style="font-size:14px;margin:0 0 12px">[TODO]</p>
+<p class="px lbl">RESULT</p><p style="font-size:14px;margin:0 0 14px">[TODO]</p>
+<div style="display:flex;justify-content:space-between;border-top:2px dashed #85b7eb;padding-top:12px"><button class="nb"><i class="ti ti-arrow-left"></i> Saved posts scroller</button><button class="nb">Genesis Alternative Ventures <i class="ti ti-arrow-right"></i></button></div>
+</div>
+</div>
+</div>
+</body>
+</html>

@@ -18,11 +18,17 @@ const decorFiles = (): Plugin => {
     };
 };
 
-// Serve /plain (no trailing slash) in dev and preview, like Vercel does in production.
-const plainRoute = (): Plugin => {
-    const rewrite = (req: { url?: string }, _res: unknown, next: () => void) => {
-        if (req.url === '/plain' || req.url?.startsWith('/plain?')) {
-            req.url = req.url.replace('/plain', '/plain/index.html');
+// Serve /portfolio (no trailing slash) in dev and preview like Vercel does, and redirect /plain to it.
+const pageRoutes = (): Plugin => {
+    const rewrite = (req: { url?: string }, res: { statusCode: number; setHeader: (k: string, v: string) => void; end: () => void }, next: () => void) => {
+        if (req.url === '/plain' || req.url?.startsWith('/plain?') || req.url?.startsWith('/plain/')) {
+            res.statusCode = 308;
+            res.setHeader('Location', '/portfolio');
+            res.end();
+            return;
+        }
+        if (req.url === '/portfolio' || req.url?.startsWith('/portfolio?')) {
+            req.url = req.url.replace('/portfolio', '/portfolio/index.html');
         }
         next();
     };
@@ -33,36 +39,45 @@ const plainRoute = (): Plugin => {
     };
 };
 
-// Render /plain to static HTML from src/content at build time (and on each dev request).
-// The plain page ships no JavaScript at all.
-const plainPrerender = (): Plugin => ({
-    name: 'plain-prerender',
+// Render /portfolio to static HTML from src/content at build time (and on each dev request).
+// Production builds hide [TODO] text and list every remaining TODO in the build log.
+const portfolioPrerender = (): Plugin => ({
+    name: 'portfolio-prerender',
     async transformIndexHtml(html, ctx) {
-        if (!ctx.path.endsWith('/plain/index.html')) return html;
-        const entry = '/src/plain/page.ts';
-        let mod: { renderPlainPage: () => string };
+        if (!ctx.path.endsWith('/portfolio/index.html')) return html;
+        const entry = '/src/portfolio/page.ts';
+        type Mod = { renderPortfolio: (o: { production: boolean }) => { head: string; body: string; todos: string[] } };
+        let mod: Mod;
         if (ctx.server) {
-            mod = await ctx.server.ssrLoadModule(entry) as typeof mod;
+            mod = await ctx.server.ssrLoadModule(entry) as Mod;
         } else {
             const server = await createServer({
                 configFile: false, logLevel: 'silent', appType: 'custom',
                 server: { middlewareMode: true, hmr: false }
             });
-            try { mod = await server.ssrLoadModule(entry) as typeof mod; }
+            try { mod = await server.ssrLoadModule(entry) as Mod; }
             finally { await server.close(); }
         }
-        return html.replace('<!--plain-content-->', mod.renderPlainPage());
+        const production = !ctx.server;
+        const out = mod.renderPortfolio({ production });
+        if (production && out.todos.length) {
+            const unique = [...new Set(out.todos)];
+            console.log(`\n[portfolio] ${unique.length} TODOs hidden in the production build (see TODO_ASSETS.md):`);
+            unique.forEach((x) => console.log(`  - ${x}`));
+        }
+        return html.replace('<!--portfolio-head-->', out.head).replace('<!--portfolio-content-->', out.body);
     }
 });
 
 export default defineConfig({
     base: '/',
-    plugins: [plainRoute(), plainPrerender(), decorFiles()],
+    plugins: [pageRoutes(), portfolioPrerender(), decorFiles()],
     build: {
         target: 'es2020',
         rollupOptions: {
             input: {
                 main: resolve(__dirname, 'index.html'),
+                portfolio: resolve(__dirname, 'portfolio/index.html'),
                 plain: resolve(__dirname, 'plain/index.html')
             },
             output: {

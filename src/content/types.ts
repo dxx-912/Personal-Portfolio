@@ -41,6 +41,32 @@ export interface Section {
     gallery?: 'grid' | 'polaroid' | 'viewer';
     videos?: VideoItem[];
     links?: LinkItem[];
+
+    // Case study fields. Written once here; the game panels and the portfolio view both show them.
+    /** One line for a card face: what it is and the result. */
+    summary?: string;
+    /** Short name for tags and inventory boxes, e.g. "Sharpe Fellows, tech VP". */
+    short?: string;
+    /** Organization or context, e.g. "Creative Labs, UCLA". */
+    org?: string;
+    role?: string;
+    team?: string;
+    timeline?: string;
+    problem?: string;
+    whatIDid?: string;
+    result?: string;
+    tags?: string[];
+    /** Hobbies: a one line fun fact (shown on the flip side of an inventory box). */
+    funFact?: string;
+    /** Big numbers that count up, e.g. 500+ members. */
+    counters?: Counter[];
+}
+
+export interface Counter {
+    value: number;
+    /** Appended after the number, e.g. "+". */
+    suffix?: string;
+    label: string;
 }
 
 /**
@@ -81,4 +107,8 @@ export interface Profile {
     wakeLine: string;
     /** Thought bubbles when the visitor stands still for a while. */
     idleThoughts: string[];
+    /** Portfolio view hero: what Daniel does and what he is looking for. */
+    focus: string;
+    /** Public site URL, for canonical and Open Graph tags. Leave empty until the domain is chosen. */
+    siteUrl: string;
 }

@@ -2,5 +2,8 @@
   "cleanUrls": true,
   "trailingSlash": false,
   "buildCommand": "npm run build",
-  "outputDirectory": "dist"
+  "outputDirectory": "dist",
+  "redirects": [
+    { "source": "/plain", "destination": "/portfolio", "permanent": true }
+  ]
 }

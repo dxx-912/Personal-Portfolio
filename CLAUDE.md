@@ -4,6 +4,8 @@ Read this whole file before writing code. It replaces the iteration 1 version. I
 
 Start of every session: read this file, open every image in `reference/`, read `TODO_ASSETS.md`, then write a short plan before touching code.
 
+The non game version (formerly `/plain`, becoming `/portfolio`) has its own spec in `PORTFOLIO_VIEW.md`. Build it after iteration 2 is done. Until then, keep `/plain` working and in sync with the item list.
+
 ---
 
 ## 0. Status and what changed

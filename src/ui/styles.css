@@ -236,6 +236,10 @@ body.touch .message { bottom: 160px; }
 .facts dt { font: 600 14px var(--pixel); color: var(--muted); }
 .facts dd { margin: 0; font-weight: 600; }
 
+.tags { display: flex; flex-wrap: wrap; gap: 6px; margin: 4px 0 10px; }
+.tags .tag { font: 600 13px var(--pixel); padding: 2px 8px; border: 2px solid var(--edge); background: #fff; }
+.fun-fact { background: #fff6c8; border: 2px solid var(--edge); padding: 6px 10px; }
+
 .links { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
 .link {
     display: inline-block; padding: 6px 12px; border: 2px solid var(--edge); background: #fff; color: var(--accent-2);
@@ -351,6 +355,16 @@ a.link:hover { background: #eef4ff; text-decoration: underline; }
 .flash { position: fixed; inset: 0; z-index: 60; background: #fff; pointer-events: none; animation: flash 0.45s ease-out forwards; }
 .flash.soft { background: rgba(255, 255, 255, 0.35); }
 @keyframes flash { from { opacity: 1; } to { opacity: 0; } }
+
+/* one time quick view suggestion on cramped screens */
+.suggest {
+    position: fixed; left: 50%; bottom: max(20px, env(safe-area-inset-bottom)); transform: translateX(-50%); z-index: 45;
+    width: min(360px, calc(100vw - 24px)); padding: 12px 14px; background: var(--paper); color: var(--ink);
+    border: 3px solid var(--edge); box-shadow: 0 4px 0 var(--edge); font: 600 15px/1.35 var(--pixel); text-align: center;
+}
+.suggest p { margin: 0 0 10px; }
+.suggest-btns { display: flex; gap: 10px; justify-content: center; margin: 0 !important; }
+.suggest .menu-btn { font-size: 15px; padding: 8px 12px; }
 
 /* pause menu */
 .panel.pause { width: min(360px, 100%); }

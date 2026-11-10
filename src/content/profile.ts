@@ -15,9 +15,9 @@ export const profile: Profile = {
 
     // Joke stats for the HUD portrait. [TODO: Daniel to pick the names and numbers]
     stats: [
-        { label: 'Caffeine', value: 7, max: 7, color: '#d9534f' },
-        { label: 'Sleep', value: 2, max: 6, color: '#9aa3b2' },
-        { label: 'Curiosity', value: 200, max: 200, color: '#4a8fe0' }
+        { label: 'Caffeine', value: 7, max: 7, color: '#d4493a' },
+        { label: 'Sleep', value: 2, max: 6, color: '#8a96a5' },
+        { label: 'Curiosity', value: 200, max: 200, color: '#3d7fd4' }
     ],
 
     // [TODO: Daniel to confirm the line]
@@ -30,5 +30,11 @@ export const profile: Profile = {
         'where did I leave my charger',
         'five more minutes',
         'hmm'
-    ]
+    ],
+
+    // Portfolio view hero line, from the approved mockup. [TODO: Daniel to confirm]
+    focus: 'UCLA student building products, campaigns, and communities. Looking for product management roles in 2027.',
+
+    // Public URL for canonical and Open Graph tags, e.g. 'https://example.com'. [TODO: custom domain]
+    siteUrl: ''
 };

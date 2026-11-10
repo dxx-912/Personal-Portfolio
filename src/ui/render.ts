@@ -1,4 +1,4 @@
-// Content to HTML strings. Shared by in-game panels and the static /plain page.
+// Content to HTML strings for the in-game panels. No DOM or Phaser imports here.
 // No DOM or Phaser imports here: this also runs at build time.
 
 import type { ImageItem, LinkItem, Section, VideoItem } from '../content/types';
@@ -72,6 +72,16 @@ export function renderSection(s: Section, o: RenderOpts): string {
     }
     if (s.subtitle) out.push(`<p class="subtitle">${rich(s.subtitle)}</p>`);
     s.body?.forEach((p) => out.push(`<p>${rich(p)}</p>`));
+    const glance = [['Role', s.role], ['Team', s.team], ['Timeline', s.timeline]].filter(([, v]) => v) as [string, string][];
+    const counters = (s.counters ?? []).map((c) => [c.label, `${c.value}${c.suffix ?? ''}`] as [string, string]);
+    if (glance.length || counters.length) {
+        out.push('<dl class="facts">');
+        [...glance, ...counters].forEach(([k, v]) => out.push(`<div><dt>${rich(k)}</dt><dd>${rich(v)}</dd></div>`));
+        out.push('</dl>');
+    }
+    ([['The problem', s.problem], ['What I did', s.whatIDid], ['Result', s.result]] as [string, string | undefined][])
+        .forEach(([k, v]) => { if (v) out.push(`<p class="writeup"><strong>${rich(k)}.</strong> ${rich(v)}</p>`); });
+    if (s.funFact) out.push(`<p class="fun-fact"><strong>Fun fact.</strong> ${rich(s.funFact)}</p>`);
     if (s.facts?.length) {
         out.push('<dl class="facts">');
         s.facts.forEach((f) => out.push(`<div><dt>${rich(f.label)}</dt><dd>${rich(f.value)}</dd></div>`));
@@ -86,6 +96,7 @@ export function renderSection(s: Section, o: RenderOpts): string {
         out.push(`<div class="gallery ${style}">${s.images.map((i) => renderImage(i, o.mode, o.comingSoonImage)).join('')}</div>`);
     }
     s.videos?.forEach((v) => out.push(renderVideo(v, o.mode, o.comingSoonVideo)));
+    if (s.tags?.length) out.push(`<p class="tags">${s.tags.map((t) => `<span class="tag">${rich(t)}</span>`).join('')}</p>`);
     if (s.links?.length) out.push(`<p class="links">${s.links.map(renderLink).join('')}</p>`);
     return out.join('\n');
 }

@@ -7,6 +7,7 @@ export const homeContent: Record<string, Entry> = {
     // 1. Window with the Toronto skyline
     window: {
         id: 'window',
+        short: 'North York',
         prompt: 'North York',
         plainGroup: 'personal',
         title: 'North York',
@@ -37,6 +38,7 @@ export const homeContent: Record<string, Entry> = {
             {
                 id: 'rowing',
                 title: 'Rowing',
+                short: 'Rowing, national champ',
                 subtitle: 'High school varsity. Top shelf: the trophy and the oar.',
                 body: [
                     'We won the national rowing championship.',
@@ -78,6 +80,7 @@ export const homeContent: Record<string, Entry> = {
     // 3. Pull up tower (E does pull ups)
     pullup: {
         id: 'pullup',
+        short: 'Lift and sprint',
         prompt: 'Exercise',
         plainGroup: 'personal',
         title: 'Exercise',
@@ -96,6 +99,7 @@ export const homeContent: Record<string, Entry> = {
     // 4. Big black speaker (E toggles a short loop)
     speaker: {
         id: 'speaker',
+        short: 'Dubstep, EDM',
         prompt: 'Music',
         plainGroup: 'personal',
         title: 'Dubstep and EDM',
@@ -107,6 +111,7 @@ export const homeContent: Record<string, Entry> = {
     // 5. Camera on the work table (E snaps a photo of the room)
     camera: {
         id: 'camera',
+        short: 'Photography',
         prompt: 'Photography',
         plainGroup: 'personal',
         title: 'Photography',
@@ -126,6 +131,7 @@ export const homeContent: Record<string, Entry> = {
     // 6. Nightstand with the lamp and the family photo
     nightstand: {
         id: 'nightstand',
+        short: 'Family',
         prompt: 'Family',
         plainGroup: 'personal',
         title: 'Family',
@@ -141,6 +147,7 @@ export const homeContent: Record<string, Entry> = {
     // 7. Digital piano (E plays it)
     piano: {
         id: 'piano',
+        short: 'Piano, ARCT',
         prompt: 'Piano',
         plainGroup: 'personal',
         title: 'Piano',
@@ -156,6 +163,7 @@ export const homeContent: Record<string, Entry> = {
     // 8. Apple crisp pie with a slice served
     pie: {
         id: 'pie',
+        short: 'Baking',
         prompt: 'Baking',
         plainGroup: 'personal',
         title: 'Baking and cooking',
@@ -172,6 +180,7 @@ export const homeContent: Record<string, Entry> = {
     // 9. The cat (E pets him)
     cat: {
         id: 'cat',
+        short: 'Cat dad',
         prompt: 'About him',
         plainGroup: 'personal',
         title: 'My cat',
@@ -187,6 +196,7 @@ export const homeContent: Record<string, Entry> = {
     // 10. Longboard (E rides it)
     longboard: {
         id: 'longboard',
+        short: 'Built a longboard',
         prompt: 'The build',
         plainGroup: 'personal',
         title: 'Longboard build',
