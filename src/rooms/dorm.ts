@@ -87,7 +87,7 @@ export const dorm: RoomDef = {
         { kind: 'glow', x: 13.3, y: 3.0, r: 44, color: 0xa060ff, strength: 0.7, sx: 2.3, sy: 0.45 },
         { kind: 'glow', x: 19.85, y: 4.45, r: 24, color: 0xffc070, strength: 0.9, sx: 0.8, sy: 1.5 }
     ],
-    fairy: { y: -3.82, x0: 0.15, x1: 16.3, colors: [0xffd27a, 0xff9e7a, 0xfff0b0, 0xffb8d0] },
+    fairy: { y: -3.82, x0: 0.15, x1: 16.3, colors: [0xffc070, 0xff9a5a, 0xffd890, 0xffae78] },
     labels: [
         { on: 'binder', x: 13.25, y: 0.36, text: 'Consulting\nstuff', size: 2.6, color: '#2a2130', bold: true },
         { on: 'shirt', x: 13.6, y: 6.43, text: 'Hope For Hearing', size: 1.9, color: '#2f5aa8', bold: true },

@@ -8,6 +8,7 @@ export const ui = {
     controlsKeys: 'WASD to move. E to do things, F to learn more. The door on the right goes home.',
     controlsTouch: 'Use the stick or tap to walk. The door on the right goes home.',
     found: (n: number, total: number) => `Found ${n} of ${total}`,
+    foundLabel: 'Found',
 
     /** E verbs, by action. */
     verbs: {

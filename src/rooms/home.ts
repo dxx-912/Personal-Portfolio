@@ -67,7 +67,7 @@ export const home: RoomDef = {
         { kind: 'glow', x: 0.7, y: 4.35, r: 50, color: 0xffc870, strength: 0.95 },
         { kind: 'glow', x: 0.15, y: 2.25, r: 24, color: 0xffc070, strength: 0.9, sx: 0.8, sy: 1.5 }
     ],
-    fairy: { y: -3.85, x0: 0.15, x1: 16.2, colors: [0xfff0c0, 0xffd27a, 0xfff6e0] },
+    fairy: { y: -3.85, x0: 0.15, x1: 16.2, colors: [0xffd890, 0xffc070, 0xffe0a8] },
     labels: [
         { on: 'shelf', x: 2.9 + 27 / 16, y: -4 + 101 / 16, text: 'Solo Levelling', size: 3, color: '#f4efe2', bold: true },
         { on: 'shelf', x: 2.9 + 27 / 16, y: -4 + 95 / 16, text: 'Sweet Home', size: 3, color: '#f4efe2', bold: true },

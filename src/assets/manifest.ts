@@ -54,6 +54,7 @@ export const ASSETS = {
 
     // fx
     fx_arrow: { w: 9, h: 6, paint: painters.fxArrow, outline: true },
+    fx_arrow_s: { w: 5, h: 3, paint: painters.fxArrowSmall, outline: true },
     sparkle: { w: 7, h: 7, frames: 2, paint: painters.sparkle, outline: false },
     fx_z: { w: 5, h: 5, frames: 2, paint: painters.fxZ, outline: false },
     fx_heart: { w: 5, h: 5, paint: painters.fxHeart, outline: false },

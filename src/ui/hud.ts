@@ -97,9 +97,7 @@ export function initHud() {
     bus.on('modal', () => clearHeld());
     bus.on('room', renderMinimap);
     bus.on('awake', (a) => {
-        portraitBtn.hidden = !a;
-        minimapEl.hidden = !a;
-        counterEl.hidden = !a;
+        [portraitBtn, minimapEl, counterEl].forEach((el) => { el.hidden = false; el.classList.toggle('is-off', !a); });
         if (a) renderPortraitSeen();
     });
     setFound(state.found.size);
@@ -114,7 +112,9 @@ export function initHud() {
 }
 
 export function setFound(n: number) {
-    counterEl.textContent = ui.found(n, TOTAL_ITEMS);
+    counterEl.innerHTML = `<span class="c-l">${esc(ui.foundLabel)}</span><span class="c-n">${n}/${TOTAL_ITEMS}</span>`;
+    counterEl.setAttribute('aria-label', ui.found(n, TOTAL_ITEMS));
+    counterEl.title = ui.found(n, TOTAL_ITEMS);
 }
 
 function renderPortraitSeen() {

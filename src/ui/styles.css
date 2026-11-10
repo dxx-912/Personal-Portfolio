@@ -433,3 +433,37 @@ a.link:hover { background: #eef4ff; text-decoration: underline; }
     .mm-room { width: 44px; height: 24px; font-size: 10px; }
     .title-card { font-size: 16px; padding: 5px 12px; }
 }
+
+
+/* ---------- iteration 4: a smaller, partly transparent HUD that never covers the room's items ---------- */
+
+.is-off { visibility: hidden; }
+.hud-top-left, .hud-top-right { opacity: 0.78; transition: opacity 0.15s; }
+.hud-top-left:hover, .hud-top-left:focus-within, .hud-top-right:hover, .hud-top-right:focus-within { opacity: 1; }
+.hud-top-left { top: 8px; left: 8px; gap: 4px; }
+.portrait { padding: 3px 6px 3px 3px; gap: 6px; border-width: 1px; box-shadow: 0 0 0 1px #1a1420; }
+.portrait .face { width: 30px; height: 25px; border-width: 1px; box-shadow: none; }
+.portrait .stats { gap: 2px; }
+.portrait .stat { width: 104px; height: 11px; }
+.portrait .stat .txt { font-size: 9px; line-height: 11px; padding: 0 3px; }
+.plain-link, .hud-top-left .plain-link { font-size: 11px; padding: 3px 7px; border-width: 1px; }
+
+/* right side: one slim column (pause, sound, counter, minimap) */
+.hud-top-right { top: 8px; right: 8px; gap: 4px; width: 44px; align-items: stretch; }
+.hud-row { flex-direction: column; align-items: stretch; gap: 4px; }
+.hud-row .counter { order: 3; }
+.hud-btn { min-width: 0; min-height: 30px; padding: 4px 0; font-size: 12px; border-width: 1px; }
+.counter { display: grid; justify-items: center; gap: 1px; padding: 3px 0; border-width: 1px; font-size: 11px; }
+.counter .c-l { font-size: 8px; opacity: 0.85; }
+.counter .c-n { font-size: 11px; }
+.minimap { flex-direction: column; padding: 3px; border-width: 1px; }
+.mm-room { width: 36px; height: 20px; font-size: 8px; border-width: 1px; }
+.mm-door { width: 3px; height: 5px; }
+.mm-room.here { outline-width: 2px; }
+
+@media (max-width: 560px), (max-height: 500px) {
+    .portrait .stat { width: 78px; }
+    .hud-row { flex-wrap: nowrap; max-width: none; }
+    .counter, .hud-btn { font-size: 11px; padding: 3px 0; }
+    .mm-room { width: 36px; height: 18px; font-size: 8px; }
+}

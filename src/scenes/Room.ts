@@ -35,6 +35,8 @@ interface Target {
     sprite: Sprite;
     hl?: Phaser.GameObjects.Sprite;
     marker?: Phaser.GameObjects.Image;
+    /** Bob phase, so arrows do not bounce in sync. */
+    phase?: number;
     spot: Pt;
     facing: Facing;
 }
@@ -131,12 +133,14 @@ export class Room extends Phaser.Scene {
 
         this.fitCamera();
         this.scale.on('resize', this.fitCamera, this);
+        document.fonts?.ready.then(() => { if (this.scene.isActive()) this.fitCamera(); });
 
         this.offs.push(onAction((a) => this.onAction(a)));
         this.offs.push(bus.on('modal', (m) => {
             if (m) { this.player.cancelPath(); if (this.mode === 'free' || this.mode === 'ride') this.player.stop(); setPrompt(null); }
         }));
         this.offs.push(bus.on('travel', () => this.travel()));
+        this.offs.push(bus.on('awake', () => requestAnimationFrame(() => this.fitCamera())));
         this.input.on('pointerdown', this.onPointerDown, this);
         this.input.on('pointermove', this.onPointerMove, this);
         this.events.once('shutdown', () => {
@@ -300,7 +304,8 @@ export class Room extends Phaser.Scene {
         const tex = t.sprite.texture.key;
         if (this.textures.exists(hlKey(tex))) t.hl = this.add.sprite(0, 0, hlKey(tex), 0).setVisible(false);
         if (t.key) {
-            t.marker = this.add.image(0, 0, 'fx_arrow').setDepth(8800).setOrigin(0.5, 1);
+            t.marker = this.add.image(0, 0, 'fx_arrow_s').setDepth(8800).setOrigin(0.5, 1);
+            t.phase = Math.random() * Math.PI * 2;
             this.refreshSeen(t);
         }
     }
@@ -352,29 +357,54 @@ export class Room extends Phaser.Scene {
 
     // ---------- camera ----------
 
-    /** Integer zoom that fills the window. If one step bigger only crops a little, use it and follow the player. */
+    /** Where the camera sits when not leaning in (world centre), chosen by fitCamera. */
+    private baseCenter = { x: ROOM_W / 2, y: ROOM_H / 2 };
+
+    /**
+     * The whole room is always visible (never cropped). Picks the biggest zoom, integer on big screens,
+     * where the HUD boxes cover no interactive item, nudging the room down or sideways inside the spare space.
+     */
     private fitCamera() {
         const w = this.scale.width, h = this.scale.height;
         const fit = Math.min(w / ROOM_W, h / ROOM_H);
-        let z: number;
-        if (fit >= 1.5) {
-            z = Math.max(1, Math.floor(fit));
-            const up = z + 1;
-            if (ROOM_W * up <= w * 1.12 && ROOM_H * up <= h * 1.16) z = up;
-        } else z = Math.max(0.5, fit);
-        this.zoom = z;
-        this.cameras.main.setZoom(z * this.zoomBoost);
+        const hud = [...document.querySelectorAll<HTMLElement>('.hud-top-left > *, .hud-top-right > *')]
+            .map((el) => el.getBoundingClientRect()).filter((r) => r.width > 0 && r.height > 0);
+        const canvas = this.game.canvas.getBoundingClientRect();
+        const items = this.targets.map((t) => t.sprite.getBounds());
+        const hits = (z: number, ox: number, oy: number) => items.some((b) => {
+            const x = canvas.left + ox + b.x * z, y = canvas.top + oy + b.y * z, bw = b.width * z, bh = b.height * z;
+            return hud.some((r) => x < r.right && x + bw > r.left && y < r.bottom && y + bh > r.top);
+        });
+        const steps: number[] = [];
+        if (fit >= 3) for (let z = Math.floor(fit); z >= 2; z--) steps.push(z);
+        else for (let z = Math.floor(fit * 8) / 8; z >= 0.5; z -= 0.125) steps.push(z);
+        let chosen: { z: number; ox: number; oy: number } | null = null;
+        for (const z of steps) {
+            const sx = w - ROOM_W * z, sy = h - ROOM_H * z;
+            const tries: [number, number][] = [];
+            for (let dy = 0; dy <= sy / 2; dy += 4) for (const dx of [0, 8, -8, 16, -16, 32, -32]) if (Math.abs(dx) <= sx / 2) tries.push([dx, dy]);
+            const ok = tries.find(([dx, dy]) => !hits(z, sx / 2 + dx, sy / 2 + dy));
+            if (ok) { chosen = { z, ox: sx / 2 + ok[0], oy: sy / 2 + ok[1] }; break; }
+        }
+        if (!chosen) { const z = steps[0] ?? Math.max(0.5, fit); chosen = { z, ox: (w - ROOM_W * z) / 2, oy: (h - ROOM_H * z) / 2 }; }
+        this.zoom = chosen.z;
+        this.baseCenter = { x: (w / 2 - chosen.ox) / chosen.z, y: (h / 2 - chosen.oy) / chosen.z };
+        this.cameras.main.setZoom(this.zoom * this.zoomBoost);
         this.updateCamera(0, true);
         this.buildLabels();
     }
 
     private updateCamera(dt: number, snap = false) {
         const cam = this.cameras.main;
-        const vw = this.scale.width / cam.zoom, vh = this.scale.height / cam.zoom;
-        const focusX = this.player?.x ?? ROOM_W / 2, focusY = (this.player?.y ?? ROOM_H / 2) - 12;
-        const clampAxis = (p: number, view: number, size: number) =>
-            view >= size ? size / 2 : Phaser.Math.Clamp(p, view / 2, size - view / 2);
-        const tx_ = clampAxis(focusX, vw, ROOM_W), ty_ = clampAxis(focusY, vh, ROOM_H);
+        let tx_ = this.baseCenter.x, ty_ = this.baseCenter.y;
+        if (this.zoomBoost > 1.001 && this.player) {
+            // leaning in (sitting): follow Daniel, staying inside the room
+            const vw = this.scale.width / cam.zoom, vh = this.scale.height / cam.zoom;
+            const clampAxis = (p: number, view: number, size: number) =>
+                view >= size ? size / 2 : Phaser.Math.Clamp(p, view / 2, size - view / 2);
+            tx_ = clampAxis(this.player.x, vw, ROOM_W);
+            ty_ = clampAxis(this.player.y - 12, vh, ROOM_H);
+        }
         const k = snap ? 1 : 1 - Math.pow(0.88, dt / 16.7);
         this.camPos.x += (tx_ - this.camPos.x) * k;
         this.camPos.y += (ty_ - this.camPos.y) * k;
@@ -1185,7 +1215,7 @@ export class Room extends Phaser.Scene {
         const hint = time < this.hintUntil;
         const blink = Math.floor(time / 160) % 2 === 0;
         const pulse = 0.7 + 0.3 * Math.sin(time / 170);
-        const bob = this.rm ? 0 : Math.round(Math.sin(time / 260) * 1.5);
+        const near = (t: Target) => Math.hypot(t.spot.x - this.player.x, t.spot.y - this.player.y) < 56;
         const showMarkers = !this.sleeping && !this.snapping;
         for (const t of this.targets) {
             if (t.def?.target === 'cat' && this.cat) t.spot = this.cat.standingSpot(this.player.x).spot;
@@ -1199,6 +1229,10 @@ export class Room extends Phaser.Scene {
             if (t.marker && (!showMarkers || t === focus)) t.marker.setVisible(false);
             if (t.marker?.visible) {
                 const b = t.sprite.getBounds();
+                const close = near(t) || hint;
+                if (t.marker.texture.key !== (close ? 'fx_arrow' : 'fx_arrow_s')) t.marker.setTexture(close ? 'fx_arrow' : 'fx_arrow_s');
+                t.marker.setAlpha(close ? 1 : 0.55);
+                const bob = this.rm ? 0 : Math.round(Math.sin(time / (close ? 240 : 420) + (t.phase ?? 0)) * (close ? 1.5 : 1));
                 t.marker.setPosition(Math.round(b.centerX), Math.round(b.top) - 2 + bob);
             }
         }

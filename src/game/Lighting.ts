@@ -79,9 +79,9 @@ export class Lighting {
         for (let x = x0 + 4; x < x1; x += 11, k++) {
             const b = s.add.image(x, sag(x) + 2, 'fx_bulb').setDepth(1.95).setTint(f.colors[k % f.colors.length]);
             this.bulbs.push(b);
-            const pool = s.add.image(x, sag(x) + 2, 'glow').setScale(0.16).setDepth(1.96)
+            const pool = s.add.image(x, sag(x) + 2, 'glow').setScale(0.08).setDepth(1.96)
                 .setBlendMode(Phaser.BlendModes.ADD).setTint(f.colors[k % f.colors.length]);
-            this.pools.push({ img: pool, base: 0.25 });
+            this.pools.push({ img: pool, base: 0.16 });
             if (!this.rm) {
                 s.tweens.add({
                     targets: [b, pool], alpha: { from: 1, to: 0.35 }, duration: 600 + Math.random() * 900,
@@ -92,7 +92,7 @@ export class Lighting {
         // a soft band of light along the top of the wall
         const cx = (x0 + x1) / 2;
         const band = s.make.image({ x: 0, y: 0, key: 'glow', add: false }).setScale((x1 - x0) / 64 * 0.9, 0.5);
-        this.erasers.push({ img: band, x: cx, y: y + 4, strength: 0.55 });
+        this.erasers.push({ img: band, x: cx, y: y + 4, strength: 0.38 });
     }
 
     /** Darkness 0 (fully lit) .. 1 (black); light 0..1 scales every source; glow lights the sleeper. */

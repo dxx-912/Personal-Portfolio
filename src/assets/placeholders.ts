@@ -125,6 +125,12 @@ const fxArrow: Painter = (p) => {
     p.r(1, 0, 4, 1, l);
 };
 
+/** Small, quiet version of the unfound marker (used at a distance). */
+const fxArrowSmall: Painter = (p) => {
+    const c = '#ffd447';
+    p.r(0, 0, 5, 1, c); p.r(1, 1, 3, 1, c); p.p(2, 2, c);
+};
+
 const sparkle: Painter = (p) => {
     // frame 0: small plus, frame 1: bigger star (used for confetti)
     const c = '#fff6c8';
@@ -1151,7 +1157,7 @@ export const painters = {
     dormRoom: paintRoom(DORM_PAL, 'carpet', 11),
     homeRoom: paintRoom(HOME_PAL, 'wood', 23),
     doorSide, doormat, signRight: signPainter('right'), signLeft: signPainter('left'), wallClock,
-    fxArrow, sparkle, fxZ, fxHeart, fxNote, fxPuff, fxBulb, pencil,
+    fxArrow, fxArrowSmall, sparkle, fxZ, fxHeart, fxNote, fxPuff, fxBulb, pencil,
     daniel: danielStrip('all'), danielShirt: danielStrip('shirt'), danielSleep, cat,
     slotGraduation, slotDamn, slotDuck, slotEmpty, slotHome1, slotHome2, slotHome3,
     dormWindow, dormPennant, dormTodo, dormDesk, dormLaptop, dormBinder, dormPhone,
