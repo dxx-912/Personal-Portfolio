@@ -1,7 +1,7 @@
 import Phaser from 'phaser';
 import decorFiles from 'virtual:decor-files';
 import {
-    CAT_ZONE, FLOOR_H, FLOOR_W, FLOOR_X, FLOOR_Y, RIDE_SPEED, ROOM_H, ROOM_W, TILE, ZONE_ENTER, ZONE_EXIT,
+    CAT_ZONE, FLOOR_H, FLOOR_W, FLOOR_X, FLOOR_Y, RIDE_SPEED, ROOM_H, ROOM_W, TILE, WALK_SPEED, ZONE_ENTER, ZONE_EXIT,
     isTouchDevice, prefersReducedMotion, tx, ty
 } from '../config';
 import { ABOUT_KEY, completion, contentKey, getEntry, profile, ui, type Entry, type RoomKey } from '../content';
@@ -1222,7 +1222,7 @@ export class Room extends Phaser.Scene {
                 return;
         }
 
-        this.player.update(moveVector(), dt);
+        this.player.update(moveVector(), dt, this.walkSpeed());
         if (!this.canAct()) { setPrompt(null); this.updateHighlights(null, time); return; }
         this.footsteps(time);
         this.checkDoors();
@@ -1243,6 +1243,31 @@ export class Room extends Phaser.Scene {
             this.promptAtHead = useHead;
         } else setPrompt(null);
         this.idleThoughts();
+    }
+
+    /** Every multiplier on walking speed lives here, so the debug overlay can list them. */
+    speedModifiers(): { name: string; mult: number }[] {
+        return [];
+    }
+
+    walkSpeed() {
+        return this.speedModifiers().reduce((s, m) => s * m.mult, WALK_SPEED);
+    }
+
+    /** For the dev overlay: what is currently shaping movement. */
+    debugInfo() {
+        const b = this.player.sprite.body as Phaser.Physics.Arcade.Body;
+        const flags = [
+            this.mode !== 'free' ? `mode ${this.mode}` : '',
+            this.busy ? 'busy' : '', this.sleeping ? 'asleep' : '', state.modal ? `modal ${state.modal}` : '',
+            this.player.walkingPath ? 'click-walk' : '', this.player.isPosed ? 'posed' : ''
+        ].filter(Boolean);
+        return {
+            x: this.player.x, y: this.player.y,
+            velocity: Math.hypot(b.velocity.x, b.velocity.y),
+            target: this.mode === 'ride' ? RIDE_SPEED : this.walkSpeed(),
+            modifiers: this.speedModifiers(), flags
+        };
     }
 
     private promptAtPlayer(spec: PromptSpec) {
