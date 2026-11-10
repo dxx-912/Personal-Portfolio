@@ -65,7 +65,8 @@ export const ASSETS = {
     // image slots (see the note at the top)
     slot_poster_graduation: { w: 18, h: 24, paint: painters.slotGraduation, outline: true, slot: { file: 'poster-graduation.png' } },
     slot_poster_damn: { w: 18, h: 24, paint: painters.slotDamn, outline: true, slot: { file: 'poster-damn.png' } },
-    slot_poster_duck: { w: 16, h: 20, paint: painters.slotDuck, outline: true, slot: { file: 'poster-duck.png' } },
+    slot_poster_duck: { w: 44, h: 60, paint: painters.slotDuck, outline: true, slot: { file: 'poster-duck.png' } },
+    slot_poster_igor: { w: 18, h: 24, paint: painters.slotIgor, outline: true, slot: { file: 'poster-igor.png' } },
     slot_poster_home_1: { w: 18, h: 24, paint: painters.slotHome1, outline: true, slot: { file: 'poster-home-1.png' } },
     slot_poster_home_2: { w: 16, h: 20, paint: painters.slotHome2, outline: true, slot: { file: 'poster-home-2.png' } },
     slot_poster_home_3: { w: 24, h: 16, paint: painters.slotHome3, outline: true, slot: { file: 'poster-home-3.png' } },
@@ -92,7 +93,7 @@ export const ASSETS = {
     dorm_shirt: { w: 24, h: 15, paint: painters.dormShirt, outline: true, highlight: true },
     dorm_clothes: { w: 31, h: 12, paint: painters.dormClothes, outline: true },
     dorm_fridge: { w: 16, h: 26, paint: painters.dormFridge, outline: true },
-    dorm_trash: { w: 12, h: 14, paint: painters.dormTrash, outline: true },
+    dorm_trash: { w: 18, h: 18, paint: painters.dormTrash, outline: true },
     dorm_laundry: { w: 22, h: 18, paint: painters.dormLaundry, outline: true },
     dorm_sneakers: { w: 15, h: 6, paint: painters.dormSneakers, outline: true },
     dorm_bag: { w: 14, h: 10, paint: painters.dormBag, outline: true },

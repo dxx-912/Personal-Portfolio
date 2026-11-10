@@ -466,6 +466,12 @@ const slotDuck: Painter = (p, w, h) => {
     for (let y = 3; y < h - 3; y += 4) for (let x = 3 + ((y >> 2) % 2) * 2; x < w - 3; x += 4) p.r(x, y, 2, 2, '#fffaf0');
 };
 const slotEmpty: Painter = () => { /* hidden until the file exists */ };
+const slotIgor: Painter = (p, w, h) => {
+    posterFrame(p, w, h);
+    p.r(2, 2, w - 4, h - 4, '#f4b6c4');
+    for (let y = 4; y < h - 3; y += 5) p.r(3, y, w - 6, 2, '#e98aa2');
+    p.r(Math.floor(w / 2) - 3, Math.floor(h / 2) - 3, 6, 6, '#fbe7a1');
+};
 const slotHome1: Painter = (p, w, h) => {
     posterFrame(p, w, h);
     p.r(2, 2, w - 4, h - 4, '#9fd3c7');
@@ -653,10 +659,10 @@ const dormCloset: Painter = (p, w, h) => {
     p.r(mid, 9, 1, h - 16, WOOD.deep);
     p.r(3, 10, 1, h - 20, WOOD.light);
     p.r(mid + 3, 10, 1, h - 20, WOOD.light);
-    p.r(mid - 4, 50, 2, 8, '#e3b867');
-    p.r(mid + 3, 50, 2, 8, '#e3b867');
-    // sleeve hanging out between the doors
-    p.r(mid - 1, 40, 3, 22, '#3f6fd0'); p.r(mid - 1, 40, 1, 22, '#5a8ae6'); p.r(mid - 1, 62, 3, 3, '#2f5aa8'); // cuff
+    p.r(mid - 4, 74, 2, 8, '#e3b867');
+    p.r(mid + 3, 74, 2, 8, '#e3b867');
+    // sleeve hanging out between the doors, below the big poster
+    p.r(mid - 1, 72, 3, 18, '#3f6fd0'); p.r(mid - 1, 72, 1, 18, '#5a8ae6'); p.r(mid - 1, 90, 3, 3, '#2f5aa8'); // cuff
     p.r(1, h - 5, w - 2, 4, WOOD.deep);
 };
 
@@ -786,12 +792,27 @@ const dormFridge: Painter = (p, w, h) => {
     p.r(2, 11, 4, 5, '#f7f3ea'); p.p(3, 12, '#9a8f86'); p.r(3, 13, 2, 1, '#9a8f86'); // a photo held up by a magnet
 };
 
-/** Small trash bin with crumpled paper. */
+/** Waste basket: wider at the top, ribbed, a dark bin bag folded over the rim, paper poking out, one ball that missed. */
 const dormTrash: Painter = (p, w, h) => {
-    p.r(1, 4, w - 2, h - 4, '#5d6679'); p.r(0, 3, w, 2, '#727c90');
-    p.r(2, 6, 1, h - 7, '#4b5364'); p.r(w - 3, 6, 1, h - 7, '#4b5364');
-    p.r(3, 1, 3, 3, '#f4f1ea'); p.p(4, 2, '#cfc8bb'); p.r(6, 2, 3, 2, '#efe9dc'); p.p(7, 2, '#cfc8bb');
-    p.r(w - 4, 4, 3, 2, '#f4f1ea'); // one that missed, resting on the rim
+    const body = '#8c95a4', dark = '#6b7383', light = '#b7bfcc', bag = '#2a2b31', bagL = '#44464f';
+    const top = 6, bw = w - 5; // the basket occupies x 0..bw, a stray paper ball sits to its right
+    // tapered body: one pixel narrower every 4 rows toward the bottom
+    for (let y = top; y < h; y++) {
+        const inset = Math.floor((y - top) / 4);
+        p.r(inset, y, bw - inset * 2, 1, body);
+        p.p(inset, y, dark); p.p(bw - inset - 1, y, dark);
+    }
+    // vertical ribs
+    for (let x = 3; x < bw - 3; x += 3) p.r(x, top + 3, 1, h - top - 4, dark);
+    p.r(2, top + 3, 1, h - top - 6, light); // shine
+    // black bin bag folded over the rim
+    p.r(0, top - 1, bw, 3, bag); p.r(1, top - 1, bw - 2, 1, bagL); p.p(2, top + 2, bag); p.p(bw - 3, top + 2, bag);
+    // crumpled paper poking out of the top
+    p.r(2, 2, 4, 3, '#f4f1ea'); p.p(3, 3, '#cfc8bb'); p.p(4, 2, '#e2ddd2');
+    p.r(6, 1, 3, 4, '#efe9dc'); p.p(7, 2, '#cfc8bb');
+    p.r(bw - 4, 3, 3, 2, '#f7de6a'); // a yellow sticky note in there too
+    // a paper ball that missed, on the floor beside it
+    p.r(w - 4, h - 3, 3, 3, '#f4f1ea'); p.p(w - 3, h - 2, '#cfc8bb');
 };
 
 /** Laundry basket with clothes spilling over the top. */
@@ -1159,7 +1180,7 @@ export const painters = {
     doorSide, doormat, signRight: signPainter('right'), signLeft: signPainter('left'), wallClock,
     fxArrow, fxArrowSmall, sparkle, fxZ, fxHeart, fxNote, fxPuff, fxBulb, pencil,
     daniel: danielStrip('all'), danielShirt: danielStrip('shirt'), danielSleep, cat,
-    slotGraduation, slotDamn, slotDuck, slotEmpty, slotHome1, slotHome2, slotHome3,
+    slotGraduation, slotDamn, slotDuck, slotIgor, slotEmpty, slotHome1, slotHome2, slotHome3,
     dormWindow, dormPennant, dormTodo, dormDesk, dormLaptop, dormBinder, dormPhone,
     dormCloset, dormBeanbag, dormFloorLamp, dormBed, dormRug, dormDresser, dormGradcap, dormShirt, dormClothes,
     dormFridge, dormTrash, dormLaundry, dormSneakers, dormBag, dormBackpack,

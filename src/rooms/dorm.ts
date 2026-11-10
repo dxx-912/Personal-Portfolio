@@ -16,9 +16,10 @@ export const dorm: RoomDef = {
         { id: 'window', texture: 'dorm_window', x: 0.4, y: -3.55, layer: 'wall' },
         { id: 'pennant', texture: 'dorm_pennant', x: 3.25, y: -3.5, layer: 'wall' },
         { id: 'todo', texture: 'dorm_todo', x: 7.5, y: -3.55, layer: 'wall' },
-        { id: 'poster1', texture: 'slot_poster_graduation', x: 11.95, y: -3.5, layer: 'wall' },
-        { id: 'poster2', texture: 'slot_poster_damn', x: 13.3, y: -3.6, layer: 'wall' },
-        { id: 'poster4', texture: 'slot_poster_caricature', x: 14.75, y: -3.35, layer: 'wall' },
+        // three posters above the desk: Graduation, DAMN, IGOR
+        { id: 'poster1', texture: 'slot_poster_graduation', x: 12.3, y: -3.5, layer: 'wall' },
+        { id: 'poster2', texture: 'slot_poster_damn', x: 13.65, y: -3.6, layer: 'wall' },
+        { id: 'poster4', texture: 'slot_poster_igor', x: 15.0, y: -3.5, layer: 'wall' },
 
         // working desk against the back wall, three items on it
         { id: 'desk', texture: 'dorm_desk', x: 10.3, y: -1.3, layer: 'floor', solid: { x: 10.3, y: 0, w: 6, h: 2.95 } },
@@ -28,13 +29,14 @@ export const dorm: RoomDef = {
 
         // closet in the back right corner, poster P3 taped to its door
         { id: 'closet', texture: 'dorm_closet', x: 16.45, y: -4.0, layer: 'floor', solid: { x: 16.45, y: 0, w: 3.5, h: 2.5 } },
-        { id: 'poster3', texture: 'slot_poster_duck', x: 16.62, y: -2.75, layer: 'floor', on: 'closet' },
+        // the big duck poster taped across the wardrobe doors
+        { id: 'poster3', texture: 'slot_poster_duck', x: 16.825, y: -3.4, layer: 'floor', on: 'closet' },
 
         // top left: beanbag in the window light
         { id: 'beanbag', texture: 'dorm_beanbag', x: 0.2, y: 0.55, layer: 'floor', solid: { x: 0.35, y: 1.45, w: 2.7, h: 1.3 } },
         // lived in corner: mini fridge, trash bin, laundry basket
         { id: 'fridge', texture: 'dorm_fridge', x: 3.35, y: -0.6, layer: 'floor', solid: { x: 3.4, y: 0.35, w: 0.95, h: 0.6 } },
-        { id: 'trash', texture: 'dorm_trash', x: 6.55, y: 0.15, layer: 'floor', solid: { x: 6.6, y: 0.6, w: 0.65, h: 0.4 } },
+        { id: 'trash', texture: 'dorm_trash', x: 6.45, y: -0.05, layer: 'floor', solid: { x: 6.5, y: 0.55, w: 0.8, h: 0.5 } },
         { id: 'laundry', texture: 'dorm_laundry', x: 0.12, y: 3.85, layer: 'floor', solid: { x: 0.2, y: 4.35, w: 1.2, h: 0.6 } },
         // backpack on wall hooks, under the clock and above the desk
         { id: 'backpack', texture: 'dorm_backpack', x: 10.8, y: -2.6, layer: 'wall' },

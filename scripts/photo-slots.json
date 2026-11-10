@@ -195,6 +195,12 @@
             "decor": true
         },
         {
+            "key": "poster-igor",
+            "folder": "3 Room decor (optional)/Poster P4, dorm wall above desk (1 image)",
+            "max": 1,
+            "decor": true
+        },
+        {
             "key": "poster-caricature",
             "folder": "3 Room decor (optional)/Caricature, extra dorm frame (1 image)",
             "max": 1,

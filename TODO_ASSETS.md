@@ -24,8 +24,9 @@ Never drawn by us. Until the file exists, an original abstract placeholder shows
 |---|---|---|
 | `poster-graduation.png` | Dorm wall above the desk, P1 | Pink and purple pixel pattern |
 | `poster-damn.png` | Dorm wall above the desk, P2 | Red and white pattern |
-| `poster-duck.png` | Dorm closet door, P3 | Yellow and white pattern |
-| `poster-caricature.png` | Dorm wall, optional extra frame | Hidden until the file exists |
+| `poster-duck.png` | Dorm wardrobe, P3 (big, about 2.5x the wall posters) | Yellow and white pattern |
+| `poster-igor.png` | Dorm wall above the desk, P4 | Pink stripes |
+| `poster-caricature.png` | Not placed in the room right now (the wall above the desk is full); say where you want it | Hidden until the file exists |
 | `hoodie-logo.png` | Home hoodie on the wall hook, chest | Plain "TORONTO" text |
 | `speaker-logo.png` | Home speaker badge | Small plain orange badge |
 | `phone-screen.png` | Dorm phone screen | Grid of coloured squares |
