@@ -193,17 +193,42 @@ function initCounters() {
     $$('[data-count]').forEach((el) => io.observe(el));
 }
 
-// ---------- org tags: one popover at a time ----------
+// ---------- leadership gallery: swipe, arrows, or pick a card from the buttons below ----------
 
-function initOrgs() {
-    const all = $$<HTMLDetailsElement>('details.org');
-    all.forEach((d) => d.addEventListener('toggle', () => { if (d.open) all.forEach((o) => { if (o !== d) o.open = false; }); }));
-    document.addEventListener('keydown', (e) => {
-        if (e.key !== 'Escape') return;
-        const open = all.find((d) => d.open);
-        if (open) { open.open = false; open.querySelector('summary')?.focus(); }
+function initLeadGallery() {
+    const gal = $('[data-lead]');
+    if (!gal) return;
+    const track = $('.lead-track', gal)!;
+    const slides = $$('.lead-slide', gal);
+    const tabs = $$<HTMLAnchorElement>('.lead-tab', gal);
+    const prev = $<HTMLButtonElement>('.lead-prev', gal)!, next = $<HTMLButtonElement>('.lead-next', gal)!;
+    let current = 0;
+    const go = (i: number) => {
+        const k = Math.max(0, Math.min(slides.length - 1, i));
+        track.scrollTo({ left: slides[k].offsetLeft - track.offsetLeft - 4, behavior: rm ? 'auto' : 'smooth' });
+    };
+    const sync = () => {
+        const mid = track.scrollLeft + track.clientWidth * 0.35;
+        let k = 0;
+        slides.forEach((s, i) => { if (s.offsetLeft - track.offsetLeft <= mid) k = i; });
+        if (k === current && slides[k].classList.contains('active')) return;
+        current = k;
+        slides.forEach((s, i) => s.classList.toggle('active', i === k));
+        tabs.forEach((t, i) => { if (i === k) t.setAttribute('aria-current', 'true'); else t.removeAttribute('aria-current'); });
+        prev.disabled = k === 0;
+        next.disabled = k === slides.length - 1;
+        tabs[k]?.scrollIntoView({ block: 'nearest', inline: 'nearest', behavior: rm ? 'auto' : 'smooth' });
+    };
+    tabs.forEach((t, i) => t.addEventListener('click', (e) => { e.preventDefault(); go(i); }));
+    prev.addEventListener('click', () => go(current - 1));
+    next.addEventListener('click', () => go(current + 1));
+    track.addEventListener('scroll', () => requestAnimationFrame(sync), { passive: true });
+    track.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowRight') { e.preventDefault(); go(current + 1); }
+        if (e.key === 'ArrowLeft') { e.preventDefault(); go(current - 1); }
     });
-    document.addEventListener('click', (e) => { if (!(e.target as Element).closest('details.org')) all.forEach((d) => { d.open = false; }); });
+    track.scrollLeft = 0;
+    sync();
 }
 
 // ---------- rail: Daniel walks down the day as you scroll, asleep by night ----------
@@ -498,7 +523,7 @@ initTyping();
 initHud();
 initReveals();
 initCounters();
-initOrgs();
+initLeadGallery();
 initRail();
 initInventory();
 initPanels();

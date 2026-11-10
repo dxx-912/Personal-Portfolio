@@ -24,6 +24,8 @@ export interface PortfolioItem {
     /** Card title when it differs from the story's title. */
     title?: string;
     icon?: PixelIconName;
+    /** 'org' items (student orgs) get a lighter panel: role, timeline, what it is, what I did. */
+    kind?: 'org';
     /** The shared story (the same object the game panel renders). */
     section: Section & { tabs?: Section[] };
 }
@@ -43,8 +45,16 @@ export const portfolioItems: PortfolioItem[] = [
     { id: 'lek', portfolioSection: 'work', cardOrder: 5, label: 'CASE COMP', section: tab(dormContent.binder, 'lek') },
     { id: 'marketing', portfolioSection: 'work', cardOrder: 6, label: 'MARKETING', title: 'DSP and IBB', section: dormContent.phone },
 
-    // Leadership and education
-    { id: 'hope-for-hearing', portfolioSection: 'leadership', cardOrder: 1, label: 'FOUNDER', section: dormContent.shirt },
+    // Leadership: a swipeable gallery. Sharpe Fellows first (the default card), Hope For Hearing last.
+    { id: 'sharpe', portfolioSection: 'leadership', cardOrder: 1, kind: 'org', section: tab(dormContent.todo, 'sharpe') },
+    { id: 'delta-sigma-pi', portfolioSection: 'leadership', cardOrder: 2, kind: 'org', section: tab(dormContent.todo, 'dsp-org') },
+    { id: 'ibb', portfolioSection: 'leadership', cardOrder: 3, kind: 'org', section: tab(dormContent.todo, 'ibb-org') },
+    { id: 'bea', portfolioSection: 'leadership', cardOrder: 4, kind: 'org', section: tab(dormContent.todo, 'bea') },
+    { id: 'ubs', portfolioSection: 'leadership', cardOrder: 5, kind: 'org', section: tab(dormContent.todo, 'ubs') },
+    { id: 'reslife', portfolioSection: 'leadership', cardOrder: 6, kind: 'org', section: tab(dormContent.todo, 'reslife') },
+    { id: 'hope-for-hearing', portfolioSection: 'leadership', cardOrder: 7, label: 'FOUNDER', section: dormContent.shirt },
+
+    // Education
     { id: 'ucla', portfolioSection: 'education', cardOrder: 1, label: 'UNIVERSITY', section: dormContent.pennant },
     { id: 'ucc', portfolioSection: 'education', cardOrder: 2, label: 'HIGH SCHOOL', section: dormContent.gradcap },
 
@@ -109,6 +119,11 @@ export const portfolioCopy = {
     enlarge: 'Enlarge photo',
     galleryLabel: (n: number, of: number) => `Photo ${n} of ${of}`,
     otherItems: 'Other items',
+    studentOrg: 'STUDENT ORG',
+    whatItIs: 'What it is',
+    leadPick: 'Pick a card',
+    leadPrev: 'Previous card',
+    leadNext: 'Next card',
     footerNote: 'Same stories as the game, minus the walking.',
     sectionNames: { work: 'Selected work', leadership: 'Leadership', education: 'Education', inventory: 'Inventory' } as Record<PortfolioSection, string>
 };

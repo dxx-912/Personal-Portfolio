@@ -4,7 +4,7 @@
 
 import { dormContent } from '../content/dorm';
 import { profile } from '../content/profile';
-import { itemsIn, orgTags, portfolioCopy as C, type PortfolioItem, type PortfolioSection } from '../content/portfolio';
+import { itemsIn, portfolioCopy as C, type PortfolioItem, type PortfolioSection } from '../content/portfolio';
 import type { ImageItem, LinkItem, Section } from '../content/types';
 import { esc } from '../ui/render';
 import { icon } from './icons';
@@ -165,18 +165,27 @@ export function renderPortfolio(opts: { production: boolean }): RenderResult {
 
     // ---------- evening ----------
 
-    const h4h = items.leadership[0];
-    const counters = (h4h.section.counters ?? []).map((c) =>
+    const counterHtml = (i: PortfolioItem) => (i.section.counters ?? []).map((c) =>
         `<span class="counter"><span class="num px" data-count="${c.value}" data-suffix="${esc(c.suffix ?? '')}">${c.value}${esc(c.suffix ?? '')}</span><span class="num-l">${esc(c.label)}</span></span>`).join('');
-    const orgs = orgTags.map((o) => `
-      <li><details class="org">
-        <summary class="tag">${t(o.short ?? o.title, `org ${o.id}`)}</summary>
-        <div class="pop">
-          <p class="pop-name">${t(o.title, `org ${o.id}`)}</p>
-          <p class="pop-role">${t(o.subtitle, `org ${o.id} role`)}</p>
-          <p>${t(o.body?.[0], `org ${o.id} description`)}</p>
-        </div>
-      </details></li>`).join('');
+    /** The card's small label: the role for student orgs, else the item's label. */
+    const leadLabel = (i: PortfolioItem) => (i.kind === 'org' ? t(i.section.subtitle, `${i.id} role`) || esc(C.studentOrg) : esc(i.label ?? ''));
+    const leadSlide = (i: PortfolioItem, n: number) => {
+        const counters = counterHtml(i);
+        return `
+      <li class="lead-slide${n === 0 ? ' active' : ''}" id="lead-${i.id}" aria-roledescription="slide" aria-label="${n + 1} of ${items.leadership.length}">
+        <a class="card lead-card${counters ? ' feature' : ''}" href="#${i.id}" data-item="${i.id}">
+          <span class="feat-text">
+            <span class="lbl px">${leadLabel(i)}</span>
+            <h3 class="card-title">${esc(i.section.title)}</h3>
+            <span class="face">${t(i.kind === 'org' ? i.section.body?.[0] : i.section.summary, `${i.id} card`)}</span>
+            ${more}
+          </span>
+          ${counters ? `<span class="counters">${counters}</span>` : ''}
+        </a>
+      </li>`;
+    };
+    const leadTabs = items.leadership.map((i, n) =>
+        `<a class="lead-tab" href="#lead-${i.id}" data-slide="${n}"${n === 0 ? ' aria-current="true"' : ''}>${t(i.section.short ?? i.section.title, `${i.id} label`)}</a>`).join('');
     const eduCard = (i: PortfolioItem, n: number) => `
       <li><a class="card edu-card reveal" href="#${i.id}" data-item="${i.id}" style="--i: ${n}">
         <span class="lbl px">${esc(i.label ?? '')}</span>
@@ -189,17 +198,14 @@ export function renderPortfolio(opts: { production: boolean }): RenderResult {
   <div class="wrap">
     ${stamp('evening')}
     <h2 id="lead-h" class="px sec-h">${esc(C.sections.evening.heading)}</h2>
-    <a class="card feature reveal" href="#${h4h.id}" data-item="${h4h.id}">
-      <span class="feat-text">
-        <span class="lbl px">${esc(h4h.label ?? '')}</span>
-        <h3 class="card-title">${esc(titleOf(h4h))}</h3>
-        <span class="face">${t(h4h.section.summary, 'hope-for-hearing card')}</span>
-        ${more}
-      </span>
-      <span class="counters">${counters}</span>
-    </a>
-    <h3 class="px sub-h">${esc(C.sections.evening.orgs)}</h3>
-    <ul class="orgs" role="list">${orgs}</ul>
+    <div class="lead-gal reveal" data-lead aria-roledescription="carousel" aria-label="${esc(C.sections.evening.heading)}">
+      <ul class="lead-track" role="list" tabindex="0">${items.leadership.map(leadSlide).join('')}</ul>
+      <div class="lead-ctrl">
+        <button type="button" class="nb lead-prev" aria-label="${esc(C.leadPrev)}" disabled>${icon('arrowLeft')}</button>
+        <nav class="lead-tabs" aria-label="${esc(C.leadPick)}">${leadTabs}</nav>
+        <button type="button" class="nb lead-next" aria-label="${esc(C.leadNext)}">${icon('arrowRight')}</button>
+      </div>
+    </div>
     <h2 class="px sec-h edu-h">${esc(C.sections.evening.education)}</h2>
     <ul class="grid edu-grid" role="list">${items.education.map(eduCard).join('')}</ul>
   </div>
@@ -293,19 +299,26 @@ export function renderPortfolio(opts: { production: boolean }): RenderResult {
         const w = `${i.id} panel`;
         const isHobby = i.portfolioSection === 'inventory';
         const isCase = i.portfolioSection === 'work' || i.portfolioSection === 'leadership';
-        const context = isCase
-            ? [s.org, s.role].filter(Boolean).map((x) => t(x, w)).filter(Boolean).join('. ') + (s.org || s.role ? '.' : '')
+        const context = i.kind === 'org' ? ''
+            : isCase ? [s.org, s.role].filter(Boolean).map((x) => t(x, w)).filter(Boolean).join('. ') + (s.org || s.role ? '.' : '')
             : t(s.subtitle, w);
         const parts: string[] = [];
         parts.push(`<header class="d-head">
-          ${i.label || numbered(i) ? `<p class="lbl px">${esc(numbered(i))}${esc(i.label ?? '')}</p>` : ''}
+          ${i.kind === 'org' ? `<p class="lbl px">${esc(C.studentOrg)}</p>` : i.label || numbered(i) ? `<p class="lbl px">${esc(numbered(i))}${esc(i.label ?? '')}</p>` : ''}
           <h3 class="px d-title" id="${i.id}-title">${esc(s.title)}</h3>
           ${context ? `<p class="d-context">${context}</p>` : ''}
         </header>`);
         // gather images from the story and its tabs (DSP and IBB)
         const imgs = [...(s.images ?? []), ...(s.tabs ?? []).flatMap((x) => x.images ?? [])];
         parts.push(gallery(imgs, w));
-        if (isCase) {
+        if (i.kind === 'org') {
+            const glance = [[C.glance.role, t(s.role ?? s.subtitle, w)], [C.glance.timeline, need(s.timeline, w, 'timeline')]].filter(([, v]) => v);
+            if (glance.length) parts.push(`<dl class="glance">${glance.map(([k, v]) => `<div><dt class="px">${esc(k)}</dt><dd>${v}</dd></div>`).join('')}</dl>`);
+            const what = (s.body ?? []).map((b) => t(b, w)).filter(Boolean);
+            if (what.length) parts.push(`<div class="writeup"><h4 class="px wl">${esc(C.whatItIs)}</h4>${what.map((b) => `<p>${b}</p>`).join('')}</div>`);
+            const did = need(s.whatIDid, w, 'what I did');
+            if (did) parts.push(`<div class="writeup"><h4 class="px wl">${esc(C.writeup.whatIDid)}</h4><p>${did}</p></div>`);
+        } else if (isCase) {
             const glance = (['role', 'team', 'timeline'] as const).map((k) => [C.glance[k], need(s[k], w, k)]).filter(([, v]) => v);
             if (glance.length) parts.push(`<dl class="glance">${glance.map(([k, v]) => `<div><dt class="px">${esc(k)}</dt><dd>${v}</dd></div>`).join('')}</dl>`);
             const counters = (s.counters ?? []).map((c) => `<div><dt class="px">${esc(c.label)}</dt><dd class="px num-s">${c.value}${esc(c.suffix ?? '')}</dd></div>`).join('');
@@ -320,7 +333,7 @@ export function renderPortfolio(opts: { production: boolean }): RenderResult {
             if (ff) parts.push(`<div class="fun"><p class="px wl">${esc(C.funFact)}</p><p>${ff}</p></div>`);
             const rest = extras({ ...s, body: [] }, w);
             if (rest) parts.push(rest);
-        } else {
+        } else if (i.kind !== 'org') {
             const rest = extras(s, w);
             if (rest) parts.push(`<div class="d-extra">${rest}</div>`);
             (s.tabs ?? []).forEach((tb) => {
@@ -346,8 +359,8 @@ export function renderPortfolio(opts: { production: boolean }): RenderResult {
 
     // Strip list for the panel (title per item, in group order). Read by the script.
     const strip = all.map((i) => ({
-        id: i.id, group: groupOf(i.portfolioSection), n: numbered(i).trim(), label: i.label ?? '',
-        title: (i.portfolioSection === 'inventory' ? i.section.short : undefined) ?? titleOf(i)
+        id: i.id, group: groupOf(i.portfolioSection), n: numbered(i).trim(), label: i.kind === 'org' ? 'ORG' : i.label ?? '',
+        title: (i.portfolioSection === 'inventory' || i.kind === 'org' ? i.section.short?.replace(/\[TODO[^\]]*\]/g, '').trim() : undefined) || titleOf(i)
     }));
     const data = `<script type="application/json" id="pv-data">${JSON.stringify({ items: strip }).replace(/</g, '\\u003c')}</script>`;
 

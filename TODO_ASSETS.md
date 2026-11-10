@@ -172,7 +172,7 @@ The quick view reads the same stories as the game, so filling an item above fill
 - [ ] **For each work card** (cold email automator, saved posts scroller, Ateball, Genesis, L.E.K., DSP and IBB): `summary` (one line for the card face), `role`, `team`, `timeline`, `problem`, `whatIDid`, `result`, and 2 to 4 screenshots.
 - [ ] **Confirm** Ateball role "Project manager" and Hope For Hearing role "Founder" (both from the spec).
 - [ ] **Confirm the Hope For Hearing counters** "500+ members" and "12 institutions" are current (from the mockup), plus its `team`, `timeline`, `problem`, `whatIDid`, `result`, and a one line mission for the card.
-- [ ] **Org tag names**: the entertainment association's exact name (shows as "BEA" for now).
+- [ ] **Leadership gallery** (one card per org, then Hope For Hearing): for each org, your role, a one line description, the timeline, and a line on what you did there (`role`, `body`, `timeline`, `whatIDid` on the TO DO board tabs in `src/content/dorm.ts`). The entertainment association's exact name (shows as "BEA" for now).
 - [ ] **Inventory labels** (`short` on each hobby): Rowing, national champ; Piano, ARCT; Built a longboard; Cat dad; Photography; Baking; Dubstep, EDM; Lift and sprint; North York; Family. Drafts, edit freely.
 - [ ] **A one line fun fact for each hobby** (`funFact`): shown when a box flips over. Until then the flip shows a real line from the story where one exists.
 - [ ] **Site URL** (`profile.siteUrl`) once the domain is chosen. Then canonical and absolute Open Graph URLs turn on.
