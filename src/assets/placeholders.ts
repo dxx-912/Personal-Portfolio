@@ -210,7 +210,8 @@ function plantPot(p: Px, x: number, y: number, w: number, h: number) {
 type Dir = 'down' | 'up' | 'side';
 type Pose = 'stand' | 'sit' | 'crouch' | 'hang' | 'cheer';
 
-const SKIN = '#f0c49c', SKIN_D = '#d9a57c', HAIR = '#2a1f24', HAIR_L = '#4d3b44', MOUTH = '#7a3b3b';
+// Light warm East Asian complexion (checked against the photos and the warm, dim room lighting).
+const SKIN = '#fde4cf', SKIN_D = '#f0c6a6', HAIR = '#2a1f24', HAIR_L = '#4d3b44', MOUTH = '#c48877', BLUSH = '#f6b8aa';
 const TEE = '#f4f6fa', TEE_D = '#cfd5df';
 const PANTS = '#2b2e44', SHOE = '#17131c';
 
@@ -278,13 +279,11 @@ function drawDaniel(p: Px, dir: Dir, bob: number, step: number, pose: Pose, laye
         // loose curls on the forehead
         p.p(hx + 2, y0 + 4, HAIR); p.p(hx + 5, y0 + 4, HAIR); p.p(hx + 8, y0 + 4, HAIR); p.p(hx + 10, y0 + 4, HAIR);
         p.p(hx + 2, y0 + 1, HAIR_L); p.p(hx + 6, y0, HAIR_L); p.p(hx + 10, y0 + 1, HAIR_L); p.p(hx + 4, y0 + 2, HAIR_L);
-        // smiling eyes
-        p.r(hx + 3, y0 + 6, 2, 1, OUTLINE); p.r(hx + 8, y0 + 6, 2, 1, OUTLINE);
-        p.p(hx + 3, y0 + 5, SKIN_D); p.p(hx + 9, y0 + 5, SKIN_D);
-        // big friendly smile
-        p.p(hx + 4, y0 + 8, MOUTH); p.p(hx + 8, y0 + 8, MOUTH);
-        p.r(hx + 5, y0 + 9, 3, 1, MOUTH); p.r(hx + 5, y0 + 8, 3, 1, '#ffffff');
-        p.p(hx + 2, y0 + 8, '#f2a59b'); p.p(hx + 10, y0 + 8, '#f2a59b');
+        // eyes as in the iteration 1 sprite: two small upright dark eyes
+        p.r(hx + 3, y0 + 6, 1, 2, OUTLINE); p.r(hx + 9, y0 + 6, 1, 2, OUTLINE);
+        // neutral closed mouth: a small line, no teeth, no smile
+        p.r(hx + 5, y0 + 9, 3, 1, MOUTH);
+        p.p(hx + 2, y0 + 8, BLUSH); p.p(hx + 10, y0 + 8, BLUSH);
     } else if (dir === 'up') {
         p.r(hx, y0, 13, 9, HAIR);
         p.r(hx + 1, y0 - 1, 3, 1, HAIR); p.r(hx + 5, y0 - 1, 3, 1, HAIR); p.r(hx + 9, y0 - 1, 3, 1, HAIR);
@@ -300,8 +299,9 @@ function drawDaniel(p: Px, dir: Dir, bob: number, step: number, pose: Pose, laye
         p.p(hx + 9, y0 + 4, HAIR); p.p(hx + 12, y0 + 4, HAIR);
         p.p(hx + 3, y0 + 1, HAIR_L); p.p(hx + 8, y0 + 1, HAIR_L);
         p.p(hx + 5, y0 + 6, SKIN_D); // ear
-        p.r(hx + 9, y0 + 6, 2, 1, OUTLINE);
-        p.p(hx + 10, y0 + 8, MOUTH); p.r(hx + 11, y0 + 9, 1, 1, MOUTH); p.p(hx + 11, y0 + 8, '#ffffff');
+        p.r(hx + 10, y0 + 6, 1, 2, OUTLINE);
+        p.r(hx + 10, y0 + 9, 2, 1, MOUTH);
+        p.p(hx + 9, y0 + 8, BLUSH);
     }
 }
 
@@ -345,7 +345,7 @@ const danielSleep: Painter = (p) => {
         q.r(4, 7, 2, 1, OUTLINE);
         q.r(8, 7, 2, 1, OUTLINE);
         q.p(3, 5, HAIR); q.p(6, 5, HAIR); q.p(9, 5, HAIR);
-        q.r(6, 9, 2, 1, MOUTH);
+        q.r(6, 9, 2, 1, MOUTH); // asleep: closed mouth
     }
 };
 
