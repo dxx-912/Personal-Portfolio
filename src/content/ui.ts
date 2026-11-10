@@ -9,6 +9,13 @@ export const ui = {
     controlsTouch: 'Use the stick or tap to walk. The door on the right goes home.',
     found: (n: number, total: number) => `Found ${n} of ${total}`,
     foundLabel: 'Found',
+    /** Bonus interactables (fridge, basketball, home phone). They never count toward the 19. */
+    secretsLabel: 'Secrets',
+    secrets: (n: number, total: number) => `Secrets ${n} of ${total}`,
+    secretFound: (name: string, n: number, total: number) => `Secret found: ${name} (${n}/${total})`,
+    secretNames: { fridge: 'Red Bull', basketball: 'Swish', phone: 'Instagram' } as Record<string, string>,
+    soundBtn: (on: boolean) => (on ? 'Sound on' : 'Sound off'),
+    pauseBtn: 'Pause',
 
     /** E verbs, by action. */
     verbs: {

@@ -545,3 +545,47 @@ body.title-on .plain-link { opacity: 0; visibility: hidden; pointer-events: none
 .portrait .stat.refill { animation: statflash 900ms ease-out; }
 @keyframes statflash { 0%, 40% { box-shadow: 0 0 0 2px #fff3b0; } 100% { box-shadow: 0 0 0 0 transparent; } }
 @media (prefers-reduced-motion: reduce) { .portrait .stat .bar { transition: none; } .portrait .stat.refill { animation: none; } }
+
+/* ---------- iteration 5: top right HUD twice the size, one pixel button style; Secrets counter ---------- */
+
+.hud-top-right { width: 80px; right: max(6px, env(safe-area-inset-right)); gap: 6px; opacity: 0.95; }
+.hud-row { gap: 6px; }
+.hud-btn, .counter {
+    display: grid; justify-items: center; align-content: center; gap: 3px; min-height: 52px; padding: 6px 4px;
+    font: 600 13px/1 var(--pixel); color: var(--hud-ink); background: #221a2c;
+    border: 2px solid #c9b596; border-radius: 2px;
+    box-shadow: 0 0 0 2px #1a1420, inset 0 -4px 0 rgba(0, 0, 0, 0.35), 0 3px 0 2px rgba(0, 0, 0, 0.35);
+}
+.hud-btn .ico { font-size: 20px; line-height: 1; color: #fff6e0; }
+.hud-btn .lbl { font-size: 12px; }
+.hud-btn[aria-pressed="true"] .ico, .hud-btn[aria-pressed="true"] .lbl { color: #ffe9a8; }
+.hud-btn:hover, .hud-btn:focus-visible { background: #34284a; }
+.hud-btn:active { transform: translateY(2px); box-shadow: 0 0 0 2px #1a1420, inset 0 -2px 0 rgba(0, 0, 0, 0.35); }
+.counter { cursor: default; color: #ffe9a8; }
+.counter[hidden] { display: none; }
+.counter .c-l { font-size: 11px; opacity: 0.9; color: var(--hud-ink); }
+.counter .c-n { font-size: 20px; }
+.counter.secrets .c-n { color: #9fe6ff; }
+.counter.pop { animation: secretpop 900ms ease-out; }
+@keyframes secretpop { 0%, 35% { box-shadow: 0 0 0 2px #1a1420, 0 0 14px 4px rgba(159, 230, 255, 0.8); } 100% { box-shadow: 0 0 0 2px #1a1420; } }
+.minimap { padding: 6px; gap: 0; border-width: 2px; border-color: #c9b596; box-shadow: 0 0 0 2px #1a1420; }
+.mm-room { width: 64px; height: 36px; font-size: 13px; border-width: 2px; }
+.mm-door { width: 6px; height: 8px; }
+.mm-room.here { outline-width: 3px; }
+
+/* small screens keep a compact column (about 1.5 times the old one) */
+@media (max-width: 560px), (max-height: 500px) {
+    .hud-top-right { width: 66px; gap: 4px; }
+    .hud-row { gap: 4px; }
+    .hud-btn, .counter { min-height: 38px; padding: 3px 2px; gap: 2px; }
+    .hud-btn .ico { font-size: 15px; }
+    .hud-btn .lbl, .counter .c-l { font-size: 9px; }
+    .counter .c-n { font-size: 14px; }
+    .mm-room { width: 54px; height: 26px; font-size: 10px; }
+}
+
+/* the room title card sits over the top of the room, under the quick view link, which never hides */
+body.title-on .plain-link { opacity: 0.85; visibility: visible; pointer-events: auto; }
+.title-card { top: calc(max(14px, env(safe-area-inset-top)) + 64px); }
+@media (max-height: 500px) { .title-card { top: calc(max(8px, env(safe-area-inset-top)) + 48px); } }
+@media (max-width: 560px) { .title-card { top: 140px; } }

@@ -11,7 +11,12 @@ interface Saved {
     celebrated: boolean;
     outfit: number;
     seenTips: boolean;
+    secrets: string[];
 }
+
+/** The three bonus interactables. Not part of the 19. */
+export const SECRETS = ['fridge', 'basketball', 'phone'] as const;
+export type SecretKey = typeof SECRETS[number];
 
 type Listener<T> = (payload: T) => void;
 
@@ -20,6 +25,7 @@ export type GameMode = 'free' | 'sit' | 'ride' | 'pullup' | 'piano' | 'busy';
 
 interface BusEvents {
     found: { key: string; count: number; isNew: boolean };
+    secret: { key: SecretKey; count: number };
     sound: boolean;
     modal: 'panel' | 'pause' | null;
     reset: void;
@@ -52,6 +58,7 @@ class GameState {
     celebrated = false;
     outfit = 0;
     seenTips = false;
+    secrets = new Set<SecretKey>();
     /** Which modal is open, if any. The game ignores input while one is. */
     modal: 'panel' | 'pause' | null = null;
     mode: GameMode = 'free';
@@ -72,6 +79,7 @@ class GameState {
                 this.celebrated = !!s.celebrated;
                 this.outfit = Number.isInteger(s.outfit) ? s.outfit! : 0;
                 this.seenTips = !!s.seenTips;
+                this.secrets = new Set((Array.isArray(s.secrets) ? s.secrets : []).filter((k): k is SecretKey => (SECRETS as readonly string[]).includes(k)));
                 return;
             }
             const old = window.localStorage.getItem(OLD_KEY);
@@ -87,7 +95,7 @@ class GameState {
         try {
             const s: Saved = {
                 woke: this.woke, found: [...this.found], sound: this.sound, celebrated: this.celebrated,
-                outfit: this.outfit, seenTips: this.seenTips
+                outfit: this.outfit, seenTips: this.seenTips, secrets: [...this.secrets]
             };
             window.localStorage.setItem(STORAGE_KEY, JSON.stringify(s));
         } catch { /* ignore */ }
@@ -98,6 +106,15 @@ class GameState {
         if (isNew) { this.found.add(key); this.save(); }
         bus.emit('found', { key, count: this.found.size, isNew });
         return isNew;
+    }
+
+    /** Returns true the first time a secret is found. */
+    markSecret(key: SecretKey) {
+        if (this.secrets.has(key)) return false;
+        this.secrets.add(key);
+        this.save();
+        bus.emit('secret', { key, count: this.secrets.size });
+        return true;
     }
 
     get allFound() { return this.found.size >= TOTAL_ITEMS; }
@@ -114,6 +131,7 @@ class GameState {
         this.celebrated = false;
         this.outfit = 0;
         this.seenTips = false;
+        this.secrets.clear();
         this.save();
         bus.emit('reset', undefined);
     }

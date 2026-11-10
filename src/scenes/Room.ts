@@ -396,10 +396,15 @@ export class Room extends Phaser.Scene {
             .map((el) => el.getBoundingClientRect()).filter((r) => r.width > 0 && r.height > 0);
         const canvas = this.game.canvas.getBoundingClientRect();
         const items = this.targets.map((t) => t.sprite.getBounds());
-        const hits = (z: number, ox: number, oy: number) => items.some((b) => {
+        // the right hand button column never sits over the room at all (iteration 5); the rest only must not cover items
+        const column = document.querySelector('.hud-top-right')?.getBoundingClientRect();
+        const room = { x: 0, y: 0, width: ROOM_W, height: ROOM_H };
+        const over = (b: { x: number; y: number; width: number; height: number }, z: number, ox: number, oy: number, rs: DOMRect[]) => {
             const x = canvas.left + ox + b.x * z, y = canvas.top + oy + b.y * z, bw = b.width * z, bh = b.height * z;
-            return hud.some((r) => x < r.right && x + bw > r.left && y < r.bottom && y + bh > r.top);
-        });
+            return rs.some((r) => x < r.right && x + bw > r.left && y < r.bottom && y + bh > r.top);
+        };
+        const hits = (z: number, ox: number, oy: number) =>
+            items.some((b) => over(b, z, ox, oy, hud)) || (!!column && column.width > 0 && over(room, z, ox, oy, [column]));
         const steps: number[] = [];
         if (fit >= 3) for (let z = Math.floor(fit); z >= 2; z--) steps.push(z);
         else for (let z = Math.floor(fit * 8) / 8; z >= 0.5; z -= 0.125) steps.push(z);
@@ -407,7 +412,7 @@ export class Room extends Phaser.Scene {
         for (const z of steps) {
             const sx = w - ROOM_W * z, sy = h - ROOM_H * z;
             const tries: [number, number][] = [];
-            for (let dy = 0; dy <= sy / 2; dy += 4) for (const dx of [0, 8, -8, 16, -16, 32, -32]) if (Math.abs(dx) <= sx / 2) tries.push([dx, dy]);
+            for (let dy = 0; dy <= sy / 2; dy += 4) for (const dx of [0, 8, -8, 16, -16, 32, -32, -48, -64, -sx / 2]) if (Math.abs(dx) <= sx / 2) tries.push([dx, dy]);
             const ok = tries.find(([dx, dy]) => !hits(z, sx / 2 + dx, sy / 2 + dy));
             if (ok) { chosen = { z, ox: sx / 2 + ok[0], oy: sy / 2 + ok[1] }; break; }
         }
@@ -1042,6 +1047,7 @@ export class Room extends Phaser.Scene {
             // Caffeine 7/7 for the rest of the visit, and he walks 30% faster (speedModifiers)
             session.caffeine = CAFFEINE_MAX;
             setStat('Caffeine', session.caffeine);
+            state.markSecret('fridge');
             this.starBurst();
             this.sayNeed(ui.drinkLine, 2200);
         });

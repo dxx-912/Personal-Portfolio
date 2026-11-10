@@ -3,14 +3,14 @@
 
 import { TOTAL_ITEMS, ABOUT_KEY, profile, ui, type RoomKey } from '../content';
 import { isTouchDevice, prefersReducedMotion } from '../config';
-import { bus, state } from '../state';
+import { SECRETS, bus, state } from '../state';
 import { clearHeld, onAction, stick, trigger } from './input';
 import { esc } from './render';
 import { nowPlaying, sfx } from '../audio';
 
 const $ = <T extends HTMLElement = HTMLElement>(sel: string) => document.querySelector<T>(sel)!;
 
-let promptEl: HTMLElement, msgEl: HTMLElement, toastEl: HTMLElement, counterEl: HTMLElement, titleEl: HTMLElement;
+let promptEl: HTMLElement, msgEl: HTMLElement, toastEl: HTMLElement, counterEl: HTMLElement, secretsEl: HTMLElement, titleEl: HTMLElement;
 let portraitBtn: HTMLButtonElement, minimapEl: HTMLElement;
 let toastTimer = 0, titleTimer = 0;
 let pauseRoot: HTMLElement | null = null;
@@ -31,9 +31,10 @@ export function initHud() {
         </div>
         <div class="hud-top-right">
             <div class="hud-row">
-                <span class="counter" aria-live="polite" hidden></span>
                 <button class="hud-btn sound-btn" aria-pressed="false"></button>
-                <button class="hud-btn pause-btn" aria-label="Pause menu" title="Pause (P)">II</button>
+                <button class="hud-btn pause-btn" aria-label="Pause menu" title="Pause (P)"><span class="ico" aria-hidden="true">II</span><span class="lbl">${esc(ui.pauseBtn)}</span></button>
+                <span class="counter" aria-live="polite" hidden></span>
+                <span class="counter secrets" aria-live="polite" hidden></span>
             </div>
             <nav class="minimap" hidden aria-label="Map">
                 <button class="mm-room" data-room="dorm"><span>UCLA</span></button>
@@ -59,6 +60,7 @@ export function initHud() {
     msgEl = $('.message');
     toastEl = $('.toast');
     counterEl = $('.counter');
+    secretsEl = $('.counter.secrets');
     titleEl = $('.title-card');
     portraitBtn = $<HTMLButtonElement>('.portrait');
     minimapEl = $('.minimap');
@@ -81,7 +83,7 @@ export function initHud() {
 
     const soundBtn = $<HTMLButtonElement>('.sound-btn');
     const renderSound = () => {
-        soundBtn.textContent = state.sound ? '♪ on' : '♪ off';
+        soundBtn.innerHTML = `<span class="ico" aria-hidden="true">♪</span><span class="lbl">${esc(ui.soundBtn(state.sound))}</span>`;
         soundBtn.setAttribute('aria-pressed', String(state.sound));
         soundBtn.setAttribute('aria-label', state.sound ? ui.soundOn : ui.soundOff);
         soundBtn.title = state.sound ? ui.soundOn : ui.soundOff;
@@ -93,13 +95,20 @@ export function initHud() {
     $('.pause-btn').addEventListener('click', (e) => { (e.currentTarget as HTMLElement).blur(); openPause(); });
 
     bus.on('found', ({ count }) => { setFound(count); renderPortraitSeen(); });
+    bus.on('secret', ({ key, count }) => {
+        setSecrets(count);
+        secretsEl.classList.remove('pop'); void secretsEl.offsetWidth; secretsEl.classList.add('pop');
+        sfx('found');
+        toast(ui.secretFound(ui.secretNames[key] ?? key, count, SECRETS.length), 2600);
+    });
     bus.on('modal', () => clearHeld());
     bus.on('room', renderMinimap);
     bus.on('awake', (a) => {
-        [portraitBtn, minimapEl, counterEl].forEach((el) => { el.hidden = false; el.classList.toggle('is-off', !a); });
+        [portraitBtn, minimapEl, counterEl, secretsEl].forEach((el) => { el.hidden = false; el.classList.toggle('is-off', !a); });
         if (a) renderPortraitSeen();
     });
     setFound(state.found.size);
+    setSecrets(state.secrets.size);
 
     onAction((a) => {
         if (a === 'pause' && !state.modal) openPause();
@@ -114,6 +123,12 @@ export function setFound(n: number) {
     counterEl.innerHTML = `<span class="c-l">${esc(ui.foundLabel)}</span><span class="c-n">${n}/${TOTAL_ITEMS}</span>`;
     counterEl.setAttribute('aria-label', ui.found(n, TOTAL_ITEMS));
     counterEl.title = ui.found(n, TOTAL_ITEMS);
+}
+
+export function setSecrets(n: number) {
+    secretsEl.innerHTML = `<span class="c-l">${esc(ui.secretsLabel)}</span><span class="c-n">${n}/${SECRETS.length}</span>`;
+    secretsEl.setAttribute('aria-label', ui.secrets(n, SECRETS.length));
+    secretsEl.title = ui.secrets(n, SECRETS.length);
 }
 
 function renderPortraitSeen() {
