@@ -50,8 +50,8 @@ export const ASSETS = {
     room_home: { w: ROOM_W, h: ROOM_H, paint: painters.homeRoom, outline: false },
     door_side: { w: 10, h: 40, paint: painters.doorSide, outline: false, highlight: true },
     doormat: { w: 20, h: 30, paint: painters.doormat, outline: false },
-    sign_right: { w: 26, h: 16, paint: painters.signRight, outline: true },
-    sign_left: { w: 26, h: 16, paint: painters.signLeft, outline: true },
+    sign_right: { w: 32, h: 20, paint: painters.signRight, outline: true },
+    sign_left: { w: 32, h: 20, paint: painters.signLeft, outline: true },
     wall_clock: { w: 12, h: 12, paint: painters.wallClock, outline: false },
     pencil: { w: 8, h: 3, paint: painters.pencil, outline: false },
 
@@ -89,9 +89,10 @@ export const ASSETS = {
     dorm_desk: { w: 96, h: 68, paint: painters.dormDesk, outline: true },
     dorm_laptop: { w: 22, h: 14, frames: 2, paint: painters.dormLaptop, outline: true, highlight: true },
     dorm_binder: { w: 24, h: 18, paint: painters.dormBinder, outline: true, highlight: true },
+    // phone screens show the instagram-logo slot (iteration 5); sharp so the logo stays crisp at a tiny size
     dorm_phone: {
-        w: 10, h: 14, paint: painters.dormPhone, outline: true, highlight: true,
-        slot: { file: 'phone-screen.png', rect: { x: 2, y: 2, w: 6, h: 9 } }
+        w: 12, h: 18, paint: painters.dormPhone, outline: true, highlight: true,
+        slot: { file: 'instagram-logo.png', rect: { x: 2, y: 4, w: 8, h: 8 }, sharp: 4, fit: 'contain' }
     },
     dorm_closet: { w: 56, h: 104, paint: painters.dormCloset, outline: true, highlight: true },
     dorm_beanbag: { w: 48, h: 38, paint: painters.dormBeanbag, outline: true, highlight: true },
@@ -106,6 +107,8 @@ export const ASSETS = {
     dorm_shirt_ball: { w: 10, h: 5, paint: painters.dormShirtBall, outline: true },
     dorm_sock: { w: 6, h: 6, paint: painters.dormSock, outline: true },
     dorm_fridge: { w: 30, h: 32, frames: 2, paint: painters.dormFridge, outline: true, highlight: true },
+    bb_ball: { w: 7, h: 7, paint: painters.bbBall, outline: true, highlight: true },
+    dorm_hoop: { w: 18, h: 35, frames: 2, paint: painters.dormHoop, outline: true },
     dorm_trash: { w: 18, h: 18, paint: painters.dormTrash, outline: true },
     dorm_laundry: { w: 22, h: 18, paint: painters.dormLaundry, outline: true },
     dorm_sneakers: { w: 15, h: 6, paint: painters.dormSneakers, outline: true },

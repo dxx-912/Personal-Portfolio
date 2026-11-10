@@ -4,7 +4,7 @@
 import { TOTAL_ITEMS, ABOUT_KEY, profile, ui, type RoomKey } from '../content';
 import { isTouchDevice, prefersReducedMotion } from '../config';
 import { SECRETS, bus, state } from '../state';
-import { clearHeld, onAction, stick, trigger } from './input';
+import { clearHeld, isChargeCapture, onAction, setChargeTouch, stick, trigger } from './input';
 import { esc } from './render';
 import { nowPlaying, sfx } from '../audio';
 
@@ -204,13 +204,16 @@ export interface PromptSpec {
     info?: string;
     /** Door label: walking in (or clicking) goes through. */
     door?: string;
+    /** A press and hold key (basketball: Space to charge). On touch it labels the action button. */
+    hold?: { key: string; label: string };
 }
 
 /** Floating key-cap prompt above the focused object, at page coordinates. Each chip is also a button. */
-export function setPrompt(spec: PromptSpec | null, x = 0, y = 0) {
+/** `align`: which edge of the prompt sits at x ('end' = its right edge, for a chip to the left of Daniel). */
+export function setPrompt(spec: PromptSpec | null, x = 0, y = 0, align: 'center' | 'start' | 'end' = 'center') {
     setActionButtons(spec);
-    if (!spec || (!spec.act && !spec.info && !spec.door)) { promptEl.hidden = true; return; }
-    const key = `${spec.act ?? ''}|${spec.info ?? ''}|${spec.door ?? ''}`;
+    if (!spec || (!spec.act && !spec.info && !spec.door && !spec.hold)) { promptEl.hidden = true; return; }
+    const key = `${spec.act ?? ''}|${spec.info ?? ''}|${spec.door ?? ''}|${spec.hold?.label ?? ''}`;
     if (promptEl.dataset.key !== key) {
         const touch = isTouchDevice();
         const chip = (a: 'act' | 'info', k: string, label: string) =>
@@ -218,6 +221,7 @@ export function setPrompt(spec: PromptSpec | null, x = 0, y = 0) {
         promptEl.innerHTML = spec.door
             ? `<button type="button" class="chip chip-door" data-a="act" tabindex="-1"><span>${esc(spec.door)}</span></button>`
             : [
+            spec.hold ? `<span class="chip chip-act chip-hold">${touch ? '' : `<kbd>${esc(spec.hold.key)}</kbd>`}<span>${esc(spec.hold.label)}</span></span>` : '',
             spec.act ? chip('act', ui.keyAct, spec.act) : '',
             spec.info ? chip('info', ui.keyInfo, spec.info) : ''
         ].join('');
@@ -225,6 +229,7 @@ export function setPrompt(spec: PromptSpec | null, x = 0, y = 0) {
     }
     // keep it on screen and never under the HUD corners
     const w = promptEl.offsetWidth || 120, ph = promptEl.offsetHeight || 34;
+    if (align === 'end') x -= w / 2; else if (align === 'start') x += w / 2;
     const cx = Math.max(w / 2 + 8, Math.min(window.innerWidth - w / 2 - 8, x));
     let minY = ph + 8;
     document.querySelectorAll<HTMLElement>('.hud-top-left, .hud-top-right').forEach((el) => {
@@ -371,8 +376,16 @@ function initTouch(root: HTMLElement) {
     base.addEventListener('pointercancel', end);
     actBtn = root.querySelector<HTMLButtonElement>('.act-e');
     infoBtn = root.querySelector<HTMLButtonElement>('.act-f');
+    // holding the basketball: press and hold the action button to charge, release to shoot
+    let charging = false;
+    actBtn!.addEventListener('pointerdown', () => { if (isChargeCapture()) { charging = true; setChargeTouch(true); } });
+    const release = () => { if (charging) setChargeTouch(false); };
+    actBtn!.addEventListener('pointerup', release);
+    actBtn!.addEventListener('pointercancel', release);
+    actBtn!.addEventListener('pointerleave', release);
     [actBtn, infoBtn].forEach((b) => b!.addEventListener('click', (e) => {
         (e.currentTarget as HTMLElement).blur();
+        if (b === actBtn && charging) { charging = false; return; }
         if (!state.modal) trigger(b!.dataset.a as 'act' | 'info');
     }));
 }
@@ -380,7 +393,7 @@ function initTouch(root: HTMLElement) {
 /** Labels the two mobile buttons with the current verbs; dims them when not applicable. */
 export function setActionButtons(spec: PromptSpec | null) {
     if (!actBtn || !infoBtn) return;
-    const a = spec?.act ?? spec?.door, f = spec?.info;
+    const a = spec?.act ?? spec?.door ?? spec?.hold?.label, f = spec?.info;
     if (actBtn.textContent !== (a ?? ui.actButton)) actBtn.textContent = a ?? ui.actButton;
     actBtn.disabled = !a;
     infoBtn.disabled = !f;

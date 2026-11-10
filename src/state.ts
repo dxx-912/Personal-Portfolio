@@ -21,7 +21,7 @@ export type SecretKey = typeof SECRETS[number];
 type Listener<T> = (payload: T) => void;
 
 /** What the player is doing. HUD reads this to decide what Esc does. */
-export type GameMode = 'free' | 'sit' | 'ride' | 'pullup' | 'piano' | 'busy';
+export type GameMode = 'free' | 'sit' | 'ride' | 'pullup' | 'piano' | 'busy' | 'ball';
 
 interface BusEvents {
     found: { key: string; count: number; isNew: boolean };

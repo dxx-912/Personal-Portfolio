@@ -185,6 +185,7 @@ const doormat: Painter = (p, w, h) => {
 };
 
 /** Small hanging sign with an arrow. The words are a crisp label on top (see room labels). */
+/** Door sign: wording is a crisp label on top (room labels); the arrow sits in the bottom corner. */
 function signPainter(arrow: 'left' | 'right'): Painter {
     return (p, w, h) => {
         // strings
@@ -657,22 +658,35 @@ const dormLaptop: Painter = (p, w, h) => {
 };
 
 /** Binder standing on the desk. Its label ("Consulting stuff") is a crisp text label. */
+/** A plain blue ring binder lying on the desk: spine with rings, a clear front pocket, a few pages peeking out. */
 const dormBinder: Painter = (p, w, h) => {
-    p.box(0, 0, w, h, '#2d4f8a');
-    p.r(1, 1, 2, h - 2, '#22406f'); // spine side
-    p.r(4, 1, w - 5, 1, '#4664a8');
-    p.box(4, 3, w - 7, h - 7, '#f4efe2', '#22406f');
-    p.r(2, h - 3, 1, 1, '#cfd5df'); p.r(2, 4, 1, 1, '#cfd5df');
+    // pages peeking out on the open side
+    p.r(w - 3, 2, 2, h - 4, '#f4efe2'); p.r(w - 2, 3, 1, h - 6, '#d9d2c2');
+    p.box(0, 0, w - 2, h, '#2d4f8a');
+    p.r(1, 1, 4, h - 2, '#22406f'); // spine
+    p.r(5, 1, 1, h - 2, '#1b3459');
+    for (const y of [3, Math.floor(h / 2) - 1, h - 5]) { p.r(2, y, 2, 2, '#cfd5df'); p.p(2, y, '#f4f6fa'); } // rings
+    // clear plastic pocket on the cover: a lighter sheen, no text
+    p.r(8, 3, w - 13, h - 6, '#3a62a3');
+    p.r(8, 3, w - 13, 1, '#5b80c0'); p.r(8, 3, 1, h - 6, '#4a70b4');
+    p.p(w - 7, 5, '#7b9bd2'); p.p(w - 8, 6, '#7b9bd2');
 };
 
-/** Phone propped up on the desk. Its screen is the phone-screen image slot. */
-const dormPhone: Painter = (p, w, h) => {
+/**
+ * Phone propped up on its stand. The middle of the screen is the instagram-logo image slot; until Daniel adds the
+ * file it shows a plain coloured rounded square with no symbol (CLAUDE.md 0.2 F). Shared by the dorm and home phones.
+ */
+const phonePainter: Painter = (p, w, h) => {
     p.box(0, 0, w, h - 2, '#1d1d24');
-    const cols = ['#e58bc9', '#f7c46a', '#6fb8e8', '#9ad08a', '#f28a6a', '#b58ae0'];
-    for (let i = 0; i < 6; i++) p.r(2 + (i % 2) * 3, 3 + Math.floor(i / 2) * 3, 2, 2, cols[i]);
-    p.r(2, 2, w - 4, 1, '#f4f4f4');
+    p.r(2, 2, w - 4, h - 6, '#2a2836'); // screen
+    p.r(Math.floor(w / 2) - 1, 1, 2, 1, '#3a3a46'); // camera notch
+    // placeholder icon: rounded square
+    const s = w - 4, x = 2, y = Math.floor((h - 2 - s) / 2);
+    p.r(x + 1, y, s - 2, s, '#c8417e'); p.r(x, y + 1, s, s - 2, '#c8417e');
+    p.r(x + 1, y + 1, s - 2, 1, '#d9609a');
     p.r(1, h - 2, w - 2, 2, '#4a4d57'); // stand
 };
+const dormPhone = phonePainter;
 
 /** Narrower closet. The poster on its left door is a separate image slot sprite. A sleeve hangs out. */
 const dormCloset: Painter = (p, w, h) => {
@@ -889,6 +903,42 @@ const dormShirt: Painter = (p, w, h) => {
     // soft fold shading
     p.r(2, h - 4, w - 4, 1, shade); p.r(w - 3, 4, 1, h - 6, shade); p.r(3, 9, 1, 3, shade);
     // the "Hope For Hearing" print is a crisp label on top (see the room's labels)
+};
+
+/** Mini basketball: orange with dark seams. */
+const bbBall: Painter = (p) => {
+    const o = '#e3772e', d = '#b85a1e', l = '#f39a55', seam = '#3a1d10';
+    p.r(2, 0, 3, 7, o); p.r(0, 2, 7, 3, o); p.r(1, 1, 5, 5, o);
+    p.r(1, 4, 5, 1, d); p.p(5, 5, d); p.p(4, 6, d); // shade
+    p.p(2, 1, l); p.p(1, 2, l); // shine
+    p.r(3, 0, 1, 7, seam); p.r(0, 3, 7, 1, seam); // seams
+};
+
+/**
+ * Mini hoop on the left wall, seen edge on: the backboard is a strip on the wall, the rim and net stick out
+ * toward the room. Frame 1: the net flicks after a swish.
+ */
+const dormHoop: Painter = (p, w) => {
+    for (let f = 0; f < 2; f++) {
+        const q = p.at(f * w, 0);
+        // backboard edge on: a white strip with a red edge stripe, on a small wall plate
+        q.r(0, 0, 4, 30, '#f4f2ec'); q.r(0, 0, 1, 30, '#c9c6bd'); q.r(3, 0, 1, 30, '#c8423b');
+        q.r(1, 14, 2, 6, '#c8423b'); // shooter's square, edge on
+        q.r(0, 30, 4, 1, '#9a978f');
+        // bracket out to the rim
+        q.r(4, 22, 2, 2, '#6b6f78');
+        // rim: a flat orange ellipse
+        const ry = 22;
+        q.r(6, ry, 11, 1, '#e0612a'); q.r(5, ry + 1, 1, 1, '#e0612a'); q.r(17, ry + 1, 1, 1, '#e0612a');
+        q.r(6, ry + 2, 11, 1, '#b84a1d');
+        // net: white cords narrowing downward; frame 1 stretches and swings
+        const len = f ? 9 : 7, sway = f ? 1 : 0;
+        for (let k = 0; k < len; k++) {
+            const inset = Math.floor(k / 3);
+            const y = ry + 3 + k;
+            for (let x = 6 + inset; x <= 16 - inset; x += 2) q.p(x + ((k + x) % 4 === 0 ? sway : 0), y, k % 2 ? '#d9d6ce' : '#f4f2ec');
+        }
+    }
 };
 
 /** Mini fridge with a few magnets. Frame 1: door swung open to the left, lit inside, cans on the shelf. */
@@ -1343,7 +1393,7 @@ export const painters = {
     slotGraduation, slotDamn, slotDuck, slotIgor, slotEmpty, slotHome1, slotHome2, slotHome3,
     dormWindow, dormPennant, dormTodo, dormDesk, dormLaptop, dormBinder, dormPhone,
     dormCloset, dormBeanbag, dormFloorLamp, dormBed, dormRug, dormDresser, dormGradcap, dormShirt,
-    dormFridge, dormTrash, dormLaundry, dormSneakers, dormBag, dormBackpack, dormJeans, dormTeeFloor, dormShirtBall, dormSock,
+    bbBall, dormHoop, dormFridge, dormTrash, dormLaundry, dormSneakers, dormBag, dormBackpack, dormJeans, dormTeeFloor, dormShirtBall, dormSock,
     homeShelf, homeFloorPlant, homeWindow, homeHoodie, homePullup, homeTable, homeSpeaker, homeCamera,
     homeNightstand, homeBed, homeDesk, homePiano, homePie, homeRug, homeLongboard
 } satisfies Record<string, Painter>;

@@ -25,6 +25,10 @@ export const session = {
     lastLineAt: -Infinity,
     /** Each nap moves the window on: day, sunset, night, day... */
     todShift: 0,
+    /** Basketball: where it came to rest, and this visit's tally. */
+    ball: null as { x: number; y: number } | null,
+    makes: 0,
+    attempts: 0,
     /** Bed glow on: Sleep is low. Fridge glow on: hinted at but not drunk yet. */
     get tired() { return this.sleep <= 2; },
     get caffeinated() { return this.caffeine >= CAFFEINE_MAX; },

@@ -25,7 +25,7 @@ export const dorm: RoomDef = {
         { id: 'desk', texture: 'dorm_desk', x: 10.3, y: -1.3, layer: 'floor', solid: { x: 10.3, y: 0, w: 6, h: 2.95 } },
         { id: 'laptop', texture: 'dorm_laptop', x: 10.75, y: 0.1, layer: 'floor', on: 'desk', anim: 'laptop-screen' },
         { id: 'binder', texture: 'dorm_binder', x: 12.5, y: -0.15, layer: 'floor', on: 'desk' },
-        { id: 'phone', texture: 'dorm_phone', x: 14.35, y: 0.05, layer: 'floor', on: 'desk' },
+        { id: 'phone', texture: 'dorm_phone', x: 14.29, y: -0.2, layer: 'floor', on: 'desk' },
 
         // closet in the back right corner, poster P3 taped to its door
         { id: 'closet', texture: 'dorm_closet', x: 16.45, y: -4.0, layer: 'floor', solid: { x: 16.45, y: 0, w: 3.5, h: 2.5 } },
@@ -33,9 +33,10 @@ export const dorm: RoomDef = {
         { id: 'poster3', texture: 'slot_poster_duck', x: 17.075, y: -3.45, layer: 'floor', on: 'closet' },
 
         // top left: beanbag in the window light
-        { id: 'beanbag', texture: 'dorm_beanbag', x: 0.2, y: 0.55, layer: 'floor', solid: { x: 0.35, y: 1.45, w: 2.7, h: 1.3 } },
+        // (moved right in iteration 5 so the wall hoop has the left wall to itself)
+        { id: 'beanbag', texture: 'dorm_beanbag', x: 0.95, y: 0.55, layer: 'floor', solid: { x: 1.1, y: 1.45, w: 2.7, h: 1.3 } },
         // lived in corner: mini fridge, trash bin, laundry basket
-        { id: 'fridge', texture: 'dorm_fridge', x: 2.85, y: -0.975, layer: 'floor', solid: { x: 3.4, y: 0.35, w: 1.2, h: 0.65 } },
+        { id: 'fridge', texture: 'dorm_fridge', x: 3.45, y: -0.975, layer: 'floor', solid: { x: 4.0, y: 0.35, w: 1.2, h: 0.65 } },
         { id: 'trash', texture: 'dorm_trash', x: 6.45, y: -0.05, layer: 'floor', solid: { x: 6.5, y: 0.55, w: 0.8, h: 0.5 } },
         { id: 'laundry', texture: 'dorm_laundry', x: 0.12, y: 3.85, layer: 'floor', solid: { x: 0.2, y: 4.35, w: 1.2, h: 0.6 } },
         // backpack on wall hooks, under the clock and above the desk
@@ -60,11 +61,11 @@ export const dorm: RoomDef = {
         { id: 'gradcap', texture: 'dorm_gradcap', x: 11.15, y: 5.6, layer: 'floor', on: 'dresser' },
         { id: 'shirt', texture: 'dorm_shirt', x: 12.85, y: 5.7, layer: 'floor', on: 'dresser' },
 
-        // the sign by the door home
-        { id: 'sign', texture: 'sign_right', x: 18.35, y: 2.55, layer: 'floor', depthRow: 3.4 }
+        // the sign by the door home; drawn above everything on the floor so Daniel never covers it
+        { id: 'sign', texture: 'sign_right', x: 17.97, y: 2.3, layer: 'floor', depthRow: 10 }
     ],
     interactables: [
-        { id: 'pennant', target: 'pennant', spot: { x: 5.2, y: 0.6 }, facing: 'up', info: 'pennant' },
+        { id: 'pennant', target: 'pennant', spot: { x: 5.7, y: 0.6 }, facing: 'up', info: 'pennant' },
         { id: 'todo', target: 'todo', spot: { x: 9.1, y: 0.6 }, facing: 'up', info: 'todo' },
         { id: 'laptop', target: 'laptop', spot: { x: 11.45, y: 3.55 }, facing: 'up', info: 'laptop' },
         { id: 'binder', target: 'binder', spot: { x: 13.25, y: 3.55 }, facing: 'up', info: 'binder' },
@@ -72,11 +73,13 @@ export const dorm: RoomDef = {
         { id: 'closet', target: 'closet', spot: { x: 17.35, y: 3.15 }, facing: 'up', info: 'closet', action: 'outfit' },
         { id: 'gradcap', target: 'gradcap', spot: { x: 11.65, y: 5.5 }, facing: 'down', info: 'gradcap' },
         { id: 'shirt', target: 'shirt', spot: { x: 13.55, y: 5.5 }, facing: 'down', info: 'shirt' },
-        { id: 'fridge', target: 'fridge', spot: { x: 4.05, y: 1.75 }, facing: 'up', action: 'drink' },
+        { id: 'fridge', target: 'fridge', spot: { x: 4.65, y: 1.75 }, facing: 'up', action: 'drink' },
         {
-            id: 'beanbag', target: 'beanbag', spot: { x: 1.7, y: 3.5 }, facing: 'up', action: 'sit',
-            seat: { x: 1.7, y: 2.2, facing: 'down', pose: 'sink' }
+            id: 'beanbag', target: 'beanbag', spot: { x: 2.45, y: 3.5 }, facing: 'up', action: 'sit',
+            seat: { x: 2.45, y: 2.2, facing: 'down', pose: 'sink' }
         },
+        // bonus: the mini basketball (moves around; its spot follows it)
+        { id: 'ball', target: 'ball', spot: { x: 0, y: 0 }, facing: 'left', action: 'pickup' },
         // E: sleep (lights down, Zs, the window moves on, Sleep back to 8/8)
         { id: 'bed', target: 'bed', spot: { x: 5.0, y: 5.55 }, facing: 'down', action: 'nap' }
     ],
@@ -94,10 +97,11 @@ export const dorm: RoomDef = {
     ],
     fairy: { y: -3.82, x0: 0.15, x1: 16.3, colors: [0xffc070, 0xff9a5a, 0xffd890, 0xffae78] },
     labels: [
-        { on: 'binder', x: 13.25, y: 0.36, text: 'Consulting\nstuff', size: 2.6, color: '#2a2130', bold: true },
-        { on: 'shirt', x: 13.6, y: 6.27, text: 'Hope For\nHearing', size: 2.7, color: '#2f5aa8', bold: true },
-        { on: 'sign', x: 19.0, y: 3.04, text: 'Home,\nToronto', size: 3, color: '#3a2a20', bold: true }
+        { on: 'shirt', x: 13.6, y: 6.25, text: 'Hope For\nHearing', size: 3.3, color: '#2f5aa8', bold: true },
+        { on: 'sign', x: 18.97, y: 2.79, text: 'Home,\nToronto', size: 4, color: '#3a2a20', bold: true }
     ],
     clock: { x: 11.35, y: -3.1 },
+    // left wall, between the beanbag and the laundry basket
+    hoop: { rimRow: 3.45, home: { x: 1.4, y: 3.6 } },
     sleep: { x: 1.75, y: 6.05 }
 };

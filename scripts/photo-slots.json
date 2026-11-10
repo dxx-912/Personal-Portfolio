@@ -219,8 +219,20 @@
             "decor": true
         },
         {
-            "key": "phone-screen",
-            "folder": "3 Room decor (optional)/Phone screen, dorm desk (1 image)",
+            "key": "instagram-logo",
+            "folder": "3 Room decor (optional)/Instagram logo, dorm and home phone screens (1 image)",
+            "max": 1,
+            "decor": true
+        },
+        {
+            "key": "can-logo",
+            "folder": "3 Room decor (optional)/Can logo, Red Bull from the dorm fridge (1 image)",
+            "max": 1,
+            "decor": true
+        },
+        {
+            "key": "volleyball-logo",
+            "folder": "3 Room decor (optional)/Volleyball logo, home shelf (1 image)",
             "max": 1,
             "decor": true
         },

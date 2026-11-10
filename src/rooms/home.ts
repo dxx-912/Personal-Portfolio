@@ -40,7 +40,7 @@ export const home: RoomDef = {
         { id: 'longboard', texture: 'home_longboard', x: 11.4, y: 3.75, layer: 'floor', depthRow: 4.5 },
 
         // the sign by the door back to the dorm
-        { id: 'sign', texture: 'sign_left', x: 0.05, y: 0.35, layer: 'floor', depthRow: 1.3 }
+        { id: 'sign', texture: 'sign_left', x: 0.05, y: 0.1, layer: 'floor', depthRow: 10 }
     ],
     interactables: [
         { id: 'window', target: 'window', spot: { x: 11.55, y: 0.6 }, facing: 'up', info: 'window' },
@@ -72,7 +72,7 @@ export const home: RoomDef = {
         { on: 'shelf', x: 2.9 + 47 / 16, y: -4 + 90.5 / 16, text: 'AOT', size: 3.4, color: '#f4efe2', angle: -90, bold: true },
         { on: 'shelf', x: 2.9 + 57.5 / 16, y: -4 + 91 / 16, text: 'Lookism', size: 2.9, color: '#f2d36a', angle: -76, bold: true },
         { on: 'hoodie', x: 15.125, y: -2.62, text: 'TORONTO', size: 2.6, color: '#f4efe2', bold: true, unlessSlot: 'hoodie-logo.png' },
-        { on: 'sign', x: 1.03, y: 0.84, text: 'Back to\nUCLA', size: 3, color: '#3a2a20', bold: true }
+        { on: 'sign', x: 1.05, y: 0.59, text: 'Back to\nUCLA', size: 4, color: '#3a2a20', bold: true }
     ],
     clock: { x: 8.45, y: -3.15 },
     catWaypoints: [

@@ -16,6 +16,18 @@ const MOVE: Record<string, string> = {
 const KONAMI = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight', 'KeyB', 'KeyA'];
 let konamiAt = 0;
 
+/**
+ * Holding the basketball: Space (or holding the touch action button) charges a shot instead of acting as E.
+ * Everywhere else Space stays E.
+ */
+let chargeCapture = false;
+let chargeKey = false;
+let chargeTouch = false;
+export function setChargeCapture(on: boolean) { chargeCapture = on; chargeKey = false; chargeTouch = false; }
+export const isChargeCapture = () => chargeCapture;
+export const chargeHeld = () => chargeKey || chargeTouch;
+export function setChargeTouch(on: boolean) { if (chargeCapture) chargeTouch = on; }
+
 /** Joystick vector from touch controls, each axis -1..1. */
 export const stick = { x: 0, y: 0 };
 
@@ -43,6 +55,7 @@ export function initInput() {
         }
         if (isFormish(e.target) && (e.code === 'Enter' || e.code === 'Space')) return;
         lastInputAt = performance.now();
+        if (chargeCapture && e.code === 'Space') { e.preventDefault(); chargeKey = true; return; }
         trackKonami(e.code);
         const dir = MOVE[e.code];
         if (dir) { held.add(dir); e.preventDefault(); return; }
@@ -62,7 +75,10 @@ export function initInput() {
                 emit('hint'); break;
         }
     });
-    window.addEventListener('keyup', (e) => { const d = MOVE[e.code]; if (d) held.delete(d); });
+    window.addEventListener('keyup', (e) => {
+        const d = MOVE[e.code]; if (d) held.delete(d);
+        if (e.code === 'Space') chargeKey = false;
+    });
     window.addEventListener('blur', clearHeld);
 }
 
@@ -80,7 +96,7 @@ export function onAction(fn: (a: Action) => void) { listeners.add(fn); return ()
 /** Fire an action from on-screen buttons. */
 export function trigger(a: Action) { lastInputAt = userInputAt = performance.now(); emit(a); }
 
-export function clearHeld() { held.clear(); stick.x = 0; stick.y = 0; }
+export function clearHeld() { held.clear(); stick.x = 0; stick.y = 0; chargeKey = false; chargeTouch = false; }
 
 export function markInput() { lastInputAt = performance.now(); }
 

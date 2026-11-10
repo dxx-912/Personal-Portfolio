@@ -32,7 +32,13 @@ export const ui = {
         piano: 'Play',
         pet: 'Pet',
         ride: 'Ride',
-        dismount: 'Hop off'
+        dismount: 'Hop off',
+        goIn: 'Go in',
+        pickup: 'Pick up',
+        drop: 'Drop',
+        shoot: 'Shoot (hold)',
+        shootTouch: 'Shoot',
+        phone: 'Check phone'
     },
     /** Mobile button label for F. */
     infoButton: 'Info',
@@ -71,6 +77,9 @@ export const ui = {
     todoVideo: 'Video coming soon',
     loadVideo: 'Play video',
 
+    ballHint: 'Hold Space, let go to shoot',
+    ballHintTouch: 'Hold the button, let go to shoot',
+    tally: (makes: number, attempts: number) => `${makes} for ${attempts}`,
     meow: 'meow',
     purr: 'prrr...',
     yum: 'yum!',

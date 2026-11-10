@@ -14,7 +14,8 @@ import { Player, FACING_VEC, OUTFITS } from '../game/Player';
 import { Cat } from '../game/Cat';
 import { Lighting } from '../game/Lighting';
 import { NavGrid, type Pt, type Rect } from '../game/nav';
-import { lastInputAt, markInput, moveVector, onAction, userInputAt, type Action } from '../ui/input';
+import { chargeHeld, lastInputAt, markInput, moveVector, onAction, setChargeCapture, userInputAt, type Action } from '../ui/input';
+import { Basketball, SWEET } from '../game/Basketball';
 import { CAFFEINE_BOOST, CAFFEINE_MAX, SLEEP_MAX, SLEEP_TICK_MS, hintGap, session } from '../game/session';
 import type { TimeOfDay } from '../game/Lighting';
 import { closePanel, openPanel } from '../ui/panel';
@@ -89,6 +90,11 @@ export class Room extends Phaser.Scene {
     private needUntil = 0;
     /** Soft glow on the fridge (Red Bull hints) or a bed (tired). */
     private beacons = new Map<Target, Phaser.GameObjects.Image>();
+    /** Dorm mini basketball (group D6). */
+    private ball: Basketball | null = null;
+    private charge = { on: false, p: 0, sweet: 0.5 };
+    private meter: Phaser.GameObjects.Graphics | null = null;
+    private tallyText: Phaser.GameObjects.Text | null = null;
 
     constructor() { super('Room'); }
 
@@ -119,6 +125,11 @@ export class Room extends Phaser.Scene {
         this.autoBedAt = 0;
         this.needUntil = 0;
         this.beacons = new Map();
+        this.ball = null;
+        this.charge = { on: false, p: 0, sweet: 0.5 };
+        this.meter = null;
+        this.tallyText = null;
+        setChargeCapture(false);
     }
 
     create() {
@@ -139,6 +150,7 @@ export class Room extends Phaser.Scene {
         this.ensureFree();
 
         if (this.def.catWaypoints) { this.makeCat(); this.scheduleMeow(); }
+        if (this.def.hoop) this.makeBall();
         this.buildTargets();
 
         const src = this.textures.get('daniel').getSourceImage() as CanvasImageSource;
@@ -166,6 +178,9 @@ export class Room extends Phaser.Scene {
             this.offs.forEach((f) => f()); this.offs = [];
             this.scale.off('resize', this.fitCamera, this);
             this.zTimer?.remove();
+            // the ball stays where it came to rest for the rest of the visit (home if it was held or flying)
+            if (this.ball) session.ball = this.ball.state === 'rest' ? { x: this.ball.x, y: this.ball.y } : null;
+            setChargeCapture(false);
             stopFeatured();
             stopAmbient();
             ['say', 'think', 'act', 'cat', 'need'].forEach(hideBubble);
@@ -365,6 +380,7 @@ export class Room extends Phaser.Scene {
             }).setOrigin(0.5).setScale(1 / R).setAngle(l.angle ?? 0).setDepth((on?.depth ?? 2) + 0.02);
             this.labels.push(t);
         });
+        this.buildTally(R);
     }
 
     private arrivalPoint() {
@@ -585,6 +601,7 @@ export class Room extends Phaser.Scene {
             if (this.mode === 'sit') this.standUp();
             else if (this.mode === 'ride') this.dismount();
             else if (this.mode === 'pullup') this.endPullups();
+            else if (this.mode === 'ball') this.dropBall();
             return;
         }
         if (a !== 'act' && a !== 'info') return;
@@ -593,6 +610,7 @@ export class Room extends Phaser.Scene {
         if (this.mode === 'pullup') { if (a === 'act') this.rep(); return; }
         if (this.mode === 'sit') { if (a === 'act') this.standUp(); return; }
         if (this.mode === 'ride') { if (a === 'act') this.dismount(); return; }
+        if (this.mode === 'ball') { this.dropBall(); return; }
         if (this.mode !== 'free') return;
         const t = this.focus;
         if (!t) return;
@@ -638,6 +656,7 @@ export class Room extends Phaser.Scene {
             if (hit === this.seat) { this.standUp(); return; }
             this.standUp();
         }
+        if (this.mode === 'ball') { if (!this.charge.on) this.walkToPoint(w.x, w.y); return; }
         if (this.mode !== 'free') return;
         this.pinned = null;
         if (hit) { this.walkToTarget(hit); return; }
@@ -717,7 +736,8 @@ export class Room extends Phaser.Scene {
         if (a === 'music') return isFeaturedOn() ? ui.verbs.musicOff : ui.verbs.musicOn;
         const map: Record<Exclude<ActionKind, 'music'>, string> = {
             sit: ui.verbs.sit, outfit: ui.verbs.outfit, pullup: ui.verbs.pullup, snap: ui.verbs.snap,
-            piano: ui.verbs.piano, pet: ui.verbs.pet, ride: ui.verbs.ride, eat: ui.verbs.eat, drink: ui.verbs.drink, nap: ui.verbs.nap
+            piano: ui.verbs.piano, pet: ui.verbs.pet, ride: ui.verbs.ride, eat: ui.verbs.eat, drink: ui.verbs.drink, nap: ui.verbs.nap,
+            pickup: ui.verbs.pickup, phone: ui.verbs.phone
         };
         return map[a];
     }
@@ -736,6 +756,7 @@ export class Room extends Phaser.Scene {
             case 'eat': this.eatPie(t); break;
             case 'drink': this.drinkRedBull(t); break;
             case 'nap': this.napInBed(t); break;
+            case 'pickup': this.pickUpBall(); break;
         }
     }
 
@@ -1097,6 +1118,159 @@ export class Room extends Phaser.Scene {
         this.time.delayedCall(r === 'asleep' ? 2600 : 1300, () => hideBubble('cat'));
     }
 
+    // ---------- mini basketball (bonus, group D6) ----------
+
+    private makeBall() {
+        const h = this.def.hoop!;
+        const rimY = ty(h.rimRow), rimZ = 22;
+        // hoop texture: backboard strip x 0..3 (rows 0..30 = heights rimZ+16 down to rimZ), rim centre at (11.5, 23)
+        const at = { x: FLOOR_X - 2, y: Math.round(rimY - rimZ - 23) };
+        const geom = {
+            rimX: at.x + 11.5, rimY, rimZ,
+            boardX: at.x + 4, boardHalfY: 7, boardZ0: rimZ - 3, boardZ1: rimZ + 16
+        };
+        const home = this.nav.nearestFreePoint({ x: tx(h.home.x), y: ty(h.home.y) });
+        this.ball = new Basketball(this, geom, at, home, session.ball, {
+            solids: this.solids,
+            reducedMotion: this.rm,
+            sound: (n) => { if (state.sound) sfx(n); },
+            onMake: () => this.onBasket(),
+            validRest: (x, y) => this.ballRestOk(x, y)
+        });
+        this.sprites.set('ball', this.ball.sprite);
+        if (session.ball && !this.ballRestOk(session.ball.x, session.ball.y)) this.ball.respawn();
+    }
+
+    /** A resting ball must be reachable, off every door approach, and not inside furniture. */
+    private ballRestOk(x: number, y: number) {
+        for (const d of this.def.doors) {
+            const { x: dx, top, bottom } = this.doorPx(d);
+            const ax = d.side === 'right' ? dx - 16 : dx + 16;
+            if (Math.abs(x - ax) < 22 && y > top - 8 && y < bottom + 10) return false;
+        }
+        if (this.solids.some((s) => x > s.x - 2 && x < s.x + s.w + 2 && y > s.y - 2 && y < s.y + s.h + 2)) return false;
+        const spot = this.nav.nearestFreePoint({ x, y: y + 2 });
+        if (Math.hypot(spot.x - x, spot.y - y) > 11) return false;
+        return !!this.nav.findPath({ x: this.player.x, y: this.player.y }, spot);
+    }
+
+    private onBasket() {
+        const b = this.ball!;
+        b.makes++;
+        session.makes = b.makes;
+        b.swishNet();
+        this.updateTally();
+        if (!this.rm) {
+            for (let i = 0; i < 6; i++) {
+                const sp = this.add.sprite(b.geom.rimX, b.geom.rimY - b.geom.rimZ, 'sparkle', i % 2).setDepth(9070).setTint(0xffd447);
+                const a = -Math.PI / 2 + (i - 2.5) * 0.45;
+                this.tweens.add({ targets: sp, x: sp.x + Math.cos(a) * 12, y: sp.y + Math.sin(a) * 10, alpha: 0, duration: 500, onComplete: () => sp.destroy() });
+            }
+        }
+        state.markSecret('basketball');
+    }
+
+    private buildTally(R: number) {
+        this.tallyText?.destroy();
+        this.tallyText = null;
+        if (!this.ball) return;
+        const g = this.ball.geom;
+        // on the wall just above the backboard
+        this.tallyText = this.add.text(g.rimX - 2, g.rimY - g.rimZ - 27, '', {
+            fontFamily: '"Pixelify Sans", ui-monospace, monospace', fontSize: `${4 * R}px`, fontStyle: 'bold',
+            color: '#fff6e0', stroke: '#1a1420', strokeThickness: R
+        }).setOrigin(0.5, 1).setScale(1 / R).setDepth(8700);
+        this.updateTally();
+    }
+
+    private updateTally() {
+        const b = this.ball;
+        if (!b || !this.tallyText) return;
+        b.makes = session.makes; b.attempts = session.attempts;
+        this.tallyText.setText(ui.tally(b.makes, b.attempts)).setVisible(b.attempts > 0);
+    }
+
+    private pickUpBall() {
+        const b = this.ball;
+        if (!b || !b.canPickUp) return;
+        this.player.cancelPath();
+        this.player.stop();
+        this.setMode('ball');
+        setChargeCapture(true);
+        this.charge = { on: false, p: 0, sweet: 0.5 };
+        b.hold(this.player.x, this.player.y, this.player.facing);
+        sfx('hop');
+        showBubble('act', isTouchDevice() ? ui.ballHintTouch : ui.ballHint, 'small');
+        this.time.delayedCall(2600, () => hideBubble('act'));
+    }
+
+    private endBallMode() {
+        setChargeCapture(false);
+        this.charge.on = false;
+        this.meter?.clear();
+        this.setMode('free');
+    }
+
+    private dropBall() {
+        if (this.mode !== 'ball' || !this.ball) return;
+        this.endBallMode();
+        this.ball.drop(this.player.x, this.player.y, this.player.facing);
+        hideBubble('act');
+    }
+
+    /** Holding the ball: walk around, hold Space (or the touch button) to charge, release to shoot. */
+    private updateBallMode(dt: number) {
+        const b = this.ball!;
+        const held = chargeHeld();
+        if (held && !this.charge.on) {
+            this.charge = { on: true, p: 0, sweet: b.sweetSpot(this.player.x, this.player.y) };
+            hideBubble('act');
+        }
+        if (this.charge.on) {
+            this.player.update({ x: 0, y: 0 }, dt, this.walkSpeed());
+            const dx = b.geom.rimX - this.player.x, dy = b.geom.rimY - this.player.y;
+            this.player.face(Math.abs(dx) > Math.abs(dy) ? (dx > 0 ? 'right' : 'left') : (dy > 0 ? 'down' : 'up'));
+            this.charge.p = Math.min(1, this.charge.p + dt / 1000);
+            this.drawMeter();
+            if (!held) this.shootBall();
+        } else {
+            this.player.update(moveVector(), dt, this.walkSpeed());
+        }
+        if (this.mode === 'ball') b.hold(this.player.x, this.player.y, this.player.facing);
+        this.checkDoors();
+        this.updateHighlights(null, this.time.now);
+        this.promptAtPlayer(isTouchDevice()
+            ? { hold: { key: 'Space', label: ui.verbs.shootTouch }, info: ui.verbs.drop }
+            : { hold: { key: 'Space', label: ui.verbs.shoot }, act: ui.verbs.drop });
+    }
+
+    private shootBall() {
+        const b = this.ball!;
+        const p = this.charge.p;
+        this.endBallMode();
+        b.shoot(this.player.x, this.player.y, p);
+        session.attempts = b.attempts;
+        this.updateTally();
+        this.player.pose(DANIEL_FRAMES.cheer);
+        sfx('hop');
+        this.time.delayedCall(260, () => { if (this.mode === 'free') this.player.pose(null); });
+    }
+
+    /** The power meter beside Daniel: a gold fill and the green sweet spot window for this distance. */
+    private drawMeter() {
+        this.meter ??= this.add.graphics().setDepth(9080);
+        const g = this.meter;
+        const H = 18, W = 4;
+        const x = Math.round(this.player.x + 10), y = Math.round(this.player.y - 24);
+        g.clear();
+        g.fillStyle(0x1a1420, 1).fillRect(x - 1, y - 1, W + 2, H + 2);
+        g.fillStyle(0x3a3346, 1).fillRect(x, y, W, H);
+        const s0 = Math.max(0, this.charge.sweet - SWEET), s1 = Math.min(1, this.charge.sweet + SWEET);
+        g.fillStyle(0x5fd16a, 1).fillRect(x, Math.round(y + H - s1 * H), W, Math.max(1, Math.round((s1 - s0) * H)));
+        const fh = Math.round(this.charge.p * H);
+        g.fillStyle(0xffd447, 0.9).fillRect(x + 1, y + H - fh, W - 2, fh);
+    }
+
     // ---------- longboard ----------
 
     private board() { return this.sprites.get('longboard'); }
@@ -1222,6 +1396,7 @@ export class Room extends Phaser.Scene {
 
     private goThrough(door: DoorDef) {
         if (this.busy) return;
+        if (this.mode === 'ball') { this.endBallMode(); this.ball?.respawn(); }
         this.busy = true;
         this.player.cancelPath();
         this.player.stop();
@@ -1241,6 +1416,7 @@ export class Room extends Phaser.Scene {
         const dt = Math.min(delta, 50);
         const feet = { x: this.player.x, y: this.player.y, moving: this.player.moving };
         this.cat?.update(dt, feet);
+        if (this.ball && !state.modal) this.ball.update(dt);
         this.animateSpeaker(time);
         this.updateCamera(dt);
         this.tickNeeds(dt);
@@ -1280,6 +1456,9 @@ export class Room extends Phaser.Scene {
             }
             case 'piano':
                 return;
+            case 'ball':
+                this.updateBallMode(dt);
+                return;
         }
 
         this.player.update(moveVector(), dt, this.walkSpeed());
@@ -1289,10 +1468,14 @@ export class Room extends Phaser.Scene {
         const f = this.pickFocus();
         this.focus = f;
         this.updateHighlights(f, time);
-        if (f) {
-            const spec: PromptSpec = f.kind === 'door'
-                ? { door: f.door!.side === 'right' ? `${ui.doorToHome} →` : `← ${ui.doorToDorm}` }
-                : { act: this.verb(f), info: f.def?.info ? getEntry(this.def.key, f.def.info).prompt : undefined };
+        if (f && f.kind === 'door') {
+            // the sign already says where it goes: a short "E Go in" beside Daniel, on the room side, clear of the sign
+            const right = f.door!.side === 'right';
+            const p = this.toPage(this.player.x + (right ? -9 : 9), this.player.y - 6);
+            setPrompt({ act: ui.verbs.goIn }, p.x, p.y, right ? 'end' : 'start');
+            this.promptAtHead = false;
+        } else if (f) {
+            const spec: PromptSpec = { act: this.verb(f), info: f.def?.info ? getEntry(this.def.key, f.def.info).prompt : undefined };
             const b = f.sprite.getBounds();
             const objTop = (f.kind === 'door' ? b.top + 6 : b.top) - 3;
             const headTop = this.player.sprite.getBounds().top - 2;
@@ -1481,6 +1664,7 @@ export class Room extends Phaser.Scene {
         let catT: Target | null = null;
         for (const t of this.targets) {
             if (t.def?.target === 'cat') { catT = t; continue; }
+            if (t.def?.target === 'ball' && !this.ball?.canPickUp) continue;
             const d = Math.hypot(t.spot.x - px, t.spot.y - py);
             const limit = t === this.focus ? ZONE_EXIT : ZONE_ENTER;
             if (d > limit) continue;
@@ -1514,6 +1698,7 @@ export class Room extends Phaser.Scene {
         const showMarkers = !this.sleeping && !this.snapping;
         for (const t of this.targets) {
             if (t.def?.target === 'cat' && this.cat) t.spot = this.cat.standingSpot(this.player.x).spot;
+            if (t.def?.target === 'ball' && this.ball) t.spot = this.ball.pickupPoint();
             const beacon = this.beacons.has(t);
             if (t.hl) {
                 this.syncHighlight(t);

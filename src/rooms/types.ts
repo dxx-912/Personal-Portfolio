@@ -31,7 +31,7 @@ export interface PropDef {
 }
 
 /** What E does. */
-export type ActionKind = 'sit' | 'outfit' | 'pullup' | 'music' | 'snap' | 'piano' | 'pet' | 'ride' | 'eat' | 'drink' | 'nap';
+export type ActionKind = 'sit' | 'outfit' | 'pullup' | 'music' | 'snap' | 'piano' | 'pet' | 'ride' | 'eat' | 'drink' | 'nap' | 'pickup' | 'phone';
 
 export interface InteractableDef {
     /** Unique within the room. */
@@ -102,6 +102,8 @@ export interface RoomDef {
     labels?: LabelDef[];
     /** Wall clock centre in tiles (shows the visitor's local time). */
     clock?: TPoint;
+    /** Mini basketball hoop on the left wall: floor row under the rim, and where the ball rests at the start. */
+    hoop?: { rimRow: number; home: TPoint };
     /** Bed pillow spot for the sleeping sprite; `home` picks the plaid blanket version. */
     sleep?: TPoint & { home?: boolean };
     /** Open floor points the cat walks between (home only). */
