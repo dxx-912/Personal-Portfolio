@@ -222,7 +222,8 @@
             "key": "instagram-logo",
             "folder": "3 Room decor (optional)/Instagram logo, dorm and home phone screens (1 image)",
             "max": 1,
-            "decor": true
+            "decor": true,
+            "clearBackground": true
         },
         {
             "key": "can-logo",

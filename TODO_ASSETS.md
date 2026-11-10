@@ -20,7 +20,7 @@ Everything the site still needs from Daniel. Every item here shows up on the sit
 
 - [x] **Instagram handle.** The home phone shows **@dxx_912** with a link to https://www.instagram.com/dxx_912/ (`profile.instagram` in `src/content/profile.ts`).
 - [x] **Red Bull** (dorm fridge) and **mini basketball** (dorm hoop): built, nothing needed. The `phone-screen.png` slot is retired; the dorm phone shows `instagram-logo.png` instead.
-- [ ] The Instagram logo you put in the iteration 5 feedback PDF can go straight into `photos/3 Room decor (optional)/Instagram logo, dorm and home phone screens (1 image)/`, then `npm run photos`.
+- [x] **Instagram logo** added. Its "transparent" background was a checkerboard baked into the pixels; `npm run photos` now clears that for this slot (`clearBackground` in `scripts/photo-slots.json`) and keeps the white glyph.
 
 ## Decor images to provide (optional)
 

@@ -68,7 +68,10 @@ try {
         if (slot.decor) {
             mkdirSync(decorDir, { recursive: true });
             const src = readable(join(dir, files[0]), tmp);
-            await sharp(src).rotate().resize({ width: 600, height: 600, fit: 'inside', withoutEnlargement: true }).png().toFile(join(decorDir, `${slot.key}.png`));
+            const img = sharp(src).rotate().resize({ width: 600, height: 600, fit: 'inside', withoutEnlargement: true });
+            const out = join(decorDir, `${slot.key}.png`);
+            if (slot.clearBackground) await clearBackground(img, out);
+            else await img.png().toFile(out);
             converted++;
             log(`  decor  ${slot.key}.png`);
             continue;
@@ -106,3 +109,43 @@ warnings.forEach((w) => console.warn(`  note: ${w}`));
 const filled = Object.keys(sorted).length;
 const needed = slots.filter((s) => !s.decor).length;
 log(`Photos: converted ${converted} file(s). ${filled} of ${needed} photo spots filled.${converted ? ' Restart npm run dev to see them.' : ''}`);
+
+/**
+ * For logos saved with a fake "transparent" background (a grey and white checkerboard, or plain white, baked
+ * into the pixels): flood fill from the image edges through light, colourless pixels and make them transparent.
+ * The fill stops at the logo's own coloured edge, so white shapes inside the logo stay. Opt in per slot with
+ * "clearBackground": true in photo-slots.json.
+ */
+async function clearBackground(img, out) {
+    const { data, info } = await img.ensureAlpha().raw().toBuffer({ resolveWithObject: true });
+    const { width: w, height: h } = info;
+    const bg = (i) => {
+        const r = data[i * 4], g = data[i * 4 + 1], b = data[i * 4 + 2];
+        return Math.min(r, g, b) > 185 && Math.max(r, g, b) - Math.min(r, g, b) < 18;
+    };
+    const seen = new Uint8Array(w * h);
+    const stack = [];
+    for (let x = 0; x < w; x++) stack.push(x, (h - 1) * w + x);
+    for (let y = 0; y < h; y++) stack.push(y * w, y * w + w - 1);
+    while (stack.length) {
+        const i = stack.pop();
+        if (seen[i] || !bg(i)) continue;
+        seen[i] = 1;
+        data[i * 4 + 3] = 0;
+        const x = i % w, y = (i - x) / w;
+        if (x > 0) stack.push(i - 1);
+        if (x < w - 1) stack.push(i + 1);
+        if (y > 0) stack.push(i - w);
+        if (y < h - 1) stack.push(i + w);
+    }
+    // checkerboard showing through cut outs inside the logo (its white glyph) becomes solid white
+    for (let i = 0; i < w * h; i++) if (!seen[i] && bg(i)) data[i * 4] = data[i * 4 + 1] = data[i * 4 + 2] = 255;
+    // soften the cut edge: pixels touching the cleared area get partial alpha if they are light
+    for (let i = 0; i < w * h; i++) {
+        if (seen[i]) continue;
+        const x = i % w;
+        const near = (x > 0 && seen[i - 1]) || (x < w - 1 && seen[i + 1]) || (i >= w && seen[i - w]) || (i < w * (h - 1) && seen[i + w]);
+        if (near && Math.min(data[i * 4], data[i * 4 + 1], data[i * 4 + 2]) > 150) data[i * 4 + 3] = 128;
+    }
+    await sharp(data, { raw: { width: w, height: h, channels: 4 } }).png().toFile(out);
+}
