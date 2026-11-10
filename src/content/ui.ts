@@ -69,6 +69,12 @@ export const ui = {
     yum: 'yum!',
     drinkLine: 'Caffeine 7/7. Locked in.',
     napLine: 'Sleep 8/8. Fully recharged.',
+    /** Little lines from the stats system (iteration 5, group B). They rotate in order. */
+    needs: {
+        caffeine: ['where can I get a Red Bull...', 'need caffeine', "I swear there's a Red Bull in the fridge", 'running on empty here'],
+        tired: ["I'm so tired", 'I want to take a nap...', 'my bed looks really comfy right now', 'can barely keep my eyes open'],
+        mustSleep: 'I need to sleep'
+    },
     pieGone: 'All gone. More next time.',
     pullupCount: (n: number) => `${n}`,
     pullupDone: (n: number) => (n > 0 ? `Nice! ${n} reps` : 'Maybe later'),

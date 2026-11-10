@@ -21,6 +21,8 @@ export const stick = { x: 0, y: 0 };
 
 /** Time of the last movement input, for idle thoughts. */
 export let lastInputAt = performance.now();
+/** Time of the last real key, click or tap (never reset by the game itself). Cancels Daniel's walk to bed. */
+export let userInputAt = performance.now();
 
 function isFormish(t: EventTarget | null) {
     const el = t as HTMLElement | null;
@@ -29,8 +31,10 @@ function isFormish(t: EventTarget | null) {
 }
 
 export function initInput() {
+    window.addEventListener('pointerdown', () => { userInputAt = performance.now(); }, true);
     window.addEventListener('keydown', (e) => {
         if (e.metaKey || e.ctrlKey || e.altKey) return;
+        userInputAt = performance.now();
         // Panels and overlays handle their own keys (Esc, Tab, number keys...).
         if (state.modal === 'panel') return;
         if (state.modal === 'pause') {
@@ -74,7 +78,7 @@ function emit(a: Action) { listeners.forEach((fn) => fn(a)); }
 export function onAction(fn: (a: Action) => void) { listeners.add(fn); return () => listeners.delete(fn); }
 
 /** Fire an action from on-screen buttons. */
-export function trigger(a: Action) { lastInputAt = performance.now(); emit(a); }
+export function trigger(a: Action) { lastInputAt = userInputAt = performance.now(); emit(a); }
 
 export function clearHeld() { held.clear(); stick.x = 0; stick.y = 0; }
 

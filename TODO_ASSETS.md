@@ -44,7 +44,8 @@ Never drawn by us. Until the file exists, an original abstract placeholder shows
 ## Little lines (`src/content/profile.ts`)
 
 - [ ] **Wake up line.** Now: "Hey, I'm Daniel. Welcome to my dorm at UCLA." Confirm or replace.
-- [ ] **HUD stat names and numbers.** Now: Caffeine 7/7, Sleep 2/6, Curiosity 200/200.
+- [x] **HUD stats.** Caffeine 0/7, Sleep 8/8, Creativity 200/200 at the start of every visit (iteration 5). The Red Bull fills Caffeine; Sleep drops one every 90 seconds and refills in either bed.
+- [ ] **Stats lines** (`src/content/ui.ts`, `needs`). Red Bull hints: "where can I get a Red Bull...", "need caffeine", "I swear there's a Red Bull in the fridge", "running on empty here". Tired: "I'm so tired", "I want to take a nap...", "my bed looks really comfy right now", "can barely keep my eyes open". Confirm or replace the last one in each list (mine).
 - [ ] **5 to 8 idle thoughts.** Now placeholders: "should probably do my readings", "what should I eat later...", "where did I leave my charger", "five more minutes", "hmm".
 
 ## Contact (`src/content/profile.ts`)

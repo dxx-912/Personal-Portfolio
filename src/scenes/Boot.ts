@@ -86,6 +86,7 @@ export class Boot extends Phaser.Scene {
             }
         });
         a.create({ key: 'sleep', frames: a.generateFrameNumbers('daniel_sleep', { frames: [0, 1] }), frameRate: 1.2, repeat: -1 });
+        a.create({ key: 'sleep_home', frames: a.generateFrameNumbers('daniel_sleep_home', { frames: [0, 1] }), frameRate: 1.2, repeat: -1 });
         a.create({ key: 'cat-idle', frames: a.generateFrameNumbers('cat', { frames: [CAT_FRAMES.idle, CAT_FRAMES.idle + 1] }), frameRate: 1.5, repeat: -1 });
         a.create({ key: 'cat-walk', frames: a.generateFrameNumbers('cat', { frames: [CAT_FRAMES.walk, CAT_FRAMES.walk + 1] }), frameRate: 6, repeat: -1 });
         a.create({ key: 'cat-sleep', frames: a.generateFrameNumbers('cat', { frames: [CAT_FRAMES.sleep, CAT_FRAMES.sleep + 1] }), frameRate: 0.8, repeat: -1 });

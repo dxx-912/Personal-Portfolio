@@ -102,8 +102,8 @@ export interface RoomDef {
     labels?: LabelDef[];
     /** Wall clock centre in tiles (shows the visitor's local time). */
     clock?: TPoint;
-    /** Bed pillow spot for the sleeping sprite (dorm only). */
-    sleep?: TPoint;
+    /** Bed pillow spot for the sleeping sprite; `home` picks the plaid blanket version. */
+    sleep?: TPoint & { home?: boolean };
     /** Open floor points the cat walks between (home only). */
     catWaypoints?: TPoint[];
     /** Where the cat naps (on the bed) and where you stand to pet him there. */

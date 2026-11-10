@@ -1,6 +1,7 @@
 import Phaser from 'phaser';
 import { FLOOR_X, ROOM_H, ROOM_W, VIEW_MARGIN, prefersReducedMotion, tx, ty } from '../config';
 import type { LightDef, RoomDef } from '../rooms/types';
+import { session } from './session';
 
 const DARK = 0x06050b;
 
@@ -26,7 +27,8 @@ const CONE: Record<TimeOfDay, { color: number; strength: number }> = {
  * plus soft additive colour pools. Fairy lights twinkle. Cheap enough for phones.
  */
 export class Lighting {
-    readonly tod: TimeOfDay;
+    tod: TimeOfDay;
+    private cones: { pool: { img: Phaser.GameObjects.Image; base: number }; eraser: { strength: number }; strength: number }[] = [];
     private rt: Phaser.GameObjects.RenderTexture;
     private erasers: { img: Phaser.GameObjects.Image; x: number; y: number; strength: number }[] = [];
     private pools: { img: Phaser.GameObjects.Image; base: number }[] = [];
@@ -35,7 +37,8 @@ export class Lighting {
     private rm = prefersReducedMotion();
 
     constructor(private scene: Phaser.Scene, private def: RoomDef) {
-        this.tod = timeOfDay();
+        // each nap this visit moves the clock on one step (session.todShift)
+        this.tod = ((timeOfDay() + session.todShift) % 3) as TimeOfDay;
         if (!scene.textures.exists('glow')) makeGlowTexture(scene);
         if (!scene.textures.exists('vignette')) makeVignette(scene);
         def.lights.forEach((l, i) => this.addLight(l, i));
@@ -53,8 +56,11 @@ export class Lighting {
             const c = CONE[this.tod];
             const strength = (l.strength ?? 1) * c.strength;
             const pool = s.add.image(0, 0, key).setOrigin(0).setDepth(2).setBlendMode(Phaser.BlendModes.ADD).setTint(c.color);
-            this.pools.push({ img: pool, base: 0.24 * strength });
-            this.erasers.push({ img: s.make.image({ x: 0, y: 0, key, add: false }).setOrigin(0), x: 0, y: 0, strength });
+            const p = { img: pool, base: 0.24 * strength };
+            const e = { img: s.make.image({ x: 0, y: 0, key, add: false }).setOrigin(0), x: 0, y: 0, strength };
+            this.pools.push(p);
+            this.erasers.push(e);
+            this.cones.push({ pool: p, eraser: e, strength: l.strength ?? 1 });
         } else {
             const x = tx(l.x), y = ty(l.y);
             const sc = (l.r * 2) / 64;
@@ -120,6 +126,17 @@ export class Lighting {
     lit() { this.set(BASE_DARK[this.tod], 1); }
 
     get baseDark() { return BASE_DARK[this.tod]; }
+
+    /** Jump to another time of day (after a nap): window light colour and strength follow. Call set() or lit() after. */
+    setTod(t: TimeOfDay) {
+        this.tod = t;
+        const c = CONE[t];
+        for (const k of this.cones) {
+            k.pool.img.setTint(c.color);
+            k.pool.base = 0.24 * k.strength * c.strength;
+            k.eraser.strength = k.strength * c.strength;
+        }
+    }
 
     /** A brief extra glow at a point (door pulse). */
     pulse(x: number, y: number, color = 0xffc070) {

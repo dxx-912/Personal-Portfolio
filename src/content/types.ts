@@ -98,8 +98,6 @@ export interface HudStat {
     max: number;
     /** Bar colour. */
     color: string;
-    /** Re-roll on every visit between min and max; lowBias makes low values more likely. */
-    random?: { min: number; lowBias?: boolean };
 }
 
 export interface Profile {

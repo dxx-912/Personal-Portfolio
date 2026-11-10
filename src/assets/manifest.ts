@@ -59,6 +59,7 @@ export const ASSETS = {
     daniel: { ...CHAR, paint: painters.daniel, outline: true },
     daniel_shirt: { ...CHAR, paint: painters.danielShirt, outline: false },
     daniel_sleep: { w: 30, h: 14, frames: 2, paint: painters.danielSleep, outline: true },
+    daniel_sleep_home: { w: 30, h: 14, frames: 2, paint: painters.danielSleepHome, outline: true },
     cat: { w: CAT_FRAME.w, h: CAT_FRAME.h, frames: CAT_FRAME_COUNT, paint: painters.cat, outline: true, highlight: true },
 
     // fx

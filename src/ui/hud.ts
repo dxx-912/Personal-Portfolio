@@ -2,7 +2,6 @@
 // messages, pause menu, touch controls. All plain HTML over the canvas.
 
 import { TOTAL_ITEMS, ABOUT_KEY, profile, ui, type RoomKey } from '../content';
-import { rollStat } from '../content/profile';
 import { isTouchDevice, prefersReducedMotion } from '../config';
 import { bus, state } from '../state';
 import { clearHeld, onAction, stick, trigger } from './input';
@@ -23,10 +22,10 @@ export function initHud() {
         <div class="hud-top-left">
             <button class="portrait" hidden aria-label="${esc(ui.aboutButton)}" title="${esc(ui.aboutButton)}">
                 <canvas class="face" width="16" height="13" aria-hidden="true"></canvas>
-                <span class="stats">${profile.stats.map((s) => { const v = rollStat(s); return `
-                    <span class="stat" data-stat="${esc(s.label)}" style="--c: ${esc(s.color)}; --f: ${Math.max(0, Math.min(1, v / s.max))}">
-                        <span class="bar"></span><span class="txt">${esc(s.label)} ${v}/${s.max}</span>
-                    </span>`; }).join('')}
+                <span class="stats">${profile.stats.map((s) => `
+                    <span class="stat" data-stat="${esc(s.label)}" style="--c: ${esc(s.color)}; --f: ${Math.max(0, Math.min(1, s.value / s.max))}">
+                        <span class="bar"></span><span class="txt">${esc(s.label)} ${s.value}/${s.max}</span>
+                    </span>`).join('')}
                 </span>
             </button>
         </div>
@@ -239,7 +238,7 @@ export function toast(text: string, ms = 1800, button?: { label: string; onClick
 
 const bubbles = new Map<string, HTMLElement>();
 
-export function showBubble(id: string, text: string, kind: 'speech' | 'thought' | 'small' = 'speech') {
+export function showBubble(id: string, text: string, kind: 'speech' | 'thought' | 'small' | 'need' = 'speech') {
     let el = bubbles.get(id);
     if (!el) {
         el = document.createElement('div');
@@ -257,8 +256,14 @@ export function showBubble(id: string, text: string, kind: 'speech' | 'thought' 
 export function moveBubble(id: string, x: number, y: number) {
     const el = bubbles.get(id);
     if (!el || el.hidden) return;
-    const w = el.offsetWidth;
+    const w = el.offsetWidth, h = el.offsetHeight;
     const cx = Math.max(w / 2 + 6, Math.min(window.innerWidth - w / 2 - 6, x));
+    // never cover the key prompt: if they would overlap, sit just above it
+    if (id !== 'cat' && promptEl && !promptEl.hidden) {
+        const r = promptEl.getBoundingClientRect();
+        const overlap = cx - w / 2 < r.right && cx + w / 2 > r.left && y - h < r.bottom && y > r.top;
+        if (overlap) y = r.top - 6;
+    }
     el.style.transform = `translate(${Math.round(cx)}px, ${Math.round(y)}px) translate(-50%, -100%)`;
 }
 
@@ -374,13 +379,16 @@ export function setWakeButton(on: boolean) {
     if (on) actBtn.textContent = ui.wakeTouch.split(' ')[0];
 }
 
-/** Fill a HUD stat bar to its max (the fridge refills Caffeine), with a short flash. */
-export function fillStat(label: string) {
+/** Show a HUD stat value. Going up flashes the bar (Red Bull, a nap); going down just slides it. */
+export function setStat(label: string, value: number) {
     const s = profile.stats.find((x) => x.label === label);
     const el = document.querySelector<HTMLElement>(`.portrait .stat[data-stat="${label}"]`);
     if (!s || !el) return;
-    el.style.setProperty('--f', '1');
+    const prev = Number(el.dataset.v ?? s.value);
+    el.dataset.v = String(value);
+    el.style.setProperty('--f', String(Math.max(0, Math.min(1, value / s.max))));
     const txt = el.querySelector('.txt');
-    if (txt) txt.textContent = `${s.label} ${s.max}/${s.max}`;
-    el.classList.remove('refill'); void el.offsetWidth; el.classList.add('refill');
+    if (txt) txt.textContent = `${s.label} ${value}/${s.max}`;
+    el.classList.toggle('low', label === 'Sleep' && value <= 2);
+    if (value > prev) { el.classList.remove('refill'); void el.offsetWidth; el.classList.add('refill'); }
 }

@@ -143,6 +143,12 @@ body.touch .chip { padding-left: 9px; }
 .bubble-thought::after { width: 4px; height: 4px; bottom: -6px; border-radius: 50%; clip-path: none; background: #f2eefc; border: 1px solid rgba(26, 20, 32, 0.6); }
 @keyframes thought { 0% { opacity: 0; } 12%, 75% { opacity: 0.72; } 100% { opacity: 0; } }
 .bubble-small { font-size: 14px; padding: 3px 8px; }
+/* stats lines (Red Bull, tired): small, close above the head */
+.bubble-need { font-size: 12px; line-height: 1.2; padding: 2px 7px; max-width: 180px; border-width: 1px; box-shadow: 0 2px 0 rgba(0, 0, 0, 0.3); }
+.bubble-need::after { bottom: -6px; width: 8px; height: 6px; }
+.portrait .stat.low .bar { animation: lowpulse 1.6s ease-in-out infinite; }
+@keyframes lowpulse { 50% { opacity: 0.55; } }
+@media (prefers-reduced-motion: reduce) { .portrait .stat.low .bar { animation: none; } }
 
 .message {
     position: fixed; left: 50%; bottom: max(28px, env(safe-area-inset-bottom)); transform: translateX(-50%); z-index: 25;

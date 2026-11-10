@@ -1,11 +1,4 @@
-import type { HudStat, Profile } from './types';
-
-/** This visit's value for a stat (random ones re-roll per page load). */
-export function rollStat(s: HudStat): number {
-    if (!s.random) return s.value;
-    const r = s.random.lowBias ? Math.pow(Math.random(), 2) : Math.random();
-    return Math.min(s.max, s.random.min + Math.floor(r * (s.max - s.random.min + 1)));
-}
+import type { Profile } from './types';
 
 // Contact details, HUD stats, and the little lines Daniel says.
 // Leave href empty until confirmed; it renders as a visible TODO.
@@ -20,11 +13,12 @@ export const profile: Profile = {
         { label: 'Resume (PDF)', download: true /* href: '/media/resume/daniel-xing-resume.pdf' */ }
     ],
 
-    // Joke stats for the HUD portrait. Caffeine and Sleep re-roll on every visit (Sleep leans low).
+    // HUD portrait stats. They start here on every visit and change in play (src/game/session.ts):
+    // the fridge Red Bull fills Caffeine, Sleep drains over time and refills in bed. Creativity never moves.
     stats: [
-        { label: 'Caffeine', value: 7, max: 7, color: '#d4493a', random: { min: 1 } },
-        { label: 'Sleep', value: 2, max: 8, color: '#8a96a5', random: { min: 0, lowBias: true } },
-        { label: 'Curiosity', value: 200, max: 200, color: '#3d7fd4' }
+        { label: 'Caffeine', value: 0, max: 7, color: '#d4493a' },
+        { label: 'Sleep', value: 8, max: 8, color: '#8a96a5' },
+        { label: 'Creativity', value: 200, max: 200, color: '#3d7fd4' }
     ],
 
     // [TODO: Daniel to confirm the line]

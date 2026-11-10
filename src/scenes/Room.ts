@@ -14,10 +14,12 @@ import { Player, FACING_VEC, OUTFITS } from '../game/Player';
 import { Cat } from '../game/Cat';
 import { Lighting } from '../game/Lighting';
 import { NavGrid, type Pt, type Rect } from '../game/nav';
-import { lastInputAt, markInput, moveVector, onAction, type Action } from '../ui/input';
+import { lastInputAt, markInput, moveVector, onAction, userInputAt, type Action } from '../ui/input';
+import { CAFFEINE_BOOST, CAFFEINE_MAX, SLEEP_MAX, SLEEP_TICK_MS, hintGap, session } from '../game/session';
+import type { TimeOfDay } from '../game/Lighting';
 import { closePanel, openPanel } from '../ui/panel';
 import {
-    fillStat, hideBubble, maybeSuggestQuickView, moveBubble, setPortrait, setPrompt, setWakeButton, showBubble, showMessage, showTitle, toast,
+    setStat, hideBubble, maybeSuggestQuickView, moveBubble, setPortrait, setPrompt, setWakeButton, showBubble, showMessage, showTitle, toast,
     type PromptSpec
 } from '../ui/hud';
 import { flash, openPiano, openSnapshot } from '../ui/overlays';
@@ -80,6 +82,13 @@ export class Room extends Phaser.Scene {
     /** A key-cap prompt is showing above Daniel's head: bubbles stack above it. */
     private promptAtHead = false;
     private snapping = false;
+    /** In bed for a nap (stats clock stops). */
+    private napping = false;
+    /** When Daniel set off for bed by himself at Sleep 0 (0 = not walking there). */
+    private autoBedAt = 0;
+    private needUntil = 0;
+    /** Soft glow on the fridge (Red Bull hints) or a bed (tired). */
+    private beacons = new Map<Target, Phaser.GameObjects.Image>();
 
     constructor() { super('Room'); }
 
@@ -106,6 +115,10 @@ export class Room extends Phaser.Scene {
         this.clockG = null;
         this.zoomBoost = 1;
         this.seat = null;
+        this.napping = false;
+        this.autoBedAt = 0;
+        this.needUntil = 0;
+        this.beacons = new Map();
     }
 
     create() {
@@ -137,7 +150,13 @@ export class Room extends Phaser.Scene {
 
         this.offs.push(onAction((a) => this.onAction(a)));
         this.offs.push(bus.on('modal', (m) => {
-            if (m) { this.player.cancelPath(); if (this.mode === 'free' || this.mode === 'ride') this.player.stop(); setPrompt(null); }
+            if (m) {
+                this.player.cancelPath(); this.autoBedAt = 0;
+                if (this.mode === 'free' || this.mode === 'ride') this.player.stop();
+                setPrompt(null);
+                // bubbles never sit over a panel
+                hideBubble('say'); hideBubble('need'); this.sayUntil = 0; this.needUntil = 0;
+            }
         }));
         this.offs.push(bus.on('travel', () => this.travel()));
         this.offs.push(bus.on('awake', () => requestAnimationFrame(() => this.fitCamera())));
@@ -149,7 +168,7 @@ export class Room extends Phaser.Scene {
             this.zTimer?.remove();
             stopFeatured();
             stopAmbient();
-            ['say', 'think', 'act', 'cat'].forEach(hideBubble);
+            ['say', 'think', 'act', 'cat', 'need'].forEach(hideBubble);
             setPrompt(null);
         });
 
@@ -902,16 +921,21 @@ export class Room extends Phaser.Scene {
         });
     }
 
-    /** E at the dorm bed: lights down, a short nap with Zs, then the intro wake up. Sleep fills to the top. */
+    /**
+     * E at either bed: lights down, a short sleep with Zs, the window moves on to the next time of day,
+     * then the intro wake up. Sleep fills back to 8/8.
+     */
     private napInBed(t: Target) {
         const s = this.def.sleep;
         if (!s) { this.sitDown(t); return; }
         const fast = this.rm;
         this.busy = true;
+        this.napping = true;
+        this.autoBedAt = 0;
         this.player.cancelPath();
         this.player.stop();
-        hideBubble('say');
-        hideBubble('think');
+        ['say', 'think', 'need'].forEach(hideBubble);
+        this.sayUntil = this.needUntil = 0;
         const level = { dark: this.lighting.baseDark, light: 1, glow: 0 };
         const relight = () => this.lighting.set(level.dark, level.light, level.glow, this.sleeperAt());
         // lights down
@@ -919,8 +943,8 @@ export class Room extends Phaser.Scene {
         let sleeper: Phaser.GameObjects.Sprite | null = null;
         this.time.delayedCall(fast ? 40 : 380, () => {
             this.player.sprite.setVisible(false);
-            sleeper = this.add.sprite(tx(s.x), ty(s.y), 'daniel_sleep', 0).setOrigin(0).setDepth(9050);
-            sleeper.anims.play('sleep');
+            sleeper = this.add.sprite(tx(s.x), ty(s.y), s.home ? 'daniel_sleep_home' : 'daniel_sleep', 0).setOrigin(0).setDepth(9050);
+            sleeper.anims.play(s.home ? 'sleep_home' : 'sleep');
             this.sleepSprite = sleeper;
             this.puffZ();
             this.zTimer = this.time.addEvent({ delay: 700, loop: true, callback: () => this.puffZ() });
@@ -930,6 +954,12 @@ export class Room extends Phaser.Scene {
             this.zTimer?.remove();
             if (!sleeper) return;
             const sl = sleeper;
+            // time passes while he sleeps: the window and its light move on one step
+            session.todShift++;
+            this.lighting.setTod(((this.lighting.tod + 1) % 3) as TimeOfDay);
+            const win = this.sprites.get('window');
+            if (win instanceof Phaser.GameObjects.Image) win.setFrame(this.lighting.tod);
+            relight();
             sfx('wake');
             this.tweens.add({
                 targets: sl, x: sl.x + 1, duration: 60, yoyo: true, repeat: fast ? 0 : 3,
@@ -941,8 +971,12 @@ export class Room extends Phaser.Scene {
                     });
                     this.time.delayedCall(fast ? 50 : 300, () => this.hopOutTo(sl, { x: t.spot.x, y: t.spot.y, facing: 'down' }, () => {
                         this.busy = false;
-                        fillStat('Sleep');
-                        this.say(ui.napLine, 2600);
+                        this.napping = false;
+                        session.sleep = SLEEP_MAX;
+                        session.sleepMs = 0;
+                        session.tiredHints = 0;
+                        setStat('Sleep', session.sleep);
+                        this.sayNeed(ui.napLine, 2600);
                         markInput();
                     }));
                 }
@@ -1005,10 +1039,29 @@ export class Room extends Phaser.Scene {
             this.player.pose(null);
             this.player.face('down');
             this.busy = false;
-            fillStat('Caffeine');
-            showBubble('act', ui.drinkLine, 'speech');
-            this.time.delayedCall(1800, () => hideBubble('act'));
+            // Caffeine 7/7 for the rest of the visit, and he walks 30% faster (speedModifiers)
+            session.caffeine = CAFFEINE_MAX;
+            setStat('Caffeine', session.caffeine);
+            this.starBurst();
+            this.sayNeed(ui.drinkLine, 2200);
         });
+    }
+
+    /** A short burst of pixel stars off Daniel (the Red Bull kicking in). */
+    private starBurst() {
+        const s = this.player.sprite;
+        const n = this.rm ? 4 : 12;
+        for (let i = 0; i < n; i++) {
+            const a = (i / n) * Math.PI * 2 + Math.random() * 0.3;
+            const r = 14 + Math.random() * 8;
+            const st = this.add.sprite(s.x, s.y - 12, 'sparkle', i % 2).setDepth(9070)
+                .setTint([0xfff3b0, 0xffd447, 0xffffff, 0x9fd8ff][i % 4]);
+            this.tweens.add({
+                targets: st, x: st.x + Math.cos(a) * r, y: st.y + Math.sin(a) * r * 0.75 - 4, alpha: { from: 1, to: 0 },
+                scale: { from: 1, to: 0.6 }, duration: this.rm ? 300 : 650 + Math.random() * 200, ease: 'Quad.easeOut',
+                onComplete: () => st.destroy()
+            });
+        }
     }
 
     private playPiano(t: Target) {
@@ -1184,6 +1237,7 @@ export class Room extends Phaser.Scene {
         this.cat?.update(dt, feet);
         this.animateSpeaker(time);
         this.updateCamera(dt);
+        this.tickNeeds(dt);
         this.updateBubbles();
         this.promptAtHead = false;
 
@@ -1245,9 +1299,100 @@ export class Room extends Phaser.Scene {
         this.idleThoughts();
     }
 
+    // ---------- stats: Caffeine, Sleep (iteration 5, group B) ----------
+
+    /** Say a short stats line in a small bubble just above Daniel's head. */
+    private sayNeed(text: string, ms = 3200) {
+        showBubble('need', text, 'need');
+        this.needUntil = this.time.now + ms;
+        session.lastLineAt = session.activeMs;
+    }
+
+    /** Free to talk: awake, no panel, no mode, not mid action. */
+    private canChat() {
+        return state.awake && !state.modal && !this.sleeping && !this.busy && this.mode === 'free' && !this.sayUntil && !this.needUntil;
+    }
+
+    /**
+     * Runs every frame. Counts active play (no panel open; a hidden tab pauses the whole loop), drains Sleep,
+     * says the Red Bull and tired lines, keeps the glows in sync, and walks Daniel to bed at Sleep 0 when idle.
+     */
+    private tickNeeds(dt: number) {
+        const active = state.awake && !state.modal && !this.sleeping && !this.napping;
+        if (active) {
+            session.activeMs += dt;
+            session.sleepMs += dt;
+            if (session.sleepMs >= SLEEP_TICK_MS && session.sleep > 0) {
+                session.sleepMs = 0;
+                session.sleep--;
+                setStat('Sleep', session.sleep);
+                if (session.sleep === 2) session.nextTiredHintAt = session.activeMs + 4000;
+                if (session.sleep === 0 && this.canChat()) this.sayNeed(ui.needs.mustSleep);
+            }
+        }
+        const roomy = session.activeMs - session.lastLineAt > 8000;
+        if (active && roomy && this.canChat()) {
+            if (!session.caffeinated && session.caffeineHints < 4 && session.activeMs >= session.nextCaffeineHintAt) {
+                const lines = ui.needs.caffeine;
+                this.sayNeed(lines[session.caffeineHints % lines.length]);
+                session.caffeineHints++;
+                session.nextCaffeineHintAt = session.activeMs + hintGap();
+            } else if (session.tired && session.tiredHints < 4 && session.activeMs >= session.nextTiredHintAt) {
+                const lines = ui.needs.tired;
+                this.sayNeed(lines[session.tiredHints % lines.length]);
+                session.tiredHints++;
+                session.nextTiredHintAt = session.activeMs + hintGap();
+            }
+        }
+        this.syncBeacons();
+        this.autoBed();
+    }
+
+    private bedTarget() { return this.targets.find((t) => t.def?.action === 'nap') ?? null; }
+
+    /** At Sleep 0, once the visitor has left the controls alone for 3 seconds, Daniel heads to bed by himself. */
+    private autoBed() {
+        const now = performance.now();
+        if (this.autoBedAt) {
+            // any key, click or tap gives control straight back; he tries again after the next idle stretch
+            if (userInputAt > this.autoBedAt || state.modal) { this.autoBedAt = 0; this.player.cancelPath(); this.player.stop(); }
+            else if (!this.player.walkingPath && !this.napping && !this.busy) this.autoBedAt = 0;
+            return;
+        }
+        if (session.sleep > 0 || !state.awake || state.modal || this.sleeping || this.busy || this.mode !== 'free') return;
+        if (now - userInputAt < 3000 || this.player.walkingPath) return;
+        const bed = this.bedTarget();
+        if (!bed) return;
+        this.autoBedAt = now;
+        if (!this.needUntil) this.sayNeed(ui.needs.mustSleep, 2200);
+        const path = this.nav.findPath({ x: this.player.x, y: this.player.y }, bed.spot);
+        if (!path) { this.autoBedAt = 0; return; }
+        this.player.walkTo(path, () => { this.autoBedAt = 0; this.faceTarget(bed); this.doAction(bed, 'nap'); });
+    }
+
+    /** Soft pulsing glow: the fridge after the first Red Bull hint until he drinks; the bed while Sleep is low. */
+    private syncBeacons() {
+        const want = new Set<Target>();
+        const fridge = this.targets.find((t) => t.def?.action === 'drink');
+        if (fridge && session.fridgeGlow) want.add(fridge);
+        const bed = this.bedTarget();
+        if (bed && session.tired && !this.napping) want.add(bed);
+        for (const [t, g] of this.beacons) if (!want.has(t)) { g.destroy(); this.beacons.delete(t); }
+        for (const t of want) {
+            if (this.beacons.has(t)) continue;
+            const b = t.sprite.getBounds();
+            const g = this.add.image(b.centerX, b.centerY, 'glow').setDepth(9001).setBlendMode(Phaser.BlendModes.ADD)
+                .setTint(0xffc860).setScale((b.width + 24) / 36, (b.height + 20) / 36).setAlpha(0.22);
+            if (!this.rm) this.tweens.add({ targets: g, alpha: 0.5, duration: 1100, yoyo: true, repeat: -1, ease: 'Sine.easeInOut' });
+            this.beacons.set(t, g);
+        }
+        const hide = this.sleeping || this.napping;
+        for (const g of this.beacons.values()) g.setVisible(!hide);
+    }
+
     /** Every multiplier on walking speed lives here, so the debug overlay can list them. */
     speedModifiers(): { name: string; mult: number }[] {
-        return [];
+        return session.caffeinated ? [{ name: 'caffeine', mult: CAFFEINE_BOOST }] : [];
     }
 
     walkSpeed() {
@@ -1280,16 +1425,18 @@ export class Room extends Phaser.Scene {
         const now = this.time.now;
         if (this.sayUntil && (now > this.sayUntil || this.player.moving)) { hideBubble('say'); this.sayUntil = 0; }
         if (this.thinkUntil && (now > this.thinkUntil || this.player.moving || state.modal)) { hideBubble('think'); this.thinkUntil = 0; }
+        if (this.needUntil && (now > this.needUntil || state.modal || this.napping)) { hideBubble('need'); this.needUntil = 0; }
         const head = this.toPage(this.player.x, this.player.sprite.getBounds().top - 2);
         if (this.promptAtHead) head.y -= 40;
         moveBubble('say', head.x, head.y);
         moveBubble('think', head.x, head.y);
         moveBubble('act', head.x, head.y);
+        moveBubble('need', head.x, head.y);
         if (this.cat) { const c = this.toPage(this.cat.x, this.cat.y - 14); moveBubble('cat', c.x, c.y); }
     }
 
     private idleThoughts() {
-        if (state.modal || this.busy || this.thinkUntil || this.sayUntil || !profile.idleThoughts.length) return;
+        if (state.modal || this.busy || this.thinkUntil || this.sayUntil || this.needUntil || this.autoBedAt || !profile.idleThoughts.length) return;
         if (performance.now() - lastInputAt < IDLE_THOUGHT_MS) return;
         const line = profile.idleThoughts[Math.floor(Math.random() * profile.idleThoughts.length)];
         showBubble('think', line, 'thought');
@@ -1361,11 +1508,12 @@ export class Room extends Phaser.Scene {
         const showMarkers = !this.sleeping && !this.snapping;
         for (const t of this.targets) {
             if (t.def?.target === 'cat' && this.cat) t.spot = this.cat.standingSpot(this.player.x).spot;
+            const beacon = this.beacons.has(t);
             if (t.hl) {
                 this.syncHighlight(t);
                 const unfound = t.key !== null && !state.found.has(t.key);
-                t.hl.setVisible(t === focus || (hint && unfound && blink));
-                t.hl.setAlpha(t === focus ? pulse : 0.85);
+                t.hl.setVisible(t === focus || (hint && unfound && blink) || (beacon && showMarkers));
+                t.hl.setAlpha(t === focus ? pulse : hint && unfound ? 0.85 : 0.5 + 0.25 * Math.sin(time / 420));
             }
             if (t.marker && t.marker.visible !== (!!t.key && !state.found.has(t.key) && !(t.def?.target === 'longboard' && this.mode === 'ride'))) this.refreshSeen(t);
             if (t.marker && (!showMarkers || t === focus)) t.marker.setVisible(false);

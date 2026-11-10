@@ -2,6 +2,7 @@
 // Loaded from main.ts behind import.meta.env.DEV, so it never ships in the production build.
 
 import type Phaser from 'phaser';
+import { session } from '../game/session';
 
 interface RoomDebug {
     debugInfo(): {
@@ -11,6 +12,8 @@ interface RoomDebug {
 }
 
 export function initDebug(game: Phaser.Game) {
+    // tests fast-forward the stats clock through this
+    (window as unknown as { __session: typeof session }).__session = session;
     const el = document.createElement('pre');
     el.className = 'debug-overlay';
     el.style.cssText = [
@@ -49,7 +52,8 @@ export function initDebug(game: Phaser.Game) {
             `fps      ${loop.actualFps.toFixed(0)}  (raw dt ${loop.rawDelta.toFixed(1)} ms, game dt ${loop.delta.toFixed(1)} ms)`,
             `focus    ${document.hasFocus() ? 'yes' : 'no'}  loop.inFocus ${loop.inFocus}`,
             `mods     ${mods}`,
-            `flags    ${info.flags.join(', ') || 'none'}`
+            `flags    ${info.flags.join(', ') || 'none'}`,
+            `stats    caffeine ${session.caffeine}, sleep ${session.sleep} (next drop in ${Math.max(0, (90000 - session.sleepMs) / 1000).toFixed(0)}s), active ${(session.activeMs / 1000).toFixed(0)}s`
         ].join('\n');
     };
     requestAnimationFrame(tick);

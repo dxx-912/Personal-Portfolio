@@ -53,10 +53,8 @@ export const home: RoomDef = {
         { id: 'pie', target: 'pie', spot: { x: 11.85, y: 5.45 }, facing: 'down', info: 'pie', action: 'eat' },
         { id: 'cat', target: 'cat', spot: { x: 0, y: 0 }, facing: 'down', info: 'cat', action: 'pet' },
         { id: 'longboard', target: 'longboard', spot: { x: 0, y: 0 }, facing: 'up', info: 'longboard', action: 'ride' },
-        {
-            id: 'bed', target: 'bed', spot: { x: 4.9, y: 6.3 }, facing: 'down', action: 'sit',
-            seat: { x: 4.75, y: 7.55, facing: 'down', pose: 'edge' }
-        }
+        // E: sleep (lights down, Zs, the window moves on, Sleep back to 8/8)
+        { id: 'bed', target: 'bed', spot: { x: 4.9, y: 6.3 }, facing: 'down', action: 'nap' }
     ],
     doors: [{ side: 'left', rowTop: 1.25, rowBottom: 3.25, to: 'dorm' }],
     arrivals: {
@@ -81,5 +79,6 @@ export const home: RoomDef = {
         { x: 8.4, y: 2.3 }, { x: 10.4, y: 2.6 }, { x: 13.4, y: 2.4 }, { x: 14.6, y: 4.8 },
         { x: 6.8, y: 4.5 }, { x: 10.3, y: 5.1 }, { x: 8.0, y: 4.0 }
     ],
-    catNap: { at: { x: 2.9, y: 7.7 }, spot: { x: 3.0, y: 6.3 }, facing: 'down' }
+    catNap: { at: { x: 2.9, y: 7.7 }, spot: { x: 3.0, y: 6.3 }, facing: 'down' },
+    sleep: { x: 0.225, y: 6.725, home: true }
 };

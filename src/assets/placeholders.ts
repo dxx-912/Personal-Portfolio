@@ -373,13 +373,22 @@ function danielStrip(layer: 'all' | 'shirt'): Painter {
 }
 
 /** Asleep: head on the pillow, blanket hump. Two breathing frames. */
-const danielSleep: Painter = (p) => {
+/** Daniel asleep, head on the pillow, blanket breathing. `home` uses the green and blue plaid of the home bed. */
+const sleeper = (home: boolean): Painter => (p) => {
     for (let f = 0; f < 2; f++) {
         const q = p.at(f * 30, 0);
         const rise = f;
-        q.r(10, 5 - rise, 19, 8 + rise, '#6c7fc0');
-        q.r(10, 5 - rise, 19, 1, '#8a9ad2');
-        q.r(14, 8, 1, 4, '#5a6aa8');
+        if (home) {
+            for (let y = 5 - rise; y < 13; y++) for (let x = 10; x < 29; x++) {
+                const vx = x % 8 < 2, hy = (y + rise) % 8 < 2;
+                q.p(x, y, vx && hy ? '#244573' : vx || hy ? '#2f5a8f' : x % 8 === 5 ? '#6aa884' : '#3e7d5e');
+            }
+            q.r(10, 5 - rise, 19, 1, '#5d9a78');
+        } else {
+            q.r(10, 5 - rise, 19, 8 + rise, '#6c7fc0');
+            q.r(10, 5 - rise, 19, 1, '#8a9ad2');
+            q.r(14, 8, 1, 4, '#5a6aa8');
+        }
         q.r(1, 2, 11, 10, HAIR);
         q.p(2, 1, HAIR); q.p(5, 1, HAIR); q.p(8, 1, HAIR); q.p(4, 3, HAIR_L); q.p(9, 2, HAIR_L);
         q.r(3, 5, 8, 6, SKIN);
@@ -389,6 +398,8 @@ const danielSleep: Painter = (p) => {
         q.r(6, 9, 2, 1, MOUTH); // asleep: closed mouth
     }
 };
+const danielSleep = sleeper(false);
+const danielSleepHome = sleeper(true);
 
 // ---------- cat: fluffy cream and golden longhair, round face, green eyes ----------
 
@@ -1328,7 +1339,7 @@ export const painters = {
     homeRoom: paintRoom(HOME_PAL, 'wood', 23),
     doorSide, doormat, signRight: signPainter('right'), signLeft: signPainter('left'), wallClock,
     fxArrow, fxArrowSmall, sparkle, fxZ, fxHeart, fxNote, fxPuff, fxBulb, pencil,
-    daniel: danielStrip('all'), danielShirt: danielStrip('shirt'), danielSleep, cat,
+    daniel: danielStrip('all'), danielShirt: danielStrip('shirt'), danielSleep, danielSleepHome, cat,
     slotGraduation, slotDamn, slotDuck, slotIgor, slotEmpty, slotHome1, slotHome2, slotHome3,
     dormWindow, dormPennant, dormTodo, dormDesk, dormLaptop, dormBinder, dormPhone,
     dormCloset, dormBeanbag, dormFloorLamp, dormBed, dormRug, dormDresser, dormGradcap, dormShirt,
