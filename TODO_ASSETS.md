@@ -16,6 +16,12 @@ Everything the site still needs from Daniel. Every item here shows up on the sit
 - [ ] **Cat sheet** (placeholder is 18x14): fluffy cream and golden longhair, round face, big green eyes. States: idle, walk, sit, sit with eyes closed (petted), curled up asleep, bat paw.
 - [ ] **Final outfit colours** for the closet (now: white, black, UCLA blue, an orange graphic tee colour; `OUTFITS` in `src/game/Player.ts`).
 
+## Bonus interactables (iteration 5, "Secrets X/3", never part of the 19)
+
+- [x] **Instagram handle.** The home phone shows **@dxx_912** with a link to https://www.instagram.com/dxx_912/ (`profile.instagram` in `src/content/profile.ts`).
+- [x] **Red Bull** (dorm fridge) and **mini basketball** (dorm hoop): built, nothing needed. The `phone-screen.png` slot is retired; the dorm phone shows `instagram-logo.png` instead.
+- [ ] The Instagram logo you put in the iteration 5 feedback PDF can go straight into `photos/3 Room decor (optional)/Instagram logo, dorm and home phone screens (1 image)/`, then `npm run photos`.
+
 ## Decor images to provide (optional)
 
 Never drawn by us. Until the file exists, an original abstract placeholder shows. Drop each into its folder in `photos/3 Room decor (optional)/` (it becomes the file below).
@@ -29,7 +35,9 @@ Never drawn by us. Until the file exists, an original abstract placeholder shows
 | `poster-caricature.png` | Not placed in the room right now (the wall above the desk is full); say where you want it | Hidden until the file exists |
 | `hoodie-logo.png` | Home hoodie on the wall hook, chest | Plain "TORONTO" text |
 | `speaker-logo.png` | Home speaker badge | Small plain orange badge |
-| `phone-screen.png` | Dorm phone screen | Grid of coloured squares |
+| `instagram-logo.png` | Dorm phone screen (item 6) and the home phone screen (bonus); also on the home phone's card | Plain coloured rounded square, no symbol |
+| `can-logo.png` | The Red Bull can that pops up when Daniel drinks from the dorm fridge | Plain blue and silver can |
+| `volleyball-logo.png` (optional) | Volleyball on the home shelf, top tier | No logo |
 | `family-photo.png` | Home nightstand photo frame | Outline silhouettes of people |
 | `poster-home-1.png` | Home left wall frame | Teal wave pattern |
 | `poster-home-2.png` | Home frame below the clock | Peach blocks |
@@ -153,7 +161,7 @@ Never drawn by us. Until the file exists, an original abstract placeholder shows
 - [ ] Food photos and photos of you cooking or baking (4 slots)
 
 ### 9. Cat (`home.cat`)
-- [ ] His name
+- [x] His name: Fluffy (prompt "F About Fluffy", panel "About Fluffy")
 - [ ] How you got him
 - [ ] His personality
 - [ ] Photos (3 slots)
