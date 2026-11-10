@@ -3,9 +3,9 @@
 Every file in `lofi/` and `featured/` must be listed below with its title, artist, source, and license.
 The build prints a warning for any file that is missing here.
 
-Files marked **PRIVATE ONLY** have no license for public use. They play when the site runs on Daniel's
-computer but are kept out of git (see `.gitignore`), so they are never published. Replace them with
-licensed tracks (or tracks Daniel has permission to use) before a public launch.
+Files marked **PRIVATE ONLY** have no license for public use. Daniel chose to publish them on the deployed
+site while it is shared privately. Replace them with licensed tracks (or tracks Daniel has permission to use)
+before a public launch.
 
 ## Music files
 

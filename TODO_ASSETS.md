@@ -45,7 +45,7 @@ Never drawn by us. Until the file exists, an original abstract placeholder shows
 
 ## Audio (`public/assets/audio/`, credits in `CREDITS.md` there)
 
-- [ ] **PRIVATE ONLY: replace before public launch.** `lofi/Lofi Beats.mp3` and `featured/Rachmaninoff Piano Concerto No 2 Allegro Scherzando.mp3` have no license for public use. They play locally but are kept out of git, so the deployed site has no lofi and the speaker says "No track loaded yet" until licensed files are added. Fill in artist and source for each in `CREDITS.md`.
+- [ ] **PRIVATE ONLY: replace before public launch.** `lofi/Lofi Beats.mp3` and `featured/Rachmaninoff Piano Concerto No 2 Allegro Scherzando.mp3` have no license for public use. They are committed and play on the deployed site (Daniel's call while the link is shared privately), so swap them for licensed tracks before sharing the site publicly. Fill in artist and source for each in `CREDITS.md`.
 - [ ] **Coda start time:** the speaker starts the featured track at 10:12 (`featuredStart` in `src/content/music.ts`), just before the C major Maestoso. Confirm by ear.
 - [ ] **Music panel:** a sentence on why you love it, and your dubstep playlist link (the lofi playlist is in).
 
