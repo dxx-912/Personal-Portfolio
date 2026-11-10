@@ -183,6 +183,7 @@ function nextLofiUrl(): string | null {
 
 /** Starts (or resumes) the shuffled lofi. Safe to call often; browsers may need a click first. */
 export function startLofi() {
+    if (!state.music) return;
     const a = ac();
     if (!a || !master) return;
     if (!lofiBus) { lofiBus = a.createGain(); lofiBus.gain.value = lofiTarget(); lofiBus.connect(master); }
@@ -230,7 +231,7 @@ function crossfadeLofi() {
 export function pauseLofi() { lofi?.el.pause(); }
 
 /** Current lofi track title, for the pause menu. */
-export const nowPlaying = () => (lofi && state.sound ? trackName(lofi.url) : null);
+export const nowPlaying = () => (lofi && state.sound && state.music ? trackName(lofi.url) : null);
 
 /** Lofi drops to near silence while any source is active (speaker, piano, video). */
 export function duck(source: string, on: boolean) {
@@ -349,3 +350,5 @@ bus.on('sound', (on) => {
     if (!on) { stopFeatured(); pauseLofi(); stopAmbient(); }
     else { startAmbient(state.room); startLofi(); }
 });
+
+bus.on('music', (on) => { if (on) startLofi(); else pauseLofi(); });

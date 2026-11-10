@@ -585,6 +585,11 @@ body.title-on .plain-link { opacity: 0; visibility: hidden; pointer-events: none
     .mm-room { width: 54px; height: 26px; font-size: 10px; }
 }
 
+/* sound (speaker icon) and music (note) toggles */
+.hud-btn .ico .spk { display: block; width: 18px; height: 20px; }
+.hud-btn .ico.off { opacity: 0.45; text-decoration: line-through; }
+@media (max-width: 560px), (max-height: 500px) { .hud-btn .ico .spk { width: 14px; height: 16px; } }
+
 /* the room title card sits over the top of the room, under the quick view link, which never hides */
 body.title-on .plain-link { opacity: 0.85; visibility: visible; pointer-events: auto; }
 .title-card { top: calc(max(14px, env(safe-area-inset-top)) + 64px); }

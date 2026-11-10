@@ -8,6 +8,8 @@ interface Saved {
     woke: boolean;
     found: string[];
     sound: boolean;
+    /** Background lofi on or off. Only plays while sound is on. */
+    music?: boolean;
     celebrated: boolean;
     outfit: number;
     seenTips: boolean;
@@ -27,6 +29,7 @@ interface BusEvents {
     found: { key: string; count: number; isNew: boolean };
     secret: { key: SecretKey; count: number };
     sound: boolean;
+    music: boolean;
     modal: 'panel' | 'pause' | null;
     reset: void;
     room: RoomKey;
@@ -55,6 +58,7 @@ class GameState {
     woke = false;
     found = new Set<string>();
     sound = false;
+    music = true;
     celebrated = false;
     outfit = 0;
     seenTips = false;
@@ -76,6 +80,7 @@ class GameState {
                 this.woke = !!s.woke;
                 this.found = new Set(Array.isArray(s.found) ? s.found : []);
                 this.sound = !!s.sound;
+                this.music = s.music !== false;
                 this.celebrated = !!s.celebrated;
                 this.outfit = Number.isInteger(s.outfit) ? s.outfit! : 0;
                 this.seenTips = !!s.seenTips;
@@ -94,7 +99,7 @@ class GameState {
     save() {
         try {
             const s: Saved = {
-                woke: this.woke, found: [...this.found], sound: this.sound, celebrated: this.celebrated,
+                woke: this.woke, found: [...this.found], sound: this.sound, music: this.music, celebrated: this.celebrated,
                 outfit: this.outfit, seenTips: this.seenTips, secrets: [...this.secrets]
             };
             window.localStorage.setItem(STORAGE_KEY, JSON.stringify(s));
@@ -120,6 +125,8 @@ class GameState {
     get allFound() { return this.found.size >= TOTAL_ITEMS; }
 
     setSound(on: boolean) { this.sound = on; this.save(); bus.emit('sound', on); }
+
+    setMusic(on: boolean) { this.music = on; this.save(); bus.emit('music', on); }
 
     setModal(m: 'panel' | 'pause' | null) { this.modal = m; bus.emit('modal', m); }
 

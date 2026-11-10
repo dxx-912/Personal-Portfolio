@@ -32,6 +32,7 @@ export function initHud() {
         <div class="hud-top-right">
             <div class="hud-row">
                 <button class="hud-btn sound-btn" aria-pressed="false"></button>
+                <button class="hud-btn music-btn" aria-pressed="false"></button>
                 <button class="hud-btn pause-btn" aria-label="Pause menu" title="Pause (P)"><span class="ico" aria-hidden="true">II</span><span class="lbl">${esc(ui.pauseBtn)}</span></button>
                 <span class="counter" aria-live="polite" hidden></span>
                 <span class="counter secrets" aria-live="polite" hidden></span>
@@ -81,16 +82,25 @@ export function initHud() {
         if (b.dataset.room !== state.room) bus.emit('travel', undefined);
     });
 
+    // Sound mutes or unmutes everything. Music only switches the background lofi (and turns sound on if needed).
     const soundBtn = $<HTMLButtonElement>('.sound-btn');
+    const musicBtn = $<HTMLButtonElement>('.music-btn');
     const renderSound = () => {
-        soundBtn.innerHTML = `<span class="ico" aria-hidden="true">♪</span><span class="lbl">${esc(ui.soundBtn(state.sound))}</span>`;
+        soundBtn.innerHTML = `<span class="ico" aria-hidden="true">${speakerIcon(state.sound)}</span><span class="lbl">${esc(ui.soundBtn(state.sound))}</span>`;
         soundBtn.setAttribute('aria-pressed', String(state.sound));
         soundBtn.setAttribute('aria-label', state.sound ? ui.soundOn : ui.soundOff);
         soundBtn.title = state.sound ? ui.soundOn : ui.soundOff;
+        const music = musicPlaying();
+        musicBtn.innerHTML = `<span class="ico${music ? '' : ' off'}" aria-hidden="true">♪</span><span class="lbl">${esc(ui.musicBtn(music))}</span>`;
+        musicBtn.setAttribute('aria-pressed', String(music));
+        musicBtn.setAttribute('aria-label', music ? ui.musicOn : ui.musicOff);
+        musicBtn.title = music ? ui.musicOn : ui.musicOff;
     };
     renderSound();
     soundBtn.addEventListener('click', () => { state.setSound(!state.sound); sfx('tick'); soundBtn.blur(); });
+    musicBtn.addEventListener('click', () => { toggleMusic(); musicBtn.blur(); });
     bus.on('sound', renderSound);
+    bus.on('music', renderSound);
 
     $('.pause-btn').addEventListener('click', (e) => { (e.currentTarget as HTMLElement).blur(); openPause(); });
 
@@ -294,6 +304,26 @@ export function hideBubble(id: string) {
 
 export const bubbleVisible = (id: string) => !!bubbles.get(id) && !bubbles.get(id)!.hidden;
 
+// ---------- sound and music toggles ----------
+
+/** Lofi counts as on only while both sound and music are on. */
+const musicPlaying = () => state.sound && state.music;
+
+function toggleMusic() {
+    if (musicPlaying()) { state.setMusic(false); sfx('tick'); return; }
+    state.setMusic(true);
+    if (!state.sound) state.setSound(true);
+    sfx('tick');
+}
+
+/** Small pixel speaker: sound waves when on, a cross when off. */
+function speakerIcon(on: boolean) {
+    const tail = on
+        ? '<rect x="10" y="5" width="1" height="6"/><rect x="12" y="3" width="1" height="10"/>'
+        : '<rect x="10" y="5" width="1" height="1"/><rect x="11" y="6" width="1" height="1"/><rect x="12" y="7" width="1" height="1"/><rect x="11" y="8" width="1" height="1"/><rect x="10" y="9" width="1" height="1"/><rect x="12" y="5" width="1" height="1"/><rect x="12" y="9" width="1" height="1"/>';
+    return `<svg class="spk" viewBox="0 0 14 16" width="21" height="24" fill="currentColor" shape-rendering="crispEdges"><rect x="1" y="6" width="3" height="4"/><rect x="4" y="5" width="1" height="6"/><rect x="5" y="4" width="1" height="8"/><rect x="6" y="3" width="1" height="10"/><rect x="7" y="2" width="1" height="12"/>${tail}</svg>`;
+}
+
 // ---------- pause menu ----------
 
 function openPause() {
@@ -306,6 +336,7 @@ function openPause() {
             <div class="panel-body pause-body">
                 <button class="menu-btn" data-act="resume">${esc(ui.resume)}</button>
                 <button class="menu-btn" data-act="sound">${esc(state.sound ? ui.soundOn : ui.soundOff)}</button>
+                <button class="menu-btn" data-act="music">${esc(musicPlaying() ? ui.musicOn : ui.musicOff)}</button>
                 <a class="menu-btn" href="${esc(ui.quickViewHref)}">${esc(ui.quickView)}</a>
                 <button class="menu-btn danger" data-act="reset">${esc(ui.startOver)}</button>
                 ${nowPlaying() ? `<p class="now-playing">♪ ${esc(ui.nowPlaying(nowPlaying()!))}</p>` : ''}
@@ -327,7 +358,13 @@ function openPause() {
     pauseRoot.querySelectorAll<HTMLButtonElement>('button[data-act]').forEach((b) => b.addEventListener('click', () => {
         const act = b.dataset.act;
         if (act === 'resume') closePause();
-        if (act === 'sound') { state.setSound(!state.sound); b.textContent = state.sound ? ui.soundOn : ui.soundOff; sfx('tick'); }
+        if (act === 'sound' || act === 'music') {
+            if (act === 'sound') { state.setSound(!state.sound); sfx('tick'); } else toggleMusic();
+            const s = pauseRoot!.querySelector<HTMLButtonElement>('[data-act="sound"]')!;
+            const m = pauseRoot!.querySelector<HTMLButtonElement>('[data-act="music"]')!;
+            s.textContent = state.sound ? ui.soundOn : ui.soundOff;
+            m.textContent = musicPlaying() ? ui.musicOn : ui.musicOff;
+        }
         if (act === 'reset') { state.reset(); window.location.reload(); }
     }));
     pauseRoot.querySelector<HTMLElement>('.menu-btn')!.focus();

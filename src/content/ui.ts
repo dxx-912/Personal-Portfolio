@@ -15,6 +15,7 @@ export const ui = {
     secretFound: (name: string, n: number, total: number) => `Secret found: ${name} (${n}/${total})`,
     secretNames: { fridge: 'Red Bull', basketball: 'Swish', phone: 'Instagram' } as Record<string, string>,
     soundBtn: (on: boolean) => (on ? 'Sound on' : 'Sound off'),
+    musicBtn: (on: boolean) => (on ? 'Music on' : 'Music off'),
     pauseBtn: 'Pause',
 
     /** E verbs, by action. */
@@ -67,6 +68,8 @@ export const ui = {
     soundOn: 'Sound: on',
     soundOff: 'Sound: off',
     soundIsOff: 'Sound is off.',
+    musicOn: 'Music: on',
+    musicOff: 'Music: off',
     noTrack: 'No track loaded yet',
     nowPlaying: (title: string) => `Now playing: ${title}`,
     turnSoundOn: 'Turn it on',
