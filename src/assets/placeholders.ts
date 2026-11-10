@@ -761,19 +761,48 @@ const dormBed: Painter = (p, w, h) => {
     p.r(1, topH, w - 2, 2, '#4a2f1f');
 };
 
+/** Shaggy round lilac rug: wavy fuzzy outline, tufts, pile strands, a visible front lip, and a soft shadow. */
 const dormRug: Painter = (p, w, h) => {
-    const c = '#a99ac4', d = '#8f80ae', l = '#bfb2d6';
-    const cx = w / 2, cy = h / 2;
-    for (let y = 0; y < h; y++) {
-        const t = (y + 0.5 - cy) / cy;
-        const half = Math.round((w / 2) * Math.sqrt(Math.max(0, 1 - t * t)));
-        if (half <= 0) continue;
-        p.r(Math.round(cx - half), y, half * 2, 1, c);
-        const inner = Math.round(half * 0.72);
-        if (Math.abs(t) < 0.72) { p.p(Math.round(cx - inner), y, l); p.p(Math.round(cx + inner) - 1, y, l); }
-        p.p(Math.round(cx - half), y, d); p.p(Math.round(cx + half) - 1, y, d);
+    const rand = rng(57);
+    const c = '#a99ac4', d = '#9282b2', dd = '#76689a', l = '#bcaed6', ll = '#d0c5e4';
+    const cx = w / 2, cy = (h - 4) / 2, rx = w / 2 - 3, ry = (h - 4) / 2 - 2;
+    // a wavy, fuzzy outline instead of a perfect ellipse
+    const wob = (x: number, y: number) => {
+        const a = Math.atan2((y - cy) / ry, (x - cx) / rx);
+        return 0.022 * Math.sin(a * 11) + 0.018 * Math.sin(a * 23 + 1.3) + 0.014 * Math.sin(a * 37 + 0.4);
+    };
+    const inside = (x: number, y: number) => {
+        const nx = (x + 0.5 - cx) / rx, ny = (y + 0.5 - cy) / ry;
+        return nx * nx + ny * ny <= (1 + wob(x, y)) ** 2;
+    };
+    for (let y = 0; y < h; y++) for (let x = 0; x < w; x++) {
+        if (inside(x, y)) {
+            // soft volume: lighter toward the top left, darker toward the front
+            const t = ((x - cx) / rx) * 0.35 + ((y - cy) / ry) * 0.85;
+            p.p(x, y, t < -0.6 ? ll : t < -0.2 ? l : t < 0.5 ? c : d);
+        } else if (inside(x, y - 1) && y > cy) {
+            p.p(x, y, dd); // the front lip of the pile
+        } else if (inside(x, y - 2) || inside(x - 1, y - 2)) {
+            p.p(x, y, 'rgba(16, 14, 34, 0.3)'); // shadow on the carpet
+        }
     }
-    p.r(Math.round(cx - w * 0.36), Math.round(cy - h * 0.36), 1, 1, l);
+    // shag: short strands, light tip over a darker root
+    for (let i = 0; i < 700; i++) {
+        const x = Math.floor(rand() * w), y = Math.floor(rand() * h);
+        if (!inside(x, y) || !inside(x, y + 1)) continue;
+        const front = (y - cy) / ry > 0.35;
+        p.p(x, y, rand() < 0.5 ? (front ? c : ll) : l);
+        p.p(x, y + 1, front ? dd : d);
+    }
+    // tufts poking out past the edge
+    for (let k = 0; k < 140; k++) {
+        const a = rand() * Math.PI * 2;
+        const r = 1 + wob(cx + Math.cos(a) * rx, cy + Math.sin(a) * ry);
+        const x = Math.round(cx + Math.cos(a) * rx * r), y = Math.round(cy + Math.sin(a) * ry * r);
+        const out = Math.sin(a) > 0.2 ? d : rand() < 0.5 ? l : c;
+        p.p(x, y, out);
+        if (rand() < 0.5) p.p(x + Math.sign(Math.cos(a)), y + (Math.sin(a) < 0 ? -1 : 0), out);
+    }
 };
 
 /** Bigger dresser: black headphones and a potted plant baked on top (decor). */

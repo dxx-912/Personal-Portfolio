@@ -9,7 +9,7 @@ export const dorm: RoomDef = {
     background: 'room_dorm',
     props: [
         // floor decals
-        { id: 'rug', texture: 'dorm_rug', x: 3.7, y: 2.12, layer: 'decal' },
+        { id: 'rug', texture: 'dorm_rug', x: 3.575, y: 2.0, layer: 'decal' },
         { id: 'doormat', texture: 'doormat', x: 18.7, y: 3.5, layer: 'decal' },
 
         // back wall, left to right
