@@ -65,6 +65,9 @@ export const ASSETS = {
     slot_poster_graduation: { w: 18, h: 24, paint: painters.slotGraduation, outline: true, slot: { file: 'poster-graduation.png' } },
     slot_poster_damn: { w: 18, h: 24, paint: painters.slotDamn, outline: true, slot: { file: 'poster-damn.png' } },
     slot_poster_duck: { w: 16, h: 20, paint: painters.slotDuck, outline: true, slot: { file: 'poster-duck.png' } },
+    slot_poster_home_1: { w: 18, h: 24, paint: painters.slotHome1, outline: true, slot: { file: 'poster-home-1.png' } },
+    slot_poster_home_2: { w: 16, h: 20, paint: painters.slotHome2, outline: true, slot: { file: 'poster-home-2.png' } },
+    slot_poster_home_3: { w: 24, h: 16, paint: painters.slotHome3, outline: true, slot: { file: 'poster-home-3.png' } },
     slot_poster_caricature: { w: 16, h: 20, paint: painters.slotEmpty, outline: true, slot: { file: 'poster-caricature.png', hideIfMissing: true } },
 
     // dorm
@@ -105,10 +108,10 @@ export const ASSETS = {
     home_pullup: { w: 58, h: 62, paint: painters.homePullup, outline: true, highlight: true },
     home_table: { w: 56, h: 98, paint: painters.homeTable, outline: true },
     home_speaker: {
-        w: 30, h: 20, paint: painters.homeSpeaker, outline: true, highlight: true,
-        slot: { file: 'speaker-logo.png', rect: { x: 12, y: 15, w: 6, h: 3 } }
+        w: 30, h: 22, paint: painters.homeSpeaker, outline: true, highlight: true,
+        slot: { file: 'speaker-logo.png', rect: { x: 9, y: 15, w: 6, h: 3 } }
     },
-    home_camera: { w: 14, h: 11, paint: painters.homeCamera, outline: true, highlight: true },
+    home_camera: { w: 18, h: 14, paint: painters.homeCamera, outline: true, highlight: true },
     home_nightstand: {
         w: 36, h: 38, paint: painters.homeNightstand, outline: true, highlight: true,
         slot: { file: 'family-photo.png', rect: { x: 19, y: 1, w: 13, h: 9 } }

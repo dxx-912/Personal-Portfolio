@@ -38,6 +38,12 @@ const walk = (s: Section & { tabs?: Section[] }) => {
     s.tabs?.forEach(walk);
 };
 
+/** Resolves one standalone section (and its tabs). */
+export function resolveSection<T extends Section & { tabs?: Section[] }>(s: T): T {
+    walk(s);
+    return s;
+}
+
 /** Applied to each room's content when it loads. */
 export function withMedia<T extends Record<string, Entry>>(content: T): T {
     Object.values(content).forEach(walk);

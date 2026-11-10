@@ -1,5 +1,32 @@
-import type { Entry } from './types';
-import { withMedia } from './media';
+import type { Entry, Section } from './types';
+import { resolveSection, withMedia } from './media';
+
+// Top shelf, "Sports". Two stories: the game's shelf tier shows both, the portfolio view shows each on its own.
+export const rowing: Section = resolveSection({
+    id: 'rowing',
+    title: 'Rowing',
+    short: 'Rowing, national champ',
+    subtitle: 'High school varsity',
+    body: [
+        'Rowing: we won the national rowing championship.',
+        '[TODO: boat, year, and a line on what rowing was like]'
+    ],
+    gallery: 'grid',
+    images: [{ alt: 'Rowing photo 1', slot: 'shelf/rowing' }, { alt: 'Rowing photo 2', slot: 'shelf/rowing' }]
+});
+
+export const volleyball: Section = resolveSection({
+    id: 'volleyball',
+    title: 'Beach volleyball',
+    short: 'Beach volleyball',
+    subtitle: 'In my free time',
+    body: [
+        'Beach volleyball: I play it in my free time.',
+        '[TODO: where you play, who with, and why you love it]'
+    ],
+    gallery: 'grid',
+    images: [{ alt: 'Beach volleyball photo 1', slot: 'shelf/volleyball' }, { alt: 'Beach volleyball photo 2', slot: 'shelf/volleyball' }]
+});
 
 // Home bedroom (North York, Toronto): everything personal. Keyed by interactable id (see src/rooms/home.ts).
 // Never invent facts. Unknowns are "[TODO: ...]" and are listed in TODO_ASSETS.md.
@@ -32,21 +59,17 @@ export const homeContent: Record<string, Entry> = withMedia({
         prompt: 'The shelf',
         plainGroup: 'personal',
         title: 'The shelf',
-        plainTitle: 'Rowing, awards, and favorite reads',
+        plainTitle: 'Sports, awards, and favorite reads',
         subtitle: 'Pick a tier.',
         tabStyle: 'shelf',
         tabs: [
             {
-                id: 'rowing',
-                title: 'Rowing',
-                short: 'Rowing, national champ',
-                subtitle: 'High school varsity. Top shelf: the trophy and the oar.',
-                body: [
-                    'We won the national rowing championship.',
-                    '[TODO: boat, year, and a line on what rowing was like]'
-                ],
+                id: 'sports',
+                title: 'Sports',
+                subtitle: 'Top shelf: the rowing trophy, the oar blade, and a beach volleyball.',
+                body: [...rowing.body!, ...volleyball.body!],
                 gallery: 'grid',
-                images: [{ alt: 'Rowing photo 1', slot: 'shelf/rowing' }, { alt: 'Rowing photo 2', slot: 'shelf/rowing' }]
+                images: [...rowing.images!, ...volleyball.images!]
             },
             {
                 id: 'awards',

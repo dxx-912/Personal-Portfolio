@@ -3,7 +3,7 @@
 // This file only decides order, labels, icons, and the page's own copy.
 
 import { dormContent } from './dorm';
-import { homeContent } from './home';
+import { homeContent, rowing } from './home';
 import type { Entry, Section } from './types';
 
 export type PortfolioSection = 'work' | 'leadership' | 'education' | 'inventory';
@@ -49,7 +49,7 @@ export const portfolioItems: PortfolioItem[] = [
     { id: 'ucc', portfolioSection: 'education', cardOrder: 2, label: 'HIGH SCHOOL', section: dormContent.gradcap },
 
     // Inventory: hobbies (labels are drafts)
-    { id: 'rowing', portfolioSection: 'inventory', cardOrder: 1, icon: 'trophy', section: tab(homeContent.shelf, 'rowing') },
+    { id: 'rowing', portfolioSection: 'inventory', cardOrder: 1, icon: 'trophy', section: rowing },
     { id: 'piano', portfolioSection: 'inventory', cardOrder: 2, icon: 'piano', section: homeContent.piano },
     { id: 'longboard', portfolioSection: 'inventory', cardOrder: 3, icon: 'board', section: homeContent.longboard },
     { id: 'cat', portfolioSection: 'inventory', cardOrder: 4, icon: 'cat', section: homeContent.cat },

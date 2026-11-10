@@ -30,6 +30,9 @@ Never drawn by us. Until the file exists, an original abstract placeholder shows
 | `speaker-logo.png` | Home speaker badge | Small plain orange badge |
 | `phone-screen.png` | Dorm phone screen | Grid of coloured squares |
 | `family-photo.png` | Home nightstand photo frame | Outline silhouettes of people |
+| `poster-home-1.png` | Home left wall frame | Teal wave pattern |
+| `poster-home-2.png` | Home frame below the clock | Peach blocks |
+| `poster-home-3.png` | Home frame above the pull up tower (landscape) | Blue and white stripes |
 
 ## Audio (`public/assets/audio/`, credits in `CREDITS.md` there)
 

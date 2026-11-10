@@ -460,6 +460,21 @@ const slotDuck: Painter = (p, w, h) => {
     for (let y = 3; y < h - 3; y += 4) for (let x = 3 + ((y >> 2) % 2) * 2; x < w - 3; x += 4) p.r(x, y, 2, 2, '#fffaf0');
 };
 const slotEmpty: Painter = () => { /* hidden until the file exists */ };
+const slotHome1: Painter = (p, w, h) => {
+    posterFrame(p, w, h);
+    p.r(2, 2, w - 4, h - 4, '#9fd3c7');
+    for (let y = 4; y < h - 3; y += 4) for (let x = 2; x < w - 2; x++) p.p(x, y + Math.round(Math.sin(x / 2) * 1), '#3f8f86');
+};
+const slotHome2: Painter = (p, w, h) => {
+    posterFrame(p, w, h);
+    p.r(2, 2, w - 4, h - 4, '#f6c7a6');
+    p.r(3, 4, w - 8, 6, '#e8875a'); p.r(6, 11, w - 9, 5, '#c95a3a'); p.r(3, h - 6, w - 6, 3, '#f2e3c6');
+};
+const slotHome3: Painter = (p, w, h) => {
+    posterFrame(p, w, h);
+    p.r(2, 2, w - 4, h - 4, '#cfe0f5');
+    for (let i = 0; i < 4; i++) p.r(3 + i * 5, 3 + (i % 2) * 4, 4, h - 10, ['#2f5aa8', '#ffffff', '#5a86c8', '#24407e'][i]);
+};
 
 // ---------- dorm ----------
 
@@ -840,12 +855,26 @@ const homeShelf: Painter = (p, w, h) => {
     p.r(6, t + 6, 3, 5, gold); p.r(22, t + 6, 3, 5, gold);
     p.r(13, t + 14, 5, 3, goldD); p.r(14, t + 17, 3, 3, gold);
     p.box(9, t + 20, 13, 7, '#6b4429'); p.r(12, t + 22, 7, 2, goldL);
-    // top: blue and white striped oar to the right, leaning
-    for (let i = 0; i < 40; i++) {
-        const x = 30 + i, y = t + 27 - Math.round(i * 0.5);
-        p.r(x, y, 1, 2, Math.floor(i / 4) % 2 ? '#2f5aa8' : '#f4f4f4');
+    // top: an oar blade seen face on (straight top edge, angled tip), blue and white vertical stripes, a bit of handle
+    const blue = '#24407e', white = '#f4f4f4';
+    const stripe = (x: number) => {
+        const k = x - 30;
+        return (k >= 6 && k <= 8) || (k >= 12 && k <= 19) || (k >= 22 && k <= 23) ? white : blue;
+    };
+    for (let x = 30; x <= 58; x++) {
+        const top = t + 7 + Math.round((x - 30) * 0.12);
+        const bottom = x < 50 ? t + 23 - Math.round((x - 30) * 0.05) : t + 22 - Math.round((x - 50) * 1.05);
+        if (bottom <= top) continue;
+        p.r(x, top, 1, bottom - top, stripe(x));
     }
-    p.r(64, t + 3, 7, 6, '#2f5aa8'); p.r(66, t + 4, 3, 4, '#f4f4f4'); p.r(70, t + 2, 2, 7, '#2f5aa8');
+    p.r(30, t + 7, 29, 1, '#16295a'); p.r(30, t + 7, 1, 16, '#16295a'); // crisp edge
+    p.r(59, t + 10, 11, 3, '#2a2b31'); p.r(59, t + 10, 11, 1, '#4a4d57'); // the handle stub
+    // top: a beach volleyball, bottom right of the tier
+    const bx = 60, by = t + 21;
+    p.r(bx + 2, by, 6, 10, '#f7f3e8'); p.r(bx, by + 2, 10, 6, '#f7f3e8'); p.r(bx + 1, by + 1, 8, 8, '#f7f3e8');
+    p.r(bx + 1, by + 2, 3, 6, '#f2c230'); p.r(bx + 2, by + 1, 2, 1, '#f2c230');
+    p.r(bx + 6, by + 1, 2, 4, '#2f74b5'); p.r(bx + 7, by + 3, 2, 3, '#2f74b5');
+    p.r(bx + 4, by + 7, 4, 2, '#2f74b5'); p.p(bx + 3, by + 3, '#fffdf4');
     // middle: three plaques
     const m = tiers[1];
     [['#c9a24a', 7], ['#2f4a8a', 29], ['#7a2f2f', 51]].forEach(([c, x]) => {
@@ -854,17 +883,24 @@ const homeShelf: Painter = (p, w, h) => {
         p.r((x as number) + 4, m + 10, 10, 6, '#efe7d2');
         p.r((x as number) + 5, m + 19, 8, 1, '#efe7d2'); p.r((x as number) + 6, m + 21, 6, 1, '#efe7d2');
     });
-    // bottom: four books standing upright
+    // bottom: four thinner books, centered: two lying flat in a stack, one upright, one leaning on it
     const b = tiers[2];
-    const books: [number, number, string, string][] = [
-        [8, 26, '#3d5a3a', '#2a3f28'], [21, 29, '#1f1f26', '#36363f'], [34, 27, '#b8392f', '#8f2a22'], [47, 29, '#2f3f8a', '#22306a']
-    ];
-    books.forEach(([x, bh, c, d]) => {
-        const top = b + tierH - 2 - bh;
-        p.box(x, top, 12, bh, c, OUTLINE);
-        p.r(x + 1, top + 2, 10, 1, d); p.r(x + 1, top + bh - 4, 10, 1, d);
-        p.r(x + 1, top + 1, 1, bh - 2, 'rgba(255,255,255,0.18)');
-    });
+    const base = b + tierH - 2; // top of the shelf board
+    const book = (x: number, y: number, w2: number, h2: number, c: string, d: string) => {
+        p.box(x, y, w2, h2, c, OUTLINE);
+        if (w2 > h2) { p.r(x + 2, y + 1, 1, h2 - 2, d); p.r(x + w2 - 3, y + 1, 1, h2 - 2, d); }
+        else { p.r(x + 1, y + 2, w2 - 2, 1, d); p.r(x + 1, y + h2 - 3, w2 - 2, 1, d); }
+    };
+    book(13, base - 7, 28, 7, '#2f3f8a', '#22306a');        // Solo Levelling, flat
+    book(15, base - 13, 24, 6, '#b8392f', '#8f2a22');       // Sweet Home, flat on top
+    book(43, base - 27, 8, 27, '#3d5a3a', '#2a3f28');       // AOT, upright
+    // Lookism leaning on AOT: each row shifts left as it rises
+    for (let r = 0; r < 26; r++) {
+        const y = base - 1 - r, x = 57 - Math.round(r * 0.25);
+        p.p(x - 1, y, OUTLINE); p.r(x, y, 7, 1, '#1f1f26'); p.p(x + 7, y, OUTLINE);
+        if (r === 2 || r === 23) p.r(x, y, 7, 1, '#36363f');
+    }
+    p.r(51, base - 27, 7, 1, OUTLINE);
 };
 
 const homeFloorPlant: Painter = (p, w, h) => {
@@ -930,42 +966,68 @@ const homePullup: Painter = (p, w, h) => {
     p.box(0, h - 7, 18, 7, METAL.deep); p.box(w - 18, h - 7, 18, 7, METAL.deep);
 };
 
+/** Work table along the right wall, naturally messy. The speaker and camera are separate sprites. */
 const homeTable: Painter = (p, w, h) => {
     const topH = 86;
     p.box(0, 0, w, topH, PALE_WOOD.light);
     p.r(1, 1, 2, topH - 2, PALE_WOOD.mid);
     p.r(1, topH - 3, w - 2, 2, '#e0b98b');
-    // spare slot (reserved): dashed outline
-    const sy = 64, sx = 14, sw = 30, sh = 14;
-    for (let x = sx; x < sx + sw; x += 3) { p.p(x, sy, '#fff8e8'); p.p(x, sy + sh, '#fff8e8'); }
-    for (let y = sy; y <= sy + sh; y += 3) { p.p(sx, y, '#fff8e8'); p.p(sx + sw - 1, y, '#fff8e8'); }
+    // receipts and sticky notes (speaker sits at 6..36 x 5..27, camera at 24..42 x 38..52)
+    p.r(5, 30, 9, 6, '#f7f3ea'); p.r(7, 31, 6, 1, '#b8ad9c'); p.r(7, 33, 5, 1, '#b8ad9c'); p.r(9, 34, 7, 4, '#efe9dc');
+    p.r(42, 28, 6, 6, '#f7de6a'); p.r(46, 31, 6, 6, '#a9d2f2'); p.r(43, 30, 4, 1, '#a08a3a');
+    // lens cap left beside the camera
+    p.r(11, 41, 5, 5, '#16171c'); p.r(12, 42, 3, 3, '#2c2e36'); p.p(13, 43, '#4a4d57');
+    // charging cable trailing from the speaker off the far edge
+    [[37, 14], [38, 15], [39, 15], [40, 16], [41, 17], [42, 17], [43, 18], [44, 18], [45, 19], [46, 20], [47, 21], [47, 22],
+        [48, 23], [49, 24], [50, 24], [51, 25], [52, 26], [53, 26], [54, 27]].forEach(([x, y]) => p.p(x, y, '#2a2b31'));
+    // notebook with pencils across it
+    p.box(5, 56, 18, 14, '#5e7e6b'); p.r(7, 57, 1, 12, '#3f5a49'); p.r(10, 60, 10, 1, '#8fae99');
+    p.r(16, 62, 15, 1, '#f2c230'); p.p(31, 62, '#2a2b31'); p.p(15, 62, '#e8a0a0');
+    p.r(19, 65, 14, 1, '#f2c230'); p.p(33, 65, '#2a2b31'); p.p(18, 65, '#e8a0a0');
+    // mug with a pencil in it
+    p.box(38, 66, 7, 8, '#3f6fb0'); p.r(45, 68, 2, 4, '#3f6fb0'); p.r(39, 67, 5, 1, '#2a4f86'); p.r(41, 61, 1, 6, '#f2c230');
+    // small plant
+    plantPot(p, 6, 77, 7, 6); p.r(6, 72, 7, 5, LEAF); p.p(5, 73, LEAF_L); p.p(13, 74, LEAF_L); p.p(9, 71, LEAF_L); p.p(9, 75, LEAF_D);
     p.box(0, topH - 1, w, 8, PALE_WOOD.dark);
     p.r(2, topH + 7, 5, h - topH - 7, PALE_WOOD.deep);
     p.r(w - 7, topH + 7, 5, h - topH - 7, PALE_WOOD.deep);
 };
 
-/** Big black speaker with two woofers and a handle. The badge is the speaker-logo slot. */
+/** Big black speaker, set down at an angle (its right end turned away). The badge is the speaker-logo slot. */
 const homeSpeaker: Painter = (p, w, h) => {
-    p.r(6, 0, w - 12, 2, '#2a2b31'); p.r(5, 1, 2, 4, '#2a2b31'); p.r(w - 7, 1, 2, 4, '#2a2b31'); // handle
-    p.box(0, 4, w, h - 4, '#1b1c22');
-    p.r(1, 5, w - 2, 1, '#34363f');
+    const face = 24;
+    const top = (x: number) => 6 - Math.floor(x * 0.13);
+    // handle following the slant
+    for (let x = 5; x < face - 5; x++) p.p(x, top(x) - 4, '#2a2b31');
+    p.r(5, top(5) - 4, 1, 4, '#2a2b31'); p.r(face - 6, top(face - 6) - 4, 1, 4, '#2a2b31');
+    // front face
+    for (let x = 0; x < face; x++) { p.r(x, top(x), 1, 14, '#1b1c22'); p.p(x, top(x), '#34363f'); }
+    // the side end turned away from us
+    for (let x = face; x < w; x++) { const k = x - face; p.r(x, top(face) + Math.floor(k * 0.4), 1, 14 - Math.floor(k * 0.6), '#101116'); }
     const woofer = (cx: number) => {
-        const cy = 4 + Math.floor((h - 4) / 2);
-        p.r(cx - 4, cy - 3, 8, 7, '#0f1014'); p.r(cx - 3, cy - 4, 6, 9, '#0f1014');
-        p.r(cx - 2, cy - 2, 4, 5, '#2c2e36'); p.r(cx - 1, cy - 1, 2, 2, '#4a4d57');
+        const cy = top(cx) + 7;
+        p.r(cx - 3, cy - 3, 7, 7, '#0f1014'); p.r(cx - 4, cy - 2, 9, 5, '#0f1014');
+        p.r(cx - 2, cy - 2, 5, 5, '#2c2e36'); p.r(cx - 1, cy - 1, 3, 3, '#3a3d46'); p.p(cx, cy, '#5a5d67');
     };
-    woofer(7); woofer(w - 8);
-    p.r(Math.floor(w / 2) - 2, h - 4, 4, 2, '#e5762f'); // plain orange badge
+    woofer(6); woofer(17);
+    p.r(10, 16, 4, 2, '#e5762f'); // plain orange badge
+    void h;
 };
 
+/** Camera set down casually, its strap draped beside it. */
 const homeCamera: Painter = (p, w, h) => {
-    p.r(3, 0, 5, 2, '#2a2b31');
-    p.box(0, 2, w, h - 2, '#2f3138');
-    p.r(1, 3, w - 2, 2, '#4a4d57');
-    p.box(4, 4, 7, 7, '#16171c');
-    p.r(6, 6, 3, 3, '#4fa3e0');
-    p.p(6, 6, '#bfe6ff');
-    p.r(w - 3, 4, 2, 1, '#d33a3a');
+    const strap = '#6b5242', strapD = '#4e3a2e';
+    // strap looping out to the left and under
+    [[2, 5], [1, 6], [0, 7], [0, 8], [1, 9], [1, 10], [2, 11], [3, 12], [4, 12]].forEach(([x, y]) => p.p(x, y, strap));
+    p.r(4, h - 1, 9, 1, strap); p.r(13, h - 2, 3, 1, strapD); p.p(16, h - 3, strapD);
+    p.r(6, 0, 5, 2, '#2a2b31');
+    p.box(3, 2, 13, 10, '#2f3138');
+    p.r(4, 3, 11, 2, '#4a4d57');
+    p.box(6, 4, 7, 7, '#16171c');
+    p.r(8, 6, 3, 3, '#4fa3e0');
+    p.p(8, 6, '#bfe6ff');
+    p.r(13, 4, 2, 1, '#d33a3a');
+    void w;
 };
 
 /** Nightstand with a glowing lamp and a family photo frame (silhouettes until the photo slot is filled). */
@@ -991,9 +1053,15 @@ const homeNightstand: Painter = (p, w, h) => {
 const homeBed: Painter = (p, w, h) => {
     const topH = 30;
     p.box(0, 0, w, topH, '#5a3a26');
-    p.r(2, 2, w - 4, topH - 4, '#c75c4a');
-    p.r(2, 2, w - 4, 2, '#dc7a66');
-    p.r(30, 18, w - 34, 1, '#a94a3a');
+    // green and blue plaid blanket
+    for (let y = 2; y < topH - 2; y++) {
+        for (let x = 2; x < w - 2; x++) {
+            const vx = x % 8 < 2, hy = y % 8 < 2;
+            const c = vx && hy ? '#244573' : vx || hy ? '#2f5a8f' : x % 8 === 5 || y % 8 === 5 ? '#6aa884' : '#3e7d5e';
+            p.p(x, y, c);
+        }
+    }
+    p.r(2, 2, w - 4, 1, '#5d9a78');
     p.box(3, 3, 20, topH - 6, '#efe9da');
     p.r(5, 5, 16, 2, '#ffffff');
     p.r(0, 0, 3, topH, '#3d2617');
@@ -1052,12 +1120,21 @@ const homePie: Painter = (p, w, h) => {
     }
 };
 
+/** A soft, fluffy beige rug with a shaggy edge. */
 const homeRug: Painter = (p, w, h) => {
-    p.box(0, 0, w, h, '#a8865e');
-    p.r(2, 2, w - 4, h - 4, '#c7a77a');
-    p.r(4, 4, w - 8, h - 8, '#b8956a');
-    for (let x = 8; x < w - 8; x += 8) p.r(x, Math.floor(h / 2), 4, 1, '#d8bf94');
-    for (let x = 1; x < w; x += 3) { p.p(x, 0, '#e8dcc0'); p.p(x, h - 1, '#e8dcc0'); }
+    const rand = rng(31);
+    const base = '#e6d5b8', shade = '#d6c29f', light = '#f4ead8', edge = '#c9b28c';
+    for (let x = 0; x < w; x++) {
+        const t = 1 + Math.floor(rand() * 2), btm = h - 1 - Math.floor(rand() * 2);
+        const inset = x < 4 || x > w - 5 ? 2 : 0;
+        p.r(x, t + inset, 1, btm - t - inset * 2, base);
+        p.p(x, t + inset, edge); p.p(x, btm - inset - 1, edge);
+    }
+    for (let i = 0; i < 260; i++) {
+        const x = 2 + Math.floor(rand() * (w - 4)), y = 3 + Math.floor(rand() * (h - 6));
+        p.p(x, y, rand() < 0.55 ? light : shade);
+    }
+    for (let x = 3; x < w - 3; x += 2) { if (rand() < 0.6) p.p(x, 0, edge); if (rand() < 0.6) p.p(x, h - 1, edge); }
 };
 
 const homeLongboard: Painter = (p, w, h) => {
@@ -1076,7 +1153,7 @@ export const painters = {
     doorSide, doormat, signRight: signPainter('right'), signLeft: signPainter('left'), wallClock,
     fxArrow, sparkle, fxZ, fxHeart, fxNote, fxPuff, fxBulb, pencil,
     daniel: danielStrip('all'), danielShirt: danielStrip('shirt'), danielSleep, cat,
-    slotGraduation, slotDamn, slotDuck, slotEmpty,
+    slotGraduation, slotDamn, slotDuck, slotEmpty, slotHome1, slotHome2, slotHome3,
     dormWindow, dormPennant, dormTodo, dormDesk, dormLaptop, dormBinder, dormPhone,
     dormCloset, dormBeanbag, dormFloorLamp, dormBed, dormRug, dormDresser, dormGradcap, dormShirt, dormClothes,
     dormFridge, dormTrash, dormLaundry, dormSneakers, dormBag, dormBackpack,

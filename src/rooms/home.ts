@@ -3,9 +3,6 @@ import type { RoomDef } from './types';
 // North York, Toronto (personal). See reference/home-layout.png.
 // Tile units: floor is 20 x 9, rows -4..0 are the back wall face.
 
-// Bottom shelf books: centres in tiles (the shelf sprite starts at x 2.9, y -4).
-const book = (px: number, h: number) => ({ x: 2.9 + (px + 6) / 16, y: -4 + (104 - h / 2) / 16 });
-
 export const home: RoomDef = {
     key: 'home',
     background: 'room_home',
@@ -18,13 +15,17 @@ export const home: RoomDef = {
         { id: 'shelf', texture: 'home_shelf', x: 2.9, y: -4.0, layer: 'floor', solid: { x: 2.9, y: 0, w: 4.75, h: 3.0 } },
         { id: 'plant', texture: 'home_plant', x: 7.9, y: -0.7, layer: 'floor', solid: { x: 8.1, y: 0.55, w: 0.6, h: 0.5 } },
         { id: 'window', texture: 'home_window', x: 9.2, y: -3.8, layer: 'wall' },
+        // empty poster frames for Daniel's posters (image slots)
+        { id: 'posterH1', texture: 'slot_poster_home_1', x: 0.55, y: -3.3, layer: 'wall' },
+        { id: 'posterH2', texture: 'slot_poster_home_2', x: 7.95, y: -2.6, layer: 'wall' },
+        { id: 'posterH3', texture: 'slot_poster_home_3', x: 17.35, y: -3.65, layer: 'wall' },
         { id: 'hoodie', texture: 'home_hoodie', x: 14.25, y: -3.4, layer: 'wall' },
         { id: 'pullup', texture: 'home_pullup', x: 16.3, y: -2.15, layer: 'floor', solid: { x: 16.3, y: 0.2, w: 3.6, h: 1.5 } },
 
         // right wall work table, reached from its left side
         { id: 'table', texture: 'home_table', x: 16.45, y: 2.85, layer: 'floor', solid: { x: 16.45, y: 3.0, w: 3.5, h: 5.95 } },
-        { id: 'speaker', texture: 'home_speaker', x: 17.2, y: 3.3, layer: 'floor', on: 'table' },
-        { id: 'camera', texture: 'home_camera', x: 17.75, y: 5.3, layer: 'floor', on: 'table' },
+        { id: 'speaker', texture: 'home_speaker', x: 16.85, y: 3.1, layer: 'floor', on: 'table' },
+        { id: 'camera', texture: 'home_camera', x: 17.95, y: 5.2, layer: 'floor', on: 'table' },
 
         // front left corner: nightstand above the pillow end, then the bed
         { id: 'nightstand', texture: 'home_nightstand', x: 0.15, y: 4.25, layer: 'floor', solid: { x: 0.15, y: 4.85, w: 2.25, h: 1.75 } },
@@ -68,10 +69,10 @@ export const home: RoomDef = {
     ],
     fairy: { y: -3.85, x0: 0.15, x1: 16.2, colors: [0xfff0c0, 0xffd27a, 0xfff6e0] },
     labels: [
-        { on: 'shelf', ...book(8, 26), text: 'AOT', size: 4, color: '#f4efe2', angle: -90, bold: true },
-        { on: 'shelf', ...book(21, 29), text: 'Lookism', size: 3.2, color: '#f2d36a', angle: -90, bold: true },
-        { on: 'shelf', ...book(34, 27), text: 'Sweet Home', size: 3.1, color: '#f4efe2', angle: -90, bold: true },
-        { on: 'shelf', ...book(47, 29), text: 'Solo Levelling', size: 2.9, color: '#f4efe2', angle: -90, bold: true },
+        { on: 'shelf', x: 2.9 + 27 / 16, y: -4 + 101 / 16, text: 'Solo Levelling', size: 3, color: '#f4efe2', bold: true },
+        { on: 'shelf', x: 2.9 + 27 / 16, y: -4 + 95 / 16, text: 'Sweet Home', size: 3, color: '#f4efe2', bold: true },
+        { on: 'shelf', x: 2.9 + 47 / 16, y: -4 + 90.5 / 16, text: 'AOT', size: 3.4, color: '#f4efe2', angle: -90, bold: true },
+        { on: 'shelf', x: 2.9 + 57.5 / 16, y: -4 + 91 / 16, text: 'Lookism', size: 2.9, color: '#f2d36a', angle: -76, bold: true },
         { on: 'hoodie', x: 15.125, y: -2.62, text: 'TORONTO', size: 2.6, color: '#f4efe2', bold: true, unlessSlot: 'hoodie-logo.png' },
         { on: 'sign', x: 1.03, y: 0.84, text: 'Back to\nUCLA', size: 3, color: '#3a2a20', bold: true }
     ],
