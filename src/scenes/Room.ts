@@ -693,7 +693,7 @@ export class Room extends Phaser.Scene {
         if (a === 'music') return isFeaturedOn() ? ui.verbs.musicOff : ui.verbs.musicOn;
         const map: Record<Exclude<ActionKind, 'music'>, string> = {
             sit: ui.verbs.sit, outfit: ui.verbs.outfit, pullup: ui.verbs.pullup, snap: ui.verbs.snap,
-            piano: ui.verbs.piano, pet: ui.verbs.pet, ride: ui.verbs.ride, eat: ui.verbs.eat, drink: ui.verbs.drink
+            piano: ui.verbs.piano, pet: ui.verbs.pet, ride: ui.verbs.ride, eat: ui.verbs.eat, drink: ui.verbs.drink, nap: ui.verbs.nap
         };
         return map[a];
     }
@@ -711,6 +711,7 @@ export class Room extends Phaser.Scene {
             case 'ride': this.mount(t); break;
             case 'eat': this.eatPie(t); break;
             case 'drink': this.drinkRedBull(t); break;
+            case 'nap': this.napInBed(t); break;
         }
     }
 
@@ -898,6 +899,81 @@ export class Room extends Phaser.Scene {
             this.busy = false;
             showBubble('act', ui.yum, 'speech');
             this.time.delayedCall(1700, () => hideBubble('act'));
+        });
+    }
+
+    /** E at the dorm bed: lights down, a short nap with Zs, then the intro wake up. Sleep fills to the top. */
+    private napInBed(t: Target) {
+        const s = this.def.sleep;
+        if (!s) { this.sitDown(t); return; }
+        const fast = this.rm;
+        this.busy = true;
+        this.player.cancelPath();
+        this.player.stop();
+        hideBubble('say');
+        hideBubble('think');
+        const level = { dark: this.lighting.baseDark, light: 1, glow: 0 };
+        const relight = () => this.lighting.set(level.dark, level.light, level.glow, this.sleeperAt());
+        // lights down
+        this.tweens.add({ targets: level, dark: 0.97, light: 0, glow: 0.55, duration: fast ? 80 : 700, ease: 'Sine.easeInOut', onUpdate: relight });
+        let sleeper: Phaser.GameObjects.Sprite | null = null;
+        this.time.delayedCall(fast ? 40 : 380, () => {
+            this.player.sprite.setVisible(false);
+            sleeper = this.add.sprite(tx(s.x), ty(s.y), 'daniel_sleep', 0).setOrigin(0).setDepth(9050);
+            sleeper.anims.play('sleep');
+            this.sleepSprite = sleeper;
+            this.puffZ();
+            this.zTimer = this.time.addEvent({ delay: 700, loop: true, callback: () => this.puffZ() });
+        });
+        // wake up the same way as the intro: a wiggle, the window light, then the lamps, then hop out
+        this.time.delayedCall(fast ? 300 : 2400, () => {
+            this.zTimer?.remove();
+            if (!sleeper) return;
+            const sl = sleeper;
+            sfx('wake');
+            this.tweens.add({
+                targets: sl, x: sl.x + 1, duration: 60, yoyo: true, repeat: fast ? 0 : 3,
+                onComplete: () => {
+                    this.tweens.add({ targets: level, light: 0.6, duration: fast ? 60 : 450, ease: 'Sine.easeIn', onUpdate: relight });
+                    this.tweens.add({
+                        targets: level, dark: this.lighting.baseDark, light: 1, glow: 0, delay: fast ? 0 : 380, duration: fast ? 100 : 700,
+                        ease: 'Sine.easeInOut', onUpdate: relight, onComplete: () => this.lighting.lit()
+                    });
+                    this.time.delayedCall(fast ? 50 : 300, () => this.hopOutTo(sl, { x: t.spot.x, y: t.spot.y, facing: 'down' }, () => {
+                        this.busy = false;
+                        fillStat('Sleep');
+                        this.say(ui.napLine, 2600);
+                        markInput();
+                    }));
+                }
+            });
+        });
+    }
+
+    /** Hop from the sleep sprite to a floor point (used by the nap). */
+    private hopOutTo(sleeper: Phaser.GameObjects.Sprite, to: { x: number; y: number; facing: Facing }, done: () => void) {
+        const from = { x: sleeper.x + 7, y: sleeper.y + 12 };
+        sleeper.destroy();
+        this.sleepSprite = null;
+        const p = this.player;
+        p.teleport(from.x, from.y);
+        p.sprite.setVisible(true).setDepth(9050);
+        p.face('right');
+        const prog = { t: 0 };
+        this.tweens.add({
+            targets: prog, t: 1, duration: this.rm ? 80 : 420, ease: 'Sine.easeInOut',
+            onUpdate: () => {
+                const x = from.x + (to.x - from.x) * prog.t;
+                const y = from.y + (to.y - from.y) * prog.t - Math.sin(prog.t * Math.PI) * 10;
+                p.sprite.setPosition(Math.round(x), Math.round(y));
+            },
+            onComplete: () => {
+                p.teleport(to.x, to.y);
+                p.face(to.facing);
+                p.sprite.setDepth(to.y);
+                this.ensureFree();
+                done();
+            }
         });
     }
 

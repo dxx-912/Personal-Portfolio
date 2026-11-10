@@ -77,10 +77,8 @@ export const dorm: RoomDef = {
             id: 'beanbag', target: 'beanbag', spot: { x: 1.7, y: 3.5 }, facing: 'up', action: 'sit',
             seat: { x: 1.7, y: 2.2, facing: 'down', pose: 'sink' }
         },
-        {
-            id: 'bed', target: 'bed', spot: { x: 5.0, y: 5.55 }, facing: 'down', action: 'sit',
-            seat: { x: 5.0, y: 7.0, facing: 'down', pose: 'edge' }
-        }
+        // E: a quick nap, then the intro wake up again (Sleep fills back to the top)
+        { id: 'bed', target: 'bed', spot: { x: 5.0, y: 5.55 }, facing: 'down', action: 'nap' }
     ],
     doors: [{ side: 'right', rowTop: 3.45, rowBottom: 5.45, to: 'home' }],
     arrivals: {
