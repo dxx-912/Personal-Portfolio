@@ -187,8 +187,15 @@ function signPainter(arrow: 'left' | 'right'): Painter {
         p.r(1, 2, w - 2, 1, '#f7ecd2');
         const ay = h - 4;
         const c = '#c8423b';
-        if (arrow === 'right') { p.r(w - 7, ay, 4, 1, c); p.p(w - 4, ay - 1, c); p.p(w - 4, ay + 1, c); p.p(w - 3, ay, c); }
-        else { p.r(3, ay, 4, 1, c); p.p(3, ay - 1, c); p.p(3, ay + 1, c); p.p(2, ay, c); }
+        // a clean pixel arrow: a short shaft and a solid triangle head
+        const x0 = arrow === 'right' ? w - 10 : 3;
+        if (arrow === 'right') {
+            p.r(x0, ay, 4, 1, c);
+            p.r(x0 + 4, ay - 2, 1, 5, c); p.r(x0 + 5, ay - 1, 1, 3, c); p.p(x0 + 6, ay, c);
+        } else {
+            p.r(x0 + 3, ay, 4, 1, c);
+            p.r(x0 + 2, ay - 2, 1, 5, c); p.r(x0 + 1, ay - 1, 1, 3, c); p.p(x0, ay, c);
+        }
     };
 }
 
@@ -554,16 +561,28 @@ const dormDesk: Painter = (p, w, h) => {
     p.r(4, topH + 2, w - 42, h - topH - 6, '#3a2418');
     // LED strip glowing purple under the front edge
     p.r(1, h - 3, w - 2, 1, '#c792ff'); p.r(1, h - 2, w - 2, 1, '#8a4fd8');
-    // clutter (muted, kept off the interactive items)
-    // loose papers and a notebook
-    p.r(4, 28, 12, 8, '#efe9dc'); p.r(6, 30, 9, 8, '#f7f3ea'); p.r(7, 32, 6, 1, '#b8ad9c'); p.r(7, 34, 5, 1, '#b8ad9c');
-    p.box(34, 30, 13, 10, '#5e7e6b'); p.r(36, 31, 1, 8, '#3f5a49');
+    // clutter (muted, kept off the interactive items: laptop 7..29, binder 35..59, phone 65..75)
+    // water bottle standing at the back left
+    p.r(4, 4, 4, 2, '#3a3a46'); p.r(4, 6, 4, 13, '#7fc4e8'); p.r(3, 7, 1, 11, '#3f6f8f'); p.r(8, 7, 1, 11, '#3f6f8f');
+    p.r(5, 8, 1, 8, '#c8ecff'); p.r(4, 18, 4, 1, '#3f6f8f');
+    // baseball cap behind the laptop, brim pointing forward
+    p.r(16, 10, 8, 1, '#24345a'); p.r(15, 11, 10, 4, '#2d3f6e'); p.r(17, 11, 3, 1, '#3e5590'); p.p(19, 10, '#e8be4a');
+    p.r(14, 15, 12, 3, '#1f2c4f'); p.r(15, 17, 10, 1, '#16203a');
+    // loose papers, front left
+    p.r(2, 37, 12, 7, '#efe9dc'); p.r(4, 38, 9, 6, '#f7f3ea'); p.r(5, 40, 6, 1, '#b8ad9c'); p.r(5, 42, 5, 1, '#b8ad9c');
+    // mug between the laptop and the binder
+    p.box(29, 30, 6, 7, '#e9e4d6'); p.r(35, 32, 1, 3, '#e9e4d6'); p.r(30, 31, 4, 1, '#6b4429');
+    // spiral notebook in front of the binder
+    p.box(36, 37, 15, 8, '#d36a5a'); p.r(37, 39, 13, 1, '#e48a7a');
+    for (let x = 37; x < 50; x += 2) p.p(x, 37, '#d8dce4');
     // pens
-    p.r(49, 36, 7, 1, '#2a3a8a'); p.r(50, 38, 6, 1, '#c8423b');
-    // mug with a little steam gap
-    p.box(26, 24, 6, 7, '#e9e4d6'); p.r(32, 26, 2, 3, '#e9e4d6'); p.r(27, 25, 4, 1, '#6b4429');
-    // sticky notes stuck to the desk edge
-    p.r(58, 32, 5, 5, '#f7de6a'); p.r(64, 33, 5, 5, '#f2a6b8');
+    p.r(53, 40, 7, 1, '#2a3a8a'); p.p(60, 40, '#e8e4dc'); p.r(54, 42, 6, 1, '#c8423b'); p.r(52, 44, 6, 1, '#2a2b31');
+    // sticky notes stuck in front of the phone
+    p.r(62, 38, 5, 5, '#f7de6a'); p.r(68, 39, 5, 5, '#f2a6b8'); p.r(63, 40, 3, 1, '#a08a3a');
+    // wired earbuds with the cable trailing off the front edge
+    p.r(79, 30, 2, 2, '#f4f4f4'); p.r(84, 31, 2, 2, '#f4f4f4');
+    [[80, 32], [80, 33], [81, 34], [82, 35], [83, 35], [84, 34], [85, 33], [82, 36], [82, 37], [81, 38], [81, 39], [82, 40],
+        [83, 41], [83, 42], [82, 43], [82, 44], [82, 45], [83, 46], [83, 47]].forEach(([x, y]) => p.p(x, y, '#e2e2e2'));
     // small plant at the back corner
     plantPot(p, 71, 10, 7, 6); p.r(72, 5, 5, 5, LEAF); p.p(71, 6, LEAF_L); p.p(77, 7, LEAF_L); p.p(74, 4, LEAF_L); p.p(74, 7, LEAF_D);
     // desk lamp (warm), right end
@@ -713,13 +732,84 @@ const dormGradcap: Painter = (p) => {
     p.p(8, 4, '#f2c230'); p.r(13, 4, 1, 6, '#f2c230'); p.r(12, 10, 3, 2, '#f2c230');
 };
 
-/** Folded white "Hope For Hearing" shirt. */
+/** A folded white T shirt: round collar, sleeves folded in, soft fabric shading, a small blue print. */
 const dormShirt: Painter = (p, w, h) => {
-    p.box(0, 1, w, h - 1, '#f7f7f4', '#9aa0aa');
-    p.r(1, 2, w - 2, 1, '#ffffff');
-    p.r(1, h - 2, w - 2, 1, '#d8dce4');
-    p.r(Math.floor(w / 2) - 3, 1, 6, 1, '#d8dce4'); // collar fold
-    pixelText(p, 'H4H', Math.floor((w - pixelTextWidth('H4H')) / 2), 4, '#2f5aa8');
+    const white = '#f6f6f2', shade = '#dfe2e8', deep = '#c9ced8';
+    // folded body, slightly narrower at the hem
+    p.r(2, 3, w - 4, h - 4, white);
+    p.r(3, h - 1, w - 6, 1, shade);
+    // shoulders, with the folded sleeves tucked in at both sides
+    p.r(1, 3, 4, 4, white); p.r(w - 5, 3, 4, 4, white);
+    p.r(1, 6, 3, 1, shade); p.r(w - 4, 6, 3, 1, shade);
+    p.p(4, 7, shade); p.p(5, 8, shade); p.p(w - 5, 7, shade); p.p(w - 6, 8, shade); // sleeve fold lines
+    // round collar
+    const cx = Math.floor(w / 2);
+    p.r(cx - 4, 2, 8, 1, white); p.r(cx - 3, 3, 6, 2, deep); p.r(cx - 2, 3, 4, 1, '#b5bbc7');
+    p.p(cx - 4, 3, shade); p.p(cx + 3, 3, shade);
+    // soft fold shading
+    p.r(2, h - 4, w - 4, 1, shade); p.r(w - 3, 4, 1, h - 6, shade); p.r(3, 9, 1, 3, shade);
+    // small print: a tiny blue heart (the words are a crisp label on top)
+    const b = '#2f5aa8';
+    p.r(cx - 2, 6, 2, 1, b); p.r(cx + 1, 6, 2, 1, b); p.r(cx - 2, 7, 5, 1, b); p.r(cx - 1, 8, 3, 1, b); p.p(cx, 9, b);
+};
+
+/** Mini fridge with a few magnets. */
+const dormFridge: Painter = (p, w, h) => {
+    p.box(0, 0, w, h, '#e9eef2');
+    p.r(1, 1, w - 2, 1, '#ffffff');
+    p.r(1, 9, w - 2, 1, '#b9c2cc'); // freezer line
+    p.r(w - 3, 3, 1, 4, '#8c95a4'); p.r(w - 3, 12, 1, 7, '#8c95a4'); // handles
+    p.r(1, h - 2, w - 2, 1, '#9aa3b0');
+    // magnets
+    p.r(3, 4, 2, 2, '#d33a3a'); p.r(6, 12, 2, 2, '#2f74b5'); p.r(3, 15, 3, 2, '#f2c230'); p.r(7, 17, 2, 2, '#4f9a5a');
+    p.r(2, 11, 4, 5, '#f7f3ea'); p.p(3, 12, '#9a8f86'); p.r(3, 13, 2, 1, '#9a8f86'); // a photo held up by a magnet
+};
+
+/** Small trash bin with crumpled paper. */
+const dormTrash: Painter = (p, w, h) => {
+    p.r(1, 4, w - 2, h - 4, '#5d6679'); p.r(0, 3, w, 2, '#727c90');
+    p.r(2, 6, 1, h - 7, '#4b5364'); p.r(w - 3, 6, 1, h - 7, '#4b5364');
+    p.r(3, 1, 3, 3, '#f4f1ea'); p.p(4, 2, '#cfc8bb'); p.r(6, 2, 3, 2, '#efe9dc'); p.p(7, 2, '#cfc8bb');
+    p.r(w - 4, 4, 3, 2, '#f4f1ea'); // one that missed, resting on the rim
+};
+
+/** Laundry basket with clothes spilling over the top. */
+const dormLaundry: Painter = (p, w, h) => {
+    p.r(2, 7, w - 4, h - 7, '#c9b48a'); p.r(1, 6, w - 2, 2, '#b39b6c');
+    for (let x = 3; x < w - 3; x += 3) p.r(x, 9, 1, h - 10, '#a88f62'); // wicker
+    p.r(2, h - 2, w - 4, 1, '#8f7a52');
+    // clothes heaped above the rim and spilling over the left side
+    p.r(3, 2, 7, 5, '#3f5f8f'); p.r(8, 1, 7, 6, '#e8e6df'); p.r(14, 3, 5, 4, '#c8423b');
+    p.r(5, 3, 3, 1, '#5a7aa8'); p.r(10, 2, 3, 1, '#ffffff');
+    p.r(0, 6, 3, 6, '#3f5f8f'); p.r(0, 11, 2, 2, '#2f4a70'); // a sleeve hanging over the edge
+};
+
+/** A pair of sneakers. */
+const dormSneakers: Painter = (p) => {
+    const shoe = (x: number, y: number) => {
+        p.r(x, y + 1, 6, 3, '#f4f4f4'); p.r(x + 1, y, 3, 1, '#f4f4f4'); p.r(x, y + 4, 7, 1, '#b9c2cc');
+        p.r(x + 1, y + 2, 2, 1, '#2f74b5'); p.p(x + 4, y + 1, '#c9ced8');
+    };
+    shoe(0, 1); shoe(8, 0);
+};
+
+/** A small tote bag slumped on the floor. */
+const dormBag: Painter = (p, w, h) => {
+    p.r(1, 4, w - 2, h - 4, '#7a8a5a'); p.r(0, 6, w, h - 7, '#7a8a5a');
+    p.r(2, 5, w - 4, 1, '#94a46e'); p.r(1, h - 2, w - 2, 1, '#5e6c44');
+    p.r(3, 1, 1, 4, '#5e6c44'); p.r(w - 4, 1, 1, 4, '#5e6c44'); p.r(3, 0, w - 6, 1, '#5e6c44'); // handles
+};
+
+/** Wall hooks with a backpack hanging from one. */
+const dormBackpack: Painter = (p, w, h) => {
+    p.r(0, 1, w, 2, '#8f5f3d'); p.r(0, 1, w, 1, '#b07b50'); // hook rail
+    p.p(3, 3, '#8c95a4'); p.p(w - 4, 3, '#8c95a4'); p.p(Math.floor(w / 2), 3, '#8c95a4');
+    const x0 = Math.floor(w / 2) - 6;
+    p.r(x0 + 4, 3, 1, 3, '#2a2b31'); p.r(x0 + 8, 3, 1, 3, '#2a2b31'); // straps over the hook
+    p.r(x0 + 1, 6, 11, h - 7, '#c8423b'); p.r(x0, 8, 13, h - 10, '#c8423b');
+    p.r(x0 + 2, 6, 9, 1, '#e06a5c');
+    p.r(x0 + 2, 12, 9, 6, '#a8322c'); p.r(x0 + 3, 12, 7, 1, '#2a2b31'); // front pocket and zip
+    p.r(x0 + 1, h - 2, 11, 1, '#8a2822');
 };
 
 /** A small pile of clothes and a lone sock. */
@@ -989,6 +1079,7 @@ export const painters = {
     slotGraduation, slotDamn, slotDuck, slotEmpty,
     dormWindow, dormPennant, dormTodo, dormDesk, dormLaptop, dormBinder, dormPhone,
     dormCloset, dormBeanbag, dormFloorLamp, dormBed, dormRug, dormDresser, dormGradcap, dormShirt, dormClothes,
+    dormFridge, dormTrash, dormLaundry, dormSneakers, dormBag, dormBackpack,
     homeShelf, homeFloorPlant, homeWindow, homeHoodie, homePullup, homeTable, homeSpeaker, homeCamera,
     homeNightstand, homeBed, homeDesk, homePiano, homePie, homeRug, homeLongboard
 } satisfies Record<string, Painter>;

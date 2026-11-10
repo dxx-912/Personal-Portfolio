@@ -31,7 +31,13 @@ export const dorm: RoomDef = {
         { id: 'poster3', texture: 'slot_poster_duck', x: 16.62, y: -2.75, layer: 'floor', on: 'closet' },
 
         // top left: beanbag in the window light
-        { id: 'beanbag', texture: 'dorm_beanbag', x: 0.3, y: 0.85, layer: 'floor', solid: { x: 0.45, y: 1.5, w: 1.95, h: 1.0 } },
+        { id: 'beanbag', texture: 'dorm_beanbag', x: 0.2, y: 0.55, layer: 'floor', solid: { x: 0.35, y: 1.45, w: 2.7, h: 1.3 } },
+        // lived in corner: mini fridge, trash bin, laundry basket
+        { id: 'fridge', texture: 'dorm_fridge', x: 3.35, y: -0.6, layer: 'floor', solid: { x: 3.4, y: 0.35, w: 0.95, h: 0.6 } },
+        { id: 'trash', texture: 'dorm_trash', x: 6.55, y: 0.15, layer: 'floor', solid: { x: 6.6, y: 0.6, w: 0.65, h: 0.4 } },
+        { id: 'laundry', texture: 'dorm_laundry', x: 0.12, y: 3.85, layer: 'floor', solid: { x: 0.2, y: 4.35, w: 1.2, h: 0.6 } },
+        // backpack on wall hooks, under the clock and above the desk
+        { id: 'backpack', texture: 'dorm_backpack', x: 10.8, y: -2.6, layer: 'wall' },
 
         // front left: floor lamp, then the bed (spawn)
         { id: 'lamp', texture: 'dorm_floorlamp', x: 0.35, y: 5.3, layer: 'floor', solid: { x: 0, y: 5.25, w: 1.55, h: 3.75 } },
@@ -39,11 +45,14 @@ export const dorm: RoomDef = {
 
         // a little mess between the bed and the dresser (off every path)
         { id: 'clothes', texture: 'dorm_clothes', x: 8.25, y: 7.9, layer: 'floor' },
+        { id: 'bag', texture: 'dorm_bag', x: 9.85, y: 8.15, layer: 'floor' },
+        // sneakers by the door, below its approach
+        { id: 'sneakers', texture: 'dorm_sneakers', x: 18.55, y: 5.75, layer: 'floor' },
 
         // front right: the bigger dresser with the grad cap and the Hope For Hearing shirt
         { id: 'dresser', texture: 'dorm_dresser', x: 10.55, y: 5.1, layer: 'floor', solid: { x: 10.55, y: 5.85, w: 7, h: 3.1 } },
         { id: 'gradcap', texture: 'dorm_gradcap', x: 11.15, y: 5.6, layer: 'floor', on: 'dresser' },
-        { id: 'shirt', texture: 'dorm_shirt', x: 12.95, y: 5.85, layer: 'floor', on: 'dresser' },
+        { id: 'shirt', texture: 'dorm_shirt', x: 12.85, y: 5.7, layer: 'floor', on: 'dresser' },
 
         // the sign by the door home
         { id: 'sign', texture: 'sign_right', x: 18.35, y: 2.55, layer: 'floor', depthRow: 3.4 }
@@ -58,8 +67,8 @@ export const dorm: RoomDef = {
         { id: 'gradcap', target: 'gradcap', spot: { x: 11.65, y: 5.5 }, facing: 'down', info: 'gradcap' },
         { id: 'shirt', target: 'shirt', spot: { x: 13.55, y: 5.5 }, facing: 'down', info: 'shirt' },
         {
-            id: 'beanbag', target: 'beanbag', spot: { x: 1.45, y: 3.3 }, facing: 'up', action: 'sit',
-            seat: { x: 1.45, y: 2.1, facing: 'down', pose: 'sink' }
+            id: 'beanbag', target: 'beanbag', spot: { x: 1.7, y: 3.5 }, facing: 'up', action: 'sit',
+            seat: { x: 1.7, y: 2.2, facing: 'down', pose: 'sink' }
         },
         {
             id: 'bed', target: 'bed', spot: { x: 5.0, y: 5.55 }, facing: 'down', action: 'sit',
@@ -81,6 +90,7 @@ export const dorm: RoomDef = {
     fairy: { y: -3.82, x0: 0.15, x1: 16.3, colors: [0xffd27a, 0xff9e7a, 0xfff0b0, 0xffb8d0] },
     labels: [
         { on: 'binder', x: 13.25, y: 0.36, text: 'Consulting\nstuff', size: 2.6, color: '#2a2130', bold: true },
+        { on: 'shirt', x: 13.6, y: 6.43, text: 'Hope For Hearing', size: 1.9, color: '#2f5aa8', bold: true },
         { on: 'sign', x: 19.0, y: 3.04, text: 'Home,\nToronto', size: 3, color: '#3a2a20', bold: true }
     ],
     clock: { x: 11.35, y: -3.1 },

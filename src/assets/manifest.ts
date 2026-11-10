@@ -79,14 +79,20 @@ export const ASSETS = {
         slot: { file: 'phone-screen.png', rect: { x: 2, y: 2, w: 6, h: 9 } }
     },
     dorm_closet: { w: 56, h: 104, paint: painters.dormCloset, outline: true, highlight: true },
-    dorm_beanbag: { w: 36, h: 28, paint: painters.dormBeanbag, outline: true, highlight: true },
+    dorm_beanbag: { w: 48, h: 38, paint: painters.dormBeanbag, outline: true, highlight: true },
     dorm_floorlamp: { w: 12, h: 56, paint: painters.dormFloorLamp, outline: true },
     dorm_bed: { w: 96, h: 54, paint: painters.dormBed, outline: true, highlight: true },
     dorm_rug: { w: 92, h: 40, paint: painters.dormRug, outline: false },
     dorm_dresser: { w: 112, h: 62, paint: painters.dormDresser, outline: true },
     dorm_gradcap: { w: 16, h: 13, paint: painters.dormGradcap, outline: true, highlight: true },
-    dorm_shirt: { w: 20, h: 11, paint: painters.dormShirt, outline: true, highlight: true },
+    dorm_shirt: { w: 24, h: 15, paint: painters.dormShirt, outline: true, highlight: true },
     dorm_clothes: { w: 31, h: 12, paint: painters.dormClothes, outline: true },
+    dorm_fridge: { w: 16, h: 26, paint: painters.dormFridge, outline: true },
+    dorm_trash: { w: 12, h: 14, paint: painters.dormTrash, outline: true },
+    dorm_laundry: { w: 22, h: 18, paint: painters.dormLaundry, outline: true },
+    dorm_sneakers: { w: 15, h: 6, paint: painters.dormSneakers, outline: true },
+    dorm_bag: { w: 14, h: 10, paint: painters.dormBag, outline: true },
+    dorm_backpack: { w: 18, h: 24, paint: painters.dormBackpack, outline: true },
 
     // home
     home_shelf: { w: 76, h: 112, paint: painters.homeShelf, outline: true, highlight: true },
