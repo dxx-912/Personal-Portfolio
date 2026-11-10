@@ -2,7 +2,7 @@
 
 export const music = {
     /** Background lofi volume, 0..1 (quiet but present). */
-    lofiVolume: 0.126,
+    lofiVolume: 0.088,
     /** How far the lofi drops while the speaker, the piano, or a video plays (0..1 of its volume). */
     duckTo: 0.05,
     /** Crossfade between lofi tracks, in seconds. */
