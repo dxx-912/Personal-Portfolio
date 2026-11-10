@@ -590,6 +590,19 @@ body.title-on .plain-link { opacity: 0; visibility: hidden; pointer-events: none
 .hud-btn .ico.off { opacity: 0.45; text-decoration: line-through; }
 @media (max-width: 560px), (max-height: 500px) { .hud-btn .ico .spk { width: 14px; height: 16px; } }
 
+/* a pixel arrow beside the portrait, bouncing toward it until About me is opened */
+.portrait { position: relative; }
+.portrait.unseen::after {
+    content: ''; position: absolute; left: calc(100% + 8px); top: 50%; width: 27px; height: 27px; margin-top: -13px;
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 9 9' shape-rendering='crispEdges' fill='%23ffd447'%3E%3Crect x='4' y='0' width='1' height='9'/%3E%3Crect x='3' y='1' width='1' height='7'/%3E%3Crect x='2' y='2' width='1' height='5'/%3E%3Crect x='1' y='3' width='1' height='3'/%3E%3Crect x='0' y='4' width='1' height='1'/%3E%3Crect x='5' y='3' width='4' height='3'/%3E%3C/svg%3E") center / contain no-repeat; image-rendering: pixelated; pointer-events: none;
+    filter: drop-shadow(2px 0 0 #1a1420) drop-shadow(-2px 0 0 #1a1420) drop-shadow(0 2px 0 #1a1420) drop-shadow(0 -2px 0 #1a1420);
+    animation: aboutnudge 0.9s ease-in-out infinite;
+}
+@keyframes aboutnudge { 50% { transform: translateX(7px); } }
+@media (max-width: 560px), (max-height: 500px) {
+    .portrait.unseen::after { width: 18px; height: 18px; margin-top: -9px; left: calc(100% + 6px); }
+}
+
 /* the room title card sits over the top of the room, under the quick view link, which never hides */
 body.title-on .plain-link { opacity: 0.85; visibility: visible; pointer-events: auto; }
 .title-card { top: calc(max(14px, env(safe-area-inset-top)) + 64px); }
