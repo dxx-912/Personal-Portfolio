@@ -221,7 +221,7 @@ function plantPot(p: Px, x: number, y: number, w: number, h: number) {
 // ---------- character ----------
 
 type Dir = 'down' | 'up' | 'side';
-type Pose = 'stand' | 'sit' | 'crouch' | 'hang' | 'cheer' | 'eat' | 'eatDown';
+type Pose = 'stand' | 'sit' | 'crouch' | 'hang' | 'cheer' | 'eat' | 'eatDown' | 'drink' | 'hold';
 
 // Light warm East Asian complexion (checked against the photos and the warm, dim room lighting).
 const SKIN = '#fde4cf', SKIN_D = '#f0c6a6', HAIR = '#2a1f24', HAIR_L = '#4d3b44', MOUTH = '#c48877', BLUSH = '#f6b8aa';
@@ -270,7 +270,7 @@ function drawDaniel(p: Px, dir: Dir, bob: number, step: number, pose: Pose, laye
             R(3, by, 1, 1, TEE_D, true); R(13, by, 1, 1, TEE_D, true);
             R(3, 0, 1, by, SKIN); R(13, 0, 1, by, SKIN);
             R(2, 0, 2, 1, SKIN); R(13, 0, 2, 1, SKIN);
-        } else if (pose === 'eat' || pose === 'eatDown') {
+        } else if (pose === 'eat' || pose === 'eatDown' || pose === 'drink' || pose === 'hold') {
             R(3, by, 1, 2, TEE_D, true); R(3, by + 2, 1, 2, SKIN); // left arm down
             R(13, by, 1, 1, TEE_D, true); // right sleeve; the forearm and fork are drawn over the head below
         } else if (pose === 'crouch') {
@@ -328,15 +328,26 @@ function drawDaniel(p: Px, dir: Dir, bob: number, step: number, pose: Pose, laye
         // fork lowered, ready for the next bite
         p.r(13, by + 1, 1, 2, SKIN); p.r(11, by + 2, 2, 1, SKIN);
         p.r(10, by, 1, 3, '#b7bfcc');
+    } else if (pose === 'drink') {
+        // can tipped up to the mouth
+        p.r(12, y0 + 10, 1, by - (y0 + 10) + 1, SKIN);
+        p.r(11, y0 + 8, 2, 2, SKIN);
+        p.r(7, y0 + 7, 5, 3, '#2b4a9a'); p.r(7, y0 + 7, 5, 1, '#4a6bc0'); p.r(9, y0 + 7, 2, 3, '#c9ced8');
+        p.r(6, y0 + 8, 1, 1, '#9aa3b0'); // the open top at the lips
+    } else if (pose === 'hold') {
+        // arm down at the side, can in hand
+        p.r(13, by + 1, 1, 2, SKIN);
+        p.r(13, by + 3, 3, 5, '#2b4a9a'); p.r(13, by + 3, 3, 1, '#c9ced8'); p.r(13, by + 5, 3, 3, '#c9ced8'); p.p(13, by + 4, '#4a6bc0');
+        p.r(13, by + 5, 1, 1, SKIN);
     }
 }
 
 /** Frame list for the character strip. Keep in sync with Boot's animations. */
 export const DANIEL_FRAMES = {
     down: 0, up: 6, side: 12, // each: idle0, idle1, walk0..3
-    sit: 18, crouch: 19, hang: 20, hangStrain: 21, cheer: 22, eat: 23, eatDown: 24
+    sit: 18, crouch: 19, hang: 20, hangStrain: 21, cheer: 22, eat: 23, eatDown: 24, drink: 25, hold: 26
 } as const;
-export const DANIEL_FRAME_COUNT = 25;
+export const DANIEL_FRAME_COUNT = 27;
 
 function danielStrip(layer: 'all' | 'shirt'): Painter {
     return (p) => {
@@ -356,6 +367,8 @@ function danielStrip(layer: 'all' | 'shirt'): Painter {
         drawDaniel(at(DANIEL_FRAMES.cheer), 'down', 0, 0, 'cheer', layer);
         drawDaniel(at(DANIEL_FRAMES.eat), 'down', 0, 0, 'eat', layer);
         drawDaniel(at(DANIEL_FRAMES.eatDown), 'down', 0, 0, 'eatDown', layer);
+        drawDaniel(at(DANIEL_FRAMES.drink), 'down', 0, 0, 'drink', layer);
+        drawDaniel(at(DANIEL_FRAMES.hold), 'down', 0, 0, 'hold', layer);
     };
 }
 
@@ -659,10 +672,20 @@ const dormCloset: Painter = (p, w, h) => {
     p.r(mid, 9, 1, h - 16, WOOD.deep);
     p.r(3, 10, 1, h - 20, WOOD.light);
     p.r(mid + 3, 10, 1, h - 20, WOOD.light);
-    p.r(mid - 4, 50, 2, 8, '#e3b867');
-    p.r(mid + 3, 50, 2, 8, '#e3b867');
-    // sleeve hanging out between the doors
-    p.r(mid - 1, 40, 3, 22, '#3f6fd0'); p.r(mid - 1, 40, 1, 22, '#5a8ae6'); p.r(mid - 1, 62, 3, 3, '#2f5aa8'); // cuff
+    // handles sit below the duck poster
+    const hy = 62;
+    p.r(mid - 4, hy, 2, 8, '#e3b867'); p.r(mid - 4, hy, 1, 8, '#f3d48a');
+    p.r(mid + 3, hy, 2, 8, '#e3b867'); p.r(mid + 3, hy, 1, 8, '#f3d48a');
+    // RA lanyard looped over the right handle: two blue strands down to a clip and an ID tag
+    const strap = '#2f74b5', strapL = '#5a9ad6';
+    p.r(mid + 2, hy + 1, 1, 9, strap); p.r(mid + 5, hy + 1, 1, 9, strap); p.r(mid + 3, hy - 1, 2, 1, strap);
+    p.p(mid + 2, hy + 3, strapL); p.p(mid + 5, hy + 6, strapL);
+    p.r(mid + 3, hy + 10, 2, 1, strap); p.r(mid + 3, hy + 11, 2, 2, '#b7bfcc'); // clip
+    const tx0 = mid - 2, ty0 = hy + 13;
+    p.box(tx0, ty0, 13, 15, '#f7f5ee');
+    p.r(tx0 + 1, ty0 + 1, 11, 3, UCLA_BLUE); p.r(tx0 + 5, ty0 + 2, 3, 1, '#1a1420'); // top band with the punch slot
+    pixelText(p, 'RA', tx0 + 3, ty0 + 6, UCLA_BLUE_D);
+    p.r(tx0 + 2, ty0 + 12, 9, 1, '#b7bfcc'); // name line
     p.r(1, h - 5, w - 2, 4, WOOD.deep);
 };
 
@@ -760,14 +783,32 @@ const dormDresser: Painter = (p, w, h) => {
     // top surface
     p.box(0, t, w, topH, WOOD.light);
     p.r(1, t + topH - 3, w - 2, 2, '#c08a5c');
+    // towel draped over the left edge, hanging down the front
+    const towel = '#e48a6a', towelD = '#c46a4c', towelL = '#f2a888';
+    p.r(1, t + 4, 8, 8, towel); p.r(1, t + 4, 8, 1, towelL); p.r(1, t + 9, 8, 1, towelD);
+    p.r(1, t + 6, 8, 1, '#f4f1ea'); p.r(1, t + 8, 8, 1, '#f4f1ea'); // stripes
     // potted plant: a bushy fan of leaves sitting in the pot
-    const px = w - 16, py = t + 6;
+    const px = w - 15, py = t + 6;
     p.r(px - 1, py - 8, 12, 9, LEAF); p.r(px + 1, py - 11, 8, 4, LEAF); p.r(px - 3, py - 5, 3, 4, LEAF_D); p.r(px + 10, py - 6, 3, 4, LEAF_D);
     p.r(px + 3, py - 13, 2, 3, LEAF_L); p.p(px, py - 7, LEAF_L); p.p(px + 8, py - 9, LEAF_L); p.p(px + 5, py - 5, LEAF_D); p.p(px + 2, py - 3, LEAF_D);
     plantPot(p, px, py, 10, 9);
+    // student clutter, one cluster right of the shirt: red cup, a bag of chips, headphones, a green cap
+    const ed = '#1a1420';
+    // red party cup
+    p.r(66, t + 3, 7, 1, ed); p.r(66, t + 4, 7, 9, '#d23a33'); p.r(67, t + 13, 5, 1, '#d23a33');
+    p.r(66, t + 4, 7, 2, '#f4f1ea'); p.r(67, t + 6, 1, 6, '#ec6a5c'); p.r(65, t + 4, 1, 9, ed); p.r(73, t + 4, 1, 9, ed); p.r(66, t + 14, 7, 1, ed);
+    // bag of chips with a crinkled top
+    p.r(75, t + 5, 9, 11, '#f2c230'); p.r(75, t + 4, 9, 1, '#e3a820'); p.p(76, t + 3, '#e3a820'); p.p(79, t + 3, '#e3a820'); p.p(82, t + 3, '#e3a820');
+    p.r(75, t + 9, 9, 3, '#d23a33'); p.r(77, t + 13, 5, 1, '#e3a820'); p.p(78, t + 7, '#fff3b0');
+    p.r(74, t + 4, 1, 12, ed); p.r(84, t + 4, 1, 12, ed); p.r(75, t + 16, 9, 1, ed);
     // black over-ear headphones (decor)
-    p.r(70, t + 6, 12, 2, '#2a2b31'); p.r(69, t + 7, 2, 6, '#2a2b31'); p.r(81, t + 7, 2, 6, '#2a2b31');
-    p.box(67, t + 11, 5, 6, '#1d1d24'); p.box(80, t + 11, 5, 6, '#1d1d24');
+    p.r(89, t + 6, 10, 2, '#2a2b31'); p.r(87, t + 7, 2, 6, '#2a2b31'); p.r(98, t + 7, 2, 6, '#2a2b31');
+    p.box(85, t + 11, 5, 6, '#1d1d24'); p.box(97, t + 11, 5, 6, '#1d1d24');
+    // a second baseball cap, green, leaning on the plant pot with the brim out front
+    p.r(105, t + 15, 11, 5, '#3f7a4a'); p.r(107, t + 14, 7, 1, '#3f7a4a'); p.r(108, t + 15, 4, 1, '#5a9a64'); p.p(110, t + 14, '#2f5a38');
+    p.r(102, t + 19, 10, 2, '#2f5a38'); // brim
+    p.r(106, t + 13, 9, 1, ed); p.p(105, t + 14, ed); p.p(115, t + 14, ed); p.r(116, t + 15, 1, 5, ed);
+    p.r(101, t + 19, 1, 2, ed); p.r(102, t + 21, 10, 1, ed); p.r(104, t + 15, 1, 4, ed);
     // front with four drawers
     p.box(0, t + topH - 1, w, h - t - topH + 1, WOOD.dark);
     const half = Math.floor(w / 2), fy = t + topH + 1, fh = Math.floor((h - fy - 4) / 2);
@@ -778,6 +819,10 @@ const dormDresser: Painter = (p, w, h) => {
         p.r(half + Math.floor(half / 2) - 3, fy + r * (fh + 1) + Math.floor(fh / 2), 6, 2, '#e3b867');
     }
     p.r(1, h - 3, w - 2, 2, WOOD.deep);
+    // the towel's front half hangs over the top left drawer
+    p.r(1, t + topH - 1, 8, 13, towel); p.r(1, t + topH + 3, 8, 1, '#f4f1ea'); p.r(1, t + topH + 5, 8, 1, '#f4f1ea'); p.r(1, t + topH + 8, 8, 1, towelL);
+    p.r(1, t + topH + 11, 8, 1, towelD); p.r(8, t + topH - 1, 1, 13, towelD);
+    p.r(1, t + topH + 12, 1, 2, towelL); p.r(4, t + topH + 12, 1, 2, towelL); p.r(7, t + topH + 12, 1, 2, towelL); // fringe
 };
 
 const dormGradcap: Painter = (p) => {
@@ -787,7 +832,7 @@ const dormGradcap: Painter = (p) => {
     p.p(8, 4, '#f2c230'); p.r(13, 4, 1, 6, '#f2c230'); p.r(12, 10, 3, 2, '#f2c230');
 };
 
-/** A folded white T shirt: round collar, sleeves folded in, soft fabric shading, a small blue print. */
+/** A folded white T shirt: round collar, sleeves folded in, soft fabric shading. The print is text only. */
 const dormShirt: Painter = (p, w, h) => {
     const white = '#f6f6f2', shade = '#dfe2e8', deep = '#c9ced8';
     // folded body, slightly narrower at the hem
@@ -803,21 +848,46 @@ const dormShirt: Painter = (p, w, h) => {
     p.p(cx - 4, 3, shade); p.p(cx + 3, 3, shade);
     // soft fold shading
     p.r(2, h - 4, w - 4, 1, shade); p.r(w - 3, 4, 1, h - 6, shade); p.r(3, 9, 1, 3, shade);
-    // small print: a tiny blue heart (the words are a crisp label on top)
-    const b = '#2f5aa8';
-    p.r(cx - 2, 6, 2, 1, b); p.r(cx + 1, 6, 2, 1, b); p.r(cx - 2, 7, 5, 1, b); p.r(cx - 1, 8, 3, 1, b); p.p(cx, 9, b);
+    // the "Hope For Hearing" print is a crisp label on top (see the room's labels)
 };
 
-/** Mini fridge with a few magnets. */
+/** Mini fridge with a few magnets. Frame 1: door swung open to the left, lit inside, cans on the shelf. */
 const dormFridge: Painter = (p, w, h) => {
-    p.box(0, 0, w, h, '#e9eef2');
-    p.r(1, 1, w - 2, 1, '#ffffff');
-    p.r(1, 9, w - 2, 1, '#b9c2cc'); // freezer line
-    p.r(w - 3, 3, 1, 4, '#8c95a4'); p.r(w - 3, 12, 1, 7, '#8c95a4'); // handles
-    p.r(1, h - 2, w - 2, 1, '#9aa3b0');
-    // magnets
-    p.r(3, 4, 2, 2, '#d33a3a'); p.r(6, 12, 2, 2, '#2f74b5'); p.r(3, 15, 3, 2, '#f2c230'); p.r(7, 17, 2, 2, '#4f9a5a');
-    p.r(2, 11, 4, 5, '#f7f3ea'); p.p(3, 12, '#9a8f86'); p.r(3, 13, 2, 1, '#9a8f86'); // a photo held up by a magnet
+    const bw = 22, ox = w - bw; // the body sits at the right; the strip on the left is room for the open door
+    const can = (q: Px, x: number, y: number) => {
+        q.r(x, y, 3, 6, '#2b4a9a'); q.r(x, y, 3, 1, '#c9ced8'); q.r(x, y + 3, 3, 3, '#c9ced8'); q.p(x, y + 1, '#4a6bc0');
+    };
+    const draw = (q: Px, open: boolean) => {
+        q.box(ox, 0, bw, h, '#e9eef2');
+        q.r(ox + 1, h - 2, bw - 2, 1, '#9aa3b0');
+        const fz = Math.round(h * 0.34);
+        if (!open) {
+            q.r(ox + 1, 1, bw - 2, 1, '#ffffff');
+            q.r(ox + 1, fz, bw - 2, 1, '#b9c2cc'); // freezer line
+            q.r(ox + bw - 4, 3, 1, fz - 5, '#8c95a4'); q.r(ox + bw - 4, fz + 3, 1, 10, '#8c95a4'); // handles
+            // magnets and a photo
+            q.r(ox + 3, 4, 3, 2, '#d33a3a'); q.r(ox + 9, 5, 2, 2, '#f2c230');
+            q.r(ox + 3, fz + 4, 6, 7, '#f7f3ea'); q.r(ox + 4, fz + 5, 4, 3, '#9fb8d6'); q.r(ox + 4, fz + 8, 4, 1, '#7a9a5a'); q.r(ox + 5, fz + 3, 2, 2, '#2f74b5');
+            q.r(ox + 11, fz + 6, 2, 2, '#4f9a5a'); q.r(ox + 12, fz + 12, 3, 2, '#d33a3a');
+            q.r(ox + 6, fz + 14, 7, 2, '#f7de6a'); // a sticky note
+        } else {
+            // lit inside: freezer box, two shelves, a row of cans, a takeout box and a carton
+            q.r(ox + 1, 1, bw - 2, h - 3, '#fff3cc');
+            q.r(ox + 2, 2, bw - 4, fz - 3, '#dfe6ee'); q.r(ox + 3, fz - 3, bw - 6, 1, '#b9c2cc'); // freezer box
+            q.r(ox + 1, fz + 8, bw - 2, 1, '#c9ced8'); q.r(ox + 1, h - 8, bw - 2, 1, '#c9ced8'); // shelves
+            for (let i = 0; i < 4; i++) can(q, ox + 3 + i * 4, fz + 2);
+            q.r(ox + 3, h - 14, 8, 5, '#f4f1ea'); q.r(ox + 3, h - 14, 8, 1, '#c8423b'); // takeout box
+            q.r(ox + 14, h - 15, 4, 6, '#f7f7f7'); q.r(ox + 14, h - 13, 4, 2, '#2f74b5'); // carton
+            q.r(ox + 4, h - 7, 6, 4, '#8fc98a'); q.r(ox + 12, h - 6, 5, 3, '#f2c230'); // produce drawer
+            // the door, swung open toward the viewer: a narrow panel with its own shelf
+            q.box(ox - 7, 1, 8, h - 1, '#dfe5ea');
+            q.r(ox - 6, 10, 6, 1, '#b9c2cc'); q.r(ox - 6, 20, 6, 1, '#b9c2cc');
+            q.r(ox - 5, 6, 2, 4, '#c8423b'); q.r(ox - 3, 7, 2, 3, '#f2c230'); // condiment bottles
+            q.r(ox - 5, 15, 2, 5, '#4f9a5a');
+        }
+    };
+    draw(p, false);
+    draw(p.at(w, 0), true);
 };
 
 /** Waste basket: wider at the top, ribbed, a dark bin bag folded over the rim, paper poking out, one ball that missed. */
@@ -882,24 +952,35 @@ const dormBackpack: Painter = (p, w, h) => {
     p.r(x0 + 1, h - 2, 11, 1, '#8a2822');
 };
 
-/** A lone sock, then jeans tossed on the floor with a white tee draped over them. */
-const dormClothes: Painter = (p) => {
-    // sock, lying on its side to the left
-    const sock = '#f2f0ea', sockD = '#cfcabe';
-    p.r(0, 11, 6, 2, sock); p.r(4, 7, 2, 5, sock); p.r(4, 7, 2, 1, '#c8423b'); p.r(4, 9, 2, 1, '#c8423b');
-    p.p(0, 12, sockD); p.p(5, 12, sockD);
-    // jeans: waistband with a gold button on the left, one long leg stretched out to the right
+/** Jeans tossed on the floor, legs splayed, a gold button at the waist. */
+const dormJeans: Painter = (p) => {
     const jean = '#3f5f8f', jeanD = '#2f4a72', jeanL = '#5a7aa8';
-    p.r(8, 7, 11, 6, jean); p.r(8, 7, 11, 1, jeanD); p.p(10, 7, '#e3b867');
-    p.r(18, 9, 12, 4, jean); p.r(18, 10, 11, 1, jeanL); p.r(29, 9, 1, 4, jeanD); p.r(18, 12, 12, 1, jeanD);
-    p.r(9, 12, 9, 1, jeanD);
-    // white tee draped on top: a clear T with both sleeves and a collar
+    p.r(0, 1, 9, 5, jean); p.r(0, 1, 9, 1, jeanD); p.p(2, 1, '#e3b867'); // waist and button
+    p.r(8, 2, 13, 3, jean); p.r(8, 3, 12, 1, jeanL); p.r(20, 2, 1, 3, jeanD); // one leg straight out
+    p.r(6, 5, 4, 3, jean); p.r(8, 7, 7, 2, jean); p.r(14, 7, 1, 2, jeanD); // the other leg bent down
+    p.r(1, 5, 5, 1, jeanD); p.r(10, 4, 3, 1, jeanD);
+};
+
+/** A white tee lying crumpled: clear T shape with both sleeves and a collar. */
+const dormTeeFloor: Painter = (p) => {
     const tee = '#ecebe4', teeD = '#c9c6bd';
-    p.r(12, 2, 8, 7, tee); // body
-    p.r(8, 2, 4, 3, tee); p.r(20, 2, 4, 3, tee); // sleeves
-    p.r(8, 4, 4, 1, teeD); p.r(20, 4, 4, 1, teeD); // sleeve hems
-    p.p(14, 2, teeD); p.p(17, 2, teeD); p.r(15, 3, 2, 1, teeD); // collar
-    p.r(13, 6, 3, 1, teeD); p.r(17, 7, 2, 1, teeD); p.r(12, 8, 8, 1, teeD); // crumples and hem
+    p.r(4, 0, 8, 8, tee); p.r(0, 0, 4, 3, tee); p.r(12, 0, 4, 3, tee);
+    p.r(0, 2, 4, 1, teeD); p.r(12, 2, 4, 1, teeD);
+    p.p(6, 0, teeD); p.p(9, 0, teeD); p.r(7, 1, 2, 1, teeD); // collar
+    p.r(5, 4, 3, 1, teeD); p.r(9, 6, 2, 1, teeD); p.r(4, 7, 8, 1, teeD);
+};
+
+/** A grey shirt balled up. */
+const dormShirtBall: Painter = (p) => {
+    p.r(1, 1, 8, 4, '#6b7686'); p.r(0, 2, 10, 2, '#6b7686'); p.r(2, 0, 5, 1, '#6b7686');
+    p.r(2, 1, 3, 1, '#8590a0'); p.r(3, 3, 4, 1, '#55606f'); p.r(7, 2, 1, 2, '#55606f');
+};
+
+/** A lone sock: white with two red stripes. */
+const dormSock: Painter = (p) => {
+    const sock = '#f2f0ea', sockD = '#cfcabe';
+    p.r(0, 4, 6, 2, sock); p.r(4, 0, 2, 5, sock); p.r(4, 0, 2, 1, '#c8423b'); p.r(4, 2, 2, 1, '#c8423b');
+    p.p(0, 5, sockD); p.p(5, 5, sockD);
 };
 
 // ---------- home ----------
@@ -1221,8 +1302,8 @@ export const painters = {
     daniel: danielStrip('all'), danielShirt: danielStrip('shirt'), danielSleep, cat,
     slotGraduation, slotDamn, slotDuck, slotIgor, slotEmpty, slotHome1, slotHome2, slotHome3,
     dormWindow, dormPennant, dormTodo, dormDesk, dormLaptop, dormBinder, dormPhone,
-    dormCloset, dormBeanbag, dormFloorLamp, dormBed, dormRug, dormDresser, dormGradcap, dormShirt, dormClothes,
-    dormFridge, dormTrash, dormLaundry, dormSneakers, dormBag, dormBackpack,
+    dormCloset, dormBeanbag, dormFloorLamp, dormBed, dormRug, dormDresser, dormGradcap, dormShirt,
+    dormFridge, dormTrash, dormLaundry, dormSneakers, dormBag, dormBackpack, dormJeans, dormTeeFloor, dormShirtBall, dormSock,
     homeShelf, homeFloorPlant, homeWindow, homeHoodie, homePullup, homeTable, homeSpeaker, homeCamera,
     homeNightstand, homeBed, homeDesk, homePiano, homePie, homeRug, homeLongboard
 } satisfies Record<string, Painter>;

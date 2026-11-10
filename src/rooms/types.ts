@@ -31,7 +31,7 @@ export interface PropDef {
 }
 
 /** What E does. */
-export type ActionKind = 'sit' | 'outfit' | 'pullup' | 'music' | 'snap' | 'piano' | 'pet' | 'ride' | 'eat';
+export type ActionKind = 'sit' | 'outfit' | 'pullup' | 'music' | 'snap' | 'piano' | 'pet' | 'ride' | 'eat' | 'drink';
 
 export interface InteractableDef {
     /** Unique within the room. */

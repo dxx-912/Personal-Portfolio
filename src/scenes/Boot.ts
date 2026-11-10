@@ -46,9 +46,22 @@ export class Boot extends Phaser.Scene {
             ? this.textures.get(slotKey(def.slot.file)).getSourceImage() as CanvasImageSource : null;
         if (!(def.slot?.hideIfMissing && !slotImg)) def.paint(new Px(ctx), def.w, def.h);
         if (slotImg && def.slot) {
-            const r = def.slot.rect ?? { x: 1, y: 1, w: def.w - 2, h: def.h - 2 };
-            if (def.slot.hideIfMissing && !def.slot.rect) ctx.fillStyle = '#f7f3ea', ctx.fillRect(0, 0, def.w, def.h);
-            drawCover(ctx, slotImg, r.x, r.y, r.w, r.h);
+            const slot = def.slot;
+            const r = slot.rect ?? { x: 1, y: 1, w: def.w - 2, h: def.h - 2 };
+            if (slot.hideIfMissing && !slot.rect) ctx.fillStyle = '#f7f3ea', ctx.fillRect(0, 0, def.w, def.h);
+            const src = prepSlot(slotImg, slot.knockout ?? false, slot.fit === 'contain');
+            const n = slot.sharp ?? 1;
+            if (n > 1) {
+                // drawn at n times the room's resolution and shown at 1/n scale, so words stay readable
+                const [sc, sctx] = makeCanvas(r.w * n, r.h * n);
+                drawSlot(sctx, src, 0, 0, r.w * n, r.h * n, slot.fit ?? 'cover');
+                const st = this.textures.addCanvas(`${key}#sharp`, sc)!;
+                st.setFilter(Phaser.Textures.FilterMode.LINEAR);
+                st.customData = { x: r.x, y: r.y, n };
+                if (!slot.knockout) ctx.fillStyle = '#111', ctx.fillRect(r.x, r.y, r.w, r.h);
+            } else {
+                drawSlot(ctx, src, r.x, r.y, r.w, r.h, slot.fit ?? 'cover');
+            }
         }
         if (def.outline) for (let f = 0; f < frames; f++) outlineRegion(ctx, f * def.w, 0, def.w, def.h);
         const tex = this.textures.addCanvas(key, canvas)!;
@@ -85,13 +98,51 @@ export class Boot extends Phaser.Scene {
  * Scales an image down to cover the slot, centre cropped. Averaging (not nearest neighbour) on the way
  * down keeps tiny slots from turning into noise; the result is still drawn as hard pixels in game.
  */
-function drawCover(ctx: CanvasRenderingContext2D, img: CanvasImageSource, x: number, y: number, w: number, h: number) {
+function drawSlot(ctx: CanvasRenderingContext2D, img: CanvasImageSource, x: number, y: number, w: number, h: number, fit: 'cover' | 'contain') {
     const iw = (img as HTMLImageElement).width, ih = (img as HTMLImageElement).height;
     if (!iw || !ih) return;
-    const s = Math.max(w / iw, h / ih);
-    const sw = w / s, sh = h / s;
     ctx.imageSmoothingEnabled = true;
     ctx.imageSmoothingQuality = 'high';
-    ctx.drawImage(img, (iw - sw) / 2, (ih - sh) / 2, sw, sh, x, y, w, h);
+    if (fit === 'contain') {
+        const s = Math.min(w / iw, h / ih);
+        const dw = iw * s, dh = ih * s;
+        ctx.drawImage(img, 0, 0, iw, ih, x + (w - dw) / 2, y + (h - dh) / 2, dw, dh);
+    } else {
+        const s = Math.max(w / iw, h / ih);
+        const sw = w / s, sh = h / s;
+        ctx.drawImage(img, (iw - sw) / 2, (ih - sh) / 2, sw, sh, x, y, w, h);
+    }
     ctx.imageSmoothingEnabled = false;
+}
+
+/**
+ * Optional clean up before drawing: knockout turns a dark background see-through (alpha follows
+ * brightness, so edges stay soft), trim crops to the part that differs from the background.
+ */
+function prepSlot(img: CanvasImageSource, knockout: boolean, trim: boolean): CanvasImageSource {
+    if (!knockout && !trim) return img;
+    const iw = (img as HTMLImageElement).width, ih = (img as HTMLImageElement).height;
+    if (!iw || !ih) return img;
+    const [c, x] = makeCanvas(iw, ih);
+    x.drawImage(img, 0, 0);
+    const d = x.getImageData(0, 0, iw, ih);
+    const px = d.data;
+    const br = px[0], bg = px[1], bb = px[2]; // the top left pixel is the background colour
+    let x0 = iw, y0 = ih, x1 = -1, y1 = -1;
+    for (let i = 0; i < iw * ih; i++) {
+        const o = i * 4;
+        const diff = Math.max(Math.abs(px[o] - br), Math.abs(px[o + 1] - bg), Math.abs(px[o + 2] - bb));
+        if (knockout) px[o + 3] = Math.round(Math.max(0, Math.min(1, (diff - 30) / 90)) * px[o + 3]);
+        if (diff > 60) {
+            const cx = i % iw, cy = (i / iw) | 0;
+            if (cx < x0) x0 = cx; if (cx > x1) x1 = cx; if (cy < y0) y0 = cy; if (cy > y1) y1 = cy;
+        }
+    }
+    x.putImageData(d, 0, 0);
+    if (!trim || x1 < 0) return c;
+    const pad = 2;
+    x0 = Math.max(0, x0 - pad); y0 = Math.max(0, y0 - pad); x1 = Math.min(iw - 1, x1 + pad); y1 = Math.min(ih - 1, y1 + pad);
+    const [t, tctx] = makeCanvas(x1 - x0 + 1, y1 - y0 + 1);
+    tctx.drawImage(c, x0, y0, x1 - x0 + 1, y1 - y0 + 1, 0, 0, x1 - x0 + 1, y1 - y0 + 1);
+    return t;
 }

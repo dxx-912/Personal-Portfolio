@@ -24,7 +24,7 @@ export function initHud() {
             <button class="portrait" hidden aria-label="${esc(ui.aboutButton)}" title="${esc(ui.aboutButton)}">
                 <canvas class="face" width="16" height="13" aria-hidden="true"></canvas>
                 <span class="stats">${profile.stats.map((s) => { const v = rollStat(s); return `
-                    <span class="stat" style="--c: ${esc(s.color)}; --f: ${Math.max(0, Math.min(1, v / s.max))}">
+                    <span class="stat" data-stat="${esc(s.label)}" style="--c: ${esc(s.color)}; --f: ${Math.max(0, Math.min(1, v / s.max))}">
                         <span class="bar"></span><span class="txt">${esc(s.label)} ${v}/${s.max}</span>
                     </span>`; }).join('')}
                 </span>
@@ -372,4 +372,15 @@ export function setWakeButton(on: boolean) {
     if (!actBtn) return;
     actBtn.disabled = !on;
     if (on) actBtn.textContent = ui.wakeTouch.split(' ')[0];
+}
+
+/** Fill a HUD stat bar to its max (the fridge refills Caffeine), with a short flash. */
+export function fillStat(label: string) {
+    const s = profile.stats.find((x) => x.label === label);
+    const el = document.querySelector<HTMLElement>(`.portrait .stat[data-stat="${label}"]`);
+    if (!s || !el) return;
+    el.style.setProperty('--f', '1');
+    const txt = el.querySelector('.txt');
+    if (txt) txt.textContent = `${s.label} ${s.max}/${s.max}`;
+    el.classList.remove('refill'); void el.offsetWidth; el.classList.add('refill');
 }

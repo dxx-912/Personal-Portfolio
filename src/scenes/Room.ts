@@ -17,7 +17,7 @@ import { NavGrid, type Pt, type Rect } from '../game/nav';
 import { lastInputAt, markInput, moveVector, onAction, type Action } from '../ui/input';
 import { closePanel, openPanel } from '../ui/panel';
 import {
-    hideBubble, maybeSuggestQuickView, moveBubble, setPortrait, setPrompt, setWakeButton, showBubble, showMessage, showTitle, toast,
+    fillStat, hideBubble, maybeSuggestQuickView, moveBubble, setPortrait, setPrompt, setWakeButton, showBubble, showMessage, showTitle, toast,
     type PromptSpec
 } from '../ui/hud';
 import { flash, openPiano, openSnapshot } from '../ui/overlays';
@@ -183,6 +183,12 @@ export class Room extends Phaser.Scene {
                 : on ? on.depth + 0.01 + i * 0.0001
                 : (p.depthRow !== undefined ? FLOOR_Y + p.depthRow * TILE : bottom);
             img.setDepth(depth);
+            // slots with words (duck poster, hoodie logo) get a sharper copy of the image laid over the pixels
+            const sharpKey = `${p.texture}#sharp`;
+            if (this.textures.exists(sharpKey)) {
+                const sd = this.textures.get(sharpKey).customData as { x: number; y: number; n: number };
+                this.add.image(img.x + sd.x, img.y + sd.y, sharpKey).setOrigin(0).setScale(1 / sd.n).setDepth(depth + 0.00005);
+            }
             this.sprites.set(p.id, img);
             if (p.solid) this.solids.push({ x: tx(p.solid.x), y: ty(p.solid.y), w: p.solid.w * TILE, h: p.solid.h * TILE });
         });
@@ -687,7 +693,7 @@ export class Room extends Phaser.Scene {
         if (a === 'music') return isFeaturedOn() ? ui.verbs.musicOff : ui.verbs.musicOn;
         const map: Record<Exclude<ActionKind, 'music'>, string> = {
             sit: ui.verbs.sit, outfit: ui.verbs.outfit, pullup: ui.verbs.pullup, snap: ui.verbs.snap,
-            piano: ui.verbs.piano, pet: ui.verbs.pet, ride: ui.verbs.ride, eat: ui.verbs.eat
+            piano: ui.verbs.piano, pet: ui.verbs.pet, ride: ui.verbs.ride, eat: ui.verbs.eat, drink: ui.verbs.drink
         };
         return map[a];
     }
@@ -704,6 +710,7 @@ export class Room extends Phaser.Scene {
             case 'pet': this.petCat(); break;
             case 'ride': this.mount(t); break;
             case 'eat': this.eatPie(t); break;
+            case 'drink': this.drinkRedBull(t); break;
         }
     }
 
@@ -891,6 +898,40 @@ export class Room extends Phaser.Scene {
             this.busy = false;
             showBubble('act', ui.yum, 'speech');
             this.time.delayedCall(1700, () => hideBubble('act'));
+        });
+    }
+
+    /** E at the fridge: open it, grab a Red Bull, drink, and Caffeine fills back to the top. */
+    private drinkRedBull(t: Target) {
+        const fridge = t.sprite as Phaser.GameObjects.Image;
+        this.busy = true;
+        this.player.cancelPath();
+        this.player.stop();
+        this.player.face('up');
+        fridge.setFrame(1);
+        sfx('open');
+        this.time.delayedCall(600, () => {
+            fridge.setFrame(0);
+            sfx('close');
+            this.player.face('down');
+            this.player.pose(DANIEL_FRAMES.hold);
+        });
+        this.time.delayedCall(950, () => sfx('can'));
+        let sip = 0;
+        this.time.delayedCall(1250, () => this.time.addEvent({
+            delay: 280, repeat: 5, callback: () => {
+                sip++;
+                this.player.pose(sip % 2 ? DANIEL_FRAMES.drink : DANIEL_FRAMES.hold);
+                if (sip % 2) sfx('gulp');
+            }
+        }));
+        this.time.delayedCall(1250 + 280 * 6 + 200, () => {
+            this.player.pose(null);
+            this.player.face('down');
+            this.busy = false;
+            fillStat('Caffeine');
+            showBubble('act', ui.drinkLine, 'speech');
+            this.time.delayedCall(1800, () => hideBubble('act'));
         });
     }
 

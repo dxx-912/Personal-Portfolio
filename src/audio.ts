@@ -64,7 +64,7 @@ function hiss(dur: number, vol: number, filter: BiquadFilterType, freq: number, 
     s.stop(t + dur + 0.02);
 }
 
-export type Sfx = 'open' | 'close' | 'tick' | 'found' | 'door' | 'wake' | 'meow' | 'purr' | 'puff' | 'shutter'
+export type Sfx = 'can' | 'gulp' | 'open' | 'close' | 'tick' | 'found' | 'door' | 'wake' | 'meow' | 'purr' | 'puff' | 'shutter'
     | 'rep' | 'nice' | 'bump' | 'hop' | 'chomp';
 
 export function sfx(name: Sfx) {
@@ -84,6 +84,8 @@ export function sfx(name: Sfx) {
         case 'nice': blip(523, 0.09, 'square', 0.05); blip(659, 0.09, 'square', 0.05, undefined, 0.09); blip(784, 0.16, 'square', 0.05, undefined, 0.18); break;
         case 'bump': blip(120, 0.08, 'triangle', 0.08, 80); break;
         case 'hop': blip(300, 0.08, 'square', 0.04, 600); break;
+        case 'can': blip(1400, 0.02, 'square', 0.03, 900); hiss(0.35, 0.07, 'highpass', 2600, 0.03); break;
+        case 'gulp': blip(170, 0.09, 'sine', 0.07, 110); break;
     }
 }
 

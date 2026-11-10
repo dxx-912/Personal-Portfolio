@@ -23,7 +23,7 @@ export const profile: Profile = {
     // Joke stats for the HUD portrait. Caffeine and Sleep re-roll on every visit (Sleep leans low).
     stats: [
         { label: 'Caffeine', value: 7, max: 7, color: '#d4493a', random: { min: 1 } },
-        { label: 'Sleep', value: 2, max: 6, color: '#8a96a5', random: { min: 0, lowBias: true } },
+        { label: 'Sleep', value: 2, max: 8, color: '#8a96a5', random: { min: 0, lowBias: true } },
         { label: 'Curiosity', value: 200, max: 200, color: '#3d7fd4' }
     ],
 

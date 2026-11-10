@@ -16,6 +16,15 @@ export interface SlotDef {
     rect?: { x: number; y: number; w: number; h: number };
     /** Draw nothing at all until the file exists (optional extras). */
     hideIfMissing?: boolean;
+    /**
+     * Render the image this many times sharper than the room's pixels, as an overlay on top of the
+     * sprite. For slots whose words must stay legible (the duck poster, the hoodie logo).
+     */
+    sharp?: number;
+    /** 'cover' (default) fills the rect and crops; 'contain' trims the background and fits the whole image. */
+    fit?: 'cover' | 'contain';
+    /** Treat the image's dark background as see-through (a white logo on black prints straight onto fabric). */
+    knockout?: boolean;
 }
 
 export interface AssetDef {
@@ -65,7 +74,7 @@ export const ASSETS = {
     // image slots (see the note at the top)
     slot_poster_graduation: { w: 18, h: 24, paint: painters.slotGraduation, outline: true, slot: { file: 'poster-graduation.png' } },
     slot_poster_damn: { w: 18, h: 24, paint: painters.slotDamn, outline: true, slot: { file: 'poster-damn.png' } },
-    slot_poster_duck: { w: 25, h: 34, paint: painters.slotDuck, outline: true, slot: { file: 'poster-duck.png' } },
+    slot_poster_duck: { w: 36, h: 48, paint: painters.slotDuck, outline: true, slot: { file: 'poster-duck.png', sharp: 4 } },
     slot_poster_igor: { w: 18, h: 24, paint: painters.slotIgor, outline: true, slot: { file: 'poster-igor.png' } },
     slot_poster_home_1: { w: 18, h: 24, paint: painters.slotHome1, outline: true, slot: { file: 'poster-home-1.png' } },
     slot_poster_home_2: { w: 16, h: 20, paint: painters.slotHome2, outline: true, slot: { file: 'poster-home-2.png' } },
@@ -88,11 +97,14 @@ export const ASSETS = {
     dorm_floorlamp: { w: 12, h: 56, paint: painters.dormFloorLamp, outline: true },
     dorm_bed: { w: 96, h: 54, paint: painters.dormBed, outline: true, highlight: true },
     dorm_rug: { w: 92, h: 40, paint: painters.dormRug, outline: false },
-    dorm_dresser: { w: 112, h: 62, paint: painters.dormDresser, outline: true },
+    dorm_dresser: { w: 128, h: 62, paint: painters.dormDresser, outline: true },
     dorm_gradcap: { w: 16, h: 13, paint: painters.dormGradcap, outline: true, highlight: true },
     dorm_shirt: { w: 24, h: 15, paint: painters.dormShirt, outline: true, highlight: true },
-    dorm_clothes: { w: 30, h: 14, paint: painters.dormClothes, outline: true },
-    dorm_fridge: { w: 16, h: 26, paint: painters.dormFridge, outline: true },
+    dorm_jeans: { w: 21, h: 9, paint: painters.dormJeans, outline: true },
+    dorm_tee_floor: { w: 16, h: 8, paint: painters.dormTeeFloor, outline: true },
+    dorm_shirt_ball: { w: 10, h: 5, paint: painters.dormShirtBall, outline: true },
+    dorm_sock: { w: 6, h: 6, paint: painters.dormSock, outline: true },
+    dorm_fridge: { w: 30, h: 32, frames: 2, paint: painters.dormFridge, outline: true, highlight: true },
     dorm_trash: { w: 18, h: 18, paint: painters.dormTrash, outline: true },
     dorm_laundry: { w: 22, h: 18, paint: painters.dormLaundry, outline: true },
     dorm_sneakers: { w: 15, h: 6, paint: painters.dormSneakers, outline: true },
@@ -105,7 +117,7 @@ export const ASSETS = {
     home_window: { w: 76, h: 46, frames: 3, paint: painters.homeWindow, outline: true, highlight: true },
     home_hoodie: {
         w: 28, h: 30, paint: painters.homeHoodie, outline: true,
-        slot: { file: 'hoodie-logo.png', rect: { x: 7, y: 9, w: 14, h: 8 } }
+        slot: { file: 'hoodie-logo.png', rect: { x: 6, y: 8, w: 16, h: 18 }, sharp: 4, fit: 'contain', knockout: true }
     },
     home_pullup: { w: 58, h: 62, paint: painters.homePullup, outline: true, highlight: true },
     home_table: { w: 56, h: 98, paint: painters.homeTable, outline: true },

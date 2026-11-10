@@ -533,3 +533,9 @@ body.title-on .plain-link { opacity: 0; visibility: hidden; pointer-events: none
     .portrait .stat .txt { font-size: 9px; line-height: 11px; }
     .plain-link, .hud-top-left .plain-link { top: calc(max(8px, env(safe-area-inset-top)) + 56px); left: 8px; transform: none; font-size: 14px; padding: 5px 10px; }
 }
+
+/* ---------- stat refill (fridge) ---------- */
+.portrait .stat .bar { transition: width 700ms cubic-bezier(0.22, 1, 0.36, 1); }
+.portrait .stat.refill { animation: statflash 900ms ease-out; }
+@keyframes statflash { 0%, 40% { box-shadow: 0 0 0 2px #fff3b0; } 100% { box-shadow: 0 0 0 0 transparent; } }
+@media (prefers-reduced-motion: reduce) { .portrait .stat .bar { transition: none; } .portrait .stat.refill { animation: none; } }
