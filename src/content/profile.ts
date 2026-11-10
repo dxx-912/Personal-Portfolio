@@ -21,6 +21,9 @@ export const profile: Profile = {
         { label: 'Creativity', value: 200, max: 200, color: '#3d7fd4' }
     ],
 
+    // From Daniel (iteration 5 feedback): the home phone shows this.
+    instagram: { handle: '@dxx_912', url: 'https://www.instagram.com/dxx_912/' },
+
     // [TODO: Daniel to confirm the line]
     wakeLine: "Hey, I'm Daniel. Welcome to my dorm at UCLA.",
 

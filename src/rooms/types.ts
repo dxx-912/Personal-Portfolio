@@ -87,6 +87,8 @@ export interface LabelDef {
     bold?: boolean;
     /** Hide this label once Daniel provides this decor slot file (the image replaces it). */
     unlessSlot?: string;
+    /** Centre the visible letters (not the font box) on x, y; single line labels such as book spines. */
+    ink?: boolean;
 }
 
 export interface RoomDef {
@@ -102,6 +104,10 @@ export interface RoomDef {
     labels?: LabelDef[];
     /** Wall clock centre in tiles (shows the visitor's local time). */
     clock?: TPoint;
+    /** Furniture tops the cat jumps onto: a floor point to jump from, and the line he walks along on top. */
+    perches?: { on: string; from: TPoint; path: [TPoint, TPoint] }[];
+    /** Decor prop ids the cat may nudge along a surface or knock onto the floor. Interactive items never move. */
+    knockables?: string[];
     /** Mini basketball hoop on the left wall: floor row under the rim, and where the ball rests at the start. */
     hoop?: { rimRow: number; home: TPoint };
     /** Bed pillow spot for the sleeping sprite; `home` picks the plaid blanket version. */

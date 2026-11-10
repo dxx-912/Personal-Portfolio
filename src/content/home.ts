@@ -212,10 +212,10 @@ export const homeContent: Record<string, Entry> = withMedia({
     cat: {
         id: 'cat',
         short: 'Cat dad',
-        prompt: 'About him',
+        prompt: 'About Fluffy',
         plainGroup: 'personal',
-        title: 'My cat',
-        subtitle: '[TODO: his name]',
+        title: 'About Fluffy',
+        subtitle: 'Fluffy',
         body: [
             '[TODO: how we got him]',
             '[TODO: his personality]'

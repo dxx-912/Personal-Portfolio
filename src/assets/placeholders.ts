@@ -905,6 +905,18 @@ const dormShirt: Painter = (p, w, h) => {
     // the "Hope For Hearing" print is a crisp label on top (see the room's labels)
 };
 
+/**
+ * The can he pulls from the fridge, shown big above his head for a moment. Plain blue and silver; any logo is the
+ * can-logo image slot (CLAUDE.md 0.2 F), never drawn.
+ */
+const redbullCan: Painter = (p, w, h) => {
+    p.r(1, 0, w - 2, 1, '#9aa3b0'); p.r(0, 1, w, 2, '#c9ced8'); // lid
+    p.r(0, 3, w, h - 5, '#2b4a9a');
+    p.r(0, Math.floor(h / 2), w, 3, '#c9ced8'); // silver band
+    p.r(1, 3, 1, h - 5, '#4a6bc0'); // shine
+    p.r(0, h - 2, w, 2, '#9aa3b0'); // base
+};
+
 /** Mini basketball: orange with dark seams. */
 const bbBall: Painter = (p) => {
     const o = '#e3772e', d = '#b85a1e', l = '#f39a55', seam = '#3a1d10';
@@ -1106,12 +1118,25 @@ const homeShelf: Painter = (p, w, h) => {
     }
     p.r(30, t + 7, 29, 1, '#16295a'); p.r(30, t + 7, 1, 16, '#16295a'); // crisp edge
     p.r(59, t + 10, 11, 3, '#2a2b31'); p.r(59, t + 10, 11, 1, '#4a4d57'); // the handle stub
-    // top: a beach volleyball, bottom right of the tier
-    const bx = 60, by = t + 21;
-    p.r(bx + 2, by, 6, 10, '#f7f3e8'); p.r(bx, by + 2, 10, 6, '#f7f3e8'); p.r(bx + 1, by + 1, 8, 8, '#f7f3e8');
-    p.r(bx + 1, by + 2, 3, 6, '#f2c230'); p.r(bx + 2, by + 1, 2, 1, '#f2c230');
-    p.r(bx + 6, by + 1, 2, 4, '#2f74b5'); p.r(bx + 7, by + 3, 2, 3, '#2f74b5');
-    p.r(bx + 4, by + 7, 4, 2, '#2f74b5'); p.p(bx + 3, by + 3, '#fffdf4');
+    // top: a beach volleyball (yellow, black and orange panels), resting on the shelf. Any logo is the
+    // volleyball-logo image slot, never drawn.
+    {
+        const bx = 58, by = t + 17, n = 13, c = (n - 1) / 2;
+        const Y = '#f2c230', YL = '#f8dc6a', K = '#25252c', O = '#e8742e', seam = '#7a5a1a';
+        for (let y = 0; y < n; y++) for (let x = 0; x < n; x++) {
+            const dx = x - c, dy = y - c;
+            if (dx * dx + dy * dy > (c + 0.45) ** 2) continue;
+            // three curved bands: black sweeping across the top left, orange down the right, yellow below
+            const a = Math.atan2(dy, dx), r = Math.hypot(dx, dy);
+            let col = Y;
+            if (dy + 0.45 * dx * dx / c < -1.5) col = K;
+            else if (dx - 0.35 * dy * dy / c > 1.8) col = O;
+            if (Math.abs(dy + 0.45 * dx * dx / c + 1.5) < 0.6 || Math.abs(dx - 0.35 * dy * dy / c - 1.8) < 0.5) col = seam;
+            if (col === Y && r < 3.2 && a < -0.4 && a > -2.6) col = YL;
+            p.p(bx + x, by + y, col);
+        }
+        p.p(bx + 3, by + 3, '#fffbe0'); // shine
+    }
     // middle: three plaques
     const m = tiers[1];
     [['#c9a24a', 7], ['#2f4a8a', 29], ['#7a2f2f', 51]].forEach(([c, x]) => {
@@ -1212,19 +1237,10 @@ const homeTable: Painter = (p, w, h) => {
     // receipts and sticky notes (speaker sits at 6..36 x 5..27, camera at 24..42 x 38..52)
     p.r(5, 30, 9, 6, '#f7f3ea'); p.r(7, 31, 6, 1, '#b8ad9c'); p.r(7, 33, 5, 1, '#b8ad9c'); p.r(9, 34, 7, 4, '#efe9dc');
     p.r(42, 28, 6, 6, '#f7de6a'); p.r(46, 31, 6, 6, '#a9d2f2'); p.r(43, 30, 4, 1, '#a08a3a');
-    // lens cap left beside the camera
-    p.r(11, 41, 5, 5, '#16171c'); p.r(12, 42, 3, 3, '#2c2e36'); p.p(13, 43, '#4a4d57');
     // charging cable trailing from the speaker off the far edge
     [[37, 14], [38, 15], [39, 15], [40, 16], [41, 17], [42, 17], [43, 18], [44, 18], [45, 19], [46, 20], [47, 21], [47, 22],
         [48, 23], [49, 24], [50, 24], [51, 25], [52, 26], [53, 26], [54, 27]].forEach(([x, y]) => p.p(x, y, '#2a2b31'));
-    // notebook with pencils across it
-    p.box(5, 56, 18, 14, '#5e7e6b'); p.r(7, 57, 1, 12, '#3f5a49'); p.r(10, 60, 10, 1, '#8fae99');
-    p.r(16, 62, 15, 1, '#f2c230'); p.p(31, 62, '#2a2b31'); p.p(15, 62, '#e8a0a0');
-    p.r(19, 65, 14, 1, '#f2c230'); p.p(33, 65, '#2a2b31'); p.p(18, 65, '#e8a0a0');
-    // mug with a pencil in it
-    p.box(38, 66, 7, 8, '#3f6fb0'); p.r(45, 68, 2, 4, '#3f6fb0'); p.r(39, 67, 5, 1, '#2a4f86'); p.r(41, 61, 1, 6, '#f2c230');
-    // small plant
-    plantPot(p, 6, 77, 7, 6); p.r(6, 72, 7, 5, LEAF); p.p(5, 73, LEAF_L); p.p(13, 74, LEAF_L); p.p(9, 71, LEAF_L); p.p(9, 75, LEAF_D);
+    // the notebook, mug, plant and lens cap are separate sprites (Fluffy can knock them about)
     p.box(0, topH - 1, w, 8, PALE_WOOD.dark);
     p.r(2, topH + 7, 5, h - topH - 7, PALE_WOOD.deep);
     p.r(w - 7, topH + 7, 5, h - topH - 7, PALE_WOOD.deep);
@@ -1232,22 +1248,22 @@ const homeTable: Painter = (p, w, h) => {
 
 /** Big black speaker, set down at an angle (its right end turned away). The badge is the speaker-logo slot. */
 const homeSpeaker: Painter = (p, w, h) => {
-    const face = 24;
-    const top = (x: number) => 6 - Math.floor(x * 0.13);
+    const face = 20;
+    const top = (x: number) => 5 - Math.floor(x * 0.13);
     // handle following the slant
     for (let x = 5; x < face - 5; x++) p.p(x, top(x) - 4, '#2a2b31');
     p.r(5, top(5) - 4, 1, 4, '#2a2b31'); p.r(face - 6, top(face - 6) - 4, 1, 4, '#2a2b31');
     // front face
-    for (let x = 0; x < face; x++) { p.r(x, top(x), 1, 14, '#1b1c22'); p.p(x, top(x), '#34363f'); }
+    for (let x = 0; x < face; x++) { p.r(x, top(x), 1, 12, '#1b1c22'); p.p(x, top(x), '#34363f'); }
     // the side end turned away from us
-    for (let x = face; x < w; x++) { const k = x - face; p.r(x, top(face) + Math.floor(k * 0.4), 1, 14 - Math.floor(k * 0.6), '#101116'); }
+    for (let x = face; x < w; x++) { const k = x - face; p.r(x, top(face) + Math.floor(k * 0.4), 1, 12 - Math.floor(k * 0.6), '#101116'); }
     const woofer = (cx: number) => {
-        const cy = top(cx) + 7;
-        p.r(cx - 3, cy - 3, 7, 7, '#0f1014'); p.r(cx - 4, cy - 2, 9, 5, '#0f1014');
-        p.r(cx - 2, cy - 2, 5, 5, '#2c2e36'); p.r(cx - 1, cy - 1, 3, 3, '#3a3d46'); p.p(cx, cy, '#5a5d67');
+        const cy = top(cx) + 6;
+        p.r(cx - 2, cy - 3, 5, 6, '#0f1014'); p.r(cx - 3, cy - 2, 7, 4, '#0f1014');
+        p.r(cx - 2, cy - 2, 5, 4, '#2c2e36'); p.r(cx - 1, cy - 1, 3, 2, '#3a3d46'); p.p(cx, cy, '#5a5d67');
     };
-    woofer(6); woofer(17);
-    p.r(10, 16, 4, 2, '#e5762f'); // plain orange badge
+    woofer(5); woofer(14);
+    p.r(8, 13, 4, 2, '#e5762f'); // plain orange badge
     void h;
 };
 
@@ -1321,8 +1337,32 @@ const homeDesk: Painter = (p, w, h) => {
     p.r(Math.floor(half / 2) - 3, topH + 9, 6, 2, '#6b4429');
     p.r(half + Math.floor(half / 2) - 3, topH + 9, 6, 2, '#6b4429');
     p.r(1, h - 3, w - 2, 2, PALE_WOOD.deep);
-    // tiny cactus
-    plantPot(p, w - 9, 8, 6, 5); p.r(w - 8, 3, 4, 6, '#5aa36a'); p.p(w - 9, 5, '#5aa36a'); p.p(w - 4, 4, '#5aa36a'); p.p(w - 7, 2, '#f2a6b8');
+    // the tiny cactus is a separate sprite now (Fluffy can knock it off)
+};
+
+// ---------- small decor Fluffy can nudge or knock off (home desk, work table, nightstand) ----------
+
+const homeNotebook: Painter = (p) => {
+    p.box(0, 0, 18, 14, '#5e7e6b'); p.r(2, 1, 1, 12, '#3f5a49'); p.r(5, 4, 10, 1, '#8fae99');
+    p.r(11, 6, 7, 1, '#f2c230'); p.p(10, 6, '#e8a0a0');
+    p.r(13, 9, 5, 1, '#f2c230'); p.p(12, 9, '#e8a0a0');
+};
+const homeMug: Painter = (p) => {
+    p.box(0, 5, 7, 8, '#3f6fb0'); p.r(7, 7, 2, 4, '#3f6fb0'); p.r(1, 6, 5, 1, '#2a4f86');
+    p.r(3, 0, 1, 6, '#f2c230'); p.p(3, 0, '#2a2b31');
+};
+const homeTablePlant: Painter = (p) => {
+    plantPot(p, 1, 6, 7, 6); p.r(1, 1, 7, 5, LEAF); p.p(0, 2, LEAF_L); p.p(8, 3, LEAF_L); p.p(4, 0, LEAF_L); p.p(4, 4, LEAF_D);
+};
+const homeLensCap: Painter = (p) => {
+    p.r(0, 1, 5, 3, '#16171c'); p.r(1, 0, 3, 5, '#16171c'); p.r(1, 1, 3, 3, '#2c2e36'); p.p(2, 2, '#4a4d57');
+};
+const homeCactus: Painter = (p) => {
+    plantPot(p, 0, 6, 6, 5); p.r(1, 1, 4, 6, '#5aa36a'); p.p(0, 3, '#5aa36a'); p.p(5, 2, '#5aa36a'); p.p(2, 0, '#f2a6b8');
+};
+const homeGlasses: Painter = (p) => {
+    p.box(0, 0, 3, 3, '#2a2b31', '#2a2b31'); p.box(4, 0, 3, 3, '#2a2b31', '#2a2b31'); p.p(3, 1, '#2a2b31');
+    p.p(1, 1, '#9fc4e6'); p.p(5, 1, '#9fc4e6');
 };
 
 const homePiano: Painter = (p, w, h) => {
@@ -1393,7 +1433,8 @@ export const painters = {
     slotGraduation, slotDamn, slotDuck, slotIgor, slotEmpty, slotHome1, slotHome2, slotHome3,
     dormWindow, dormPennant, dormTodo, dormDesk, dormLaptop, dormBinder, dormPhone,
     dormCloset, dormBeanbag, dormFloorLamp, dormBed, dormRug, dormDresser, dormGradcap, dormShirt,
-    bbBall, dormHoop, dormFridge, dormTrash, dormLaundry, dormSneakers, dormBag, dormBackpack, dormJeans, dormTeeFloor, dormShirtBall, dormSock,
+    redbullCan, bbBall, dormHoop, homeNotebook, homeMug, homeTablePlant, homeLensCap, homeCactus, homeGlasses, homePhone: phonePainter,
+    dormFridge, dormTrash, dormLaundry, dormSneakers, dormBag, dormBackpack, dormJeans, dormTeeFloor, dormShirtBall, dormSock,
     homeShelf, homeFloorPlant, homeWindow, homeHoodie, homePullup, homeTable, homeSpeaker, homeCamera,
     homeNightstand, homeBed, homeDesk, homePiano, homePie, homeRug, homeLongboard
 } satisfies Record<string, Painter>;

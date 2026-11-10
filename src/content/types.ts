@@ -107,6 +107,8 @@ export interface Profile {
     links: LinkItem[];
     /** Joke stat bars beside the HUD portrait. */
     stats: HudStat[];
+    /** The home phone (a bonus) shows this. */
+    instagram: { handle: string; url: string };
     /** What Daniel says in a speech bubble right after waking up. */
     wakeLine: string;
     /** Thought bubbles when the visitor stands still for a while. */

@@ -108,6 +108,10 @@ export const ASSETS = {
     dorm_sock: { w: 6, h: 6, paint: painters.dormSock, outline: true },
     dorm_fridge: { w: 30, h: 32, frames: 2, paint: painters.dormFridge, outline: true, highlight: true },
     bb_ball: { w: 7, h: 7, paint: painters.bbBall, outline: true, highlight: true },
+    redbull_can: {
+        w: 8, h: 14, paint: painters.redbullCan, outline: true,
+        slot: { file: 'can-logo.png', rect: { x: 1, y: 3, w: 6, h: 8 }, sharp: 4, fit: 'contain' }
+    },
     dorm_hoop: { w: 18, h: 35, frames: 2, paint: painters.dormHoop, outline: true },
     dorm_trash: { w: 18, h: 18, paint: painters.dormTrash, outline: true },
     dorm_laundry: { w: 22, h: 18, paint: painters.dormLaundry, outline: true },
@@ -116,7 +120,10 @@ export const ASSETS = {
     dorm_backpack: { w: 18, h: 24, paint: painters.dormBackpack, outline: true },
 
     // home
-    home_shelf: { w: 76, h: 112, paint: painters.homeShelf, outline: true, highlight: true },
+    home_shelf: {
+        w: 76, h: 112, paint: painters.homeShelf, outline: true, highlight: true,
+        slot: { file: 'volleyball-logo.png', rect: { x: 61, y: 27, w: 7, h: 5 }, sharp: 4, fit: 'contain', knockout: true }
+    },
     home_plant: { w: 16, h: 28, paint: painters.homeFloorPlant, outline: true },
     home_window: { w: 76, h: 46, frames: 3, paint: painters.homeWindow, outline: true, highlight: true },
     home_hoodie: {
@@ -126,9 +133,19 @@ export const ASSETS = {
     home_pullup: { w: 58, h: 62, paint: painters.homePullup, outline: true, highlight: true },
     home_table: { w: 56, h: 98, paint: painters.homeTable, outline: true },
     home_speaker: {
-        w: 30, h: 22, paint: painters.homeSpeaker, outline: true, highlight: true,
-        slot: { file: 'speaker-logo.png', rect: { x: 9, y: 15, w: 6, h: 3 } }
+        w: 25, h: 18, paint: painters.homeSpeaker, outline: true, highlight: true,
+        slot: { file: 'speaker-logo.png', rect: { x: 8, y: 13, w: 5, h: 2 } }
     },
+    home_phone: {
+        w: 12, h: 18, paint: painters.homePhone, outline: true, highlight: true,
+        slot: { file: 'instagram-logo.png', rect: { x: 2, y: 4, w: 8, h: 8 }, sharp: 4, fit: 'contain' }
+    },
+    home_notebook: { w: 18, h: 14, paint: painters.homeNotebook, outline: true },
+    home_mug: { w: 9, h: 13, paint: painters.homeMug, outline: true },
+    home_tableplant: { w: 9, h: 12, paint: painters.homeTablePlant, outline: true },
+    home_lenscap: { w: 5, h: 5, paint: painters.homeLensCap, outline: true },
+    home_cactus: { w: 6, h: 11, paint: painters.homeCactus, outline: true },
+    home_glasses: { w: 7, h: 3, paint: painters.homeGlasses, outline: false },
     home_camera: { w: 18, h: 14, paint: painters.homeCamera, outline: true, highlight: true },
     home_nightstand: {
         w: 36, h: 38, paint: painters.homeNightstand, outline: true, highlight: true,
@@ -138,7 +155,7 @@ export const ASSETS = {
     home_desk: { w: 100, h: 54, paint: painters.homeDesk, outline: true },
     home_piano: { w: 40, h: 14, paint: painters.homePiano, outline: true, highlight: true },
     home_pie: { w: 34, h: 17, frames: 4, paint: painters.homePie, outline: true, highlight: true },
-    home_rug: { w: 132, h: 24, paint: painters.homeRug, outline: false },
+    home_rug: { w: 152, h: 24, paint: painters.homeRug, outline: false },
     home_longboard: { w: 48, h: 12, paint: painters.homeLongboard, outline: true, highlight: true }
 } satisfies Record<string, AssetDef>;
 

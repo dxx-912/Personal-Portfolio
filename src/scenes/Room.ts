@@ -23,7 +23,7 @@ import {
     setStat, hideBubble, maybeSuggestQuickView, moveBubble, setPortrait, setPrompt, setWakeButton, showBubble, showMessage, showTitle, toast,
     type PromptSpec
 } from '../ui/hud';
-import { flash, openPiano, openSnapshot } from '../ui/overlays';
+import { flash, openPhoneCard, openPiano, openSnapshot } from '../ui/overlays';
 import { featuredLevel, hasFeatured, isFeaturedOn, playFeatured, sfx, startAmbient, step, stopAmbient, stopFeatured } from '../audio';
 
 type EntryMode = 'sleep' | 'wake' | RoomKey;
@@ -126,6 +126,9 @@ export class Room extends Phaser.Scene {
         this.needUntil = 0;
         this.beacons = new Map();
         this.ball = null;
+        this.perchMs = 0;
+        this.nextKnockMs = 12000 + Math.random() * 13000;
+        this.fallen = new Set();
         this.charge = { on: false, p: 0, sweet: 0.5 };
         this.meter = null;
         this.tallyText = null;
@@ -296,10 +299,17 @@ export class Room extends Phaser.Scene {
         const avoid = this.def.interactables.filter((i) => i.target !== 'cat' && i.target !== 'longboard').map((i) => ({ x: tx(i.spot.x), y: ty(i.spot.y) }));
         this.def.doors.forEach((d) => { const { x, top, bottom } = this.doorPx(d); avoid.push({ x: d.side === 'right' ? x - 12 : x + 12, y: (top + bottom) / 2 }); });
         const bed = this.sprites.get('bed');
+        const perches = (this.def.perches ?? []).map((p) => ({
+            on: p.on, from: { x: tx(p.from.x), y: ty(p.from.y) },
+            path: [{ x: tx(p.path[0].x), y: ty(p.path[0].y) }, { x: tx(p.path[1].x), y: ty(p.path[1].y) }] as [Pt, Pt],
+            depth: (this.sprites.get(p.on)?.depth ?? 0) + 0.05
+        }));
         this.cat = new Cat(this, {
             waypoints: this.def.catWaypoints!, avoid, nap: this.def.catNap,
             bedDepth: bed?.depth,
-            knock: this.def.key === 'home' ? { at: { x: tx(14.15), y: ty(5.8) }, onKnock: () => this.knockPencil() } : undefined
+            perches,
+            onPerch: (on, x, y, dt) => this.mischief(on, x, y, dt),
+            freeNear: (p) => this.nav.nearestFreePoint(p)
         });
     }
 
@@ -378,9 +388,27 @@ export class Room extends Phaser.Scene {
                 fontFamily: '"Pixelify Sans", ui-monospace, monospace', fontSize: `${l.size * R}px`,
                 fontStyle: l.bold ? 'bold' : 'normal', color: l.color, align: 'center', lineSpacing: -l.size * R * 0.25
             }).setOrigin(0.5).setScale(1 / R).setAngle(l.angle ?? 0).setDepth((on?.depth ?? 2) + 0.02);
+            if (l.ink) this.inkCentre(t, l.text);
             this.labels.push(t);
         });
         this.buildTally(R);
+    }
+
+    /**
+     * Moves the pivot from the font box centre to the centre of the letters themselves (fonts leave room for
+     * accents and descenders), so a title sits exactly in the middle of its spine at any angle.
+     */
+    private inkCentre(t: Phaser.GameObjects.Text, text: string) {
+        const ctx = t.context;
+        t.style.syncFont(t.canvas, ctx);
+        const m = ctx.measureText(text);
+        const fm = t.getTextMetrics();
+        const w = t.width, h = t.height;
+        if (!w || !h) return;
+        // the text is drawn left aligned from padding 0 with its baseline at fm.ascent
+        const inkCx = (m.actualBoundingBoxRight - m.actualBoundingBoxLeft) / 2;
+        const inkCy = fm.ascent + (m.actualBoundingBoxDescent - m.actualBoundingBoxAscent) / 2;
+        t.setOrigin(Phaser.Math.Clamp(inkCx / w, 0, 1), Phaser.Math.Clamp(inkCy / h, 0, 1));
     }
 
     private arrivalPoint() {
@@ -413,7 +441,9 @@ export class Room extends Phaser.Scene {
         const canvas = this.game.canvas.getBoundingClientRect();
         const items = this.targets.map((t) => t.sprite.getBounds());
         // the right hand button column never sits over the room at all (iteration 5); the rest only must not cover items
-        const column = document.querySelector('.hud-top-right')?.getBoundingClientRect();
+        const col = document.querySelector('.hud-top-right')?.getBoundingClientRect();
+        // a few px of air, and room for the camera's whole pixel rounding
+        const column = col && new DOMRect(col.left - 8, col.top, col.width + 8, col.height);
         const room = { x: 0, y: 0, width: ROOM_W, height: ROOM_H };
         const over = (b: { x: number; y: number; width: number; height: number }, z: number, ox: number, oy: number, rs: DOMRect[]) => {
             const x = canvas.left + ox + b.x * z, y = canvas.top + oy + b.y * z, bw = b.width * z, bh = b.height * z;
@@ -428,7 +458,10 @@ export class Room extends Phaser.Scene {
         for (const z of steps) {
             const sx = w - ROOM_W * z, sy = h - ROOM_H * z;
             const tries: [number, number][] = [];
-            for (let dy = 0; dy <= sy / 2; dy += 4) for (const dx of [0, 8, -8, 16, -16, 32, -32, -48, -64, -sx / 2]) if (Math.abs(dx) <= sx / 2) tries.push([dx, dy]);
+            // nearest to centred first, in 2 px steps sideways, so the room slides only as far as it must
+            const dxs: number[] = [0];
+            for (let k = 2; k <= sx / 2; k += 2) dxs.push(-k, k);
+            for (let dy = 0; dy <= sy / 2; dy += 4) for (const dx of dxs) tries.push([dx, dy]);
             const ok = tries.find(([dx, dy]) => !hits(z, sx / 2 + dx, sy / 2 + dy));
             if (ok) { chosen = { z, ox: sx / 2 + ok[0], oy: sy / 2 + ok[1] }; break; }
         }
@@ -617,6 +650,7 @@ export class Room extends Phaser.Scene {
         if (t.kind === 'door') { this.goThrough(t.door!); return; }
         if (a === 'act' && t.def?.action) this.doAction(t, t.def.action);
         else if (a === 'info' && t.def?.info) this.openInfo(t);
+        else if (a === 'info' && t.def?.action === 'phone') this.openPhone(t);
     }
 
     private hitTest(wx: number, wy: number): Target | null {
@@ -757,6 +791,7 @@ export class Room extends Phaser.Scene {
             case 'drink': this.drinkRedBull(t); break;
             case 'nap': this.napInBed(t); break;
             case 'pickup': this.pickUpBall(); break;
+            case 'phone': this.openPhone(t); break;
         }
     }
 
@@ -1052,7 +1087,7 @@ export class Room extends Phaser.Scene {
             this.player.face('down');
             this.player.pose(DANIEL_FRAMES.hold);
         });
-        this.time.delayedCall(950, () => sfx('can'));
+        this.time.delayedCall(950, () => { sfx('can'); this.showCan(); });
         let sip = 0;
         this.time.delayedCall(1250, () => this.time.addEvent({
             delay: 280, repeat: 5, callback: () => {
@@ -1072,6 +1107,22 @@ export class Room extends Phaser.Scene {
             this.starBurst();
             this.sayNeed(ui.drinkLine, 2200);
         });
+    }
+
+    /** The can pops up above his head for a moment (it carries the can-logo slot), then he drinks. */
+    private showCan() {
+        const s = this.player.sprite;
+        const img = this.add.image(s.x, s.y - 24, 'redbull_can').setOrigin(0.5, 1).setDepth(9075);
+        const sharpKey = 'redbull_can#sharp';
+        const parts: Phaser.GameObjects.Image[] = [img];
+        if (this.textures.exists(sharpKey)) {
+            const sd = this.textures.get(sharpKey).customData as { x: number; y: number; n: number };
+            parts.push(this.add.image(img.x - 4 + sd.x, img.y - 14 + sd.y, sharpKey).setOrigin(0).setScale(1 / sd.n).setDepth(9076));
+        }
+        if (this.rm) { this.time.delayedCall(700, () => parts.forEach((p) => p.destroy())); return; }
+        parts.forEach((p) => { p.y += 4; p.setAlpha(0); });
+        this.tweens.add({ targets: parts, y: '-=4', alpha: 1, duration: 160, ease: 'Back.easeOut' });
+        this.tweens.add({ targets: parts, alpha: 0, delay: 650, duration: 200, onComplete: () => parts.forEach((p) => p.destroy()) });
     }
 
     /** A short burst of pixel stars off Daniel (the Red Bull kicking in). */
@@ -1351,12 +1402,93 @@ export class Room extends Phaser.Scene {
         this.tweens.add({ targets: s, y: s.y - 10, duration: 260, yoyo: true, ease: 'Quad.easeOut' });
     }
 
-    private knockPencil() {
-        const p = this.add.image(tx(13.35), ty(5.95), 'pencil').setDepth(ty(9)).setOrigin(0.5);
+    // ---------- Fluffy's mischief (group E9) ----------
+
+    private perchMs = 0;
+    private nextKnockMs = 12000 + Math.random() * 13000;
+    private fallen = new Set<string>();
+
+    /**
+     * While Fluffy is up on furniture: about one knock every minute or two. Returns the x of the decor item he
+     * swats at, if one is in reach and a knock is due. Only `knockables` (decor) ever move.
+     */
+    private mischief(on: string, x: number, y: number, dt: number): number | null {
+        this.perchMs += dt;
+        if (this.perchMs < this.nextKnockMs || state.modal) return null;
+        const ids = (this.def.knockables ?? []).filter((id) => !this.fallen.has(id) && this.def.props.find((p) => p.id === id)?.on === on);
+        for (const id of ids) {
+            const s = this.sprites.get(id);
+            if (!s || this.tweens.isTweening(s)) continue;
+            const cx = s.x + s.displayWidth / 2, by = s.y + s.displayHeight;
+            if (Math.abs(cx - x) > 11 || Math.abs(by - y) > 15) continue;
+            this.nextKnockMs = this.perchMs + 60000 + Math.random() * 60000;
+            const dir = cx >= x ? 1 : -1;
+            this.time.delayedCall(220, () => this.knockItem(id, s, on, dir));
+            return cx;
+        }
+        return null;
+    }
+
+    /** Push it off onto a safe floor spot, or (if there is none, or sometimes) just nudge it along the top. */
+    private knockItem(id: string, s: Sprite, on: string, dir: number) {
+        const land = Math.random() < 0.75 ? this.landingSpot(s) : null;
+        if (!land) {
+            const top = this.sprites.get(on)!;
+            const nx = Phaser.Math.Clamp(s.x + dir * (4 + Math.random() * 4), top.x + 2, top.x + top.displayWidth - s.displayWidth - 2);
+            this.tweens.add({ targets: s, x: Math.round(nx), duration: 220, ease: 'Quad.easeOut' });
+            this.tweens.add({ targets: s, y: s.y - 2, duration: 110, yoyo: true });
+            sfx('tick');
+            return;
+        }
+        this.fallen.add(id);
+        const from = { x: s.x, y: s.y }, to = { x: Math.round(land.x - s.displayWidth / 2), y: Math.round(land.y - s.displayHeight) };
+        const prog = { t: 0 };
+        s.setDepth(9000 - 1);
         this.tweens.add({
-            targets: p, x: tx(13.95), y: ty(6.6), angle: 200, duration: 420, ease: 'Quad.easeIn',
-            onComplete: () => { p.setDepth(ty(6.6)); sfx('tick'); }
+            targets: prog, t: 1, duration: this.rm ? 120 : 480, ease: 'Quad.easeIn',
+            onUpdate: () => {
+                s.setPosition(Math.round(from.x + (to.x - from.x) * prog.t), Math.round(from.y + (to.y - from.y) * prog.t - Math.sin(prog.t * Math.PI) * 8));
+                s.setAngle(prog.t * dir * 70);
+            },
+            onComplete: () => {
+                s.setDepth(land.y);
+                sfx('bump');
+                if (!this.rm) this.tweens.add({ targets: s, y: s.y - 2, duration: 90, yoyo: true, ease: 'Quad.easeOut' });
+            }
         });
+    }
+
+    /**
+     * A floor spot for a knocked off item: on the floor, out of furniture, close to furniture (so not out in a
+     * walkway), at least 20 px from every standing spot and well clear of door approaches. Null if none nearby.
+     */
+    private landingSpot(s: Sprite): Pt | null {
+        const cx = s.x + s.displayWidth / 2, by = s.y + s.displayHeight;
+        const spots = this.targets.filter((t) => t.kind === 'item' && t.def?.target !== 'cat' && t.def?.target !== 'longboard').map((t) => t.spot);
+        const doors = this.def.doors.map((d) => { const { x, top, bottom } = this.doorPx(d); return { x: d.side === 'right' ? x - 16 : x + 16, y: (top + bottom) / 2 }; });
+        const nearSolid = (x: number, y: number) => Math.min(...this.solids.map((r) =>
+            Math.hypot(Math.max(r.x - x, 0, x - (r.x + r.w)), Math.max(r.y - y, 0, y - (r.y + r.h)))));
+        let best: Pt | null = null, bestD = Infinity;
+        for (let dy = -44; dy <= 48; dy += 3) for (let dx = -44; dx <= 44; dx += 3) {
+            const x = cx + dx, y = by + dy;
+            if (x < FLOOR_X + 5 || x > FLOOR_X + FLOOR_W - 5 || y < FLOOR_Y + 6 || y > FLOOR_Y + FLOOR_H - 2) continue;
+            if (this.solids.some((r) => x > r.x - 5 && x < r.x + r.w + 5 && y > r.y - 2 && y < r.y + r.h + 3)) continue;
+            if (spots.some((p) => Math.hypot(p.x - x, p.y - y) < 20)) continue;
+            if (doors.some((p) => Math.abs(p.x - x) < 30 && Math.abs(p.y - y) < 36)) continue;
+            if (nearSolid(x, y) > 14) continue;
+            const d = Math.hypot(dx, dy);
+            if (d < bestD) { bestD = d; best = { x, y }; }
+        }
+        return best;
+    }
+
+    private openPhone(t: Target) {
+        this.bounce(t.sprite);
+        sfx('tick');
+        state.markSecret('phone');
+        if (this.cat) this.cat.held = true;
+        const logo = decorFiles.includes('instagram-logo.png') ? 'assets/decor/instagram-logo.png' : null;
+        openPhoneCard(logo, () => { if (this.cat) this.cat.held = false; });
     }
 
     private celebrate() {
@@ -1475,7 +1607,10 @@ export class Room extends Phaser.Scene {
             setPrompt({ act: ui.verbs.goIn }, p.x, p.y, right ? 'end' : 'start');
             this.promptAtHead = false;
         } else if (f) {
-            const spec: PromptSpec = { act: this.verb(f), info: f.def?.info ? getEntry(this.def.key, f.def.info).prompt : undefined };
+            const spec: PromptSpec = {
+                act: this.verb(f),
+                info: f.def?.info ? getEntry(this.def.key, f.def.info).prompt : f.def?.action === 'phone' ? ui.phoneInfo : undefined
+            };
             const b = f.sprite.getBounds();
             const objTop = (f.kind === 'door' ? b.top + 6 : b.top) - 3;
             const headTop = this.player.sprite.getBounds().top - 2;
@@ -1682,8 +1817,9 @@ export class Room extends Phaser.Scene {
         // the cat wins only when he is nearer than any static item in range
         if (catT && this.cat) {
             const spotD = Math.hypot(catT.spot.x - px, catT.spot.y - py);
-            const catD = this.cat.onBed ? spotD : Math.min(spotD, Math.hypot(this.cat.x - px, this.cat.y - py) - 6);
-            const limit = this.cat.onBed ? (this.focus === catT ? ZONE_EXIT : ZONE_ENTER + 2) : (this.focus === catT ? CAT_ZONE - 2 : CAT_ZONE - 6);
+            const up = this.cat.elevated;
+            const catD = up ? spotD : Math.min(spotD, Math.hypot(this.cat.x - px, this.cat.y - py) - 6);
+            const limit = up ? (this.focus === catT ? ZONE_EXIT : ZONE_ENTER + 2) : (this.focus === catT ? CAT_ZONE - 2 : CAT_ZONE - 6);
             const bestD = best ? Math.hypot(best.spot.x - px, best.spot.y - py) : Infinity;
             if (catD <= limit && catD < bestD - (this.focus === catT ? -3 : 3)) return catT;
         }

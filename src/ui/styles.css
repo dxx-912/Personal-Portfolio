@@ -589,3 +589,18 @@ body.title-on .plain-link { opacity: 0.85; visibility: visible; pointer-events: 
 .title-card { top: calc(max(14px, env(safe-area-inset-top)) + 64px); }
 @media (max-height: 500px) { .title-card { top: calc(max(8px, env(safe-area-inset-top)) + 48px); } }
 @media (max-width: 560px) { .title-card { top: 140px; } }
+
+/* ---------- iteration 5: piano key labels (A..K white, W E T Y U black) ---------- */
+.key.white { flex-direction: column; align-items: center; justify-content: flex-end; gap: 2px; }
+.key .kl { font: 600 16px var(--pixel); color: #3a3346; }
+.key.white .kn { font-size: 10px; opacity: 0.6; }
+.key.black { display: flex; align-items: flex-end; justify-content: center; padding-bottom: 6px; }
+.key.black .kl { color: #e8e4f0; font-size: 13px; }
+
+/* ---------- iteration 5: home phone card (Instagram handle) ---------- */
+.panel.phonecard { max-width: 360px; }
+.ig-card { display: grid; justify-items: center; gap: 8px; text-align: center; padding: 6px 0 4px; }
+.ig-logo { width: 56px; height: 56px; border-radius: 14px; image-rendering: auto; }
+.ig-ph { display: block; background: #c8417e; }
+.ig-handle { margin: 0; font: 700 22px var(--font-label); color: var(--ink); }
+.ig-line { margin: 0; }
