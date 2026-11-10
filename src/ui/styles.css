@@ -489,3 +489,19 @@ a.link:hover { background: #eef4ff; text-decoration: underline; }
 .chip kbd { font: 700 12px var(--font-label); }
 .polaroid figcaption { font: 700 14px var(--font-label); }
 .todo { font-family: var(--font-body); }
+
+
+/* ---------- quick view link: top middle, hidden while a room title card shows, then fades back in ---------- */
+
+.plain-link, .hud-top-left .plain-link {
+    position: fixed; top: max(8px, env(safe-area-inset-top)); left: 50%; z-index: 31;
+    transform: translateX(-50%); white-space: nowrap; opacity: 0.85;
+    transition: opacity 0.45s ease, visibility 0s linear 0s;
+}
+.plain-link:hover, .plain-link:focus-visible { opacity: 1; }
+body.title-on .plain-link { opacity: 0; visibility: hidden; pointer-events: none; transition: opacity 0.2s ease, visibility 0s linear 0.2s; }
+@media (max-width: 560px) {
+    /* narrow phones: just under the portrait, clear of the HUD corners */
+    .plain-link, .hud-top-left .plain-link { top: calc(max(8px, env(safe-area-inset-top)) + 50px); left: 8px; transform: none; }
+}
+@media (prefers-reduced-motion: reduce) { .plain-link { transition: none; } }

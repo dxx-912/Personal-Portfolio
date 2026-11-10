@@ -49,11 +49,11 @@ export function initHud() {
         <div class="rotate-hint">${esc(ui.rotateHint)}</div>
     `);
     // The plain version link lives in index.html (works without JS). Tuck it under the portrait.
+    // The quick view link sits top middle on its own; it steps aside while a room title card shows.
     const plain = document.querySelector<HTMLAnchorElement>('.plain-link');
     if (plain) {
         plain.textContent = ui.quickView;
         plain.href = ui.quickViewHref;
-        $('.hud-top-left').appendChild(plain);
     }
 
     promptEl = $('.prompt');
@@ -167,7 +167,12 @@ export function showTitle(text: string) {
     titleEl.classList.remove('show');
     void titleEl.offsetWidth;
     titleEl.classList.add('show');
-    titleTimer = window.setTimeout(() => { titleEl.hidden = true; titleEl.classList.remove('show'); }, prefersReducedMotion() ? 2200 : 3000);
+    document.body.classList.add('title-on');
+    titleTimer = window.setTimeout(() => {
+        titleEl.hidden = true;
+        titleEl.classList.remove('show');
+        document.body.classList.remove('title-on');
+    }, prefersReducedMotion() ? 2200 : 3000);
 }
 
 /** Center message (wake prompt, controls tip). Pass null to hide. */

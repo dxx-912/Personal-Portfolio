@@ -42,7 +42,7 @@ export const ui = {
      * Link to the portfolio view (top left of the game and in the pause menu).
      * Alternatives: 'Recruiter mode (no game, promise)', 'Skip the game :(', 'In a rush? Read it instead'.
      */
-    quickView: 'No time to play? Quick view :(',
+    quickView: 'No time to play? Quick view',
     quickViewHref: '/portfolio',
     phoneSuggest: 'On a phone? The quick view might be comfier.',
     phoneSuggestGo: 'Quick view',

@@ -367,7 +367,7 @@ export class Room extends Phaser.Scene {
     private fitCamera() {
         const w = this.scale.width, h = this.scale.height;
         const fit = Math.min(w / ROOM_W, h / ROOM_H);
-        const hud = [...document.querySelectorAll<HTMLElement>('.hud-top-left > *, .hud-top-right > *')]
+        const hud = [...document.querySelectorAll<HTMLElement>('.hud-top-left > *, .hud-top-right > *, .plain-link')]
             .map((el) => el.getBoundingClientRect()).filter((r) => r.width > 0 && r.height > 0);
         const canvas = this.game.canvas.getBoundingClientRect();
         const items = this.targets.map((t) => t.sprite.getBounds());
