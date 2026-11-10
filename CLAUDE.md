@@ -27,7 +27,78 @@ Screenshots of iteration 1 as it looks now: `reference/current-dorm-iteration-1.
 
 ---
 
-## 0.1 Iteration 4 changelist (current work)
+## 0.2 Iteration 5 changelist (current work)
+
+Iteration 4 (section 0.1) is built. Daniel's notes on it are in `reference/iteration-5-feedback.pdf`; the current state is in `reference/current-dorm-iteration-4.png` and `reference/current-home-iteration-4.png`. Everything below is approved and wins over older sections. Some of it already exists in part (the drinkable fridge, napping in the dorm bed): refine what is there to match this spec rather than rebuilding it. Work through the groups in order, commit and push after each, verify each with Playwright screenshots.
+
+### A. Fix first: the random slow walking
+The character sometimes walks very slowly. Find and fix the root cause before touching any speed values, because group B changes speed on purpose and would hide the bug. Likely suspects, check all of them:
+- movement scaled by frames instead of elapsed time (delta), so speed drops when the frame rate drops
+- the browser throttling a background or unfocused tab, then the game catching up badly
+- click to walk pathing and keyboard input fighting over velocity
+- the body grinding against small colliders on rugs, clutter, or decor (decor should have tiny or no colliders, section 9.5)
+- leftover speed modifiers from sitting, riding, or a mode that did not reset
+Add a debug overlay (toggle with backquote, dev builds only) showing current speed, frame rate, and active modifiers. Confirm the fix with a Playwright test that walks a fixed route several times and measures the time taken.
+
+### B. Stats system: Caffeine, Sleep, Creativity
+The HUD has three bars. They start fresh on every visit (do not persist across visits).
+1. **Starting values:** Caffeine 0/7, Sleep 8/8, Creativity 200/200. Rename Curiosity to Creativity. Creativity never changes. This replaces the randomized stats from iteration 4.
+2. **Base speed stays normal.** Do not slow the starting speed: recruiters' first seconds must feel responsive.
+3. **Caffeine and the Red Bull:**
+   - The dorm mini fridge is a bonus interactable (not one of the 19): E opens it and Daniel drinks a can. A short burst of pixel stars comes off the sprite, Caffeine fills to 7/7 and stays there for the rest of the visit, and walking speed rises by 30%, so the boost is clearly noticeable.
+   - Hints: starting about 20 seconds after waking, Daniel says a short line in his speech bubble, then again every 45 to 60 seconds, at most 4 times, and only until he has had the can. Never while a panel or mode is open. Rotate lines such as "where can I get a Red Bull...", "need caffeine", "I swear there's a Red Bull in the fridge". After the first hint, the fridge gets a soft glow until it is used.
+   - The can's logo is an image slot (`can-logo`, section 5.4). Until Daniel provides a file, draw a plain blue and silver can.
+4. **Sleep:**
+   - Sleep drops by 1 every 90 seconds of active play (pause while a panel is open or the tab is hidden).
+   - At 2/8 and below, Daniel says a tired line every 45 to 60 seconds, at most 4 times per tired stretch, never while a panel is open: "I'm so tired", "I want to take a nap...", "my bed looks really comfy right now". The nearest bed gets a soft glow.
+   - At 0/8, Daniel says "I need to sleep" and, only when the player is idle (no input for about 3 seconds and no panel open), walks to the nearest bed and falls asleep. Any key or click during the walk cancels it and gives control back; he tries again after the next idle stretch.
+   - **E on either bed (dorm or home) = sleep.** Lights dim, Zs float up, the window advances in time, a quick wake up, Sleep refills to 8/8. Reuse and tidy the existing dorm nap. The home bed gets the same behavior.
+5. All speech bubbles from this system are small, sit just above Daniel's head, and never cover a panel or an item prompt.
+
+### C. HUD and buttons
+1. **Top right buttons** (sound, pause, found counter, minimap): twice their current size and clearly more noticeable, still never overlapping the game area. Give them a consistent pixel button style with readable labels.
+2. **Bonus counter:** next to the found counter, a small "Secrets X/3" for the three bonus interactables: the fridge, the basketball, the home phone. Bonus items never count toward the 19.
+3. **The quick view link must always stay visible.** The room title card currently takes its place at the top center during the first seconds. Move the title card lower, over the top of the room, so "No time to play? Quick view" never disappears.
+
+### D. Dorm room
+1. **Binder:** remove the "Consulting stuff" text. It is just a plain binder now (still item 5, Consulting).
+2. **Phone (item 6):** show the Instagram logo on its screen using the `instagram-logo` slot (section 5.4).
+3. **Door sign:** make "Home, Toronto" on the sign slightly bigger. Remove the separate floating "Home, Toronto →" label that duplicates and covers the sign; if a label is still needed, show it only when Daniel is next to the door. Fix the draw order so Daniel never renders over the sign.
+4. **Hope For Hearing shirt:** the printed words slightly bigger.
+5. **Floor clutter check:** the clothes, shoes, and bag between the bed and the dresser are getting dense. Make sure every walkway stays at least 1.5 character widths (section 9.5).
+6. **Mini basketball hoop (bonus):** on the left wall between the beanbag and the laundry basket. From this camera the side wall is seen edge on, so draw the backboard as a strip on the wall with the rim and net sticking out toward the room. A mini basketball rests on the carpet nearby.
+   - **Controls:** E picks up the ball (Daniel holds it). While holding, hold Space to charge a power meter shown next to Daniel, release to shoot. E drops the ball. On touch: tap the ball to pick it up, then press and hold the action button to charge, release to shoot. While holding the ball, Space shoots instead of acting as E; everywhere else Space stays E.
+   - **Physics (fake 3D, believable):** the ball has a floor position and a height, with a shadow on the floor that shrinks as the ball rises. Shots follow a gravity arc toward the hoop. The power needed depends on the distance from the hoop: there is a sweet spot window in the meter. Too little power falls short; too much hits the backboard and rebounds; near misses rattle off the rim. The ball bounces off the floor with energy loss (restitution around 0.6), rolls with friction, bounces off walls and furniture footprints, and comes to rest wherever it ends up in the room. If it stops somewhere unreachable or inside a collider, it respawns on the carpet near the hoop.
+   - **Feedback:** swish sound and net animation on a make, rim clank on near misses, bounce sounds (only with sound on). A small "3 for 5" style tally near the hoop for the visit. The first make counts the ball as a found secret.
+   - Never let the ball land on a door approach tile, and never let it trap the player.
+
+### E. Home room
+1. **Shelf books:** the titles "Solo Levelling", "Sweet Home", and "Lookism" are not centered and aligned on their spines. Fix all four: text centered along each spine, rotated correctly for upright, leaning, and lying flat books, and fully readable.
+2. **Door sign:** keep the wording "Back to UCLA" and make the text slightly bigger. Same floating label and draw order fixes as the dorm door.
+3. **Speaker:** slightly smaller.
+4. **Longboard rug:** slightly wider.
+5. **Piano black keys:** the playable keyboard gets working black keys. Use the standard computer piano layout: A S D F G H J K for the white keys and W E T Y U for the black keys, plus clicking or tapping any key, with key labels shown on the keys. Keep number keys 1 to 8 as an alternative for white keys.
+6. **Home phone (bonus):** a phone on a table with the same `instagram-logo` slot on its screen. E or F opens a small card with his Instagram handle **@dxx_912** and a link to https://www.instagram.com/dxx_912/. Not one of the 19.
+7. **Volleyball:** slightly bigger, drawn as a classic volleyball with yellow, black, and orange panels. Any brand logo text goes in the `volleyball-logo` slot, never drawn.
+8. **Sleep on the home bed:** E sleeps (section B.4).
+9. **Fluffy (the cat):**
+   - His name is **Fluffy**. The F prompt reads "F About Fluffy" and the panel title is "About Fluffy". Update `src/content/` and `/portfolio`.
+   - Fluffy can jump up onto the home desk, the work table, and the nightstand, walk along them, and knock decor items: nudge them along the surface or push them off so they fall with a small bounce onto the floor. Interactive items never move. Fallen decor must not land on a walkway, a standing spot, or a door approach (pick a nearby free floor spot instead), has no collider, and everything is tidied back to its place when the room is re entered. Keep it occasional, about one knock every minute or two while he is up there.
+   - Keep the existing meows, purring, and nap on the bed.
+
+### F. Image slots added in this iteration (add to section 5.4 and `TODO_ASSETS.md`)
+| Slot key | File path | Where it appears | Placeholder |
+|---|---|---|---|
+| `instagram-logo` | `public/assets/decor/instagram-logo.png` | Dorm phone screen and home phone screen | Plain colored rounded square with no symbol |
+| `can-logo` | `public/assets/decor/can-logo.png` | Red Bull can from the dorm fridge | Plain blue and silver can |
+| `volleyball-logo` | `public/assets/decor/volleyball-logo.png` (optional) | Volleyball on the home shelf | No logo |
+Same rules as section 5.4: never draw or trace these logos yourself; render whatever file Daniel provides.
+
+**Definition of done for iteration 5:** the slow walking bug is found, explained in the commit message, and covered by a test; all stats behaviors work exactly as above without ever interrupting a panel; the basketball is fun and never gets stuck; Fluffy's mischief never blocks a path or moves an interactive item; the quick view link is visible from the first frame; three playthroughs still reach 19 of 19; `npm run build` passes; `TODO_ASSETS.md` lists the new slots and the Instagram handle as done.
+
+---
+
+## 0.1 Iteration 4 changelist (done)
 
 Iterations 2 and 3 are built. Daniel reviewed them; his notes are in `reference/iteration-4-feedback.pdf` and the current state is in `reference/current-dorm-iteration-3.png` and `reference/current-home-iteration-3.png`. Everything below is approved. Where it conflicts with older sections of this file, this section wins (those sections have been updated to match where practical). Work through the groups in order, commit and push after each group, verify each with Playwright screenshots.
 
@@ -177,6 +248,9 @@ Daniel wants some real world art and brand items in the rooms. The site is priva
 | `speaker-logo` | `public/assets/decor/speaker-logo.png` | Home speaker grille badge | Small plain orange badge |
 | `phone-screen` | `public/assets/decor/phone-screen.png` | Dorm phone screen (and the phone panel header) | Generic grid of colored squares |
 | `poster-home-1`, `poster-home-2`, `poster-home-3` | `public/assets/decor/poster-home-N.png` | Home room walls | Abstract placeholders in the home palette |
+| `instagram-logo` | `public/assets/decor/instagram-logo.png` | Dorm and home phone screens | Plain rounded square, no symbol |
+| `can-logo` | `public/assets/decor/can-logo.png` | Red Bull can from the dorm fridge | Plain blue and silver can |
+| `volleyball-logo` (optional) | `public/assets/decor/volleyball-logo.png` | Home shelf volleyball | No logo |
 | `poster-caricature` (optional) | `public/assets/decor/poster-caricature.png` | Dorm wall, optional extra frame | Empty frame, hidden until the file exists |
 
 Slot rules: scale the image down to the slot with nearest neighbour sampling, optionally reduce it to the room palette so it matches the pixel style, keep the frame and lighting consistent, and make slots purely decorative (no glow, no prompt). List every slot in `TODO_ASSETS.md` under "Decor images to provide (optional)".
@@ -272,7 +346,7 @@ Each content item has exactly one standing spot (yellow numbers in the layout im
 | 6 | Nightstand (glowing lamp, family photo frame) | none (F only) | **Family.** Parents and sister, and a gallery. |
 | 7 | Digital piano | **Play**: opens a one octave playable keyboard (mouse, touch, or number keys 1 to 8) with soft synthesized tones | **Piano.** Twelve years, RCM ARCT Diploma (wording `[TODO]`), recital photos. |
 | 8 | Apple crisp pie with a slice on a plate | **Eat**: two second eating animation, then "yum!" |  **Baking and cooking.** Cooks and bakes for his family; food photos and photos of him cooking. |
-| 9 | Cat | **Pet**: the cat stops, sits, closes its eyes, hearts float up, and it meows (sound if on, a "meow" text bubble if off). Petting a sleeping cat gives a sleepy purr and a single heart. | **Cat.** Photos, how they got him, his name, his personality. |
+| 9 | Cat | **Pet**: the cat stops, sits, closes its eyes, hearts float up, and it meows (sound if on, a "meow" text bubble if off). Petting a sleeping cat gives a sleepy purr and a single heart. | **About Fluffy.** Photos, how they got him, his personality. |
 | 10 | Longboard | **Ride**: E to hop on, E again to hop off | **Longboard build.** Originally meant to be electric, the build process, soldering photos, the destroyed battery. F works only while not riding. |
 | E only | Home bed | Sit on the edge | none |
 | | Left door | Walk in to go back to the dorm | |
@@ -329,7 +403,7 @@ The found counter reads "Found X of 19". Update `/plain` to match this item list
 
 - **Wake up speech bubble:** right after the lights come up, Daniel says a short line in a pixel speech bubble, for example "Hey, I'm Daniel. Welcome to my dorm at UCLA." `[TODO: Daniel to confirm the line]`. Dismisses on movement or after a few seconds.
 - **Room title cards:** on wake up and on every room entry, a banner fades in and out: "Rieber Hall, UCLA" and "North York, Toronto".
-- **HUD portrait, top left (About me, item 1):** Soul Knight style portrait of Daniel's face with three short stat bars in red, grey, and blue. Default joke stats, editable in `src/content/profile.ts`: "Caffeine 7/7", "Sleep 2/6", "Curiosity 200/200" `[TODO: Daniel to pick]`. The portrait pulses gently until first opened. This makes About me the first and most visible thing on screen.
+- **HUD portrait, top left (About me, item 1):** Soul Knight style portrait of Daniel's face with three short stat bars in red, grey, and blue. Stats: Caffeine, Sleep, Creativity, with the behavior in section 0.2 B. The portrait pulses gently until first opened. This makes About me the first and most visible thing on screen.
 - **Minimap, top right:** two small room boxes joined by a door line, the current room highlighted. Clicking the other room walks the character to the door.
 - **Door cues:** light leak under the door, doormat, small sign with an arrow, one pulse after waking. Also mentioned in the controls tooltip on first visit.
 - **Clocks:** one wall clock per room showing the visitor's local time (their timezone, from the browser). The window views shift between day, sunset, and night using the visitor's local time.
@@ -428,6 +502,8 @@ Keep this list current in `TODO_ASSETS.md`, grouped by item.
 | `reference/current-dorm-iteration-1.png` | Screenshot of the dorm as built in iteration 1 |
 | `reference/current-home-iteration-1.png` | Screenshot of the home bedroom as built in iteration 1 |
 | `reference/iteration-2-feedback.pdf` | Daniel's written feedback on iteration 1 |
+| `reference/iteration-5-feedback.pdf` | Daniel's written feedback on iteration 4 |
+| `reference/current-dorm-iteration-4.png`, `reference/current-home-iteration-4.png` | Screenshots of both rooms after iteration 4 |
 | `reference/iteration-4-feedback.pdf` | Daniel's written feedback on iterations 2 and 3 (includes the oar blade reference image) |
 | `reference/current-dorm-iteration-3.png`, `reference/current-home-iteration-3.png` | Screenshots of both rooms after iteration 3 |
 | `reference/daniel-photos.png` | Photos of Daniel (hair, face, outfit) and his cat, for the sprites |
