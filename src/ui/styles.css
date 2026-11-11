@@ -288,6 +288,17 @@ a.link:hover { background: #eef4ff; text-decoration: underline; }
 .media.video { margin: 8px 0 14px; }
 .embed.mp4 { display: block; width: 100%; height: auto; margin: 0; max-height: 70vh; }
 
+/* The founding story: its own bordered paper box that scrolls inside the panel */
+.story-box {
+    margin: 6px 0 18px; background: #fffdf8; border: 2px solid var(--edge); box-shadow: 0 3px 0 var(--edge);
+}
+.story-title {
+    margin: 0; padding: 10px 14px; font: 600 17px var(--pixel); background: #efe4cd; border-bottom: 2px solid var(--edge);
+}
+.story-scroll { max-height: 340px; overflow-y: auto; padding: 14px 16px 4px; overscroll-behavior: contain; }
+.story-scroll:focus-visible { outline: 3px solid var(--accent-2); outline-offset: -3px; }
+.story-scroll p { line-height: 1.7; }
+
 /* "Read the whole story" expander */
 .story-more { margin: 2px 0 14px; }
 .story-more summary {

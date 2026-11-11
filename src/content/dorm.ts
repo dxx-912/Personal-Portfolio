@@ -369,11 +369,14 @@ export const dormContent: Record<string, Entry> = withMedia({
         ],
         body: [
             'Raising awareness of hearing loss and the stigma surrounding it, as well as raising funding for cochlear implant research.',
-            'At its peak, Hope For Hearing grew to 500+ members across 12 high school chapters in Canada.',
-            'I was walking from school to the subway one random day when I met this guy called Roy Feng. It was mid-winter, and I forgot to bring my coat, so I was freezing. He offered his coat to me, and we started chatting.',
-            'I was in grade 10; he was a year older and in his first year of the IB program. He started pitching me this idea for his CAS project (volunteer service project IB kids have to do), something about doing some charity work for hearing loss, since he had mild tinnitus. He asked me if I wanted to help out.'
+            'At its peak, Hope For Hearing grew to 500+ members across 12 high school chapters in Canada.'
         ],
         more: {
+            title: 'The founding story',
+            intro: [
+                'I was walking from school to the subway one random day when I met this guy called Roy Feng. It was mid-winter, and I forgot to bring my coat, so I was freezing. He offered his coat to me, and we started chatting.',
+                'I was in grade 10; he was a year older and in his first year of the IB program. He started pitching me this idea for his CAS project (volunteer service project IB kids have to do), something about doing some charity work for hearing loss, since he had mild tinnitus. He asked me if I wanted to help out.'
+            ],
             label: 'Read the whole story',
             body: [
                 "Seemed interesting, and Roy seemed like a cool, nice dude who just offered me his coat in the middle of Toronto's shitty ass weather. My father also had hearing loss, so this mattered to me personally as well.",

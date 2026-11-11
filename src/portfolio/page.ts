@@ -278,9 +278,15 @@ export function renderPortfolio(opts: { production: boolean }): RenderResult {
     };
 
     /** The long version of a story behind a "Read the whole story" expander. */
-    const story = (s: Section, where: string) => {
-        const ps = (s.more?.body ?? []).map((b) => t(b, where)).filter(Boolean);
-        return ps.length ? `<details class="story-more"><summary class="px">${esc(s.more!.label)}</summary>${ps.map((b) => `<p>${b}</p>`).join('')}</details>` : '';
+    const story = (s: Section, where: string, level: number) => {
+        const m = s.more;
+        if (!m) return '';
+        const intro = (m.intro ?? []).map((b) => t(b, where)).filter(Boolean).map((b) => `<p>${b}</p>`).join('');
+        const rest = m.body.map((b) => t(b, where)).filter(Boolean).map((b) => `<p>${b}</p>`).join('');
+        if (!intro && !rest) return '';
+        const head = m.title ? `<h${level} class="px story-title">${esc(m.title)}</h${level}>` : '';
+        const more = rest ? `<details class="story-more"><summary class="px">${esc(m.label)}</summary>${rest}</details>` : '';
+        return `<section class="story-box"${m.title ? ` aria-label="${esc(m.title)}"` : ''}>${head}<div class="story-scroll" tabindex="0">${intro}${more}</div></section>`;
     };
     /** A local MP4 (the DSP rush video): nothing loads or plays until it is clicked. */
     const video = (v: NonNullable<Section['videos']>[number]) => {
@@ -294,12 +300,12 @@ export function renderPortfolio(opts: { production: boolean }): RenderResult {
     const extras = (s: Section, where: string, level = 4) => {
         const out: string[] = [];
         (s.body ?? []).forEach((b) => { const x = t(b, where); if (x) out.push(`<p>${x}</p>`); });
-        out.push(story(s, where));
         (s.videos ?? []).filter((v) => v.kind === 'mp4' && v.id).forEach((v) => out.push(video(v)));
         if (s.facts?.length) {
             const rows = s.facts.map((f) => [t(f.label, where), t(f.value, where)]).filter(([, v]) => v);
             if (rows.length) out.push(`<dl class="facts">${rows.map(([k, v]) => `<div><dt class="px">${k}</dt><dd>${v}</dd></div>`).join('')}</dl>`);
         }
+        out.push(story(s, where, level + 1));
         (s.list ?? []).forEach((l) => {
             const lis = l.items.map((x) => t(x, where)).filter(Boolean);
             if (!lis.length) return;

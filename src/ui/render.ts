@@ -86,6 +86,18 @@ export function renderLink(l: LinkItem) {
     return `<a class="link" href="${href}"${external ? ' target="_blank" rel="noopener noreferrer"' : ''}>${ico}${rich(l.label)}${external ? ' <span aria-hidden="true">↗</span><span class="sr">(opens in a new tab)</span>' : ''}</a>`;
 }
 
+/** The long story in its own bordered, scrollable box (opening paragraphs, then the rest behind an expander). */
+function storyBox(s: Section, level: number): string {
+    const m = s.more;
+    if (!m) return '';
+    const intro = (m.intro ?? []).filter((p) => !blank(p)).map((p) => `<p>${rich(p)}</p>`).join('');
+    const rest = m.body.filter((p) => !blank(p)).map((p) => `<p>${rich(p)}</p>`).join('');
+    if (!intro && !rest) return '';
+    const head = m.title ? `<h${level} class="story-title">${rich(m.title)}</h${level}>` : '';
+    const more = rest ? `<details class="story-more"><summary>${rich(m.label)}</summary>${rest}</details>` : '';
+    return `<section class="story-box"${m.title ? ` aria-label="${esc(m.title)}"` : ''}>${head}<div class="story-scroll" tabindex="0">${intro}${more}</div></section>`;
+}
+
 export interface RenderOpts {
     mode: RenderMode;
     /** Heading level for the section title, or 0 to skip the title. */
@@ -102,9 +114,6 @@ export function renderSection(s: Section, o: RenderOpts): string {
     }
     if (!blank(s.subtitle)) out.push(`<p class="subtitle">${rich(s.subtitle!)}</p>`);
     s.body?.forEach((p) => { if (!blank(p)) out.push(`<p>${rich(p)}</p>`); });
-    if (s.more?.body.length) {
-        out.push(`<details class="story-more"><summary>${rich(s.more.label)}</summary>${s.more.body.filter((p) => !blank(p)).map((p) => `<p>${rich(p)}</p>`).join('')}</details>`);
-    }
     const glance = ([['Role', 'role'], ['Team', 'team'], ['Timeline', 'timeline']] as const)
         .filter(([, k]) => !s.hideGlance && !omit.has(k) && !blank(s[k])).map(([label, k]) => [label, s[k]!] as [string, string]);
     const counters = (s.counters ?? []).map((c) => [c.label, `${c.prefix ?? ''}${c.value.toLocaleString('en-US')}${c.suffix ?? ''}`] as [string, string]);
@@ -127,6 +136,8 @@ export function renderSection(s: Section, o: RenderOpts): string {
         facts.forEach((f) => out.push(`<div><dt>${rich(f.label)}</dt><dd>${rich(f.value)}</dd></div>`));
         out.push('</dl>');
     }
+    const story = storyBox(s, Math.min(6, (o.heading || 2) + 1));
+    if (story) out.push(story);
     s.list?.forEach((l) => {
         const items = l.items.filter((i) => !blank(i));
         if (!items.length) return;

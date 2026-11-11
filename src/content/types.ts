@@ -78,8 +78,11 @@ export interface Section {
     omit?: ('role' | 'team' | 'timeline' | 'problem' | 'whatIDid' | 'result')[];
     /** Game panel only: skip the Role, Team, Timeline tiles (the quick view still shows them). */
     hideGlance?: boolean;
-    /** A long story shown behind a "Read the whole story" expander, after the body. */
-    more?: { label: string; body: string[] };
+    /**
+     * A long story in its own scrollable box: a heading, the opening paragraphs, then the rest
+     * behind a "Read the whole story" expander.
+     */
+    more?: { title?: string; intro?: string[]; label: string; body: string[] };
     tags?: string[];
     /** Hobbies: a one line fun fact (shown on the flip side of an inventory box). */
     funFact?: string;
