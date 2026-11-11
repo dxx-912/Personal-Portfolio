@@ -153,7 +153,7 @@ export function renderSection(s: Section, o: RenderOpts): string {
         out.push(`<div class="gallery ${style}">${imgs.join('')}</div>`);
     }
     s.videos?.forEach((v) => out.push(renderVideo(v, o.mode, o.comingSoonVideo)));
-    const tags = (s.tags ?? []).filter((t) => !blank(t));
+    const tags = s.hideTags ? [] : (s.tags ?? []).filter((t) => !blank(t));
     if (tags.length) out.push(`<p class="tags">${tags.map((t) => `<span class="tag">${rich(t)}</span>`).join('')}</p>`);
     const links = (s.links ?? []).map(renderLink).filter(Boolean);
     if (links.length) out.push(`<p class="links">${links.join('')}</p>`);

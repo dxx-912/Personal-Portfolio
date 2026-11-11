@@ -231,6 +231,7 @@ export const dormContent: Record<string, Entry> = withMedia({
                 hideGlance: true,
                 summary: '3rd place finalist out of 50+ teams.',
                 tags: ['3rd Place'],
+                hideTags: true,
                 omit: ['role', 'whatIDid'],
                 problem: 'CorVista, a cardiology EMR software company, had to choose its next growth move: build a data analytics product on top of its existing cardiology records, or enter the cardiac surgery software market.',
                 notes: [
