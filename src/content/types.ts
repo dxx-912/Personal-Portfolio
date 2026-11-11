@@ -52,7 +52,7 @@ export interface Section {
     list?: { title?: string; items: string[] }[];
     images?: ImageItem[];
     /** How images are laid out. */
-    gallery?: 'grid' | 'polaroid' | 'viewer';
+    gallery?: 'grid' | 'polaroid' | 'viewer' | 'row';
     videos?: VideoItem[];
     links?: LinkItem[];
 

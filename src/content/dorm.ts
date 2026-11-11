@@ -21,10 +21,12 @@ export const dormContent: Record<string, Entry> = withMedia({
             "I'm currently recruiting and hope to land product management, product marketing, or growth roles for the summer."
         ],
         // The headshot comes first: the quick view uses it as the hero photo.
+        // one row of equal photos across the panel, each captioned with its file name
+        gallery: 'row',
         images: [
-            { alt: 'Headshot of Daniel Xing', slot: 'about/headshot' },
-            { alt: 'Daniel outside of class', slot: 'about/photos' },
-            { alt: 'Daniel outside of class', slot: 'about/photos' }
+            { alt: 'Headshot of Daniel Xing', caption: 'Professional Headshot', slot: 'about/headshot' },
+            { alt: 'Daniel outside of class', caption: 'Me with my caricature', slot: 'about/photos' },
+            { alt: 'Daniel outside of class', caption: 'Me, my sister, and my cat', slot: 'about/photos' }
         ],
         links: profile.links
     },
