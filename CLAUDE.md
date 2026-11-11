@@ -358,14 +358,14 @@ Each content item has exactly one standing spot (yellow numbers in the layout im
 | # | Object | E action | F panel content |
 |---|---|---|---|
 | 1 | HUD portrait (top left of screen, not in the room) | none | **About me.** Headshot, who Daniel is, what he is interested in (growth, tech, startups), short background, links (LinkedIn, email, resume download). Opens by clicking the portrait or pressing I. Counts as found when opened. |
-| 2 | Big UCLA pennant | none (F only) | **UCLA education.** Major `[TODO: confirm major]`, Royce Hall photo, courses (advanced micro theory, advanced macro theory, intro to C++, accounting fundamentals), honours student. |
-| 3 | "TO DO" pin board | none (F only) | **Student orgs**, shown as a close up of the board where each sticky note is an org with a checked box: William F. Sharpe Fellows (technology vice president), Delta Sigma Pi, the entertainment association (exact name `[TODO]`), International Business for Bruins, UBS Technology Committee, UCLA ResLife. Selecting a note shows a one line description of the org and Daniel's role. |
-| 4 | Laptop on the desk | none (F only) | **Software projects.** Tabs: Cold email automator (https://cold-email-automator-two.vercel.app/), Saved posts scroller (https://morning-scroller.vercel.app/), Ateball at Creative Labs (UI screenshots). What, why, role, link. |
+| 2 | Big UCLA pennant | none (F only) | **UCLA education.** Major (the `MAJOR` constant, currently B.A. Economics, B.S. Cognitive Science), GPA 3.72, expected graduation June 2029, coursework (microeconomic theory, macroeconomic theory, intro to C++, accounting principles), College Honours Student, photos with friends at UCLA. |
+| 3 | "TO DO" pin board | none (F only) | **Student orgs**, shown as a close up of the board where each sticky note is an org with a checked box: William F. Sharpe Fellows (Technology Track Vice President), Delta Sigma Pi, International Business for Bruins, Business in Entertainment Association, UBS Technology Committee, UCLA Residential Life (Resident Assistant). Selecting a note shows a one line description of the org and Daniel's role. |
+| 4 | Laptop on the desk | none (F only) | **Software projects.** Tabs: Cold Outreach Automator (https://cold-email-automator-two.vercel.app/), Saved posts scroller (https://morning-scroller.vercel.app/), Ateball at Creative Labs (UI screenshots, no link). What, why, role, link. |
 | 5 | Binder labeled "Consulting stuff" | none (F only) | **Consulting.** Genesis Alternative Ventures (Project Manager) and the L.E.K. Case Competition (3rd place finalist out of 50+ teams), with slide screenshots. No trophy anywhere. |
-| 6 | Phone with an Instagram style screen | none (F only) | **Club marketing.** The panel is styled like a phone feed (original styling, see 5.4 for the screen image slot). Tabs DSP and IBB: description, skills used, measurable results, graphics grid (DSP Vogue campaign), rush video, website build (screenshots plus a link out). |
-| 7 | Grad cap on the dresser | none (F only) | **High school only: Upper Canada College IB Diploma.** Hat toss photo, 40/45, 1560 SAT, HL Math A&I, English L&L, Economics; SL Mandarin B, Global Politics, ESS; extended essay on the geopolitical implications of Taiwan's semiconductor industry (link); Business Club President and Asian Heritage Club President with photos. UCLA content moves to item 2. |
-| 8 | Closet | **Change outfit**: cycles the character's shirt through a few colors (white, black, UCLA blue, a graphic tee color), with a small wardrobe puff effect. Persist the choice in localStorage. | **Resident Assistant.** Photo, and why: it saves money and it is genuinely fun. |
-| 9 | Folded white "Hope For Hearing" shirt on the dresser | none (F only) | **Hope For Hearing.** Milestones and stats, impact, the founding story (meeting Roy on the subway), grants won, what it taught him, and a photo gallery. |
+| 6 | Phone with an Instagram style screen | none (F only) | **Club marketing.** The panel is styled like a phone feed (original styling, see 5.4 for the screen image slot). Tabs DSP and IBB: what he did, measurable results, graphics grid (DSP Vogue campaign), the DSP rush video, and the DSP and IBB website rebuilds (screenshots plus a link out; not separate projects). |
+| 7 | Grad cap on the dresser | none (F only) | **High school only: Upper Canada College IB Diploma.** Hat toss photo, 40/45, 1560 SAT, HL Math A&I, English L&L, Economics; SL Mandarin B, Global Politics, ESS; extended essay on the geopolitical implications of Taiwan's semiconductor industry (link); Business Competition Club President and Asian Heritage & Culture Club President with photos. UCLA content moves to item 2. |
+| 8 | Closet | **Change outfit**: cycles white tee (default), black Stussy shirt, UCLA shirt, white tank top, full suit, with a small wardrobe puff effect. Shirt logos are image slots. Persist the choice in localStorage. | **Resident Assistant**, Rieber Hall South, Floor 6: what the job is, and photos. |
+| 9 | Folded white "Hope For Hearing" shirt on the dresser | none (F only) | **Hope For Hearing.** Mission, scale (past tense: "At its peak, ... 500+ members across 12 high school chapters in Canada"), stats, milestones, grants won, the founding story (short version plus "Read the whole story"), Instagram link, and a photo gallery. |
 | E only | Beanbag | Sit (character sinks in, small idle animation) | none |
 | E only | Dorm bed | Sit on the edge | none |
 | | Right door | Walk in to go home | |
@@ -379,7 +379,7 @@ Each content item has exactly one standing spot (yellow numbers in the layout im
 | 4 | Big black speaker | **Play featured track**: plays the file in `public/assets/audio/featured/` (Rachmaninoff, Piano Concerto No. 2, coda, Lisitsa), speaker bumps, lofi ducks; E again stops. If master sound is off, show "Sound is off" with a one click "turn on" button. | **Music.** Dubstep, EDM, classical, R&B, hip hop; why he loves them; Spotify playlist links including his lofi playlist. |
 | 5 | Camera | **Snap a photo**: white flash, then a polaroid of the current game view slides in, downloadable as a PNG | **Photography.** His love of photography and a gallery of his photos. All content `[TODO]`. |
 | 6 | Nightstand (glowing lamp, family photo frame) | none (F only) | **Family.** Parents and sister, and a gallery. |
-| 7 | Digital piano | **Play**: opens a one octave playable keyboard (mouse, touch, or number keys 1 to 8) with soft synthesized tones | **Piano.** Twelve years, RCM ARCT Diploma (wording `[TODO]`), recital photos. |
+| 7 | Digital piano | **Play**: opens a one octave playable keyboard (mouse, touch, or number keys 1 to 8) with soft synthesized tones | **Piano.** Twelve years, The Associate Diploma (ARCT) in Piano Performance and Harmony, recital photos. |
 | 8 | Apple crisp pie with a slice on a plate | **Eat**: two second eating animation, then "yum!" |  **Baking and cooking.** Cooks and bakes for his family; food photos and photos of him cooking. |
 | 9 | Cat | **Pet**: the cat stops, sits, closes its eyes, hearts float up, and it meows (sound if on, a "meow" text bubble if off). Petting a sleeping cat gives a sleepy purr and a single heart. | **About Fluffy.** Photos, how they got him, his personality. |
 | 10 | Longboard | **Ride**: E to hop on, E again to hop off | **Longboard build.** Originally meant to be electric, the build process, soldering photos, the destroyed battery. F works only while not riding. |
@@ -468,11 +468,12 @@ The found counter reads "Found X of 19". Update `/plain` to match this item list
 - Voice: first person, plain, direct, no buzzwords. Never use the long dash character in user facing copy.
 - Flag possible overclaiming under "Wording to confirm" in `TODO_ASSETS.md`.
 
-### Open wording items (use placeholders until confirmed)
-- Major: the notes say Economics; Daniel has also described a B.A. Business Economics and B.S. Cognitive Science double major.
-- The exact official name of the entertainment association.
-- ARCT description: replace "highest nonprofessional degree possible in Canada" with the exact credential and a verifiable description.
-- Items on his resume not in the content notes (NST internship, LionChase, Bruin Finance Society, Creative Labs project lead, NST summit site, DSP and IBB site rebuilds): keep under "Consider adding" in `TODO_ASSETS.md`. Do not add unasked.
+### Wording decisions (settled in content pass 1, see `CONTENT_FINAL.md`)
+- Major: one constant, `MAJOR` in `src/content/profile.ts` (B.A. Economics, B.S. Cognitive Science for now; Daniel is double checking it against his resume).
+- Entertainment association: Business in Entertainment Association.
+- Piano credential: The Associate Diploma (ARCT) in Piano Performance and Harmony.
+- L.E.K.: 3rd place finalist out of 50+ teams, never a win. Club names at UCC: Business Competition Club, Asian Heritage & Culture Club. "Resident Assistant", never "Residential Assistant". The cold email tool is the Cold Outreach Automator.
+- Not on the site: NST, LionChase, Bruin Finance Society, Creative Labs project lead. The DSP and IBB website rebuilds live in the club marketing panel.
 
 ---
 

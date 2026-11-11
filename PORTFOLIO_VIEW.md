@@ -44,7 +44,7 @@ The creative layer lives entirely in the background and the margins. Content is 
 Order is a draft for Daniel to confirm. Lead with product work for product management recruiting.
 | Card | Label | Title | Face line |
 |---|---|---|---|
-| [01] | SOFTWARE | Cold email automator | what it does, why built `[TODO]`; live link |
+| [01] | SOFTWARE | Cold Outreach Automator | what it does, why built, result; live link |
 | [02] | SOFTWARE | Saved posts scroller | what it does, why built `[TODO]`; live link |
 | [03] | PRODUCT | Ateball, Creative Labs | Project manager. result `[TODO]` |
 | [04] | CONSULTING | Genesis Alternative Ventures | Project manager. scope, result `[TODO]` |
@@ -54,12 +54,12 @@ Order is a draft for Daniel to confirm. Lead with product work for product manag
 Each card face must stand on its own: title, role, one line result, two or three tags. Clicking is optional depth.
 
 ### Evening content
-- Hope For Hearing feature card: founder; the subway story in one line; counters "500+ members" and "12 institutions" (Daniel to confirm these are current); click opens its detail panel.
-- Org tags: Sharpe Fellows (tech VP), Delta Sigma Pi, IBB, the entertainment association (exact name `[TODO]`), UBS Tech Committee, ResLife RA. Each tag opens a small popover with a one line description and role.
+- Hope For Hearing feature card: the scale line in the past tense ("At its peak, Hope For Hearing grew to 500+ members across 12 high school chapters in Canada."); counters 500+ members, 12 high school chapters, $25,000+ raised, 50+ events; click opens its detail panel (short story plus "Read the whole story").
+- Org tags: Sharpe Fellows (tech VP), Delta Sigma Pi, IBB, Business in Entertainment Association, UBS Tech Committee, ResLife RA. Each tag opens a small popover with a one line description and role.
 - Education: UCLA (major `[TODO: confirm]`, honours student) and Upper Canada College (IB Diploma 40/45, SAT 1560). Each card opens a detail panel with the full education content.
 
 ### Night content (inventory)
-Eight item boxes, labels are draft and editable: Rowing, national champ; Piano, ARCT; Built a longboard; Cat dad; Photography; Baking; Dubstep and EDM; Lift and sprint. Plus North York and family as two more boxes or as part of the footer story, Claude Code's call. Acting is removed everywhere. Honour of Kings is not included.
+Item boxes with labels from `CONTENT_FINAL.md`: Rowing, national champ; Piano, ARCT; Built a longboard; Fluffy; Photography; Baking; Music; Lift and sprint; Beach volleyball. Plus North York and family as two more boxes or as part of the footer story, Claude Code's call. Acting is removed everywhere. Honour of Kings is not included.
 
 ---
 
@@ -131,7 +131,7 @@ Rules for all motion:
 - Read everything from `src/content/`, the same source the game panels use, so each story is written once.
 - Extend the content types as needed for this view: `summary` (card face line), `role`, `team`, `timeline`, `problem`, `whatIDid`, `result`, `tags`, `gallery` (images with alt text), `links`, `funFact` (hobbies), `cardOrder`, and a `portfolioSection` (work, leadership, education, inventory).
 - Never invent facts. Missing fields render clear `[TODO: ...]` placeholders in development and are listed in `TODO_ASSETS.md` under a "Portfolio view" heading. In a production build, hide empty fields gracefully instead of showing TODO text, and log them at build time.
-- Open items: tagline, card order, inventory labels, confirmation of "500+ members" and "12 institutions", major wording, the entertainment association's exact name.
+- Open items: work card order and fun facts (see `TODO_ASSETS.md`). Settled: tagline, inventory labels, Hope For Hearing scale, the major (one constant), the entertainment association's name.
 
 ---
 
@@ -166,7 +166,7 @@ These are approved and override anything above that conflicts.
 1. **Link label:** "No time to play? Quick view" with no sad face, in the game and anywhere else it appears.
 2. **Fonts:** subheadings, descriptions, card text, panel text, and the Morning, Work, Evening, Night, and Play nav all move to the pairing in CLAUDE.md section 0.1 G. They currently look like default browser text and do not match the brand. Labels and nav in Space Mono can be small caps style with letter spacing; paragraphs in Nunito at 17 to 18px.
 3. **Leadership (evening section) becomes a swipeable card gallery,** styled and behaving like "Selected work": a horizontal row of cards that scrolls or swipes, with arrow buttons on desktop, snap points, and a peek of the next card. Every card opens a detail panel exactly like the work panels (section 4), with a deep link.
-   - Order: William F. Sharpe Fellows, technology vice president, first; then the other orgs (Delta Sigma Pi, IBB, the entertainment association `[TODO name]`, UBS Technology Committee, UCLA ResLife RA); **Hope For Hearing last**, as the largest card in the gallery with its counters, so it reads as the closing highlight.
+   - Order: William F. Sharpe Fellows, technology vice president, first; then the other orgs (Delta Sigma Pi, IBB, Business in Entertainment Association, UBS Technology Committee, UCLA ResLife RA); **Hope For Hearing last**, as the largest card in the gallery with its counters, so it reads as the closing highlight.
    - The separate org tag row goes away (the cards replace it). Education stays below the gallery.
 4. **Remove the footer line** "Same stories as the game, minus the walking."
 5. **More dynamic animation, tastefully:** gallery cards drift in with a slight stagger and settle; the active card in a gallery scales up a touch; section headings slide in with a short underline draw; inventory items wobble once on hover; panel images fade and scale in; the nav indicator slides between items instead of jumping. Keep every effect short (under 400ms), never block reading, and keep the reduced motion versions.

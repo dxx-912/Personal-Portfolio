@@ -182,10 +182,10 @@ export const homeContent: Record<string, Entry> = withMedia({
         prompt: 'Piano',
         plainGroup: 'personal',
         title: 'Piano',
-        subtitle: '[TODO: exact RCM ARCT credential name]',
+        subtitle: 'The Associate Diploma (ARCT) in Piano Performance and Harmony',
         body: [
             'I played piano for 12 years.',
-            '[TODO: a precise, verifiable description of the ARCT credential]'
+            '[TODO: favorite piece to play, and a line on what piano means to me]'
         ],
         gallery: 'grid',
         images: [{ alt: 'Recital photo 1', slot: 'piano/recitals' }, { alt: 'Recital photo 2', slot: 'piano/recitals' }]
@@ -211,7 +211,7 @@ export const homeContent: Record<string, Entry> = withMedia({
     // 9. The cat (E pets him)
     cat: {
         id: 'cat',
-        short: 'Cat dad',
+        short: 'Fluffy',
         prompt: 'About Fluffy',
         plainGroup: 'personal',
         title: 'About Fluffy',

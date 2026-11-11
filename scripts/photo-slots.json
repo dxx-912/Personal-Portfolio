@@ -30,7 +30,7 @@
         },
         {
             "key": "laptop/cold-email",
-            "folder": "1 Dorm/04 Laptop, software projects/Cold email automator screenshots (2 to 4)",
+            "folder": "1 Dorm/04 Laptop, software projects/Cold Outreach Automator screenshots (2 to 4)",
             "max": 4,
             "text": true,
             "alts": {
@@ -137,7 +137,7 @@
         },
         {
             "key": "gradcap/business-club",
-            "folder": "1 Dorm/07 Grad cap, Upper Canada College/You leading Business Club (1 photo)",
+            "folder": "1 Dorm/07 Grad cap, Upper Canada College/You leading Business Competition Club (any number)",
             "max": 0,
             "alts": {
                 "_R0A9073.JPEG": "Daniel with Business Competition Club members outside Upper Canada College",
@@ -148,7 +148,7 @@
         },
         {
             "key": "gradcap/asian-heritage-club",
-            "folder": "1 Dorm/07 Grad cap, Upper Canada College/You leading Asian Heritage Club (1 photo)",
+            "folder": "1 Dorm/07 Grad cap, Upper Canada College/You leading Asian Heritage & Culture Club (1 photo)",
             "max": 1
         },
         {
