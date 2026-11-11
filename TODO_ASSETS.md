@@ -1,219 +1,75 @@
-# TODO: assets, copy, and decisions (iteration 2)
+# TODO: what the site still needs (after content pass 1)
 
-Everything the site still needs from Daniel. Every item here shows up on the site as a visible yellow `[TODO: ...]`, a striped "photo coming soon" box, or an original placeholder until it is filled.
+Rewritten from `CONTENT_FINAL.md`. Only what is still missing is listed here; everything else is on the site.
 
-- Copy lives in `src/content/` (`profile.ts`, `dorm.ts`, `home.ts`, `ui.ts`).
-- **Photos: drag them into the matching folder in `photos/`, then run `npm run photos`.** Every photo listed below has its own folder there, in the same order. The script converts, resizes, and wires them in; see `photos/README.md`.
-- Final art goes in `public/assets/<pack>/`. Then set `url` on the matching entry in `src/assets/manifest.ts` (keep `w`, `h`, `frames` matching the file).
-- Decor images (posters, logos) go in `photos/3 Room decor (optional)/`. Restart `npm run dev` after adding one.
+How things show up until they are filled: in development (`npm run dev`) a missing line shows as a yellow `[TODO: ...]` and a missing photo as a striped "photo coming soon" box. A production build (`npm run build`) hides both, in the game and in the quick view, and prints the remaining TODOs in the build log.
 
----
-
-## Art and identity
-
-- [ ] **itch.io asset pack:** link and license. It fixes the tile size (`TILE` in `src/config.ts`). Put its license in `public/assets/<pack>/LICENSE`.
-- [ ] **Commissioned character sheet** (current placeholder frame is 16x22, `CHAR_FRAME` in `src/config.ts`): idle, walk in 4 directions, sleep, wake, sit, pet (crouch), ride longboard, pull up (hang and up), snap photo (optional), a small cheer for the completion moment. **The shirt must be on its own layer** (a second sheet with only the shirt, drawn in white or light grey) so the closet can recolour it. Look: East Asian young man, warm skin, big friendly smile, dark curly permed hair (short sides, curls on top, closer to the left photo in `reference/daniel-photos.png`), plain white tee, dark pants.
-- [ ] **Cat sheet** (placeholder is 18x14): fluffy cream and golden longhair, round face, big green eyes. States: idle, walk, sit, sit with eyes closed (petted), curled up asleep, bat paw.
-- [ ] **Final outfit colours** for the closet (now: white, black, UCLA blue, an orange graphic tee colour; `OUTFITS` in `src/game/Player.ts`).
-
-## Bonus interactables (iteration 5, "Secrets X/3", never part of the 19)
-
-- [x] **Instagram handle.** The home phone shows **@dxx_912** with a link to https://www.instagram.com/dxx_912/ (`profile.instagram` in `src/content/profile.ts`).
-- [x] **Red Bull** (dorm fridge) and **mini basketball** (dorm hoop): built, nothing needed. The `phone-screen.png` slot is retired; the dorm phone shows `instagram-logo.png` instead.
-- [x] **Instagram logo** added. Its "transparent" background was a checkerboard baked into the pixels; `npm run photos` now clears that for this slot (`clearBackground` in `scripts/photo-slots.json`) and keeps the white glyph.
-
-## Decor images to provide (optional)
-
-Never drawn by us. Until the file exists, an original abstract placeholder shows. Drop each into its folder in `photos/3 Room decor (optional)/` (it becomes the file below).
-
-| File in `public/assets/decor/` | Where | Placeholder now |
-|---|---|---|
-| `poster-graduation.png` | Dorm wall above the desk, P1 | Pink and purple pixel pattern |
-| `poster-damn.png` | Dorm wall above the desk, P2 | Red and white pattern |
-| `poster-duck.png` | Dorm wardrobe left door, P3 (a bit bigger than the wall posters) | Yellow and white pattern |
-| `poster-igor.png` | Dorm wall above the desk, P4 | Pink stripes |
-| `poster-caricature.png` | Not placed in the room right now (the wall above the desk is full); say where you want it | Hidden until the file exists |
-| `hoodie-logo.png` | Home hoodie on the wall hook, chest | Plain "TORONTO" text |
-| `speaker-logo.png` | Home speaker badge | Small plain orange badge |
-| `instagram-logo.png` | Dorm phone screen (item 6) and the home phone screen (bonus); also on the home phone card, the Club marketing panel header, and the Instagram contact link (About me, completion panel, quick view footer) | Plain coloured rounded square, no symbol |
-| `can-logo.png` | The Red Bull can that pops up when Daniel drinks from the dorm fridge | Plain blue and silver can |
-| `volleyball-logo.png` (optional) | Volleyball on the home shelf, top tier | No logo |
-| `family-photo.png` | Home nightstand photo frame | Outline silhouettes of people |
-| `poster-home-1.png` | Home left wall frame | Teal wave pattern |
-| `poster-home-2.png` | Home frame below the clock | Peach blocks |
-| `poster-home-3.png` | Home frame above the pull up tower (landscape) | Blue and white stripes |
-
-## Audio (`public/assets/audio/`, credits in `CREDITS.md` there)
-
-- [ ] **PRIVATE ONLY: replace before public launch.** `lofi/Lofi Beats.mp3` and `featured/Rachmaninoff Piano Concerto No 2 Allegro Scherzando.mp3` have no license for public use. They are committed and play on the deployed site (Daniel's call while the link is shared privately), so swap them for licensed tracks before sharing the site publicly. Fill in artist and source for each in `CREDITS.md`.
-- [ ] **Coda start time:** the speaker starts the featured track at 10:12 (`featuredStart` in `src/content/music.ts`), just before the C major Maestoso. Confirm by ear.
-- [ ] **Music panel:** a sentence on why you love it, and your dubstep playlist link (the lofi playlist is in).
-
-## Little lines (`src/content/profile.ts`)
-
-- [ ] **Wake up line.** Now: "Hey, I'm Daniel. Welcome to my dorm at UCLA." Confirm or replace.
-- [x] **HUD stats.** Caffeine 0/7, Sleep 8/8, Creativity 200/200 at the start of every visit (iteration 5). The Red Bull fills Caffeine; Sleep drops one every 90 seconds and refills in either bed.
-- [ ] **Stats lines** (`src/content/ui.ts`, `needs`). Red Bull hints: "where can I get a Red Bull...", "need caffeine", "I swear there's a Red Bull in the fridge", "running on empty here". Tired: "I'm so tired", "I want to take a nap...", "my bed looks really comfy right now", "can barely keep my eyes open". Confirm or replace the last one in each list (mine).
-- [ ] **5 to 8 idle thoughts.** Now placeholders: "should probably do my readings", "what should I eat later...", "where did I leave my charger", "five more minutes", "hmm".
-
-## Contact (`src/content/profile.ts`)
-
-- [ ] One line tagline
-- [ ] LinkedIn URL
-- [ ] Email address to show publicly
-- [ ] GitHub URL
-- [ ] Resume PDF (put it at `public/media/resume/`)
+- Copy lives in `src/content/` (`profile.ts`, `dorm.ts`, `home.ts`, `ui.ts`, `portfolio.ts`).
+- **Photos:** drop them into the matching folder in `photos/`, then run `npm run photos` (it also runs with `npm run dev`). See `photos/README.md`.
+- **Decor images** (posters, logos) go in `photos/3 Room decor (optional)/`. Restart `npm run dev` after adding one.
 
 ---
 
-## Dorm: Rieber Hall, UCLA (professional)
+## Dorm (professional)
 
-### 1. HUD portrait: About me (`dorm.about`)
-- [ ] Confirm major wording (see "Wording to confirm")
-- [ ] 2 to 3 sentences of background and experience
-- [ ] Headshot
+The dorm copy is done. Left:
 
-### 2. UCLA pennant: UCLA education (`dorm.pennant`)
-- [ ] Confirm major wording
-- [ ] Royce Hall photo
+- [ ] **Ateball quarter and year** (`timeline` on the Ateball tab in `src/content/dorm.ts`; now "12 weeks").
+- [ ] **Hope For Hearing tone pass pending.** The founding story is in as written (with the dollar fixes). Do your own tone edit in `dorm.shirt.more` when ready.
+- [ ] **Photos for empty folders:**
+  - `1 Dorm/07 Grad cap, Upper Canada College/Graduating class hat toss (1 photo)`
+  - `1 Dorm/07 Grad cap, Upper Canada College/You leading Asian Heritage & Culture Club (1 photo)`
+  - `1 Dorm/09 Hope For Hearing shirt/Gallery (any number)`
 
-### 3. TO DO board: student orgs (`dorm.todo`)
-- [ ] One line on each org: Sharpe Fellows, Delta Sigma Pi, the entertainment association, IBB, UBS Technology Committee, ResLife
-- [ ] Your role in each (Sharpe Fellows is "Technology Vice President"; ResLife is "Resident Assistant")
+## Home (personal): not filled in yet
 
-### 4. Laptop: software projects (`dorm.laptop`)
-- [ ] Cold email automator: what it is, why you built it, your role, the stack
-- [ ] Saved posts scroller: what it is, why you built it, your role, the stack
-- [ ] Ateball (Creative Labs): what it is, why you built it with CL, your role, link if public
-- [ ] Ateball UI screenshots (3 slots)
+Every home panel keeps its current copy and placeholders. The photo folders are ready under `photos/2 Home/`, all empty.
 
-### 5. "Consulting stuff" binder: consulting (`dorm.binder`)
-- [ ] Genesis Alternative Ventures description (client, problem, what your team did, outcome)
-- [ ] Genesis slide screenshots (3 slots)
-- [ ] L.E.K. Case Competition description (the case, your recommendation, the year)
-- [ ] L.E.K. slide screenshots (3 slots)
+- [ ] **1. Window, North York:** names of the library and cafe (or keep them unnamed), a line or two on what home means to you. Gallery photos.
+- [ ] **2. Shelf:** rowing (which crew, which championship, year, result), beach volleyball (how often, where, who with), the three plaques (event and year for each), a line on each favorite read. Photos: rowing trophy and oar, beach volleyball, the three plaques (once those exist, the pixel plaques get redrawn to match).
+- [ ] **3. Pull up tower, exercise:** confirm "lifts and sprints or runs almost every day", a current goal or favorite lift. Photos or short clips: muscle up, trap bar deadlift, physique.
+- [ ] **4. Speaker, music:** why music matters to you, a few favorite artists, your main Spotify playlist link (the lofi playlist is in).
+- [ ] **5. Camera, photography:** how you got into it, what you like to shoot, which camera. 8 to 15 of your best photos.
+- [ ] **6. Nightstand, family:** how you want to describe them, one line. Family photos (and `family-photo.png` for the frame).
+- [ ] **7. Piano:** confirm 12 years, favorite piece, one line on what piano means to you. Recital photos. (The credential is in.)
+- [ ] **8. Pie, baking and cooking:** signature things you make, one line. Food photos, you cooking, you baking.
+- [ ] **9. Fluffy:** breed or description, age, how you got him, personality. Photos.
+- [ ] **10. Longboard:** how the build went, what happened to the battery, what you learned, current state. Build, soldering, and battery photos.
 
-### 6. Phone: club marketing (`dorm.phone`)
-- [ ] DSP: your role, description, skills used, measurable results
-- [ ] DSP Vogue campaign graphics (3 slots) and website screenshot
-- [ ] DSP rush video (YouTube id, or a compressed MP4)
-- [ ] DSP website link
-- [ ] IBB: your role, description, skills used, measurable results
-- [ ] IBB graphics (3 slots) and website screenshot
-- [ ] IBB rush video
-- [ ] IBB website link
+## Quick view (`/portfolio`)
 
-### 7. Grad cap: Upper Canada College (`dorm.gradcap`)
-- [ ] UCC hat toss photo
-- [ ] Business Club and Asian Heritage Club photos
-- [ ] Extended essay link
-- [ ] SAT proof: only if you want it shown (probably skip)
-
-### 8. Closet: Resident Assistant (`dorm.closet`)
-- [ ] A sentence or two on what the job is like
-- [ ] RA photo
-
-### 9. Hope For Hearing shirt (`dorm.shirt`)
-- [ ] Role and years
-- [ ] Founding story (meeting Roy on the subway), 2 to 4 sentences
-- [ ] What it does and the impact so far
-- [ ] What it taught you
-- [ ] Milestones and stats
-- [ ] Funding grants won (names, amounts if shareable)
-- [ ] Gallery photos with captions (4 slots now; add as many as you like)
-
----
-
-## Home: North York, Toronto (personal)
-
-### 1. Window: North York (`home.window`)
-- [ ] Names of the library and cafe (optional)
-- [ ] Gallery photos (3 slots)
-
-### 2. Shelf (`home.shelf`)
-- [ ] Rowing: boat, year, a line on what it was like; trophy and oar photos (2 slots)
-- [ ] Award plaque photos: DECA, FBLA CNLC, FBLA NLC (3 slots). Once these exist, the three pixel plaques get redrawn to look like the real ones.
-- [ ] Favorite reads: done (plain text titles only, no franchise art)
-
-### 3. Pull up tower: exercise (`home.pullup`)
-- [ ] A line on why, or a current goal
-- [ ] Photos or short clips: muscle up, trap bar deadlift, physique
-
-### 4. Speaker: music (`home.speaker`)
-- [ ] Why you love it, a sentence or two (dubstep, EDM, classical, R&B, hip hop)
-- [ ] Dubstep playlist URL (the lofi playlist is linked and embedded)
-
-### 5. Camera: photography (`home.camera`) *(new)*
-- [ ] 2 to 3 sentences on why you love photography
-- [ ] What you like to shoot, and with what
-- [ ] A gallery of your own photos with captions (4 slots now)
-
-### 6. Nightstand: family (`home.nightstand`)
-- [ ] A few sentences about your parents and sister
-- [ ] Family photos (3 slots), plus `family-photo.png` for the frame on the nightstand
-
-### 7. Piano (`home.piano`)
-- [ ] Exact ARCT credential name and a precise description (see "Wording to confirm")
-- [ ] Recital photos (2 slots)
-
-### 8. Apple crisp pie: baking and cooking (`home.pie`)
-- [ ] Favourite things to make
-- [ ] Food photos and photos of you cooking or baking (4 slots)
-
-### 9. Cat (`home.cat`)
-- [x] His name: Fluffy (prompt "F About Fluffy", panel "About Fluffy")
-- [ ] How you got him
-- [ ] His personality
-- [ ] Photos (3 slots)
-
-### 10. Longboard (`home.longboard`)
-- [ ] Build process, 2 to 3 sentences
-- [ ] How the battery got destroyed
-- [ ] Build, soldering, and battery photos (3 slots)
-
----
-
-## Portfolio view (`/portfolio`)
-
-The quick view reads the same stories as the game, so filling an item above fills both. A production build hides any field that is still a TODO and prints the full list in the build log (`npm run build`). These are the extra fields the quick view uses (all in `src/content/dorm.ts` and `home.ts`, on the matching section):
-
-- [ ] **Tagline** (`profile.tagline`) and confirm the hero line: "UCLA student building products, campaigns, and communities. Looking for product management roles in 2027." (`profile.focus`, from the mockup)
-- [ ] **Work card order** (`cardOrder` in `src/content/portfolio.ts`). Draft: cold email automator, saved posts scroller, Ateball, Genesis, L.E.K., DSP and IBB.
-- [ ] **For each work card** (cold email automator, saved posts scroller, Ateball, Genesis, L.E.K., DSP and IBB): `summary` (one line for the card face), `role`, `team`, `timeline`, `problem`, `whatIDid`, `result`, and 2 to 4 screenshots.
-- [ ] **Confirm** Ateball role "Project manager" and Hope For Hearing role "Founder" (both from the spec).
-- [ ] **Confirm the Hope For Hearing counters** "500+ members" and "12 institutions" are current (from the mockup), plus its `team`, `timeline`, `problem`, `whatIDid`, `result`, and a one line mission for the card.
-- [ ] **Leadership gallery** (one card per org, then Hope For Hearing): for each org, your role, a one line description, the timeline, and a line on what you did there (`role`, `body`, `timeline`, `whatIDid` on the TO DO board tabs in `src/content/dorm.ts`). The entertainment association's exact name (shows as "BEA" for now).
-- [ ] **Inventory labels** (`short` on each hobby): Rowing, national champ; Piano, ARCT; Built a longboard; Cat dad; Photography; Baking; Dubstep, EDM; Lift and sprint; North York; Family. Drafts, edit freely.
-- [ ] **A one line fun fact for each hobby** (`funFact`): shown when a box flips over. Until then the flip shows a real line from the story where one exists.
-- [ ] **Site URL** (`profile.siteUrl`) once the domain is chosen. Then canonical and absolute Open Graph URLs turn on.
-- [ ] **Open Graph image**: `public/og/portfolio.png` is a screenshot of the hero today. Retake it once the headshot and tagline are in.
-- [ ] Not shown in the quick view (in the game only): the award plaques and favorite reads on the shelf. Say if you want them as inventory boxes.
+- [ ] **Work card order** (`cardOrder` in `src/content/portfolio.ts`). Undecided; the current order stays: Cold Outreach Automator, Saved posts scroller, Ateball, Genesis, L.E.K., DSP and IBB.
+- [ ] **One fun fact per inventory box** (`funFact`, shown when a box flips): rowing, piano, longboard, Fluffy, photography, baking, music, exercise, beach volleyball (also North York and family, which stay as boxes).
+- [ ] **Open Graph image:** `public/og/portfolio.png` is an old screenshot of the hero. Retake it now that the headshot and tagline are in.
+- [ ] **Site URL** (`profile.siteUrl`) once the domain is chosen, for canonical and Open Graph URLs.
 
 ## Wording to confirm
 
-- **Major.** The notes say "UCLA Economics major". You have also described a B.A. Business Economics and B.S. Cognitive Science double major. The site uses `[TODO: confirm major]` for now.
-- **Org name.** The notes say "Business in Entertainment Association". Confirm the exact official name.
-- **ARCT.** "Highest nonprofessional degree possible in Canada" is left out. Give the exact credential name and a verifiable description.
-- **"We won the national rowing championship."** Kept as written. Consider naming the regatta or event and year so it reads as specific, not general.
-- **"Honours student."** Kept from the notes. Confirm the exact program name if there is one.
-- **Resident Assistant vs Residential Assistant.** The notes say "Residential", the spec says "Resident". The site uses "Resident Assistant". Use whatever UCLA calls it.
-- **Solo Levelling.** Spelled the way you wrote it (the official English title is "Solo Leveling"). Your call.
+- **Major.** The site says "B.A. Economics, B.S. Cognitive Science" (one constant, `MAJOR` in `src/content/profile.ts`). You are double checking it against your resume, which says Business Economics.
+- **Hope For Hearing role.** The site calls you "Founder" (card label and role). The story credits Roy with the foundation; say if "Co-founder" fits better.
 
-## Consider adding (on the resume, not in the content notes)
+## Decor images (optional)
 
-Not added. Decide whether you want any of them. The work table's spare slot or a fourth laptop tab can hold them without changing the layout.
+Never drawn by us; an original placeholder shows until the file exists. Drop each into its folder in `photos/3 Room decor (optional)/`. Still empty:
 
-- NST internship (CEO's Office, 2026 Hong Kong Award Summit)
-- LionChase investment banking analyst
-- Bruin Finance Society senior editor
-- Creative Labs project lead this quarter
-- The NST summit site
-- The IBB and DSP site rebuilds as projects in their own right
+| File in `public/assets/decor/` | Where | Placeholder now |
+|---|---|---|
+| `can-logo.png` | The Red Bull can from the dorm fridge | Plain blue and silver can |
+| `shirt-logo-ucla.png` | Chest of the UCLA shirt (closet outfit) | Plain "UCLA" in gold pixel text |
+| `volleyball-logo.png` | Volleyball on the home shelf | No logo |
+| `family-photo.png` | Home nightstand photo frame | Outline silhouettes of people |
+| `poster-home-1.png`, `poster-home-2.png`, `poster-home-3.png` | Home wall frames | Abstract patterns in the home palette |
+| `poster-caricature.png` | Not placed yet; say where you want it | Hidden until the file exists |
 
-## Decisions
+## Audio (`public/assets/audio/`, credits in `CREDITS.md`)
 
-- [ ] Custom domain
-- [ ] Whether to add any "Consider adding" items
-- [ ] What goes in the spare work table slot (home)
-- [ ] Final outfit colours for the closet
-- [ ] Sound on or off by default (off, per spec)
+- [ ] **PRIVATE ONLY: replace before public launch.** `lofi/Lofi Beats.mp3` and `featured/Rachmaninoff Piano Concerto No 2 Allegro Scherzando.mp3` have no license for public use. Swap them for licensed tracks (or confirm you have the rights) before sharing the site publicly, and fill in artist and source in `CREDITS.md`.
+- [ ] **Coda start time:** the speaker starts the featured track at 10:12 (`featuredStart` in `src/content/music.ts`). Confirm by ear.
+
+## Art and decisions
+
+- [ ] **itch.io asset pack** (link and license; fixes the tile size), or keep placeholders.
+- [ ] **Character commission** (artist or platform, status). Sheet: idle, walk in 4 directions, sleep, wake, sit, pet (crouch), ride longboard, pull up, a small cheer, plus the closet outfits as overlay layers: the tee on its own layer (recoloured for the black Stussy and UCLA shirts), a white tank top, and a full suit. Placeholder frame is 16x22 (`CHAR_FRAME` in `src/config.ts`).
+- [ ] **Cat commission** (same artist?): fluffy cream and golden longhair, round face, green eyes. Idle, walk, sit, sit with eyes closed, curled up asleep, bat paw.
+- [ ] **Spare work table slot** at home: what goes there, or leave clutter.
+- [ ] **Public launch date** and **custom domain**.

@@ -21,4 +21,4 @@ The script shrinks each photo to at most 1600px, converts it to WebP, turns it t
 - Your original files stay on your computer only; they are not uploaded to GitHub. The converted copies in `public/media/` are what get committed and published.
 - To swap a photo, replace the files in its folder and run `npm run photos` again. That folder's old copies are replaced.
 - To remove a photo from the site completely, delete it here **and** delete its copy in `public/media/`, then run `npm run photos`.
-- Your resume PDF does not go here. Put it at `public/media/resume/` and set its link in `src/content/profile.ts`.
+- Your resume PDF does not go here. It lives at `public/resume.pdf`; every Resume button links to `/resume.pdf`.
