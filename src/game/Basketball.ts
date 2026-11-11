@@ -17,8 +17,11 @@ const HAND_Z = 14;
 const RESTITUTION = 0.6;
 /** Furniture footprints block the ball below this height. */
 const FURNITURE_Z = 16;
-/** Sweet spot half width on the 0..1 meter. */
-export const SWEET = 0.075;
+/**
+ * Sweet spot half width on the 0..1 meter: generous right under the hoop, narrowing steadily with distance,
+ * tight from the far side of the room.
+ */
+const SWEET_NEAR = 0.17, SWEET_FAR = 0.03;
 
 export type BallState = 'rest' | 'held' | 'air' | 'roll';
 
@@ -86,6 +89,13 @@ export class Basketball {
         this.clampToRoom();
     }
 
+    /** Half width of the sweet spot from (px, py): wide up close, progressively smaller further away. */
+    sweetWidth(px: number, py: number) {
+        const d = Math.hypot(this.geom.rimX - px, this.geom.rimY - py);
+        const t = Phaser.Math.Clamp((d - 12) / (FLOOR_W * 0.85 - 12), 0, 1);
+        return Phaser.Math.Linear(SWEET_NEAR, SWEET_FAR, t);
+    }
+
     /** Power that drops it in from (px, py): the middle of the sweet spot, for the meter. */
     sweetSpot(px: number, py: number) {
         const v = this.idealSpeed(Math.hypot(this.geom.rimX - px, this.geom.rimY - py), this.angleFor(px, py));
@@ -103,6 +113,7 @@ export class Basketball {
         const theta = this.angleFor(px, py);
         const delta = p - this.sweetSpot(px, py);
         const a = Math.abs(delta), sgn = Math.sign(delta) || 1;
+        const SWEET = this.sweetWidth(px, py);
         // landing error along the shot line, in px past (+) or short of (-) the rim centre
         let e: number;
         if (a <= SWEET) e = (delta / SWEET) * 1.6 + (Math.random() - 0.5) * 0.8; // drops in

@@ -15,7 +15,7 @@ import { Cat } from '../game/Cat';
 import { Lighting } from '../game/Lighting';
 import { NavGrid, type Pt, type Rect } from '../game/nav';
 import { chargeHeld, lastInputAt, markInput, moveVector, onAction, setChargeCapture, userInputAt, type Action } from '../ui/input';
-import { Basketball, SWEET } from '../game/Basketball';
+import { Basketball } from '../game/Basketball';
 import { CAFFEINE_BOOST, CAFFEINE_MAX, SLEEP_MAX, SLEEP_TICK_MS, hintGap, session } from '../game/session';
 import type { TimeOfDay } from '../game/Lighting';
 import { closePanel, openPanel } from '../ui/panel';
@@ -92,7 +92,7 @@ export class Room extends Phaser.Scene {
     private beacons = new Map<Target, Phaser.GameObjects.Image>();
     /** Dorm mini basketball (group D6). */
     private ball: Basketball | null = null;
-    private charge = { on: false, p: 0, sweet: 0.5 };
+    private charge = { on: false, p: 0, sweet: 0.5, width: 0.1 };
     private meter: Phaser.GameObjects.Graphics | null = null;
     private tallyText: Phaser.GameObjects.Text | null = null;
 
@@ -129,7 +129,7 @@ export class Room extends Phaser.Scene {
         this.perchMs = 0;
         this.nextKnockMs = 12000 + Math.random() * 13000;
         this.fallen = new Set();
-        this.charge = { on: false, p: 0, sweet: 0.5 };
+        this.charge = { on: false, p: 0, sweet: 0.5, width: 0.1 };
         this.meter = null;
         this.tallyText = null;
         setChargeCapture(false);
@@ -1248,7 +1248,7 @@ export class Room extends Phaser.Scene {
         this.player.stop();
         this.setMode('ball');
         setChargeCapture(true);
-        this.charge = { on: false, p: 0, sweet: 0.5 };
+        this.charge = { on: false, p: 0, sweet: 0.5, width: 0.1 };
         b.hold(this.player.x, this.player.y, this.player.facing);
         sfx('hop');
         showBubble('act', isTouchDevice() ? ui.ballHintTouch : ui.ballHint, 'small');
@@ -1274,7 +1274,7 @@ export class Room extends Phaser.Scene {
         const b = this.ball!;
         const held = chargeHeld();
         if (held && !this.charge.on) {
-            this.charge = { on: true, p: 0, sweet: b.sweetSpot(this.player.x, this.player.y) };
+            this.charge = { on: true, p: 0, sweet: b.sweetSpot(this.player.x, this.player.y), width: b.sweetWidth(this.player.x, this.player.y) };
             hideBubble('act');
         }
         if (this.charge.on) {
@@ -1316,7 +1316,7 @@ export class Room extends Phaser.Scene {
         g.clear();
         g.fillStyle(0x1a1420, 1).fillRect(x - 1, y - 1, W + 2, H + 2);
         g.fillStyle(0x3a3346, 1).fillRect(x, y, W, H);
-        const s0 = Math.max(0, this.charge.sweet - SWEET), s1 = Math.min(1, this.charge.sweet + SWEET);
+        const s0 = Math.max(0, this.charge.sweet - this.charge.width), s1 = Math.min(1, this.charge.sweet + this.charge.width);
         g.fillStyle(0x5fd16a, 1).fillRect(x, Math.round(y + H - s1 * H), W, Math.max(1, Math.round((s1 - s0) * H)));
         const fh = Math.round(this.charge.p * H);
         g.fillStyle(0xffd447, 0.9).fillRect(x + 1, y + H - fh, W - 2, fh);
