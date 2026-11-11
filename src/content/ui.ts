@@ -39,6 +39,7 @@ export const ui = {
         drop: 'Drop',
         shoot: 'Shoot (hold)',
         shootTouch: 'Shoot',
+        dunk: 'Dunk',
         phone: 'Check phone'
     },
     /** Mobile button label for F. */
@@ -46,6 +47,7 @@ export const ui = {
     actButton: 'Do',
     keyAct: 'E',
     keyInfo: 'F',
+    keyDunk: 'R',
 
     doorToHome: 'Home, Toronto',
     doorToDorm: 'Back to UCLA',

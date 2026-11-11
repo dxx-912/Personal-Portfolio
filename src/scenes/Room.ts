@@ -637,6 +637,7 @@ export class Room extends Phaser.Scene {
             else if (this.mode === 'ball') this.dropBall();
             return;
         }
+        if (a === 'dunk') { if (this.mode === 'ball' && this.canAct()) this.dunk(); return; }
         if (a !== 'act' && a !== 'info') return;
         if (this.sleeping) { this.wake(); return; }
         if (!this.canAct()) return;
@@ -1290,9 +1291,67 @@ export class Room extends Phaser.Scene {
         if (this.mode === 'ball') b.hold(this.player.x, this.player.y, this.player.facing);
         this.checkDoors();
         this.updateHighlights(null, this.time.now);
+        const extra = !this.charge.on && b.canDunk(this.player.x, this.player.y)
+            ? { key: ui.keyDunk, label: ui.verbs.dunk, action: 'dunk' as const } : undefined;
         this.promptAtPlayer(isTouchDevice()
-            ? { hold: { key: 'Space', label: ui.verbs.shootTouch }, info: ui.verbs.drop }
-            : { hold: { key: 'Space', label: ui.verbs.shoot }, act: ui.verbs.drop });
+            ? { hold: { key: 'Space', label: ui.verbs.shootTouch }, info: ui.verbs.drop, extra }
+            : { hold: { key: 'Space', label: ui.verbs.shoot }, act: ui.verbs.drop, extra });
+    }
+
+    /**
+     * R near the hoop: Daniel jumps with the ball overhead, carries it up over the rim, slams it through and
+     * lands where he took off. Like the pull ups, the body is switched off while the sprite moves, so the jump
+     * can never push him into a wall or furniture.
+     */
+    private dunk() {
+        const b = this.ball;
+        if (!b || this.charge.on || !b.canDunk(this.player.x, this.player.y)) return;
+        const g = b.geom;
+        const x0 = this.player.x, y0 = this.player.y;
+        this.endBallMode();
+        hideBubble('act');
+        setPrompt(null);
+        this.busy = true;
+        this.player.cancelPath();
+        this.player.stop();
+        const dx = g.rimX - x0;
+        this.player.face(Math.abs(dx) > Math.abs(g.rimY - y0) ? (dx > 0 ? 'right' : 'left') : 'up');
+        this.body().enable = false;
+        this.player.pose(DANIEL_FRAMES.cheer);
+        this.player.squash();
+        sfx('hop');
+        const s = this.player.sprite;
+        const lift = { h: 0, k: 0 };
+        const place = () => {
+            s.setY(y0 - lift.h);
+            // the ball rides above his hands, then over to the rim
+            const hx = x0, hz = 22 + lift.h;
+            b.carry(Phaser.Math.Linear(hx, g.rimX, lift.k), Phaser.Math.Linear(y0, g.rimY, lift.k),
+                Phaser.Math.Linear(hz, g.rimZ + 6, lift.k), y0 + 1);
+        };
+        place();
+        this.tweens.add({
+            targets: lift, h: 16, k: 1, duration: this.rm ? 120 : 280, ease: 'Quad.easeOut', onUpdate: place,
+            onComplete: () => {
+                b.dunk();
+                session.attempts = b.attempts;
+                this.updateTally();
+                this.player.pose(DANIEL_FRAMES.hang);
+                this.tweens.add({
+                    targets: lift, h: 0, delay: this.rm ? 60 : 180, duration: this.rm ? 120 : 240, ease: 'Quad.easeIn',
+                    onUpdate: () => s.setY(y0 - lift.h),
+                    onComplete: () => {
+                        this.player.pose(null);
+                        this.player.teleport(x0, y0);
+                        this.body().enable = true;
+                        this.player.squash();
+                        sfx('hop');
+                        this.busy = false;
+                        this.setMode('free');
+                    }
+                });
+            }
+        });
     }
 
     private shootBall() {

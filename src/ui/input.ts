@@ -5,7 +5,7 @@ import { state } from '../state';
 
 const held = new Set<string>();
 /** act = E (do something), info = F (learn more). */
-export type Action = 'act' | 'info' | 'pause' | 'escape' | 'about' | 'hint' | 'konami';
+export type Action = 'act' | 'info' | 'pause' | 'escape' | 'about' | 'hint' | 'konami' | 'dunk';
 const listeners = new Set<(a: Action) => void>();
 
 const MOVE: Record<string, string> = {
@@ -73,6 +73,8 @@ export function initInput() {
                 emit('about'); break;
             case 'KeyH':
                 emit('hint'); break;
+            case 'KeyR':
+                emit('dunk'); break;
         }
     });
     window.addEventListener('keyup', (e) => {

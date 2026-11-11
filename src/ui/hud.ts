@@ -71,7 +71,7 @@ export function initHud() {
         const b = (e.target as HTMLElement).closest<HTMLButtonElement>('button[data-a]');
         if (!b) return;
         e.stopPropagation();
-        trigger(b.dataset.a as 'act' | 'info');
+        trigger(b.dataset.a as 'act' | 'info' | 'dunk');
     });
 
     portraitBtn.addEventListener('click', () => { portraitBtn.blur(); trigger('about'); });
@@ -216,6 +216,8 @@ export interface PromptSpec {
     door?: string;
     /** A press and hold key (basketball: Space to charge). On touch it labels the action button. */
     hold?: { key: string; label: string };
+    /** One more key with its own action, e.g. R to dunk. Tapping the chip does it too. */
+    extra?: { key: string; label: string; action: 'dunk' };
 }
 
 /** Floating key-cap prompt above the focused object, at page coordinates. Each chip is also a button. */
@@ -223,7 +225,7 @@ export interface PromptSpec {
 export function setPrompt(spec: PromptSpec | null, x = 0, y = 0, align: 'center' | 'start' | 'end' = 'center') {
     setActionButtons(spec);
     if (!spec || (!spec.act && !spec.info && !spec.door && !spec.hold)) { promptEl.hidden = true; return; }
-    const key = `${spec.act ?? ''}|${spec.info ?? ''}|${spec.door ?? ''}|${spec.hold?.label ?? ''}`;
+    const key = `${spec.act ?? ''}|${spec.info ?? ''}|${spec.door ?? ''}|${spec.hold?.label ?? ''}|${spec.extra?.label ?? ''}`;
     if (promptEl.dataset.key !== key) {
         const touch = isTouchDevice();
         const chip = (a: 'act' | 'info', k: string, label: string) =>
@@ -232,6 +234,7 @@ export function setPrompt(spec: PromptSpec | null, x = 0, y = 0, align: 'center'
             ? `<button type="button" class="chip chip-door" data-a="act" tabindex="-1"><span>${esc(spec.door)}</span></button>`
             : [
             spec.hold ? `<span class="chip chip-act chip-hold">${touch ? '' : `<kbd>${esc(spec.hold.key)}</kbd>`}<span>${esc(spec.hold.label)}</span></span>` : '',
+            spec.extra ? `<button type="button" class="chip chip-act chip-extra" data-a="${esc(spec.extra.action)}" tabindex="-1">${touch ? '' : `<kbd>${esc(spec.extra.key)}</kbd>`}<span>${esc(spec.extra.label)}</span></button>` : '',
             spec.act ? chip('act', ui.keyAct, spec.act) : '',
             spec.info ? chip('info', ui.keyInfo, spec.info) : ''
         ].join('');

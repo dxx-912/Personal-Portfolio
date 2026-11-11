@@ -15,6 +15,8 @@ const BALL_R = 3;
 const RIM_R = 5.5;
 const HAND_Z = 14;
 const RESTITUTION = 0.6;
+/** How close Daniel's feet must be to the spot under the rim to dunk. */
+const DUNK_RANGE = 30;
 /** Furniture footprints block the ball below this height. */
 const FURNITURE_Z = 16;
 /**
@@ -65,6 +67,27 @@ export class Basketball {
     }
 
     get canPickUp() { return this.state === 'rest'; }
+
+    /** Close enough to the rim (feet to the spot under it) to jump and dunk. */
+    canDunk(px: number, py: number) { return Math.hypot(this.geom.rimX - px, this.geom.rimY - py) <= DUNK_RANGE; }
+
+    /** Carried somewhere by hand during the dunk: no physics, drawn at height z. */
+    carry(x: number, y: number, z: number, depth: number) {
+        this.state = 'held';
+        this.vx = this.vy = this.vz = 0;
+        this.x = x; this.y = y; this.z = z;
+        this.sprite.setPosition(Math.round(x), Math.round(y - z)).setDepth(depth).setAngle(0);
+        this.shadow.setVisible(false);
+    }
+
+    /** Slam it down through the rim from just above it; the normal rim check scores it (swish, net, tally). */
+    dunk() {
+        const g = this.geom;
+        this.x = g.rimX; this.y = g.rimY; this.z = g.rimZ + 3;
+        this.vx = 6; this.vy = 0; this.vz = -150;
+        this.state = 'air'; this.airTime = 0; this.through = false;
+        this.attempts++;
+    }
     get moving() { return this.state === 'air' || this.state === 'roll'; }
 
     /** Feet position for picking it up. */
