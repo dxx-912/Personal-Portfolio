@@ -839,7 +839,7 @@ export class Room extends Phaser.Scene {
         const puff = this.add.sprite(this.player.x, this.player.y - 6, 'fx_puff', 0).setDepth(this.player.y + 1);
         puff.anims.play('puff');
         this.tweens.add({ targets: puff, alpha: 0, y: puff.y - 4, duration: 450, delay: 150, onComplete: () => puff.destroy() });
-        showBubble('act', ui.outfitPuff, 'small');
+        showBubble('act', ui.outfits[state.outfit] ?? ui.outfitPuff, 'small');
         this.time.delayedCall(1200, () => { if (this.mode === 'free') hideBubble('act'); });
     }
 

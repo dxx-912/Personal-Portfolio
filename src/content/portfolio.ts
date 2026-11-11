@@ -3,13 +3,13 @@
 // This file only decides order, labels, icons, and the page's own copy.
 
 import { dormContent } from './dorm';
-import { homeContent, rowing } from './home';
+import { homeContent, rowing, volleyball } from './home';
 import type { Entry, Section } from './types';
 
 export type PortfolioSection = 'work' | 'leadership' | 'education' | 'inventory';
 
 export type PixelIconName =
-    | 'sun' | 'briefcase' | 'sunset' | 'moon' | 'trophy' | 'piano' | 'board' | 'cat' | 'camera' | 'pie'
+    | 'sun' | 'ball' | 'briefcase' | 'sunset' | 'moon' | 'trophy' | 'piano' | 'board' | 'cat' | 'camera' | 'pie'
     | 'headphones' | 'barbell' | 'house' | 'heart' | 'mail' | 'linkedin' | 'file' | 'gamepad' | 'github'
     | 'arrowLeft' | 'arrowRight' | 'close' | 'expand';
 
@@ -58,7 +58,7 @@ export const portfolioItems: PortfolioItem[] = [
     { id: 'ucla', portfolioSection: 'education', cardOrder: 1, label: 'UNIVERSITY', section: dormContent.pennant },
     { id: 'ucc', portfolioSection: 'education', cardOrder: 2, label: 'HIGH SCHOOL', section: dormContent.gradcap },
 
-    // Inventory: hobbies (labels are drafts)
+    // Inventory: hobbies (labels from CONTENT_FINAL.md section 4)
     { id: 'rowing', portfolioSection: 'inventory', cardOrder: 1, icon: 'trophy', section: rowing },
     { id: 'piano', portfolioSection: 'inventory', cardOrder: 2, icon: 'piano', section: homeContent.piano },
     { id: 'longboard', portfolioSection: 'inventory', cardOrder: 3, icon: 'board', section: homeContent.longboard },
@@ -67,8 +67,9 @@ export const portfolioItems: PortfolioItem[] = [
     { id: 'baking', portfolioSection: 'inventory', cardOrder: 6, icon: 'pie', section: homeContent.pie },
     { id: 'edm', portfolioSection: 'inventory', cardOrder: 7, icon: 'headphones', section: homeContent.speaker },
     { id: 'lifting', portfolioSection: 'inventory', cardOrder: 8, icon: 'barbell', section: homeContent.pullup },
-    { id: 'north-york', portfolioSection: 'inventory', cardOrder: 9, icon: 'house', section: homeContent.window },
-    { id: 'family', portfolioSection: 'inventory', cardOrder: 10, icon: 'heart', section: homeContent.nightstand }
+    { id: 'beach-volleyball', portfolioSection: 'inventory', cardOrder: 9, icon: 'ball', section: volleyball },
+    { id: 'north-york', portfolioSection: 'inventory', cardOrder: 10, icon: 'house', section: homeContent.window },
+    { id: 'family', portfolioSection: 'inventory', cardOrder: 11, icon: 'heart', section: homeContent.nightstand }
 ];
 
 export const itemsIn = (s: PortfolioSection) =>

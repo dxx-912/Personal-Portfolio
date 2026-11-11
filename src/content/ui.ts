@@ -101,6 +101,8 @@ export const ui = {
     pullupHint: 'Mash E!',
     pullupHintTouch: 'Tap fast!',
     outfitPuff: 'Fresh fit',
+    /** Closet outfits, in the order the closet cycles them (src/game/Player.ts OUTFITS). */
+    outfits: ['White tee', 'Black Stussy shirt', 'UCLA shirt', 'White tank top', 'Full suit'],
     snapSave: 'Save photo',
     snapTitle: 'Snapshot',
     pianoTitle: 'Piano',

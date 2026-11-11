@@ -58,6 +58,12 @@ export const ASSETS = {
     // characters (the shirt is its own layer so outfits can be recoloured)
     daniel: { ...CHAR, paint: painters.daniel, outline: true },
     daniel_shirt: { ...CHAR, paint: painters.danielShirt, outline: false },
+    // closet outfits with their own shapes (drawn over the base sprite like the shirt layer)
+    daniel_tank: { ...CHAR, paint: painters.danielTank, outline: false },
+    daniel_suit: { ...CHAR, paint: painters.danielSuit, outline: false },
+    // shirt logos (image slots, white logos on a dark ground print through knockout); shown on the chest
+    shirt_logo_stussy: { w: 5, h: 3, paint: painters.empty, outline: false, slot: { file: 'shirt-logo-stussy.png', rect: { x: 0, y: 0, w: 5, h: 3 }, sharp: 6, fit: 'contain', knockout: true } },
+    shirt_logo_ucla: { w: 5, h: 3, paint: painters.empty, outline: false, slot: { file: 'shirt-logo-ucla.png', rect: { x: 0, y: 0, w: 5, h: 3 }, sharp: 6, fit: 'contain', knockout: true } },
     daniel_sleep: { w: 30, h: 14, frames: 2, paint: painters.danielSleep, outline: true },
     daniel_sleep_home: { w: 30, h: 14, frames: 2, paint: painters.danielSleepHome, outline: true },
     cat: { w: CAT_FRAME.w, h: CAT_FRAME.h, frames: CAT_FRAME_COUNT, paint: painters.cat, outline: true, highlight: true },

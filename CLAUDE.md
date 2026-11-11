@@ -285,6 +285,8 @@ Daniel wants some real world art and brand items in the rooms. The site is priva
 | `poster-home-1`, `poster-home-2`, `poster-home-3` | `public/assets/decor/poster-home-N.png` | Home room walls | Abstract placeholders in the home palette |
 | `instagram-logo` | `public/assets/decor/instagram-logo.png` | Dorm and home phone screens | Plain rounded square, no symbol |
 | `can-logo` | `public/assets/decor/can-logo.png` | Red Bull can from the dorm fridge | Plain blue and silver can |
+| `shirt-logo-stussy` | `public/assets/decor/shirt-logo-stussy.png` | Chest of the black Stussy shirt (closet outfit) | Plain black shirt, no logo |
+| `shirt-logo-ucla` | `public/assets/decor/shirt-logo-ucla.png` | Chest of the UCLA shirt (closet outfit) | Plain "UCLA" in the pixel font, gold |
 | `volleyball-logo` (optional) | `public/assets/decor/volleyball-logo.png` | Home shelf volleyball | No logo |
 | `poster-caricature` (optional) | `public/assets/decor/poster-caricature.png` | Dorm wall, optional extra frame | Empty frame, hidden until the file exists |
 

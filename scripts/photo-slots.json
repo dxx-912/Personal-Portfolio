@@ -344,6 +344,18 @@
             "folder": "3 Room decor (optional)/Home poster 3, above the pull up tower (1 image)",
             "max": 1,
             "decor": true
+        },
+        {
+            "key": "shirt-logo-stussy",
+            "folder": "3 Room decor (optional)/Stussy shirt logo, closet outfit (1 image)",
+            "max": 1,
+            "decor": true
+        },
+        {
+            "key": "shirt-logo-ucla",
+            "folder": "3 Room decor (optional)/UCLA shirt logo, closet outfit (1 image)",
+            "max": 1,
+            "decor": true
         }
     ]
 }

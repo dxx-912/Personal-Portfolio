@@ -228,12 +228,101 @@ type Pose = 'stand' | 'sit' | 'crouch' | 'hang' | 'cheer' | 'eat' | 'eatDown' | 
 const SKIN = '#fde4cf', SKIN_D = '#f0c6a6', HAIR = '#2a1f24', HAIR_L = '#4d3b44', MOUTH = '#c48877', BLUSH = '#f6b8aa';
 const TEE = '#f4f6fa', TEE_D = '#cfd5df';
 const PANTS = '#2b2e44', SHOE = '#17131c';
+// the full suit (closet outfit): charcoal jacket and trousers, white shirt, a red tie
+const JACKET = '#30333f', JACKET_D = '#22242e', SUIT_PANTS = '#2a2c37', SUIT_SHIRT = '#f4f6fa', TIE = '#a3313f';
+
+/** Outfit overlays painted on top of the base sprite. 'shirt' is the recolourable tee. */
+export type DanielLayer = 'all' | 'shirt' | 'tank' | 'suit';
+
+/** The legs again in another colour (the suit trousers), same shapes as drawDaniel. */
+function legsOver(p: Px, dir: Dir, step: number, pose: Pose, c: string) {
+    if (pose === 'sit') p.r(4, 17, 9, 2, c);
+    else if (pose === 'crouch') p.r(4, 18, 9, 2, c);
+    else if (dir === 'side') {
+        const fx = step === 1 ? 1 : step === 3 ? -1 : 0;
+        p.r(6 + fx, 17, 3, 3, c); p.r(8 - fx, 17, 3, 3, c);
+    } else {
+        const lUp = step === 1 ? 1 : 0, rUp = step === 3 ? 1 : 0;
+        p.r(5, 17, 3, 3 - lUp, c); p.r(9, 17, 3, 3 - rUp, c);
+    }
+}
+
+/**
+ * The white tank top and the full suit: their own shapes, drawn over the base sprite (which wears the tee).
+ * Tank: bare shoulders and arms, a scoop neck. Suit: long sleeves with the hands showing, lapels, shirt and tie.
+ */
+function drawOutfitOver(p: Px, dir: Dir, bob: number, step: number, pose: Pose, kind: 'tank' | 'suit') {
+    const suit = kind === 'suit';
+    const crouch = pose === 'crouch' ? 3 : 0;
+    const hang = pose === 'hang';
+    const by = 12 + bob + crouch + (hang ? 1 : 0);
+    const bh = 5;
+    const BODY = suit ? JACKET : TEE, BODY_D = suit ? JACKET_D : TEE_D;
+    const SLEEVE = suit ? JACKET_D : SKIN;
+    if (suit) legsOver(p, dir, step, pose, SUIT_PANTS);
+
+    if (dir === 'side' && pose === 'stand') {
+        p.r(5, by, 7, bh, BODY); p.r(5, by, 1, bh, BODY_D);
+        if (suit) {
+            p.r(11, by, 1, 2, SUIT_SHIRT); p.p(11, by + 2, TIE);
+            p.r(8, by + 1, 2, 3, JACKET_D); // sleeve down to the wrist, hand below stays skin
+        } else {
+            p.r(5, by, 1, 1, SKIN); p.r(8, by, 2, 1, SKIN); // shoulder
+            p.r(8, by + 1, 2, 4, SKIN); // bare arm
+        }
+        return;
+    }
+
+    p.r(4, by, 9, bh, BODY);
+    p.r(12, by, 1, bh, BODY_D); p.r(4, by + bh - 1, 9, 1, BODY_D);
+    if (suit) {
+        if (dir === 'down') {
+            p.r(7, by, 3, 1, SUIT_SHIRT); p.p(8, by + 1, SUIT_SHIRT); // shirt in the V of the lapels
+            p.r(8, by + 1, 1, 3, TIE); p.p(8, by, TIE);
+            p.p(6, by, JACKET_D); p.p(10, by, JACKET_D); p.p(7, by + 1, JACKET_D); p.p(9, by + 1, JACKET_D); // lapels
+            p.p(9, by + 3, '#5a5e6e'); // a button
+        } else if (dir === 'up') {
+            p.r(6, by, 5, 1, SUIT_SHIRT); // collar
+        }
+    } else {
+        // thin straps, deep armholes over bare shoulders, a low scoop neck at the front
+        p.r(4, by, 1, 3, SKIN); p.r(12, by, 1, 3, SKIN);
+        p.p(5, by + 1, SKIN); p.p(11, by + 1, SKIN);
+        if (dir === 'down') { p.r(6, by, 5, 1, SKIN); p.r(7, by + 1, 3, 1, SKIN); }
+        else p.r(6, by, 5, 1, SKIN);
+    }
+
+    if (hang || pose === 'cheer') {
+        p.p(3, by, SLEEVE); p.p(13, by, SLEEVE);
+        if (suit) { p.r(3, 2, 1, by - 2, JACKET); p.r(13, 2, 1, by - 2, JACKET); }
+    } else if (pose === 'eat' || pose === 'eatDown' || pose === 'drink' || pose === 'hold') {
+        p.r(3, by, 1, 2, SLEEVE); p.p(13, by, SLEEVE);
+        if (suit) p.p(3, by + 2, JACKET);
+    } else {
+        p.r(3, by, 1, 2, SLEEVE); p.r(13, by, 1, 2, SLEEVE);
+        if (suit && pose !== 'crouch') { p.p(3, by + 2, JACKET); p.p(13, by + 2, JACKET); }
+    }
+}
+
+/**
+ * Where the chest is (top of the logo area) in each character frame, or null when the chest is not
+ * visible (facing away or sideways, or an arm is across it). Shirt logos follow this.
+ */
+export function danielChestY(frame: number): number | null {
+    if (frame <= 5) return 12 + (frame < 2 ? frame : frame % 2 === 1 ? 1 : 0) + 1;
+    const posed: Record<number, number | null> = {
+        [DANIEL_FRAMES.sit]: 13, [DANIEL_FRAMES.crouch]: 16, [DANIEL_FRAMES.hang]: 14, [DANIEL_FRAMES.hangStrain]: 15,
+        [DANIEL_FRAMES.cheer]: 13, [DANIEL_FRAMES.eat]: null, [DANIEL_FRAMES.eatDown]: 13, [DANIEL_FRAMES.drink]: null, [DANIEL_FRAMES.hold]: 13
+    };
+    return posed[frame] ?? null;
+}
 
 /**
  * Daniel: curly permed hair (short sides, volume on top), warm skin, big smile, plain tee.
  * layer 'all' paints everything with a white tee; layer 'shirt' paints only the tee (for recolouring).
  */
-function drawDaniel(p: Px, dir: Dir, bob: number, step: number, pose: Pose, layer: 'all' | 'shirt') {
+function drawDaniel(p: Px, dir: Dir, bob: number, step: number, pose: Pose, layer: DanielLayer) {
+    if (layer === 'tank' || layer === 'suit') { drawOutfitOver(p, dir, bob, step, pose, layer); return; }
     const all = layer === 'all';
     const R = (x: number, y: number, w: number, h: number, c: string, shirt = false) => { if (all || shirt) p.r(x, y, w, h, c); };
     const crouch = pose === 'crouch' ? 3 : 0;
@@ -350,7 +439,7 @@ export const DANIEL_FRAMES = {
 } as const;
 export const DANIEL_FRAME_COUNT = 27;
 
-function danielStrip(layer: 'all' | 'shirt'): Painter {
+function danielStrip(layer: DanielLayer): Painter {
     return (p) => {
         const dirs: Dir[] = ['down', 'up', 'side'];
         dirs.forEach((dir, d) => {
@@ -1429,7 +1518,7 @@ export const painters = {
     homeRoom: paintRoom(HOME_PAL, 'wood', 23),
     doorSide, doormat, signRight: signPainter('right'), signLeft: signPainter('left'), wallClock,
     fxArrow, fxArrowSmall, sparkle, fxZ, fxHeart, fxNote, fxPuff, fxBulb, pencil,
-    daniel: danielStrip('all'), danielShirt: danielStrip('shirt'), danielSleep, danielSleepHome, cat,
+    daniel: danielStrip('all'), danielShirt: danielStrip('shirt'), danielTank: danielStrip('tank'), danielSuit: danielStrip('suit'), empty: (() => {}) as Painter, danielSleep, danielSleepHome, cat,
     slotGraduation, slotDamn, slotDuck, slotIgor, slotEmpty, slotHome1, slotHome2, slotHome3,
     dormWindow, dormPennant, dormTodo, dormDesk, dormLaptop, dormBinder, dormPhone,
     dormCloset, dormBeanbag, dormFloorLamp, dormBed, dormRug, dormDresser, dormGradcap, dormShirt,
