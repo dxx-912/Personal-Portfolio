@@ -381,7 +381,8 @@ a.link:hover { background: #eef4ff; text-decoration: underline; }
 .tab-notes[aria-selected="true"] { background: var(--note); color: var(--ink); outline: 3px solid var(--ink); outline-offset: 2px; transform: rotate(0) scale(1.03); }
 
 /* shelf: three tiers to pick from */
-.tabs-shelf { display: grid; grid-template-columns: 180px 1fr; gap: 16px; align-items: start; }
+/* minmax(0, 1fr): the tier column never grows wider than the panel, so only a gallery scrolls sideways */
+.tabs-shelf { display: grid; grid-template-columns: 180px minmax(0, 1fr); gap: 16px; align-items: start; }
 .tabs-shelf .tablist { flex-direction: column; gap: 0; background: #8f5f3d; border: 3px solid var(--edge); padding: 6px; }
 .tab-shelf {
     text-align: left; background: #5a3e2a; color: #f6efe0; border: none; border-bottom: 5px solid #b88a5a; box-shadow: none;
@@ -441,7 +442,7 @@ a.link:hover { background: #eef4ff; text-decoration: underline; }
 @media (max-width: 640px) {
     .panel { font-size: 16px; max-height: 92vh; }
     .panel-head h2 { font-size: 20px; }
-    .tabs-shelf { grid-template-columns: 1fr; }
+    .tabs-shelf { grid-template-columns: minmax(0, 1fr); }
     .tabs-shelf .tablist { flex-direction: row; }
     .tab-shelf { flex: 1; margin: 0 4px 0 0; padding: 10px 6px; }
     .tabs-notes .tablist { grid-template-columns: 1fr 1fr; padding: 8px; }

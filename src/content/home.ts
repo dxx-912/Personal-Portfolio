@@ -86,9 +86,9 @@ export const homeContent: Record<string, Entry> = withMedia({
                 }],
                 gallery: 'grid',
                 images: [
-                    { alt: 'DECA Provincial Champion plaque', slot: 'shelf/deca' },
-                    { alt: 'FBLA Business Management National Champion plaque', slot: 'shelf/fbla-cnlc' },
-                    { alt: 'FBLA International 6th Place plaque', slot: 'shelf/fbla-nlc' }
+                    { alt: 'DECA Provincial Champion plaque', slot: 'shelf/deca', captionFromFile: true },
+                    { alt: 'FBLA Business Management National Champion plaque', slot: 'shelf/fbla-cnlc', captionFromFile: true },
+                    { alt: 'FBLA International 6th Place plaque', slot: 'shelf/fbla-nlc', captionFromFile: true }
                 ]
             },
             {
