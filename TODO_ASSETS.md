@@ -22,17 +22,17 @@ The dorm copy is done. Left:
 
 ## Home (personal): not filled in yet
 
-Every home panel keeps its current copy and placeholders. The photo folders are ready under `photos/2 Home/`, all empty.
+Every home panel keeps its current copy and placeholders. Photos are in for the shelf (rowing, plaques), exercise, camera, piano, pie, and Fluffy. Still empty: window, beach volleyball, family, longboard.
 
 - [ ] **1. Window, North York:** names of the library and cafe (or keep them unnamed), a line or two on what home means to you. Gallery photos.
-- [ ] **2. Shelf:** rowing (which crew, which championship, year, result), beach volleyball (how often, where, who with), the three plaques (event and year for each), a line on each favorite read. Photos: rowing trophy and oar, beach volleyball, the three plaques (once those exist, the pixel plaques get redrawn to match).
-- [ ] **3. Pull up tower, exercise:** confirm "lifts and sprints or runs almost every day", a current goal or favorite lift. Photos or short clips: muscle up, trap bar deadlift, physique.
+- [ ] **2. Shelf:** rowing (which crew, which championship, year, result), beach volleyball (how often, where, who with), the three plaques (event and year for each), a line on each favorite read. Rowing photos, the nationals video, and award photos are in. Still needed: beach volleyball photos; photos of the plaques themselves if you want the pixel plaques redrawn to match.
+- [ ] **3. Pull up tower, exercise:** confirm "lifts and sprints or runs almost every day", a current goal or favorite lift.
 - [ ] **4. Speaker, music:** why music matters to you, a few favorite artists, your main Spotify playlist link (the lofi playlist is in).
-- [ ] **5. Camera, photography:** how you got into it, what you like to shoot, which camera. 8 to 15 of your best photos.
+- [ ] **5. Camera, photography:** how you got into it, what you like to shoot, which camera. (3 photos are in; add more of your best shots any time.)
 - [ ] **6. Nightstand, family:** how you want to describe them, one line. Family photos (and `family-photo.png` for the frame).
-- [ ] **7. Piano:** confirm 12 years, favorite piece, one line on what piano means to you. Recital photos. (The credential is in.)
-- [ ] **8. Pie, baking and cooking:** signature things you make, one line. Food photos, you cooking, you baking.
-- [ ] **9. Fluffy:** breed or description, age, how you got him, personality. Photos.
+- [ ] **7. Piano:** confirm 12 years, favorite piece, one line on what piano means to you. (The credential and 5 photos are in.)
+- [ ] **8. Pie, baking and cooking:** signature things you make, one line. (3 photos are in; a baking photo would round it out.)
+- [ ] **9. Fluffy:** breed or description, age, how you got him, personality. (7 photos are in.)
 - [ ] **10. Longboard:** how the build went, what happened to the battery, what you learned, current state. Build, soldering, and battery photos.
 
 ## Quick view (`/portfolio`)

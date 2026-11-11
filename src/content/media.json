@@ -268,6 +268,78 @@
             "h": 900
         }
     ],
+    "camera/gallery": [
+        {
+            "src": "/media/camera/gallery/01-selfie-in-tokyo.webp",
+            "alt": "Selfie in Tokyo",
+            "w": 1200,
+            "h": 1600,
+            "file": "Selfie in Tokyo"
+        },
+        {
+            "src": "/media/camera/gallery/02-shooting-mount-fuji.webp",
+            "alt": "Shooting Mount Fuji",
+            "w": 1200,
+            "h": 1600,
+            "file": "Shooting Mount Fuji"
+        },
+        {
+            "src": "/media/camera/gallery/03-daniel-with-his-camera-above-the-clouds-at-mount.webp",
+            "alt": "Daniel with his camera above the clouds at Mount Emei (峨眉山) at sunset",
+            "w": 1200,
+            "h": 1600,
+            "file": "峨眉山"
+        }
+    ],
+    "cat/gallery": [
+        {
+            "src": "/media/cat/gallery/01-fluffy-getting-his-head-scratched.webp",
+            "alt": "Fluffy getting his head scratched",
+            "w": 1200,
+            "h": 1600,
+            "file": "IMG_0751"
+        },
+        {
+            "src": "/media/cat/gallery/02-fluffy-wearing-a-plush-bunny-with-a-pink-bow-on-.webp",
+            "alt": "Fluffy wearing a plush bunny with a pink bow on his head",
+            "w": 1200,
+            "h": 1600,
+            "file": "IMG_0930"
+        },
+        {
+            "src": "/media/cat/gallery/03-fluffy-stretched-out-on-a-pink-chair.webp",
+            "alt": "Fluffy stretched out on a pink chair",
+            "w": 1600,
+            "h": 1200,
+            "file": "IMG_0994"
+        },
+        {
+            "src": "/media/cat/gallery/04-fluffy-rolling-on-his-back-on-a-rug.webp",
+            "alt": "Fluffy rolling on his back on a rug",
+            "w": 1200,
+            "h": 1600,
+            "file": "IMG_2267"
+        },
+        {
+            "src": "/media/cat/gallery/05-fluffy-playing-with-a-red-envelope-on-the-floor.webp",
+            "alt": "Fluffy playing with a red envelope on the floor",
+            "w": 1480,
+            "h": 1600
+        },
+        {
+            "src": "/media/cat/gallery/06-fluffy-sitting-on-a-red-envelope.webp",
+            "alt": "Fluffy sitting on a red envelope",
+            "w": 1480,
+            "h": 1600
+        },
+        {
+            "src": "/media/cat/gallery/07-close-up-of-fluffy-looking-at-the-camera.webp",
+            "alt": "Close up of Fluffy looking at the camera",
+            "w": 1200,
+            "h": 1600,
+            "file": "IMG_6295"
+        }
+    ],
     "closet/ra": [
         {
             "src": "/media/closet/ra/01-daniel-cheering-with-a-megaphone-in-front-of-a-c.webp",
@@ -363,6 +435,13 @@
             "w": 900,
             "h": 1600,
             "file": "First and last time at DECA regionals"
+        },
+        {
+            "src": "/media/gradcap/business/05-the-icdc-team.webp",
+            "alt": "The ICDC Team",
+            "w": 1280,
+            "h": 1600,
+            "file": "The ICDC Team"
         }
     ],
     "laptop/ateball": [
@@ -540,6 +619,187 @@
             "w": 1600,
             "h": 1036,
             "file": "IBB Website"
+        }
+    ],
+    "piano/recitals": [
+        {
+            "src": "/media/piano/recitals/01-and-another-recital.webp",
+            "alt": "And another recital",
+            "w": 1169,
+            "h": 1523,
+            "file": "And another recital"
+        },
+        {
+            "src": "/media/piano/recitals/02-another-recital.webp",
+            "alt": "Another recital",
+            "w": 1600,
+            "h": 1200,
+            "file": "Another recital"
+        },
+        {
+            "src": "/media/piano/recitals/03-grad-ceremony.webp",
+            "alt": "Grad ceremony",
+            "w": 828,
+            "h": 1104,
+            "file": "Grad ceremony"
+        },
+        {
+            "src": "/media/piano/recitals/04-my-first-piano-recital.webp",
+            "alt": "My first piano recital",
+            "w": 1200,
+            "h": 1600,
+            "file": "My first piano recital"
+        },
+        {
+            "src": "/media/piano/recitals/05-with-family.webp",
+            "alt": "With family!",
+            "w": 1600,
+            "h": 1200,
+            "file": "With family!"
+        }
+    ],
+    "pie/food": [
+        {
+            "src": "/media/pie/food/01-chinese-new-year-dishes-i-made-with-mom.webp",
+            "alt": "Chinese New Year dishes I made with mom",
+            "w": 1200,
+            "h": 1600,
+            "file": "Chinese New Year dishes I made with mom"
+        },
+        {
+            "src": "/media/pie/food/02-me-cooking-steak-2021-vs-2024.webp",
+            "alt": "Me cooking steak 2021 vs 2024",
+            "w": 1200,
+            "h": 1600,
+            "file": "Me cooking steak 2021 vs 2024"
+        },
+        {
+            "src": "/media/pie/food/03-prepping-steak.webp",
+            "alt": "Prepping steak",
+            "w": 772,
+            "h": 1188,
+            "file": "Prepping steak"
+        }
+    ],
+    "pullup/deadlift": [
+        {
+            "src": "/media/pullup/deadlift/video.mp4",
+            "poster": "/media/pullup/deadlift/poster.webp",
+            "alt": "Daniel hitting a 365 lb trap bar deadlift PR, senior year",
+            "w": 720,
+            "h": 1280
+        }
+    ],
+    "pullup/muscle-up": [
+        {
+            "src": "/media/pullup/muscle-up/video.mp4",
+            "poster": "/media/pullup/muscle-up/poster.webp",
+            "alt": "Daniel getting his first muscle up, freshman year",
+            "w": 720,
+            "h": 900
+        }
+    ],
+    "pullup/physique": [
+        {
+            "src": "/media/pullup/physique/01-my-back-looks-pretty-good-here.webp",
+            "alt": "My back looks pretty good here",
+            "w": 825,
+            "h": 1467,
+            "file": "My back looks pretty good here"
+        }
+    ],
+    "shelf/deca": [
+        {
+            "src": "/media/shelf/deca/01-daniel-at-deca-ontario-provincials.webp",
+            "alt": "Daniel at DECA Ontario provincials",
+            "w": 1600,
+            "h": 1068,
+            "file": "Qualified!"
+        },
+        {
+            "src": "/media/shelf/deca/02-the-ucc-deca-team-holding-up-their-qualifier-med.webp",
+            "alt": "The UCC DECA team holding up their qualifier medals",
+            "w": 1600,
+            "h": 1067,
+            "file": "UCC Qualifiers"
+        }
+    ],
+    "shelf/fbla-cnlc": [
+        {
+            "src": "/media/shelf/fbla-cnlc/01-daniel-and-his-teammate-in-front-of-upper-canada.webp",
+            "alt": "Daniel and his teammate in front of Upper Canada College",
+            "w": 1440,
+            "h": 1440,
+            "file": "UCC Business Club (1)"
+        }
+    ],
+    "shelf/fbla-nlc": [
+        {
+            "src": "/media/shelf/fbla-nlc/01-daniel-on-stage-at-the-fbla-business-management-.webp",
+            "alt": "Daniel on stage at the FBLA Business Management awards",
+            "w": 1600,
+            "h": 1067,
+            "file": "IMG_9488"
+        }
+    ],
+    "shelf/rowing": [
+        {
+            "src": "/media/shelf/rowing/01-winning-the-national-championships.webp",
+            "alt": "Winning the national championships!!",
+            "w": 1024,
+            "h": 768,
+            "file": "Winning the national championships!!"
+        },
+        {
+            "src": "/media/shelf/rowing/02-flipped-our-boat.webp",
+            "alt": "Flipped our boat...",
+            "w": 1280,
+            "h": 1600,
+            "file": "Flipped our boat..."
+        },
+        {
+            "src": "/media/shelf/rowing/03-my-first-regatta-win.webp",
+            "alt": "My first regatta win",
+            "w": 1024,
+            "h": 768,
+            "file": "My first regatta win"
+        },
+        {
+            "src": "/media/shelf/rowing/04-one-of-my-favourite-photos-from-training.webp",
+            "alt": "One of my favourite photos from training",
+            "w": 1600,
+            "h": 1200,
+            "file": "One of my favourite photos from training"
+        },
+        {
+            "src": "/media/shelf/rowing/05-regatta-medals.webp",
+            "alt": "Regatta medals",
+            "w": 1200,
+            "h": 1600,
+            "file": "Regatta medals"
+        },
+        {
+            "src": "/media/shelf/rowing/06-second-favourite-photo-from-training.webp",
+            "alt": "Second favourite photo from training",
+            "w": 1600,
+            "h": 1200,
+            "file": "Second favourite photo from training"
+        },
+        {
+            "src": "/media/shelf/rowing/07-training-in-tennessee-seat-3.webp",
+            "alt": "Training in Tennessee (seat 3)",
+            "w": 1600,
+            "h": 1200,
+            "file": "Training in Tennessee (seat 3)"
+        }
+    ],
+    "shelf/rowing-video": [
+        {
+            "src": "/media/shelf/rowing-video/video.mp4",
+            "poster": "/media/shelf/rowing-video/poster.webp",
+            "alt": "\"The Senator\" crew rowing at nationals, with Daniel in the bow seat",
+            "w": 720,
+            "h": 406
         }
     ],
     "shirt/gallery": [

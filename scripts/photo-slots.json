@@ -254,7 +254,10 @@
             "key": "shirt/gallery",
             "folder": "1 Dorm/09 Hope For Hearing shirt/Gallery (any number)",
             "max": 0,
-            "last": ["Another charity concert.JPEG", "Banners.JPG"]
+            "last": [
+                "Another charity concert.JPEG",
+                "Banners.JPG"
+            ]
         },
         {
             "key": "window/gallery",
@@ -264,7 +267,16 @@
         {
             "key": "shelf/rowing",
             "folder": "2 Home/02 Shelf/Rowing, trophy and oar (any number)",
-            "max": 0
+            "max": 0,
+            "first": [
+                "Winning the national championships!!.JPG"
+            ]
+        },
+        {
+            "key": "shelf/rowing-video",
+            "folder": "2 Home/02 Shelf/Rowing, trophy and oar (any number)",
+            "video": true,
+            "alt": "\"The Senator\" crew rowing at nationals, with Daniel in the bow seat"
         },
         {
             "key": "shelf/volleyball",
@@ -274,27 +286,39 @@
         {
             "key": "shelf/deca",
             "folder": "2 Home/02 Shelf/DECA Provincial Champion plaque (1 photo)",
-            "max": 1
+            "max": 0,
+            "alts": {
+                "Qualified!.JPG": "Daniel at DECA Ontario provincials",
+                "UCC Qualifiers.JPEG": "The UCC DECA team holding up their qualifier medals"
+            }
         },
         {
             "key": "shelf/fbla-cnlc",
             "folder": "2 Home/02 Shelf/FBLA CNLC National Champion plaque (1 photo)",
-            "max": 1
+            "max": 1,
+            "alts": {
+                "UCC Business Club (1).jpg": "Daniel and his teammate in front of Upper Canada College"
+            }
         },
         {
             "key": "shelf/fbla-nlc",
             "folder": "2 Home/02 Shelf/FBLA NLC 6th place plaque (1 photo)",
-            "max": 1
+            "max": 1,
+            "alts": {
+                "IMG_9488.JPG": "Daniel on stage at the FBLA Business Management awards"
+            }
         },
         {
             "key": "pullup/muscle-up",
             "folder": "2 Home/03 Pull up tower, exercise/Muscle up (1 photo)",
-            "max": 1
+            "video": true,
+            "alt": "Daniel getting his first muscle up, freshman year"
         },
         {
             "key": "pullup/deadlift",
             "folder": "2 Home/03 Pull up tower, exercise/Trap bar deadlift (1 photo)",
-            "max": 1
+            "video": true,
+            "alt": "Daniel hitting a 365 lb trap bar deadlift PR, senior year"
         },
         {
             "key": "pullup/physique",
@@ -303,8 +327,11 @@
         },
         {
             "key": "camera/gallery",
-            "folder": "2 Home/05 Camera, photography/Photos you took (any number)",
-            "max": 0
+            "folder": "2 Home/05 Camera, photography",
+            "max": 0,
+            "alts": {
+                "峨眉山.HEIC": "Daniel with his camera above the clouds at Mount Emei (峨眉山) at sunset"
+            }
         },
         {
             "key": "nightstand/gallery",
@@ -313,28 +340,30 @@
         },
         {
             "key": "piano/recitals",
-            "folder": "2 Home/07 Piano/Recitals (any number)",
+            "folder": "2 Home/07 Piano",
             "max": 0
         },
         {
             "key": "pie/food",
-            "folder": "2 Home/08 Pie, baking and cooking/Food you made (any number)",
+            "folder": "2 Home/08 Pie, baking and cooking",
             "max": 0
-        },
-        {
-            "key": "pie/cooking",
-            "folder": "2 Home/08 Pie, baking and cooking/You cooking (1 photo)",
-            "max": 1
-        },
-        {
-            "key": "pie/baking",
-            "folder": "2 Home/08 Pie, baking and cooking/You baking (1 photo)",
-            "max": 1
         },
         {
             "key": "cat/gallery",
-            "folder": "2 Home/09 Cat/Gallery (any number)",
-            "max": 0
+            "folder": "2 Home/09 Cat",
+            "max": 0,
+            "splitRows": [
+                "IMG_2850.JPG"
+            ],
+            "alts": {
+                "IMG_0751.HEIC": "Fluffy getting his head scratched",
+                "IMG_0930.jpg": "Fluffy wearing a plush bunny with a pink bow on his head",
+                "IMG_0994.JPG": "Fluffy stretched out on a pink chair",
+                "IMG_2267.HEIC": "Fluffy rolling on his back on a rug",
+                "IMG_2850.JPG#1.png": "Fluffy playing with a red envelope on the floor",
+                "IMG_2850.JPG#2.png": "Fluffy sitting on a red envelope",
+                "IMG_6295.HEIC": "Close up of Fluffy looking at the camera"
+            }
         },
         {
             "key": "longboard/building",

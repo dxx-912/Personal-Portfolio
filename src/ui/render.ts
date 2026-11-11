@@ -65,7 +65,9 @@ function renderVideo(v: VideoItem, mode: RenderMode, comingSoon: string) {
         // nothing loads or plays until clicked; the poster frame stands in until then
         const poster = v.poster ? ` poster="${esc(v.poster)}"` : '';
         const size = v.width && v.height ? ` width="${v.width}" height="${v.height}"` : '';
-        return `<figure class="media video"><video class="embed mp4" src="${esc(src)}"${poster}${size} controls preload="none" playsinline aria-label="${esc(v.title)}"></video><figcaption>${esc(v.title)}</figcaption></figure>`;
+        // tall (phone) videos keep their own shape instead of filling the width with black bars
+        const tall = v.width && v.height && v.height > v.width ? ` style="width: min(100%, calc(60vh * ${v.width} / ${v.height}))"` : '';
+        return `<figure class="media video"${tall}><video class="embed mp4" src="${esc(src)}"${poster}${size} controls preload="none" playsinline aria-label="${esc(v.title)}"></video><figcaption>${esc(v.title)}</figcaption></figure>`;
     }
     const ratio = v.kind === 'spotify' ? 'spotify' : 'video';
     // Built only when the panel opens, so third party embeds never load with the page.
@@ -159,7 +161,9 @@ export function renderSection(s: Section, o: RenderOpts): string {
             const h = Math.min(6, (o.heading || 2) + 1);
             out.push(`<h${h} class="list-title">${rich(s.galleryTitle)}</h${h}>`);
         }
-        const style = s.gallery ?? (imgs.length > 1 ? 'grid' : 'single');
+        // more than three photos always scroll sideways (decks keep their slide viewer)
+        const style = imgs.length > 3 && s.gallery !== 'slides' && s.gallery !== 'viewer' ? 'scroll'
+            : s.gallery ?? (imgs.length > 1 ? 'grid' : 'single');
         const h = style === 'scroll' && s.galleryHeight ? ` style="--h: ${s.galleryHeight}px"` : '';
         out.push(`<div class="gallery ${style}"${h}>${imgs.join('')}</div>`);
     }

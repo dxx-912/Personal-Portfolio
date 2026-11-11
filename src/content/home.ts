@@ -12,7 +12,8 @@ export const rowing: Section = resolveSection({
         '[TODO: boat, year, and a line on what rowing was like]'
     ],
     gallery: 'grid',
-    images: [{ alt: 'Rowing photo 1', slot: 'shelf/rowing' }, { alt: 'Rowing photo 2', slot: 'shelf/rowing' }]
+    images: [{ alt: 'Rowing photo 1', slot: 'shelf/rowing', captionFromFile: true }, { alt: 'Rowing photo 2', slot: 'shelf/rowing', captionFromFile: true }],
+    videos: [{ kind: 'mp4', title: '"The Senator" crew that won nationals (I\'m bow seat)', slot: 'shelf/rowing-video' }]
 });
 
 export const volleyball: Section = resolveSection({
@@ -69,7 +70,8 @@ export const homeContent: Record<string, Entry> = withMedia({
                 subtitle: 'Top shelf: the rowing trophy, the oar blade, and a beach volleyball.',
                 body: [...rowing.body!, ...volleyball.body!],
                 gallery: 'grid',
-                images: [...rowing.images!, ...volleyball.images!]
+                images: [...rowing.images!, ...volleyball.images!],
+                videos: rowing.videos
             },
             {
                 id: 'awards',
@@ -113,10 +115,10 @@ export const homeContent: Record<string, Entry> = withMedia({
             '[TODO: a line on why, or a current goal]'
         ],
         gallery: 'grid',
-        images: [
-            { alt: 'Muscle up', caption: 'Muscle up', slot: 'pullup/muscle-up' },
-            { alt: 'Trap bar deadlift', caption: 'Trap bar deadlift', slot: 'pullup/deadlift' },
-            { alt: 'Physique photo', slot: 'pullup/physique' }
+        images: [{ alt: 'Physique photo', slot: 'pullup/physique', captionFromFile: true }],
+        videos: [
+            { kind: 'mp4', title: 'Got my first muscle up freshman year', slot: 'pullup/muscle-up' },
+            { kind: 'mp4', title: '365 lbs trap bar deadlift PR (senior year, I\'m washed now)', slot: 'pullup/deadlift' }
         ]
     },
 
@@ -152,10 +154,9 @@ export const homeContent: Record<string, Entry> = withMedia({
         ],
         gallery: 'grid',
         images: [
-            { alt: 'Photo by Daniel 1', caption: '[TODO: caption]', slot: 'camera/gallery' },
-            { alt: 'Photo by Daniel 2', caption: '[TODO: caption]', slot: 'camera/gallery' },
-            { alt: 'Photo by Daniel 3', caption: '[TODO: caption]', slot: 'camera/gallery' },
-            { alt: 'Photo by Daniel 4', caption: '[TODO: caption]', slot: 'camera/gallery' }
+            { alt: 'Photo by Daniel 1', slot: 'camera/gallery', captionFromFile: true },
+            { alt: 'Photo by Daniel 2', slot: 'camera/gallery', captionFromFile: true },
+            { alt: 'Photo by Daniel 3', slot: 'camera/gallery', captionFromFile: true }
         ]
     },
 
@@ -188,7 +189,7 @@ export const homeContent: Record<string, Entry> = withMedia({
             '[TODO: favorite piece to play, and a line on what piano means to me]'
         ],
         gallery: 'grid',
-        images: [{ alt: 'Recital photo 1', slot: 'piano/recitals' }, { alt: 'Recital photo 2', slot: 'piano/recitals' }]
+        images: [{ alt: 'Recital photo 1', slot: 'piano/recitals', captionFromFile: true }, { alt: 'Recital photo 2', slot: 'piano/recitals', captionFromFile: true }]
     },
 
     // 8. Apple crisp pie with a slice served
@@ -201,10 +202,8 @@ export const homeContent: Record<string, Entry> = withMedia({
         body: ['I love baking and cooking for my family.', '[TODO: favourite things to make]'],
         gallery: 'grid',
         images: [
-            { alt: 'Food photo 1', slot: 'pie/food' },
-            { alt: 'Food photo 2', slot: 'pie/food' },
-            { alt: 'Daniel cooking', slot: 'pie/cooking' },
-            { alt: 'Daniel baking', slot: 'pie/baking' }
+            { alt: 'Food photo 1', slot: 'pie/food', captionFromFile: true },
+            { alt: 'Food photo 2', slot: 'pie/food', captionFromFile: true }
         ]
     },
 
