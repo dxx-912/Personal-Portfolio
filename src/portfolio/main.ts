@@ -169,14 +169,15 @@ function initCounters() {
             if (!e.isIntersecting) return;
             io.unobserve(e.target);
             const el = e.target as HTMLElement;
-            const to = Number(el.dataset.count), suffix = el.dataset.suffix ?? '';
+            const to = Number(el.dataset.count), suffix = el.dataset.suffix ?? '', prefix = el.dataset.prefix ?? '';
+            const fmt = (n: number) => `${prefix}${n.toLocaleString('en-US')}${suffix}`;
             const t0 = performance.now(), dur = 1100;
             const tick = (now: number) => {
                 const k = Math.min(1, (now - t0) / dur);
-                el.textContent = `${Math.round(to * (1 - Math.pow(1 - k, 3)))}${suffix}`;
+                el.textContent = fmt(Math.round(to * (1 - Math.pow(1 - k, 3))));
                 if (k < 1) requestAnimationFrame(tick);
             };
-            el.textContent = `0${suffix}`;
+            el.textContent = fmt(0);
             requestAnimationFrame(tick);
         });
     }, { threshold: 0.6 });

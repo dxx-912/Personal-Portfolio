@@ -38,6 +38,10 @@ export function renderPortfolio(opts: { production: boolean }): RenderResult {
     };
     /** A required field that is missing entirely: a TODO in dev, nothing in production. */
     const need = (s: string | undefined, where: string, what: string) => t(s ?? `[TODO: ${what}]`, where);
+    /** A write up field, unless the story leaves it out on purpose (Section.omit). */
+    const field = (s: Section, k: NonNullable<Section['omit']>[number], where: string, what: string = k) =>
+        s.omit?.includes(k) ? '' : need(s[k], where, what);
+    const num = (c: { value: number; prefix?: string; suffix?: string }) => `${c.prefix ?? ''}${c.value.toLocaleString('en-US')}${c.suffix ?? ''}`;
 
     const linkByLabel = (label: string) => profile.links.find((l) => l.label.toLowerCase().startsWith(label.toLowerCase()));
     const link = (l: LinkItem | undefined, text: string, cls: string, iconName?: Parameters<typeof icon>[0], where = 'contact') => {
@@ -46,7 +50,7 @@ export function renderPortfolio(opts: { production: boolean }): RenderResult {
             todos.push(`${where}: ${text} link`);
             return prod ? '' : `<span class="${cls} is-todo">${ic}<span>${esc(text)}</span> <span class="todo">[TODO: link]</span></span>`;
         }
-        const ext = /^https?:/.test(l.href);
+        const ext = /^https?:/.test(l.href) || /\.pdf$/i.test(l.href);
         return `<a class="${cls}" href="${esc(l.href)}"${l.download ? ' download' : ''}${ext ? ' target="_blank" rel="noopener noreferrer"' : ''}>${ic}<span>${esc(text)}</span>${ext ? '<span class="sr"> (opens in a new tab)</span>' : ''}</a>`;
     };
 
@@ -166,7 +170,7 @@ export function renderPortfolio(opts: { production: boolean }): RenderResult {
     // ---------- evening ----------
 
     const counterHtml = (i: PortfolioItem) => (i.section.counters ?? []).map((c) =>
-        `<span class="counter"><span class="num px" data-count="${c.value}" data-suffix="${esc(c.suffix ?? '')}">${c.value}${esc(c.suffix ?? '')}</span><span class="num-l">${esc(c.label)}</span></span>`).join('');
+        `<span class="counter"><span class="num px" data-count="${c.value}" data-prefix="${esc(c.prefix ?? '')}" data-suffix="${esc(c.suffix ?? '')}">${esc(num(c))}</span><span class="num-l">${esc(c.label)}</span></span>`).join('');
     /** The card's small label: the role for student orgs, else the item's label. */
     const leadLabel = (i: PortfolioItem) => (i.kind === 'org' ? t(i.section.subtitle, `${i.id} role`) || esc(C.studentOrg) : esc(i.label ?? ''));
     const leadSlide = (i: PortfolioItem, n: number) => {
@@ -273,10 +277,25 @@ export function renderPortfolio(opts: { production: boolean }): RenderResult {
         </div>`;
     };
 
+    /** The long version of a story behind a "Read the whole story" expander. */
+    const story = (s: Section, where: string) => {
+        const ps = (s.more?.body ?? []).map((b) => t(b, where)).filter(Boolean);
+        return ps.length ? `<details class="story-more"><summary class="px">${esc(s.more!.label)}</summary>${ps.map((b) => `<p>${b}</p>`).join('')}</details>` : '';
+    };
+    /** A local MP4 (the DSP rush video): nothing loads or plays until it is clicked. */
+    const video = (v: NonNullable<Section['videos']>[number]) => {
+        const size = v.width && v.height ? ` width="${v.width}" height="${v.height}"` : '';
+        return `<figure class="d-video"><video src="${esc(v.id!)}"${v.poster ? ` poster="${esc(v.poster)}"` : ''}${size} controls preload="none" playsinline aria-label="${esc(v.title)}"></video><figcaption>${esc(v.title)}</figcaption></figure>`;
+    };
+    const missingVideos = (s: Section, where: string) =>
+        (s.videos ?? []).filter((v) => !v.id).forEach((v) => todos.push(`${where}: video "${v.title}"`));
+
     /** Body paragraphs, facts, lists, videos, links: whatever else the story has. */
     const extras = (s: Section, where: string, level = 4) => {
         const out: string[] = [];
         (s.body ?? []).forEach((b) => { const x = t(b, where); if (x) out.push(`<p>${x}</p>`); });
+        out.push(story(s, where));
+        (s.videos ?? []).filter((v) => v.kind === 'mp4' && v.id).forEach((v) => out.push(video(v)));
         if (s.facts?.length) {
             const rows = s.facts.map((f) => [t(f.label, where), t(f.value, where)]).filter(([, v]) => v);
             if (rows.length) out.push(`<dl class="facts">${rows.map(([k, v]) => `<div><dt class="px">${k}</dt><dd>${v}</dd></div>`).join('')}</dl>`);
@@ -288,7 +307,7 @@ export function renderPortfolio(opts: { production: boolean }): RenderResult {
             out.push(`<ul class="list">${lis.map((x) => `<li>${x}</li>`).join('')}</ul>`);
         });
         const links = [
-            ...(s.videos ?? []).map((v) => link(v.id ? { label: v.title, href: v.url ?? (v.kind === 'youtube' ? `https://www.youtube.com/watch?v=${v.id}` : v.id) } : undefined, v.title, 'btn btn-s', undefined, where)),
+            ...(s.videos ?? []).filter((v) => v.kind !== 'mp4').map((v) => link(v.id ? { label: v.title, href: v.url ?? (v.kind === 'youtube' ? `https://www.youtube.com/watch?v=${v.id}` : v.id) } : undefined, v.title, 'btn btn-s', undefined, where)),
             ...(s.links ?? []).map((l) => link(l, l.label.replace(TODO_RE, '').trim() || 'Link', 'btn btn-s', undefined, where))
         ].filter(Boolean);
         if (links.length) out.push(`<p class="d-links">${links.join('')}</p>`);
@@ -311,20 +330,26 @@ export function renderPortfolio(opts: { production: boolean }): RenderResult {
         </header>`);
         // gather images from the story and its tabs (DSP and IBB)
         const imgs = [...(s.images ?? []), ...(s.tabs ?? []).flatMap((x) => x.images ?? [])];
+        [s, ...(s.tabs ?? [])].forEach((x) => missingVideos(x, w));
         parts.push(gallery(imgs, w));
         if (i.kind === 'org') {
-            const glance = [[C.glance.role, t(s.role ?? s.subtitle, w)], [C.glance.timeline, need(s.timeline, w, 'timeline')]].filter(([, v]) => v);
+            const glance = [[C.glance.role, t(s.role ?? s.subtitle, w)], [C.glance.timeline, field(s, 'timeline', w)]].filter(([, v]) => v);
             if (glance.length) parts.push(`<dl class="glance">${glance.map(([k, v]) => `<div><dt class="px">${esc(k)}</dt><dd>${v}</dd></div>`).join('')}</dl>`);
             const what = (s.body ?? []).map((b) => t(b, w)).filter(Boolean);
             if (what.length) parts.push(`<div class="writeup"><h4 class="px wl">${esc(C.whatItIs)}</h4>${what.map((b) => `<p>${b}</p>`).join('')}</div>`);
-            const did = need(s.whatIDid, w, 'what I did');
+            const did = field(s, 'whatIDid', w, 'what I did');
             if (did) parts.push(`<div class="writeup"><h4 class="px wl">${esc(C.writeup.whatIDid)}</h4><p>${did}</p></div>`);
         } else if (isCase) {
-            const glance = (['role', 'team', 'timeline'] as const).map((k) => [C.glance[k], need(s[k], w, k)]).filter(([, v]) => v);
+            const glance = (['role', 'team', 'timeline'] as const).map((k) => [C.glance[k], field(s, k, w)]).filter(([, v]) => v);
             if (glance.length) parts.push(`<dl class="glance">${glance.map(([k, v]) => `<div><dt class="px">${esc(k)}</dt><dd>${v}</dd></div>`).join('')}</dl>`);
-            const counters = (s.counters ?? []).map((c) => `<div><dt class="px">${esc(c.label)}</dt><dd class="px num-s">${c.value}${esc(c.suffix ?? '')}</dd></div>`).join('');
+            const counters = (s.counters ?? []).map((c) => `<div><dt class="px">${esc(c.label)}</dt><dd class="px num-s">${esc(num(c))}</dd></div>`).join('');
             if (counters) parts.push(`<dl class="glance glance-num">${counters}</dl>`);
-            const write = (['problem', 'whatIDid', 'result'] as const).map((k) => [C.writeup[k], need(s[k], w, k === 'whatIDid' ? 'what I did' : k)]).filter(([, v]) => v);
+            const write = [
+                [C.writeup.problem, field(s, 'problem', w)],
+                ...(s.notes ?? []).map((n) => [n.label, t(n.text, w)]),
+                [C.writeup.whatIDid, field(s, 'whatIDid', w, 'what I did')],
+                [C.writeup.result, field(s, 'result', w)]
+            ].filter(([, v]) => v);
             if (write.length) parts.push(`<div class="writeup">${write.map(([k, v]) => `<h4 class="px wl">${esc(k)}</h4><p>${v}</p>`).join('')}</div>`);
         }
         if (isHobby) {

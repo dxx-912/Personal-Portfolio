@@ -8,14 +8,31 @@ export type RenderMode = 'panel' | 'plain';
 export const esc = (s: string) =>
     s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 
-/** Escapes text and makes [TODO: ...] markers visible. */
+const TODO_RE = /\[TODO[^\]]*\]/g;
+
+/**
+ * Production builds hide [TODO: ...] markers (and anything that is only a placeholder), the way the
+ * quick view does. Development shows them highlighted so they are easy to spot.
+ */
+const HIDE_TODOS: boolean = (() => { try { return !!import.meta.env?.PROD; } catch { return false; } })();
+
+/** Text without its TODO markers and their dangling punctuation ('' when nothing real is left). */
+export const dropTodos = (s: string) => {
+    const clean = s.replace(TODO_RE, ' ').replace(/\s{2,}/g, ' ').replace(/^[\s.,;:]+/, '').replace(/\s+([.,;:])/g, '$1').trim();
+    return /[A-Za-z0-9]/.test(clean) ? clean : '';
+};
+
+/** Escapes text and makes [TODO: ...] markers visible (or drops them in production). */
 export const rich = (s: string) =>
-    esc(s).replace(/\[TODO[^\]]*\]/g, (m) => `<span class="todo">${m}</span>`);
+    HIDE_TODOS ? esc(dropTodos(s)) : esc(s).replace(TODO_RE, (m) => `<span class="todo">${m}</span>`);
 
 const isTodo = (s?: string) => !s || s.includes('[TODO');
+/** True when a piece of text would render as nothing (all TODO in production). */
+const blank = (s?: string) => !s || (HIDE_TODOS && !dropTodos(s));
 
 function renderImage(img: ImageItem, mode: RenderMode, comingSoon: string) {
-    const cap = img.caption ? `<figcaption>${rich(img.caption)}</figcaption>` : '';
+    if (!img.src && HIDE_TODOS) return '';
+    const cap = !blank(img.caption) ? `<figcaption>${rich(img.caption!)}</figcaption>` : '';
     if (img.src) {
         const size = img.width && img.height ? ` width="${img.width}" height="${img.height}"` : '';
         return `<figure class="media"><img src="${esc(img.src)}" alt="${esc(img.alt)}"${size} loading="lazy" decoding="async" />${cap}</figure>`;
@@ -34,6 +51,7 @@ function videoSrc(v: VideoItem): string | null {
 function renderVideo(v: VideoItem, mode: RenderMode, comingSoon: string) {
     const src = videoSrc(v);
     if (!src) {
+        if (HIDE_TODOS) return '';
         return `<div class="ph-video" role="img" aria-label="${esc(v.title)} (${esc(comingSoon.toLowerCase())})"><span>${esc(v.title)}<br><span class="todo">[TODO: ${esc(comingSoon.toLowerCase())}]</span></span></div>`;
     }
     if (mode === 'plain') {
@@ -41,7 +59,10 @@ function renderVideo(v: VideoItem, mode: RenderMode, comingSoon: string) {
         return `<p><a href="${esc(href)}" target="_blank" rel="noopener noreferrer">${esc(v.title)}</a></p>`;
     }
     if (v.kind === 'mp4') {
-        return `<video class="embed" src="${esc(src)}" controls preload="none" playsinline title="${esc(v.title)}"></video>`;
+        // nothing loads or plays until clicked; the poster frame stands in until then
+        const poster = v.poster ? ` poster="${esc(v.poster)}"` : '';
+        const size = v.width && v.height ? ` width="${v.width}" height="${v.height}"` : '';
+        return `<figure class="media video"><video class="embed mp4" src="${esc(src)}"${poster}${size} controls preload="none" playsinline aria-label="${esc(v.title)}"></video><figcaption>${esc(v.title)}</figcaption></figure>`;
     }
     const ratio = v.kind === 'spotify' ? 'spotify' : 'video';
     // Built only when the panel opens, so third party embeds never load with the page.
@@ -54,12 +75,14 @@ export const linkIcon = (l: LinkItem, cls = 'link-ico') =>
 
 export function renderLink(l: LinkItem) {
     if (isTodo(l.href)) {
+        if (HIDE_TODOS) return '';
         return `<span class="link todo-link">${rich(l.label)} <span class="todo">[TODO: link]</span></span>`;
     }
     const href = esc(l.href!);
     const ico = linkIcon(l);
     if (l.download) return `<a class="link" href="${href}" download>${ico}${rich(l.label)}</a>`;
-    const external = /^https?:/.test(l.href!);
+    // external sites and PDFs (the resume) open in a new tab so the game keeps its place
+    const external = /^https?:/.test(l.href!) || /\.pdf$/i.test(l.href!);
     return `<a class="link" href="${href}"${external ? ' target="_blank" rel="noopener noreferrer"' : ''}>${ico}${rich(l.label)}${external ? ' <span aria-hidden="true">↗</span><span class="sr">(opens in a new tab)</span>' : ''}</a>`;
 }
 
@@ -73,36 +96,53 @@ export interface RenderOpts {
 
 export function renderSection(s: Section, o: RenderOpts): string {
     const out: string[] = [];
+    const omit = new Set(s.omit ?? []);
     if (o.heading) {
         out.push(`<h${o.heading} class="sec-title">${rich(s.title)}</h${o.heading}>`);
     }
-    if (s.subtitle) out.push(`<p class="subtitle">${rich(s.subtitle)}</p>`);
-    s.body?.forEach((p) => out.push(`<p>${rich(p)}</p>`));
-    const glance = [['Role', s.role], ['Team', s.team], ['Timeline', s.timeline]].filter(([, v]) => v) as [string, string][];
-    const counters = (s.counters ?? []).map((c) => [c.label, `${c.value}${c.suffix ?? ''}`] as [string, string]);
+    if (!blank(s.subtitle)) out.push(`<p class="subtitle">${rich(s.subtitle!)}</p>`);
+    s.body?.forEach((p) => { if (!blank(p)) out.push(`<p>${rich(p)}</p>`); });
+    if (s.more?.body.length) {
+        out.push(`<details class="story-more"><summary>${rich(s.more.label)}</summary>${s.more.body.filter((p) => !blank(p)).map((p) => `<p>${rich(p)}</p>`).join('')}</details>`);
+    }
+    const glance = ([['Role', 'role'], ['Team', 'team'], ['Timeline', 'timeline']] as const)
+        .filter(([, k]) => !omit.has(k) && !blank(s[k])).map(([label, k]) => [label, s[k]!] as [string, string]);
+    const counters = (s.counters ?? []).map((c) => [c.label, `${c.prefix ?? ''}${c.value.toLocaleString('en-US')}${c.suffix ?? ''}`] as [string, string]);
     if (glance.length || counters.length) {
         out.push('<dl class="facts">');
         [...glance, ...counters].forEach(([k, v]) => out.push(`<div><dt>${rich(k)}</dt><dd>${rich(v)}</dd></div>`));
         out.push('</dl>');
     }
-    ([['The problem', s.problem], ['What I did', s.whatIDid], ['Result', s.result]] as [string, string | undefined][])
-        .forEach(([k, v]) => { if (v) out.push(`<p class="writeup"><strong>${rich(k)}.</strong> ${rich(v)}</p>`); });
-    if (s.funFact) out.push(`<p class="fun-fact"><strong>Fun fact.</strong> ${rich(s.funFact)}</p>`);
-    if (s.facts?.length) {
+    const writeup: [string, string | undefined][] = [
+        ...(omit.has('problem') ? [] : [['The problem', s.problem]] as [string, string | undefined][]),
+        ...(s.notes ?? []).map((n) => [n.label, n.text] as [string, string]),
+        ...(omit.has('whatIDid') ? [] : [['What I did', s.whatIDid]] as [string, string | undefined][]),
+        ...(omit.has('result') ? [] : [['Result', s.result]] as [string, string | undefined][])
+    ];
+    writeup.forEach(([k, v]) => { if (!blank(v)) out.push(`<p class="writeup"><strong>${rich(k)}.</strong> ${rich(v!)}</p>`); });
+    if (!blank(s.funFact)) out.push(`<p class="fun-fact"><strong>Fun fact.</strong> ${rich(s.funFact!)}</p>`);
+    const facts = (s.facts ?? []).filter((f) => !blank(f.value));
+    if (facts.length) {
         out.push('<dl class="facts">');
-        s.facts.forEach((f) => out.push(`<div><dt>${rich(f.label)}</dt><dd>${rich(f.value)}</dd></div>`));
+        facts.forEach((f) => out.push(`<div><dt>${rich(f.label)}</dt><dd>${rich(f.value)}</dd></div>`));
         out.push('</dl>');
     }
     s.list?.forEach((l) => {
-        if (l.title) out.push(`<h${Math.min(6, (o.heading || 2) + 1)} class="list-title">${rich(l.title)}</h${Math.min(6, (o.heading || 2) + 1)}>`);
-        out.push(`<ul class="list">${l.items.map((i) => `<li>${rich(i)}</li>`).join('')}</ul>`);
+        const items = l.items.filter((i) => !blank(i));
+        if (!items.length) return;
+        const h = Math.min(6, (o.heading || 2) + 1);
+        if (l.title) out.push(`<h${h} class="list-title">${rich(l.title)}</h${h}>`);
+        out.push(`<ul class="list">${items.map((i) => `<li>${rich(i)}</li>`).join('')}</ul>`);
     });
-    if (s.images?.length) {
-        const style = s.gallery ?? (s.images.length > 1 ? 'grid' : 'single');
-        out.push(`<div class="gallery ${style}">${s.images.map((i) => renderImage(i, o.mode, o.comingSoonImage)).join('')}</div>`);
+    const imgs = (s.images ?? []).map((i) => renderImage(i, o.mode, o.comingSoonImage)).filter(Boolean);
+    if (imgs.length) {
+        const style = s.gallery ?? (imgs.length > 1 ? 'grid' : 'single');
+        out.push(`<div class="gallery ${style}">${imgs.join('')}</div>`);
     }
     s.videos?.forEach((v) => out.push(renderVideo(v, o.mode, o.comingSoonVideo)));
-    if (s.tags?.length) out.push(`<p class="tags">${s.tags.map((t) => `<span class="tag">${rich(t)}</span>`).join('')}</p>`);
-    if (s.links?.length) out.push(`<p class="links">${s.links.map(renderLink).join('')}</p>`);
+    const tags = (s.tags ?? []).filter((t) => !blank(t));
+    if (tags.length) out.push(`<p class="tags">${tags.map((t) => `<span class="tag">${rich(t)}</span>`).join('')}</p>`);
+    const links = (s.links ?? []).map(renderLink).filter(Boolean);
+    if (links.length) out.push(`<p class="links">${links.join('')}</p>`);
     return out.join('\n');
 }

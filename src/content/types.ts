@@ -19,6 +19,12 @@ export interface VideoItem {
     id?: string;
     /** Public page to link to (for the plain page and as a fallback). */
     url?: string;
+    /** Drop folder for an MP4 (scripts/photo-slots.json); fills in id and poster automatically. */
+    slot?: string;
+    /** Still frame shown before the video plays. */
+    poster?: string;
+    width?: number;
+    height?: number;
 }
 
 export interface LinkItem {
@@ -61,6 +67,15 @@ export interface Section {
     problem?: string;
     whatIDid?: string;
     result?: string;
+    /** Extra labelled lines in the write up, e.g. "Why I built it", "Our answer", "Built with". */
+    notes?: { label: string; text: string }[];
+    /**
+     * Write up fields this story leaves out on purpose (Genesis has no result under NDA, solo projects
+     * have no team). They are never shown or flagged as missing.
+     */
+    omit?: ('role' | 'team' | 'timeline' | 'problem' | 'whatIDid' | 'result')[];
+    /** A long story shown behind a "Read the whole story" expander, after the body. */
+    more?: { label: string; body: string[] };
     tags?: string[];
     /** Hobbies: a one line fun fact (shown on the flip side of an inventory box). */
     funFact?: string;
@@ -70,6 +85,8 @@ export interface Section {
 
 export interface Counter {
     value: number;
+    /** Put before the number, e.g. "$". */
+    prefix?: string;
     /** Appended after the number, e.g. "+". */
     suffix?: string;
     label: string;

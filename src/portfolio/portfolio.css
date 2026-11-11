@@ -452,3 +452,19 @@ a.clink:hover span { text-decoration: underline; text-underline-offset: 4px; }
     .lead-tab { flex: none; }
 }
 @media (prefers-reduced-motion: reduce) { .lead-card { transform: none; } }
+
+/* ---------- content pass 1: story expander, rush video, four counters ---------- */
+.counters { flex-wrap: wrap; row-gap: 14px; }
+.story-more { margin: 4px 0 14px; }
+.story-more summary {
+    display: inline-flex; align-items: center; min-height: 38px; padding: 7px 12px; cursor: pointer; list-style: none;
+    font-size: 12px; background: #fff; border: 2px solid var(--ink); box-shadow: 0 2px 0 var(--ink); margin-bottom: 12px;
+}
+.story-more summary::-webkit-details-marker { display: none; }
+.story-more summary::after { content: '+'; margin-left: 8px; }
+.story-more[open] summary::after { content: '-'; }
+.story-more summary:hover { background: #f3f6fb; }
+.story-more summary:focus-visible { outline: 3px solid var(--focus, #2f6fd6); outline-offset: 2px; }
+.d-video { margin: 6px 0 14px; max-width: 360px; }
+.d-video video { display: block; width: 100%; height: auto; max-height: 70vh; background: #000; border: 2px solid var(--ink); }
+.d-video figcaption { font-size: 14px; margin-top: 4px; opacity: 0.8; }

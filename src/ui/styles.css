@@ -284,6 +284,20 @@ a.link:hover { background: #eef4ff; text-decoration: underline; }
 .embed.video { aspect-ratio: 16 / 9; }
 .embed.spotify { height: 352px; border-radius: 12px; overflow: hidden; }
 .embed iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+.media.video { margin: 8px 0 14px; max-width: 420px; }
+.embed.mp4 { display: block; height: auto; margin: 0; max-height: 70vh; }
+
+/* "Read the whole story" expander */
+.story-more { margin: 2px 0 14px; }
+.story-more summary {
+    display: inline-block; cursor: pointer; list-style: none; padding: 6px 12px; margin-bottom: 10px;
+    font: 700 14px var(--font-label); color: var(--accent-2); background: #fff;
+    border: 2px solid var(--edge); box-shadow: 0 2px 0 var(--edge);
+}
+.story-more summary::-webkit-details-marker { display: none; }
+.story-more summary::after { content: ' +'; }
+.story-more[open] summary::after { content: ' -'; }
+.story-more summary:hover { background: #eef4ff; }
 
 /* tabs */
 .tabs-wrap { margin-top: 6px; }

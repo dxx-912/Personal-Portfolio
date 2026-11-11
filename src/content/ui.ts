@@ -78,6 +78,7 @@ export const ui = {
     hint: 'H shows anything you have not found yet. I opens About me.',
     todoImage: 'Photo coming soon',
     todoVideo: 'Video coming soon',
+    readMore: 'Read the whole story',
     loadVideo: 'Play video',
 
     ballHint: 'Hold Space, let go to shoot',
@@ -88,10 +89,10 @@ export const ui = {
     yum: 'yum!',
     drinkLine: 'Caffeine 7/7. Locked in.',
     napLine: 'Sleep 8/8. Fully recharged.',
-    /** Little lines from the stats system (iteration 5, group B). They rotate in order. */
+    /** Little lines from the stats system (CONTENT_FINAL.md 1.3). They rotate in order. */
     needs: {
-        caffeine: ['where can I get a Red Bull...', 'need caffeine', "I swear there's a Red Bull in the fridge", 'running on empty here'],
-        tired: ["I'm so tired", 'I want to take a nap...', 'my bed looks really comfy right now', 'can barely keep my eyes open'],
+        caffeine: ['where can I get a Red Bull...', 'is there any Red Bull left?...'],
+        tired: ["I'm so tired", 'I want to take a nap...'],
         mustSleep: 'I need to sleep'
     },
     pieGone: 'All gone. More next time.',
@@ -114,7 +115,7 @@ export const completion: Entry = {
     id: 'complete',
     prompt: '',
     plainGroup: 'intro',
-    title: "Thanks for exploring, let's talk",
-    body: ["You found all 19. I'd love to hear from you."],
+    title: 'You found all 19',
+    body: ["Thanks for exploring, let's connect sometime!"],
     links: profile.links
 };

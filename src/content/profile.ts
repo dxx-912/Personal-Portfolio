@@ -8,18 +8,23 @@ const instagram = {
     logo: decorFiles.includes('instagram-logo.png') ? '/assets/decor/instagram-logo.png' : undefined
 };
 
-// Contact details, HUD stats, and the little lines Daniel says.
-// Leave href empty until confirmed; it renders as a visible TODO.
+/**
+ * The major, in one place (CONTENT_FINAL.md 1.4). Daniel is double checking it against his resume,
+ * which says Business Economics: change it here and everything follows.
+ */
+export const MAJOR = 'B.A. Economics, B.S. Cognitive Science';
+
+// Contact details, HUD stats, and the little lines Daniel says (CONTENT_FINAL.md section 1).
 export const profile: Profile = {
     name: 'Daniel Xing',
-    tagline: '[TODO: one line tagline]',
+    tagline: 'UCLA sophomore. I like being creative.',
     location: 'UCLA, Los Angeles. From North York, Toronto.',
     links: [
-        { label: 'LinkedIn' /* href: '[TODO: LinkedIn URL]' */ },
-        { label: 'Email' /* href: 'mailto:[TODO]' */ },
-        { label: 'GitHub' /* href: '[TODO: GitHub URL]' */ },
+        { label: 'LinkedIn', href: 'https://www.linkedin.com/in/dxing01/' },
+        { label: 'Email', href: 'mailto:dxing01@ucla.edu' },
+        { label: 'GitHub', href: 'https://github.com/dxx-912' },
         { label: 'Instagram', href: instagram.url, icon: instagram.logo },
-        { label: 'Resume (PDF)', download: true /* href: '/media/resume/daniel-xing-resume.pdf' */ }
+        { label: 'Resume (PDF)', href: '/resume.pdf' }
     ],
 
     // HUD portrait stats. They start here on every visit and change in play (src/game/session.ts):
@@ -33,20 +38,18 @@ export const profile: Profile = {
     // The home phone card, the dorm phone panel, and the contact links show this.
     instagram,
 
-    // [TODO: Daniel to confirm the line]
     wakeLine: "Hey, I'm Daniel. Welcome to my dorm at UCLA.",
 
-    // Placeholders until Daniel writes his own. [TODO: Daniel to write 5 to 8 lines]
     idleThoughts: [
         'should probably do my readings',
-        'what should I eat later...',
-        'where did I leave my charger',
-        'five more minutes',
-        'hmm'
+        'where did I leave my charger?...',
+        'I need to do my laundry',
+        'hmm...',
+        "I'm him",
+        'I need to apply to more jobs...'
     ],
 
-    // Portfolio view hero line, from the approved mockup. [TODO: Daniel to confirm]
-    focus: 'UCLA student building products, campaigns, and communities. Looking for product management roles in 2027.',
+    focus: 'Looking for growth and PM roles for 2027.',
 
     // Public URL for canonical and Open Graph tags, e.g. 'https://example.com'. [TODO: custom domain]
     siteUrl: ''
