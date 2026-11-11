@@ -53,9 +53,9 @@ export const dormContent: Record<string, Entry> = withMedia({
                 'Accounting principles'
             ]
         }],
-        // photos one under another, each the full width of the panel
+        // photos in one row that scrolls sideways
         galleryTitle: 'Photos with friends!',
-        gallery: 'full',
+        gallery: 'scroll',
         images: [
             { alt: 'Daniel and friends at UCLA', slot: 'pennant/friends' },
             { alt: 'Daniel and friends at UCLA', slot: 'pennant/friends' },
@@ -304,7 +304,7 @@ export const dormContent: Record<string, Entry> = withMedia({
                     { alt: 'DSP Vogue campaign graphic', caption: 'Rush Schedule 1', slot: 'phone/dsp-vogue' },
                     { alt: 'DSP Vogue campaign graphic', caption: 'Rush Schedule 2', slot: 'phone/dsp-vogue' },
                     { alt: 'DSP Vogue campaign graphic', caption: 'Offers Graphic', slot: 'phone/dsp-vogue' },
-                    { alt: 'Delta Sigma Pi chapter website', caption: 'Website build', slot: 'phone/dsp-website', wide: true }
+                    { alt: 'Delta Sigma Pi chapter website', caption: 'Website build', slot: 'phone/dsp-website', wide: true, href: 'https://ucladsp.com' }
                 ],
                 videos: [{ kind: 'mp4', title: 'DSP rush video', slot: 'phone/dsp-rush', url: 'https://www.instagram.com/p/DdsWVwHBf9C/' }],
                 links: [
@@ -330,7 +330,7 @@ export const dormContent: Record<string, Entry> = withMedia({
                     { alt: 'IBB graphic', slot: 'phone/ibb-graphics' },
                     { alt: 'IBB graphic', slot: 'phone/ibb-graphics' },
                     { alt: 'IBB graphic', slot: 'phone/ibb-graphics' },
-                    { alt: 'International Business for Bruins website', caption: 'Website build', slot: 'phone/ibb-website', wide: true }
+                    { alt: 'International Business for Bruins website', caption: 'Website build', slot: 'phone/ibb-website', wide: true, href: 'https://ibbatucla.com' }
                 ],
                 links: [{ label: 'ibbatucla.com (the site I built)', href: 'https://ibbatucla.com' }]
             }

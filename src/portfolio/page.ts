@@ -261,7 +261,9 @@ export function renderPortfolio(opts: { production: boolean }): RenderResult {
         if (!list.length) return '';
         const slides = list.map((im, k) => `
           <li class="gal-slide" aria-label="${esc(C.galleryLabel(k + 1, list.length))}">
-            ${im.src
+            ${im.src && im.href
+                ? `<a class="gal-zoom gal-link" href="${esc(im.href)}" target="_blank" rel="noopener noreferrer" aria-label="Open ${esc(im.href.replace(/^https?:\/\//, ''))}: ${esc(im.alt)}"><img src="${esc(im.src)}" alt="${esc(im.alt)}" loading="lazy" decoding="async" width="${im.width ?? 800}" height="${im.height ?? 500}" /></a>`
+                : im.src
                 ? `<button type="button" class="gal-zoom" data-zoom="${esc(im.src)}" aria-label="${esc(C.enlarge)}: ${esc(im.alt)}"><img src="${esc(im.src)}" alt="${esc(im.alt)}" loading="lazy" decoding="async" width="${im.width ?? 800}" height="${im.height ?? 500}" /></button>`
                 : `<div class="gal-ph"><span>${esc(im.alt)}</span><span class="todo">[TODO: photo coming soon]</span></div>`}
             ${im.caption ? `<p class="gal-cap">${t(im.caption, where)}</p>` : ''}

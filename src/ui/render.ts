@@ -36,7 +36,9 @@ function renderImage(img: ImageItem, mode: RenderMode, comingSoon: string) {
     if (img.src) {
         const size = img.width && img.height ? ` width="${img.width}" height="${img.height}"` : '';
         const tall = img.width && img.height && img.height / img.width >= 0.85;
-        return `<figure class="media${img.wide ? ' wide' : ''}${tall ? ' tall' : ''}"><img src="${esc(img.src)}" alt="${esc(img.alt)}"${size} loading="lazy" decoding="async" />${cap}</figure>`;
+        const pic = `<img src="${esc(img.src)}" alt="${esc(img.alt)}"${size} loading="lazy" decoding="async" />`;
+        const body = img.href ? `<a class="media-link" href="${esc(img.href)}" target="_blank" rel="noopener noreferrer" title="Open ${esc(img.href.replace(/^https?:\/\//, ''))}">${pic}</a>` : pic;
+        return `<figure class="media${img.wide ? ' wide' : ''}${tall ? ' tall' : ''}">${body}${cap}</figure>`;
     }
     const label = mode === 'panel' ? `${esc(img.alt)}<br><span class="todo">[TODO: ${esc(comingSoon.toLowerCase())}]</span>` : esc(img.alt);
     return `<figure class="media"><div class="ph-img" role="img" aria-label="${esc(img.alt)} (${esc(comingSoon.toLowerCase())})"><span>${label}</span></div>${cap}</figure>`;

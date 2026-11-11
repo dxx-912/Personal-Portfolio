@@ -14,6 +14,8 @@ export interface ImageItem {
     wide?: boolean;
     /** Caption each photo with its original file name (minus the extension). */
     captionFromFile?: boolean;
+    /** Clicking the image opens this page in a new tab (website screenshots). */
+    href?: string;
 }
 
 export interface VideoItem {

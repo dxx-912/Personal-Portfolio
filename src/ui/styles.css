@@ -667,3 +667,7 @@ body.title-on .plain-link { opacity: 0.85; visibility: visible; pointer-events: 
 .ig-ph { display: block; background: #c8417e; }
 .ig-handle { margin: 0; font: 700 22px var(--font-label); color: var(--ink); }
 .ig-line { margin: 0; }
+
+/* website screenshots link out to the live site */
+.media-link { display: block; cursor: pointer; }
+.media-link:hover img, .media-link:focus-visible img { outline: 3px solid var(--edge); outline-offset: 2px; filter: brightness(1.05); }

@@ -22,7 +22,7 @@ export function resolveImages(images: ImageItem[] | undefined): ImageItem[] | un
             const ph = siblings[k] ?? siblings[0];
             const single = siblings.length === 1 && list.length === 1;
             out.push({
-                src: f.src, width: f.w, height: f.h, slot: img.slot, wide: ph.wide,
+                src: f.src, width: f.w, height: f.h, slot: img.slot, wide: ph.wide, href: ph.href,
                 // a single photo keeps its written description; gallery photos use their file names
                 alt: single ? ph.alt : (f.alt ?? ph.alt.replace(/ \d+$/, ` ${k + 1}`)),
                 caption: ph.captionFromFile && f.file ? f.file
