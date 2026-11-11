@@ -273,7 +273,7 @@ export const dormContent: Record<string, Entry> = withMedia({
                     { alt: 'DSP Vogue campaign graphic', caption: 'Vogue campaign', slot: 'phone/dsp-vogue' },
                     { alt: 'DSP Vogue campaign graphic', caption: 'Vogue campaign', slot: 'phone/dsp-vogue' },
                     { alt: 'DSP Vogue campaign graphic', caption: 'Vogue campaign', slot: 'phone/dsp-vogue' },
-                    { alt: 'Delta Sigma Pi chapter website', caption: 'Website build', slot: 'phone/dsp-website' }
+                    { alt: 'Delta Sigma Pi chapter website', caption: 'Website build', slot: 'phone/dsp-website', wide: true }
                 ],
                 videos: [{ kind: 'mp4', title: 'DSP rush video', slot: 'phone/dsp-rush', url: 'https://www.instagram.com/p/DdsWVwHBf9C/' }],
                 links: [
@@ -298,7 +298,7 @@ export const dormContent: Record<string, Entry> = withMedia({
                     { alt: 'IBB graphic', slot: 'phone/ibb-graphics' },
                     { alt: 'IBB graphic', slot: 'phone/ibb-graphics' },
                     { alt: 'IBB graphic', slot: 'phone/ibb-graphics' },
-                    { alt: 'International Business for Bruins website', caption: 'Website build', slot: 'phone/ibb-website' }
+                    { alt: 'International Business for Bruins website', caption: 'Website build', slot: 'phone/ibb-website', wide: true }
                 ],
                 links: [{ label: 'ibbatucla.com (the site I built)', href: 'https://ibbatucla.com' }]
             }

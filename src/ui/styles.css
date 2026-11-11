@@ -272,6 +272,7 @@ a.link:hover { background: #eef4ff; text-decoration: underline; }
 .gallery.polaroid .media:nth-child(odd) { transform: rotate(-2deg); }
 .gallery.polaroid .media:nth-child(even) { transform: rotate(1.5deg); }
 .media { margin: 0; }
+.gallery .media.wide { grid-column: 1 / -1; }
 .media img { width: 100%; height: auto; display: block; border: 2px solid var(--edge); }
 .media figcaption { font-size: 15px; color: var(--muted); margin-top: 4px; }
 .ph-img, .ph-video {

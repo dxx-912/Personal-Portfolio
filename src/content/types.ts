@@ -10,6 +10,8 @@ export interface ImageItem {
     slot?: string;
     width?: number;
     height?: number;
+    /** Game panel: span the full width of the gallery (website screenshots). */
+    wide?: boolean;
 }
 
 export interface VideoItem {
