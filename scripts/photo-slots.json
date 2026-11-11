@@ -41,7 +41,15 @@
             "skip": [
                 "IMG_4691.HEIC#2.png",
                 "IMG_4688.HEIC#1.png"
-            ]
+            ],
+            "crops": {
+                "IMG_5682.jpg": [
+                    0,
+                    0.3,
+                    1,
+                    1
+                ]
+            }
         },
         {
             "key": "todo/sharpe",
