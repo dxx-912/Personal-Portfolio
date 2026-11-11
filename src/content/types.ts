@@ -51,7 +51,8 @@ export interface Section {
     subtitle?: string;
     body?: string[];
     facts?: Fact[];
-    list?: { title?: string; items: string[] }[];
+    /** Lists under small headings. style 'chips': each item a small white label; 'plain': items as lines, no bullets. */
+    list?: { title?: string; items: string[]; style?: 'chips' | 'plain' }[];
     images?: ImageItem[];
     /** 'scroll' gallery: photo height in px (default 320). */
     galleryHeight?: number;

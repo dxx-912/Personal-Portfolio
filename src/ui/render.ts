@@ -144,7 +144,9 @@ export function renderSection(s: Section, o: RenderOpts): string {
         if (!items.length) return;
         const h = Math.min(6, (o.heading || 2) + 1);
         if (l.title) out.push(`<h${h} class="list-title">${rich(l.title)}</h${h}>`);
-        out.push(`<ul class="list">${items.map((i) => `<li>${rich(i)}</li>`).join('')}</ul>`);
+        if (l.style === 'chips') out.push(`<ul class="chips">${items.map((i) => `<li class="tag">${rich(i)}</li>`).join('')}</ul>`);
+        else if (l.style === 'plain') items.forEach((i) => out.push(`<p class="list-plain">${rich(i)}</p>`));
+        else out.push(`<ul class="list">${items.map((i) => `<li>${rich(i)}</li>`).join('')}</ul>`);
     });
     // a sideways 'scroll' gallery keeps wide images (website screenshots) out of the row, full width below it
     const scrollWide = s.gallery === 'scroll' ? (s.images ?? []).filter((i) => i.wide) : [];

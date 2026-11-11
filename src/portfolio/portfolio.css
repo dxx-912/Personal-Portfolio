@@ -477,3 +477,6 @@ a.clink:hover span { text-decoration: underline; text-underline-offset: 4px; }
 .d-video { margin: 6px 0 14px; max-width: 360px; }
 .d-video video { display: block; width: 100%; height: auto; max-height: 70vh; background: #000; border: 2px solid var(--ink); }
 .d-video figcaption { font-size: 14px; margin-top: 4px; opacity: 0.8; }
+
+/* course chips (UCC academics) */
+.tags.chips { display: flex; flex-wrap: wrap; gap: 8px; list-style: none; padding: 0; margin: 4px 0 12px; }

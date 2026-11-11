@@ -350,10 +350,10 @@ export const dormContent: Record<string, Entry> = withMedia({
                 id: 'ucc-academics',
                 title: 'Academics',
                 subtitle: 'International Baccalaureate Diploma: Final Score 40/45\nSAT: 1560',
-                body: [
-                    'Higher Levels: Mathematics (A&I), English (L&L), Economics',
-                    'Standard Levels: Mandarin B, Global Politics, ESS',
-                    "Extended essay: Economic and Geopolitical Implications of Taiwan's Semiconductor Industry."
+                list: [
+                    { title: 'Higher Levels', style: 'chips', items: ['Mathematics (A&I)', 'English (L&L)', 'Economics'] },
+                    { title: 'Standard Levels', style: 'chips', items: ['Mandarin B', 'Global Politics', 'ESS'] },
+                    { title: 'Extended essay', style: 'plain', items: ["Economic and Geopolitical Implications of Taiwan's Semiconductor Industry"] }
                 ],
                 links: [{ label: 'Read the extended essay', href: 'https://drive.google.com/file/d/14pv1NG7O9NHQkYhc4oL-PvGsY7-hgb9g/view?usp=sharing' }]
             },

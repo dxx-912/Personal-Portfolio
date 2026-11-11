@@ -253,6 +253,10 @@ body.touch .message { bottom: 160px; }
 
 .tags { display: flex; flex-wrap: wrap; gap: 6px; margin: 4px 0 10px; }
 .tags .tag { font: 600 13px var(--pixel); padding: 2px 8px; border: 2px solid var(--edge); background: #fff; }
+/* course chips: small white labels under a subheading */
+.chips { display: flex; flex-wrap: wrap; gap: 8px; list-style: none; margin: 4px 0 14px; padding: 0; }
+.chips .tag { font: 600 14px var(--font-label); padding: 4px 10px; border: 2px solid var(--edge); background: #fff; box-shadow: 0 2px 0 var(--edge); }
+.list-plain { margin: 0 0 12px; }
 .fun-fact { background: #fff6c8; border: 2px solid var(--edge); padding: 6px 10px; }
 
 .links { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }

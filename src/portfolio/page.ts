@@ -311,7 +311,9 @@ export function renderPortfolio(opts: { production: boolean }): RenderResult {
             const lis = l.items.map((x) => t(x, where)).filter(Boolean);
             if (!lis.length) return;
             if (l.title) out.push(`<h${level + 1} class="px list-h">${t(l.title, where)}</h${level + 1}>`);
-            out.push(`<ul class="list">${lis.map((x) => `<li>${x}</li>`).join('')}</ul>`);
+            if (l.style === 'chips') out.push(`<ul class="tags chips" role="list">${lis.map((x) => `<li class="tag">${x}</li>`).join('')}</ul>`);
+            else if (l.style === 'plain') lis.forEach((x) => out.push(`<p>${x}</p>`));
+            else out.push(`<ul class="list">${lis.map((x) => `<li>${x}</li>`).join('')}</ul>`);
         });
         const links = [
             ...(s.videos ?? []).filter((v) => v.kind !== 'mp4').map((v) => link(v.id ? { label: v.title, href: v.url ?? (v.kind === 'youtube' ? `https://www.youtube.com/watch?v=${v.id}` : v.id) } : undefined, v.title, 'btn btn-s', undefined, where)),
