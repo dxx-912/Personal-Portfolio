@@ -1,5 +1,5 @@
 {
-    "_about": "Every photo the site needs. 'folder' is the drop folder under photos/. 'key' links to the slot on an image in src/content. 'max' is how many photos are used (0 means any number). 'decor' slots become room art in public/assets/decor/. Optional: 'file' (one named file under photos/), 'pdfPages' (render those PDF pages), 'video' (compress the MP4 in the folder), 'alts' (alt text by file name), 'text' (higher quality for slides and screenshots). 'aspect' (width / height) centre crops a folder's images to one shape. 'splitRows' cuts listed collages (two photos stacked) into two photos. 'first' lists files to show before the rest.",
+    "_about": "Every photo the site needs. 'folder' is the drop folder under photos/. 'key' links to the slot on an image in src/content. 'max' is how many photos are used (0 means any number). 'decor' slots become room art in public/assets/decor/. Optional: 'file' (one named file under photos/), 'pdfPages' (render those PDF pages), 'video' (compress the MP4 in the folder), 'alts' (alt text by file name), 'text' (higher quality for slides and screenshots). 'aspect' (width / height) centre crops a folder's images to one shape. 'splitRows' cuts listed collages (two photos stacked) into two photos. 'first' lists files to show before the rest. 'crops' cuts named photos to a box of fractions [left, top, right, bottom]. 'skip' leaves named files or split halves out.",
     "slots": [
         {
             "key": "about/headshot",
@@ -35,6 +35,9 @@
             ],
             "first": [
                 "IMG_6015.jpg"
+            ],
+            "skip": [
+                "IMG_4691.HEIC#2.png"
             ]
         },
         {
@@ -52,6 +55,21 @@
             "alts": {
                 "Fall 2026 Board Members.JPEG": "Delta Sigma Pi Fall 2026 board members",
                 "My DSP Twin and our Paddle For our Big.PNG": "Daniel and his DSP twin with the paddle for their big"
+            },
+            "aspect": 1,
+            "crops": {
+                "Fall 2026 Board Members.JPEG": [
+                    0,
+                    0.3125,
+                    1,
+                    0.9794
+                ],
+                "My DSP Twin and our Paddle For our Big.PNG": [
+                    0.0707,
+                    0.094,
+                    0.9293,
+                    0.7395
+                ]
             }
         },
         {

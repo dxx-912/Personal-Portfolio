@@ -12,6 +12,8 @@
 // Camera names like IMG_1234 fall back to a generic description.
 //
 // Slot options (scripts/photo-slots.json): "file" takes one named file instead of a folder (the headshot);
+// "skip" leaves named files (or split halves, "<file>#2.png") out;
+// "crops" cuts one photo to a box of fractions [left, top, right, bottom] (e.g. to drop Instagram arrows);
 // "aspect" (width / height) centre crops every image in the folder to one shape so a gallery lines up;
 // "pdfPages" renders those pages (or "all") of a PDF in the folder (the L.E.K. deck); "video" compresses the MP4 in
 // the folder for the web (H.264, with a poster frame); "alts" gives written alt text per file name.
@@ -73,6 +75,7 @@ try {
                 .sort((a, b) => a.localeCompare(b, undefined, { numeric: true, sensitivity: 'base' }));
         if (slot.pdfPages) files = pdfPages(dir, slot.pdfPages, slot.deck);
         if (slot.splitRows) files = (await Promise.all(files.map((f) => slot.splitRows.includes(f) ? splitRows(join(dir, f)) : [f]))).flat();
+        if (slot.skip) files = files.filter((f) => !slot.skip.includes(basename(f)));
         if (slot.first) files = [...files.filter((f) => slot.first.includes(f)), ...files.filter((f) => !slot.first.includes(f))];
         if (!files.length) continue;
         if (slot.max && files.length > slot.max) {
@@ -100,7 +103,7 @@ try {
             const src = f.startsWith('/') ? f : readable(join(dir, f), tmp);
             const alt = altFor(slot, basename(f)) ?? pdfTitles[f] ?? describe(f.replace(/#\d+\.png$/, ''));
             const name = `${String(i + 1).padStart(2, '0')}-${slugify(alt ?? 'photo')}.webp`;
-            const info = await (await cropToAspect(sharp(src).rotate(), slot.aspect))
+            const info = await (await cropToAspect(await cropBox(sharp(src).rotate(), slot.crops?.[basename(f)]), slot.aspect))
                 .resize({ width: 1600, height: 1600, fit: 'inside', withoutEnlargement: true })
                 // slides and screenshots are mostly text: a higher quality keeps them crisp
                 .webp({ quality: slot.text ? 88 : 80 }).toFile(join(outDir, name));
@@ -128,6 +131,15 @@ warnings.forEach((w) => console.warn(`  note: ${w}`));
 const filled = Object.keys(sorted).length;
 const needed = slots.filter((s) => !s.decor).length;
 log(`Photos: converted ${converted} file(s). ${filled} of ${needed} photo spots filled.${converted ? ' Restart npm run dev to see them.' : ''}`);
+
+/** Crops to a box given as fractions of the image [left, top, right, bottom] (to cut away overlays). */
+async function cropBox(img, box) {
+    if (!box) return img;
+    const { data, info } = await img.toBuffer({ resolveWithObject: true });
+    const { width: w, height: h } = info;
+    const left = Math.round(box[0] * w), top = Math.round(box[1] * h);
+    return sharp(data).extract({ left, top, width: Math.round(box[2] * w) - left, height: Math.round(box[3] * h) - top });
+}
 
 /** Centre crops to a width / height ratio, trimming only the longer side. No ratio: unchanged. */
 async function cropToAspect(img, aspect) {

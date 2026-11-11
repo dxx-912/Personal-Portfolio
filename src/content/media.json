@@ -401,12 +401,6 @@
             "alt": "Daniel and friends out together at night",
             "w": 1600,
             "h": 1065
-        },
-        {
-            "src": "/media/pennant/friends/05-daniel-and-a-bigger-group-of-friends-at-night-th.webp",
-            "alt": "Daniel and a bigger group of friends at night, thumbs up",
-            "w": 1600,
-            "h": 1064
         }
     ],
     "phone/dsp-rush": [
@@ -537,15 +531,15 @@
         {
             "src": "/media/todo/dsp/01-delta-sigma-pi-fall-2026-board-members.webp",
             "alt": "Delta Sigma Pi Fall 2026 board members",
-            "w": 1067,
+            "w": 1600,
             "h": 1600,
             "file": "Fall 2026 Board Members"
         },
         {
             "src": "/media/todo/dsp/02-daniel-and-his-dsp-twin-with-the-paddle-for-thei.webp",
             "alt": "Daniel and his DSP twin with the paddle for their big",
-            "w": 1203,
-            "h": 1600,
+            "w": 1160,
+            "h": 1161,
             "file": "My DSP Twin and our Paddle For our Big"
         }
     ],
