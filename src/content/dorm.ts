@@ -250,6 +250,9 @@ export const dormContent: Record<string, Entry> = withMedia({
                 summary: 'Whether and how a Southeast Asian venture debt fund should expand its credit products.',
                 omit: ['whatIDid', 'result'],
                 problem: 'Genesis Alternative Ventures, a Southeast Asian venture debt fund, wanted to know whether and how to expand the credit products in its Fund III across Southeast Asia, without cannibalizing its existing business.',
+                notes: [
+                    { label: 'Our recommendation', text: 'Recommended Fund III add working capital financing first, then recurring revenue lines and acquisition financing, based on a four market competitor review and income modeling, capping new products at about 22% of the fund to protect core venture debt.' }
+                ],
                 gallery: 'slides',
                 images: [
                     { alt: 'Genesis Alternative Ventures slide', slot: 'binder/genesis' },
