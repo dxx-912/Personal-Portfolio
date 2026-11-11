@@ -80,6 +80,7 @@ export const dormContent: Record<string, Entry> = withMedia({
                 subtitle: 'Technology Track Vice President',
                 role: 'Technology Track Vice President',
                 omit: ['timeline', 'whatIDid'],
+                hideGlance: true,
                 body: ["Fellowship providing UCLA's top business students with mentorship, resources, and professional development."]
             },
             {
@@ -89,6 +90,7 @@ export const dormContent: Record<string, Entry> = withMedia({
                 subtitle: 'Director of Marketing',
                 role: 'Director of Marketing',
                 omit: ['timeline', 'whatIDid'],
+                hideGlance: true,
                 body: ["UCLA chapter of the nation's leading co-ed professional business fraternity, developing members through professional events, leadership, and service."]
             },
             {
@@ -98,6 +100,7 @@ export const dormContent: Record<string, Entry> = withMedia({
                 subtitle: 'Director of Marketing',
                 role: 'Director of Marketing',
                 omit: ['timeline', 'whatIDid'],
+                hideGlance: true,
                 body: ['Consulting club providing members with professional development, real client work, and a network in international business.']
             },
             {
@@ -107,6 +110,7 @@ export const dormContent: Record<string, Entry> = withMedia({
                 subtitle: 'Director of Digital Media',
                 role: 'Director of Digital Media',
                 omit: ['timeline', 'whatIDid'],
+                hideGlance: true,
                 body: ['Club connecting UCLA students to careers in the business of entertainment through panels, networking events, and premieres.']
             },
             {
@@ -116,6 +120,7 @@ export const dormContent: Record<string, Entry> = withMedia({
                 subtitle: 'Committee Member',
                 role: 'Committee Member',
                 omit: ['timeline', 'whatIDid'],
+                hideGlance: true,
                 body: ["Committee of UCLA's largest student organization that runs events and recruiting programs at the intersection of tech and business."]
             },
             {
@@ -125,6 +130,7 @@ export const dormContent: Record<string, Entry> = withMedia({
                 subtitle: 'Resident Assistant at Rieber Hall South, Floor 6',
                 role: 'Resident Assistant at Rieber Hall South, Floor 6',
                 omit: ['timeline', 'whatIDid'],
+                hideGlance: true,
                 body: ['Campus department that manages, programs, and supports the student living communities across "The Hill" and University Apartments.']
             }
         ]
