@@ -253,7 +253,8 @@
         {
             "key": "shirt/gallery",
             "folder": "1 Dorm/09 Hope For Hearing shirt/Gallery (any number)",
-            "max": 0
+            "max": 0,
+            "last": ["Another charity concert.JPEG", "Banners.JPG"]
         },
         {
             "key": "window/gallery",

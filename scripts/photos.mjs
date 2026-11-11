@@ -13,6 +13,7 @@
 //
 // Slot options (scripts/photo-slots.json): "file" takes one named file instead of a folder (the headshot);
 // "skip" leaves named files (or split halves, "<file>#2.png") out;
+// "first" / "last" move named files to the start / end of a gallery;
 // "captions" overrides a file-name caption without renaming the file;
 // "crops" cuts one photo to a box of fractions [left, top, right, bottom] (e.g. to drop Instagram arrows);
 // "aspect" (width / height) centre crops every image in the folder to one shape so a gallery lines up;
@@ -79,6 +80,8 @@ try {
         if (slot.skip) files = files.filter((f) => !slot.skip.includes(basename(f)));
         // "first" files lead, in the order listed
         if (slot.first) files = [...slot.first.filter((f) => files.includes(f)), ...files.filter((f) => !slot.first.includes(f))];
+        // "last" files go at the end, in the order listed
+        if (slot.last) files = [...files.filter((f) => !slot.last.includes(f)), ...slot.last.filter((f) => files.includes(f))];
         if (!files.length) continue;
         if (slot.max && files.length > slot.max) {
             warnings.push(`"${slot.folder}" takes ${slot.max}; using the first ${slot.max} of ${files.length}.`);
