@@ -208,6 +208,7 @@ export const dormContent: Record<string, Entry> = withMedia({
         plainGroup: 'projects',
         title: 'Consulting',
         tabStyle: 'tabs',
+        defaultTab: 'lek',
         tabs: [
             {
                 // NDA: no slides, no "what I did", no result.

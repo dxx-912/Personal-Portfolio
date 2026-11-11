@@ -24,13 +24,14 @@ function tabsHtml(entry: Entry) {
     const tabs = entry.tabs ?? [];
     if (!tabs.length) return '';
     const style = entry.tabStyle ?? 'tabs';
+    const open = Math.max(0, tabs.findIndex((t) => t.id === entry.defaultTab));
     const tabButtons = tabs.map((t, i) => `
-        <button role="tab" id="tab-${esc(t.id)}" aria-controls="tp-${esc(t.id)}" aria-selected="${i === 0}"
-            tabindex="${i === 0 ? 0 : -1}" class="tab tab-${style}" data-i="${i}" style="--i: ${i}">
+        <button role="tab" id="tab-${esc(t.id)}" aria-controls="tp-${esc(t.id)}" aria-selected="${i === open}"
+            tabindex="${i === open ? 0 : -1}" class="tab tab-${style}" data-i="${i}" style="--i: ${i}">
             ${style === 'notes' ? '<span class="check" aria-hidden="true">✓</span>' : ''}<span>${rich(t.title)}</span>
         </button>`).join('');
     const tabPanels = tabs.map((t, i) => `
-        <div role="tabpanel" id="tp-${esc(t.id)}" aria-labelledby="tab-${esc(t.id)}" class="tabpanel" tabindex="0"${i === 0 ? '' : ' hidden'}>
+        <div role="tabpanel" id="tp-${esc(t.id)}" aria-labelledby="tab-${esc(t.id)}" class="tabpanel" tabindex="0"${i === open ? '' : ' hidden'}>
             ${sectionHtml(t, 3)}
         </div>`).join('');
     return `<div class="tabs-wrap tabs-${style}"><div role="tablist" aria-label="${esc(entry.title)}" class="tablist">${tabButtons}</div><div class="tabpanels">${tabPanels}</div></div>`;
@@ -77,7 +78,7 @@ export function openPanel(entry: Entry, onClose?: () => void) {
                 ${sectionHtml({ ...entry, title: entry.title, tags: entry.tabs?.length ? undefined : entry.tags }, 0)}
                 ${tabsHtml(entry)}
             </div>
-        </section>`, { onClose }, '[role="tab"]');
+        </section>`, { onClose }, '[role="tab"][aria-selected="true"]');
     root.querySelectorAll<HTMLButtonElement>('[role="tab"]').forEach((btn) =>
         btn.addEventListener('click', () => selectTab(root, Number(btn.dataset.i))));
 }

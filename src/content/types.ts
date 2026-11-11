@@ -114,6 +114,8 @@ export interface Entry extends Section {
     plainTitle?: string;
     tabs?: Section[];
     tabStyle?: TabStyle;
+    /** Id of the tab the panel opens on (default: the first). */
+    defaultTab?: string;
 }
 
 export type PlainGroup = 'intro' | 'education' | 'projects' | 'experience' | 'personal';
