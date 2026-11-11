@@ -113,7 +113,8 @@ export function renderSection(s: Section, o: RenderOpts): string {
     if (o.heading) {
         out.push(`<h${o.heading} class="sec-title">${rich(s.title)}</h${o.heading}>`);
     }
-    if (!blank(s.subtitle)) out.push(`<p class="subtitle">${rich(s.subtitle!)}</p>`);
+    // a subtitle may run over a few lines (separated by \n)
+    if (!blank(s.subtitle)) out.push(`<p class="subtitle">${s.subtitle!.split('\n').map(rich).join('<br>')}</p>`);
     const links = (s.links ?? []).map(renderLink).filter(Boolean);
     if (s.linksTop && links.length) out.push(`<p class="links links-top">${links.join('')}</p>`);
     s.body?.forEach((p) => { if (!blank(p)) out.push(`<p>${rich(p)}</p>`); });

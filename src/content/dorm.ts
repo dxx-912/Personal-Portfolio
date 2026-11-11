@@ -349,11 +349,7 @@ export const dormContent: Record<string, Entry> = withMedia({
             {
                 id: 'ucc-academics',
                 title: 'Academics',
-                subtitle: 'International Baccalaureate Diploma',
-                facts: [
-                    { label: 'IB Diploma', value: '40/45' },
-                    { label: 'SAT', value: '1560' }
-                ],
+                subtitle: 'International Baccalaureate Diploma: Final Score 40/45\nSAT: 1560',
                 body: [
                     'Higher Levels: Mathematics (A&I), English (L&L), Economics',
                     'Standard Levels: Mandarin B, Global Politics, ESS',

@@ -371,7 +371,7 @@ export function renderPortfolio(opts: { production: boolean }): RenderResult {
             if (rest) parts.push(`<div class="d-extra">${rest}</div>`);
             (s.tabs ?? []).forEach((tb) => {
                 const r = extras({ ...tb }, `${w} ${tb.id}`, 5);
-                const sub = t(tb.subtitle, `${w} ${tb.id}`);
+                const sub = t(tb.subtitle, `${w} ${tb.id}`).replace(/\n/g, '<br>');
                 if (r || sub) parts.push(`<div class="d-sub"><h4 class="px wl">${esc(tb.title)}</h4>${sub ? `<p class="d-context">${sub}</p>` : ''}${r}</div>`);
             });
         }
