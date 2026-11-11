@@ -225,9 +225,10 @@ export const dormContent: Record<string, Entry> = withMedia({
             {
                 id: 'lek',
                 title: 'L.E.K. Case Competition',
-                subtitle: '3rd place finalist out of 50+ teams',
+                subtitle: 'With Shakti Widjonarko, Kenneth Lee, Aaron Teng, and Ashlyn Bi. 3rd place finalist out of 50+ teams.',
                 team: '5 people (with Shakti Widjonarko, Kenneth Lee, Aaron Teng, Ashlyn Bi)',
                 timeline: 'Spring 2026',
+                hideGlance: true,
                 summary: '3rd place finalist out of 50+ teams.',
                 tags: ['3rd Place'],
                 omit: ['role', 'whatIDid'],
