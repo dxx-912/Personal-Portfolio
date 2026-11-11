@@ -393,8 +393,7 @@ export const dormContent: Record<string, Entry> = withMedia({
             ]
         },
         facts: [
-            { label: 'Won in funding grants', value: '$3,500+' },
-            { label: 'Chapter heads', value: '24' }
+            { label: 'Won in funding grants', value: '$3,500+' }
         ],
         list: [
             {

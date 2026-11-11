@@ -246,6 +246,8 @@ body.touch .message { bottom: 160px; }
 .facts div { background: #fff; border: 2px solid var(--edge); padding: 6px 10px; }
 .facts dt { font: 600 14px var(--pixel); color: var(--muted); }
 .facts dd { margin: 0; font-weight: 600; }
+.facts.facts-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); grid-auto-rows: 1fr; }
+@media (max-width: 520px) { .facts.facts-3 { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 
 .tags { display: flex; flex-wrap: wrap; gap: 6px; margin: 4px 0 10px; }
 .tags .tag { font: 600 13px var(--pixel); padding: 2px 8px; border: 2px solid var(--edge); background: #fff; }

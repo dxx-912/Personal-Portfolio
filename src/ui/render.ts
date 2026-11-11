@@ -117,9 +117,12 @@ export function renderSection(s: Section, o: RenderOpts): string {
     const glance = ([['Role', 'role'], ['Team', 'team'], ['Timeline', 'timeline']] as const)
         .filter(([, k]) => !s.hideGlance && !omit.has(k) && !blank(s[k])).map(([label, k]) => [label, s[k]!] as [string, string]);
     const counters = (s.counters ?? []).map((c) => [c.label, `${c.prefix ?? ''}${c.value.toLocaleString('en-US')}${c.suffix ?? ''}`] as [string, string]);
-    if (glance.length || counters.length) {
-        out.push('<dl class="facts">');
-        [...glance, ...counters].forEach(([k, v]) => out.push(`<div><dt>${rich(k)}</dt><dd>${rich(v)}</dd></div>`));
+    // role, team, timeline, counters, and facts share one grid of tiles; a multiple of three tiles
+    // lines up as rows of three, all the same size
+    const tiles = [...glance, ...counters, ...(s.facts ?? []).filter((f) => !blank(f.value)).map((f) => [f.label, f.value] as [string, string])];
+    if (tiles.length) {
+        out.push(`<dl class="facts${tiles.length % 3 === 0 ? ' facts-3' : ''}">`);
+        tiles.forEach(([k, v]) => out.push(`<div><dt>${rich(k)}</dt><dd>${rich(v)}</dd></div>`));
         out.push('</dl>');
     }
     const writeup: [string, string | undefined][] = [
@@ -130,12 +133,6 @@ export function renderSection(s: Section, o: RenderOpts): string {
     ];
     writeup.forEach(([k, v]) => { if (!blank(v)) out.push(`<p class="writeup"><strong>${rich(k)}.</strong> ${rich(v!)}</p>`); });
     if (!blank(s.funFact)) out.push(`<p class="fun-fact"><strong>Fun fact.</strong> ${rich(s.funFact!)}</p>`);
-    const facts = (s.facts ?? []).filter((f) => !blank(f.value));
-    if (facts.length) {
-        out.push('<dl class="facts">');
-        facts.forEach((f) => out.push(`<div><dt>${rich(f.label)}</dt><dd>${rich(f.value)}</dd></div>`));
-        out.push('</dl>');
-    }
     const story = storyBox(s, Math.min(6, (o.heading || 2) + 1));
     if (story) out.push(story);
     s.list?.forEach((l) => {
