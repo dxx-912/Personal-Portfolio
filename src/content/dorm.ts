@@ -297,7 +297,8 @@ export const dormContent: Record<string, Entry> = withMedia({
                         'Chapter website: 3K+ visitors in its first 30 days.'
                     ]
                 }],
-                gallery: 'grid',
+                gallery: 'scroll',
+                galleryHeight: 360,
                 images: [
                     { alt: 'DSP Vogue campaign graphic', caption: 'Main Graphic', slot: 'phone/dsp-vogue' },
                     { alt: 'DSP Vogue campaign graphic', caption: 'Rush Schedule 1', slot: 'phone/dsp-vogue' },
@@ -323,7 +324,8 @@ export const dormContent: Record<string, Entry> = withMedia({
                         'New brand identity and website launched.'
                     ]
                 }],
-                gallery: 'grid',
+                gallery: 'scroll',
+                galleryHeight: 320,
                 images: [
                     { alt: 'IBB graphic', slot: 'phone/ibb-graphics' },
                     { alt: 'IBB graphic', slot: 'phone/ibb-graphics' },

@@ -145,15 +145,20 @@ export function renderSection(s: Section, o: RenderOpts): string {
         if (l.title) out.push(`<h${h} class="list-title">${rich(l.title)}</h${h}>`);
         out.push(`<ul class="list">${items.map((i) => `<li>${rich(i)}</li>`).join('')}</ul>`);
     });
-    const imgs = (s.images ?? []).map((i) => renderImage(i, o.mode, o.comingSoonImage)).filter(Boolean);
+    // a sideways 'scroll' gallery keeps wide images (website screenshots) out of the row, full width below it
+    const scrollWide = s.gallery === 'scroll' ? (s.images ?? []).filter((i) => i.wide) : [];
+    const imgs = (s.images ?? []).filter((i) => !scrollWide.includes(i)).map((i) => renderImage(i, o.mode, o.comingSoonImage)).filter(Boolean);
+    const wideImgs = scrollWide.map((i) => renderImage(i, o.mode, o.comingSoonImage)).filter(Boolean);
     if (imgs.length) {
         if (s.galleryTitle) {
             const h = Math.min(6, (o.heading || 2) + 1);
             out.push(`<h${h} class="list-title">${rich(s.galleryTitle)}</h${h}>`);
         }
         const style = s.gallery ?? (imgs.length > 1 ? 'grid' : 'single');
-        out.push(`<div class="gallery ${style}">${imgs.join('')}</div>`);
+        const h = style === 'scroll' && s.galleryHeight ? ` style="--h: ${s.galleryHeight}px"` : '';
+        out.push(`<div class="gallery ${style}"${h}>${imgs.join('')}</div>`);
     }
+    if (wideImgs.length) out.push(`<div class="gallery full">${wideImgs.join('')}</div>`);
     s.videos?.forEach((v) => out.push(renderVideo(v, o.mode, o.comingSoonVideo)));
     const tags = s.hideTags ? [] : (s.tags ?? []).filter((t) => !blank(t));
     if (tags.length) out.push(`<p class="tags">${tags.map((t) => `<span class="tag">${rich(t)}</span>`).join('')}</p>`);

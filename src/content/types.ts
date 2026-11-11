@@ -53,6 +53,8 @@ export interface Section {
     facts?: Fact[];
     list?: { title?: string; items: string[] }[];
     images?: ImageItem[];
+    /** 'scroll' gallery: photo height in px (default 320). */
+    galleryHeight?: number;
     /** A small heading shown right above the photos. */
     galleryTitle?: string;
     /** How images are laid out. */
