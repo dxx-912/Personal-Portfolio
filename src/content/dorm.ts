@@ -337,38 +337,42 @@ export const dormContent: Record<string, Entry> = withMedia({
         ]
     },
 
-    // 7. Grad cap on the dresser: high school only
+    // 7. Grad cap on the dresser: high school only. Three tabs; photos are off for now.
     gradcap: {
         id: 'gradcap',
         prompt: 'High school',
         plainGroup: 'education',
         title: 'Upper Canada College',
-        subtitle: 'International Baccalaureate Diploma',
         summary: 'IB Diploma 40/45. SAT 1560.',
-        facts: [
-            { label: 'IB Diploma', value: '40/45' },
-            { label: 'SAT', value: '1560' }
-        ],
-        list: [
+        tabStyle: 'tabs',
+        tabs: [
             {
-                title: 'Leadership',
-                items: [
-                    "Business Competition Club, President (Sep 2023 to May 2025). Led UCC's DECA and FBLA teams, growing membership by 400% through promotional videos and graphics (16,000+ impressions) and running weekly prep sessions, guest lectures, and a 1-on-1 mentorship system.",
-                    'Asian Heritage & Culture Club, President (Sep 2023 to May 2025). Led 40+ members in running school wide cultural events for Lunar New Year and AAPI Month, plus potlucks, karaoke nights, trivia tournaments, and performances, with promo content reaching 12,000+ impressions.'
-                ]
+                id: 'ucc-academics',
+                title: 'Academics',
+                subtitle: 'International Baccalaureate Diploma',
+                facts: [
+                    { label: 'IB Diploma', value: '40/45' },
+                    { label: 'SAT', value: '1560' }
+                ],
+                body: [
+                    'Higher Levels: Mathematics (A&I), English (L&L), Economics',
+                    'Standard Levels: Mandarin B, Global Politics, ESS',
+                    "Extended essay: Economic and Geopolitical Implications of Taiwan's Semiconductor Industry."
+                ],
+                links: [{ label: 'Read the extended essay', href: 'https://drive.google.com/file/d/14pv1NG7O9NHQkYhc4oL-PvGsY7-hgb9g/view?usp=sharing' }]
+            },
+            {
+                id: 'ucc-business',
+                title: 'Business Club Head',
+                subtitle: 'Business Competition Club, President (Sep 2023 to May 2025)',
+                body: ["Led UCC's DECA and FBLA teams, growing membership by 400% through promotional videos and graphics (16,000+ impressions) and running weekly prep sessions, guest lectures, and a 1-on-1 mentorship system."]
+            },
+            {
+                id: 'ucc-asian-heritage',
+                title: 'Asian Heritage Club Head',
+                subtitle: 'Asian Heritage & Culture Club, President (Sep 2023 to May 2025)',
+                body: ['Led 40+ members in running school wide cultural events for Lunar New Year and AAPI Month, plus potlucks, karaoke nights, trivia tournaments, and performances, with promo content reaching 12,000+ impressions.']
             }
-        ],
-        body: [
-            'Higher Levels: Mathematics (A&I), English (L&L), Economics',
-            'Standard Levels: Mandarin B, Global Politics, ESS',
-            "Extended essay: Economic and Geopolitical Implications of Taiwan's Semiconductor Industry."
-        ],
-        links: [{ label: 'Read the extended essay', href: 'https://drive.google.com/file/d/14pv1NG7O9NHQkYhc4oL-PvGsY7-hgb9g/view?usp=sharing' }],
-        gallery: 'grid',
-        images: [
-            { alt: 'Graduating class throwing their hats', slot: 'gradcap/hat-toss' },
-            { alt: 'Daniel leading the Business Competition Club', slot: 'gradcap/business-club' },
-            { alt: 'Daniel leading the Asian Heritage & Culture Club', slot: 'gradcap/asian-heritage-club' }
         ]
     },
 
