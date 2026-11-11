@@ -238,7 +238,7 @@ export const dormContent: Record<string, Entry> = withMedia({
                 ]
             },
             {
-                // NDA: no slides, no "what I did", no result.
+                // No "what I did" and no result (CONTENT_FINAL.md). Slides added by Daniel.
                 id: 'genesis',
                 title: 'Genesis Alternative Ventures',
                 subtitle: 'Project manager, through International Business for Bruins',
@@ -248,7 +248,13 @@ export const dormContent: Record<string, Entry> = withMedia({
                 hideGlance: true,
                 summary: 'Whether and how a Southeast Asian venture debt fund should expand its credit products.',
                 omit: ['whatIDid', 'result'],
-                problem: 'Genesis Alternative Ventures, a Southeast Asian venture debt fund, wanted to know whether and how to expand the credit products in its Fund III across Southeast Asia, without cannibalizing its existing business.'
+                problem: 'Genesis Alternative Ventures, a Southeast Asian venture debt fund, wanted to know whether and how to expand the credit products in its Fund III across Southeast Asia, without cannibalizing its existing business.',
+                gallery: 'viewer',
+                images: [
+                    { alt: 'Genesis Alternative Ventures slide', slot: 'binder/genesis' },
+                    { alt: 'Genesis Alternative Ventures slide', slot: 'binder/genesis' },
+                    { alt: 'Genesis Alternative Ventures slide', slot: 'binder/genesis' }
+                ]
             }
         ]
     },

@@ -21,6 +21,158 @@
             "h": 1600
         }
     ],
+    "binder/genesis": [
+        {
+            "src": "/media/binder/genesis/01-genesis-alternative-ventures-final-deliverable-t.webp",
+            "alt": "Genesis Alternative Ventures final deliverable, title slide",
+            "w": 1600,
+            "h": 901
+        },
+        {
+            "src": "/media/binder/genesis/02-genesis-alternative-ventures-deck-slide-2-agenda.webp",
+            "alt": "Genesis Alternative Ventures deck, slide 2: Agenda",
+            "w": 1600,
+            "h": 901
+        },
+        {
+            "src": "/media/binder/genesis/03-genesis-alternative-ventures-deck-slide-3-phase-.webp",
+            "alt": "Genesis Alternative Ventures deck, slide 3: Phase 2: Part 1",
+            "w": 1600,
+            "h": 901
+        },
+        {
+            "src": "/media/binder/genesis/04-slide-review-of-adjacent-credit-products-recurri.webp",
+            "alt": "Slide: review of adjacent credit products (recurring revenue lines, working capital, acquisition financing)",
+            "w": 1600,
+            "h": 901
+        },
+        {
+            "src": "/media/binder/genesis/05-genesis-alternative-ventures-deck-slide-5-adjace.webp",
+            "alt": "Genesis Alternative Ventures deck, slide 5: Adjacent Credit Products | Deep Dive",
+            "w": 1600,
+            "h": 901
+        },
+        {
+            "src": "/media/binder/genesis/06-genesis-alternative-ventures-deck-slide-6-case-s.webp",
+            "alt": "Genesis Alternative Ventures deck, slide 6: Case Study: Pinegrove Credit Partners x Temasek",
+            "w": 1600,
+            "h": 901
+        },
+        {
+            "src": "/media/binder/genesis/07-genesis-alternative-ventures-deck-slide-7-singap.webp",
+            "alt": "Genesis Alternative Ventures deck, slide 7: Singapore's Role as the Regional Credit Gateway",
+            "w": 1600,
+            "h": 901
+        },
+        {
+            "src": "/media/binder/genesis/08-genesis-alternative-ventures-deck-slide-8-southe.webp",
+            "alt": "Genesis Alternative Ventures deck, slide 8: Southeast Asia: Broader Credit Landscape",
+            "w": 1600,
+            "h": 901
+        },
+        {
+            "src": "/media/binder/genesis/09-genesis-alternative-ventures-deck-slide-9-austra.webp",
+            "alt": "Genesis Alternative Ventures deck, slide 9: Australia: Market Overview",
+            "w": 1600,
+            "h": 901
+        },
+        {
+            "src": "/media/binder/genesis/10-genesis-alternative-ventures-deck-slide-10-new-z.webp",
+            "alt": "Genesis Alternative Ventures deck, slide 10: New Zealand: Market Overview",
+            "w": 1600,
+            "h": 901
+        },
+        {
+            "src": "/media/binder/genesis/11-genesis-alternative-ventures-deck-slide-11-key-c.webp",
+            "alt": "Genesis Alternative Ventures deck, slide 11: Key Competitors: India",
+            "w": 1600,
+            "h": 901
+        },
+        {
+            "src": "/media/binder/genesis/12-genesis-alternative-ventures-deck-slide-12-phase.webp",
+            "alt": "Genesis Alternative Ventures deck, slide 12: Phase 2: Part 2",
+            "w": 1600,
+            "h": 901
+        },
+        {
+            "src": "/media/binder/genesis/13-genesis-alternative-ventures-deck-slide-13-measu.webp",
+            "alt": "Genesis Alternative Ventures deck, slide 13: Measuring Success",
+            "w": 1600,
+            "h": 901
+        },
+        {
+            "src": "/media/binder/genesis/14-genesis-alternative-ventures-deck-slide-14-measu.webp",
+            "alt": "Genesis Alternative Ventures deck, slide 14: Measuring Success",
+            "w": 1600,
+            "h": 901
+        },
+        {
+            "src": "/media/binder/genesis/15-genesis-alternative-ventures-deck-slide-15-measu.webp",
+            "alt": "Genesis Alternative Ventures deck, slide 15: Measuring Success",
+            "w": 1600,
+            "h": 901
+        },
+        {
+            "src": "/media/binder/genesis/16-genesis-alternative-ventures-deck-slide-16-risk-.webp",
+            "alt": "Genesis Alternative Ventures deck, slide 16: Risk Analysis: Recurring Revenue Lines",
+            "w": 1600,
+            "h": 901
+        },
+        {
+            "src": "/media/binder/genesis/17-genesis-alternative-ventures-deck-slide-17-risk-.webp",
+            "alt": "Genesis Alternative Ventures deck, slide 17: Risk Analysis: Working Capital Facilities",
+            "w": 1600,
+            "h": 901
+        },
+        {
+            "src": "/media/binder/genesis/18-genesis-alternative-ventures-deck-slide-18-risk-.webp",
+            "alt": "Genesis Alternative Ventures deck, slide 18: Risk Analysis: Acquisition Financing",
+            "w": 1600,
+            "h": 901
+        },
+        {
+            "src": "/media/binder/genesis/19-slide-risk-return-analysis-of-the-three-lending-.webp",
+            "alt": "Slide: risk-return analysis of the three lending strategies",
+            "w": 1600,
+            "h": 901
+        },
+        {
+            "src": "/media/binder/genesis/20-genesis-alternative-ventures-deck-slide-20-risk-.webp",
+            "alt": "Genesis Alternative Ventures deck, slide 20: Risk Mitigation: Structural Safeguards",
+            "w": 1600,
+            "h": 901
+        },
+        {
+            "src": "/media/binder/genesis/21-genesis-alternative-ventures-deck-slide-21-quant.webp",
+            "alt": "Genesis Alternative Ventures deck, slide 21: Quantitative Safeguards",
+            "w": 1600,
+            "h": 901
+        },
+        {
+            "src": "/media/binder/genesis/22-slide-final-recommendation-working-capital-finan.webp",
+            "alt": "Slide: final recommendation, working capital financing first, then recurring revenue lines, then acquisition financing",
+            "w": 1600,
+            "h": 901
+        },
+        {
+            "src": "/media/binder/genesis/23-genesis-alternative-ventures-deck-slide-23-appen.webp",
+            "alt": "Genesis Alternative Ventures deck, slide 23: Appendix",
+            "w": 1600,
+            "h": 901
+        },
+        {
+            "src": "/media/binder/genesis/24-genesis-alternative-ventures-deck-slide-24-appen.webp",
+            "alt": "Genesis Alternative Ventures deck, slide 24: Appendix",
+            "w": 1600,
+            "h": 901
+        },
+        {
+            "src": "/media/binder/genesis/25-genesis-alternative-ventures-deck-slide-25-thank.webp",
+            "alt": "Genesis Alternative Ventures deck, slide 25: Thank you!",
+            "w": 1600,
+            "h": 901
+        }
+    ],
     "binder/lek": [
         {
             "src": "/media/binder/lek/01-l-e-k-case-competition-deck-title-slide-corvista.webp",
@@ -29,20 +181,86 @@
             "h": 900
         },
         {
-            "src": "/media/binder/lek/02-slide-market-sizing-for-a-corvista-data-analytic.webp",
+            "src": "/media/binder/lek/02-l-e-k-case-competition-deck-slide-2-presentation.webp",
+            "alt": "L.E.K. Case Competition deck, slide 2: Presentation Agenda",
+            "w": 1600,
+            "h": 900
+        },
+        {
+            "src": "/media/binder/lek/03-l-e-k-case-competition-deck-slide-3-meet-the-tea.webp",
+            "alt": "L.E.K. Case Competition deck, slide 3: Meet The Team",
+            "w": 1600,
+            "h": 900
+        },
+        {
+            "src": "/media/binder/lek/04-l-e-k-case-competition-deck-slide-4-overview.webp",
+            "alt": "L.E.K. Case Competition deck, slide 4: Overview",
+            "w": 1600,
+            "h": 900
+        },
+        {
+            "src": "/media/binder/lek/05-slide-market-sizing-for-a-corvista-data-analytic.webp",
             "alt": "Slide: market sizing for a CorVista data analytics product (TAM $1.41B, SAM $150.3M)",
             "w": 1600,
             "h": 900
         },
         {
-            "src": "/media/binder/lek/03-slide-market-sizing-for-a-corvista-cardiac-surge.webp",
+            "src": "/media/binder/lek/06-slide-market-sizing-for-a-corvista-cardiac-surge.webp",
             "alt": "Slide: market sizing for a CorVista cardiac surgery platform (TAM $344M, SAM about $250M)",
             "w": 1600,
             "h": 900
         },
         {
-            "src": "/media/binder/lek/04-slide-prioritization-and-5-year-plan-data-analyt.webp",
+            "src": "/media/binder/lek/07-l-e-k-case-competition-deck-slide-7-competitive-.webp",
+            "alt": "L.E.K. Case Competition deck, slide 7: Competitive Landscape",
+            "w": 1600,
+            "h": 900
+        },
+        {
+            "src": "/media/binder/lek/08-l-e-k-case-competition-deck-slide-8-data-analyti.webp",
+            "alt": "L.E.K. Case Competition deck, slide 8: Data Analytics Opportunities",
+            "w": 1600,
+            "h": 900
+        },
+        {
+            "src": "/media/binder/lek/09-l-e-k-case-competition-deck-slide-9-surgical-pla.webp",
+            "alt": "L.E.K. Case Competition deck, slide 9: Surgical Platforms Opportunities",
+            "w": 1600,
+            "h": 900
+        },
+        {
+            "src": "/media/binder/lek/10-l-e-k-case-competition-deck-slide-10-investments.webp",
+            "alt": "L.E.K. Case Competition deck, slide 10: Investments and Capabilities",
+            "w": 1600,
+            "h": 900
+        },
+        {
+            "src": "/media/binder/lek/11-l-e-k-case-competition-deck-slide-11-barriers-an.webp",
+            "alt": "L.E.K. Case Competition deck, slide 11: Barriers and Risks",
+            "w": 1600,
+            "h": 900
+        },
+        {
+            "src": "/media/binder/lek/12-slide-prioritization-and-5-year-plan-data-analyt.webp",
             "alt": "Slide: prioritization and 5 year plan, data analytics first, then surgical",
+            "w": 1600,
+            "h": 900
+        },
+        {
+            "src": "/media/binder/lek/13-l-e-k-case-competition-deck-slide-13-appendix.webp",
+            "alt": "L.E.K. Case Competition deck, slide 13: Appendix",
+            "w": 1600,
+            "h": 900
+        },
+        {
+            "src": "/media/binder/lek/14-l-e-k-case-competition-deck-slide-14-appendix.webp",
+            "alt": "L.E.K. Case Competition deck, slide 14: Appendix",
+            "w": 1600,
+            "h": 900
+        },
+        {
+            "src": "/media/binder/lek/15-l-e-k-case-competition-deck-slide-15-references.webp",
+            "alt": "L.E.K. Case Competition deck, slide 15: References",
             "w": 1600,
             "h": 900
         }
@@ -143,34 +361,34 @@
     ],
     "pennant/friends": [
         {
-            "src": "/media/pennant/friends/01-daniel-and-friends-posing-in-a-dorm-hallway-at-u.webp",
+            "src": "/media/pennant/friends/01-daniel-and-friends-at-a-party-with-balloons.webp",
+            "alt": "Daniel and friends at a party with balloons",
+            "w": 1457,
+            "h": 1093
+        },
+        {
+            "src": "/media/pennant/friends/02-daniel-and-friends-posing-in-a-dorm-hallway-at-u.webp",
             "alt": "Daniel and friends posing in a dorm hallway at UCLA",
             "w": 1600,
             "h": 1065
         },
         {
-            "src": "/media/pennant/friends/02-daniel-and-friends-under-string-lights-at-ucla.webp",
+            "src": "/media/pennant/friends/03-daniel-and-friends-under-string-lights-at-ucla.webp",
             "alt": "Daniel and friends under string lights at UCLA",
             "w": 1600,
             "h": 1064
         },
         {
-            "src": "/media/pennant/friends/03-daniel-and-friends-out-together-at-night.webp",
+            "src": "/media/pennant/friends/04-daniel-and-friends-out-together-at-night.webp",
             "alt": "Daniel and friends out together at night",
             "w": 1600,
             "h": 1065
         },
         {
-            "src": "/media/pennant/friends/04-daniel-and-a-bigger-group-of-friends-at-night-th.webp",
+            "src": "/media/pennant/friends/05-daniel-and-a-bigger-group-of-friends-at-night-th.webp",
             "alt": "Daniel and a bigger group of friends at night, thumbs up",
             "w": 1600,
             "h": 1064
-        },
-        {
-            "src": "/media/pennant/friends/05-daniel-and-friends-at-a-party-with-balloons.webp",
-            "alt": "Daniel and friends at a party with balloons",
-            "w": 1457,
-            "h": 1093
         }
     ],
     "phone/dsp-rush": [
@@ -248,6 +466,38 @@
             "alt": "ibbatucla.com home page",
             "w": 1600,
             "h": 1036
+        }
+    ],
+    "shirt/gallery": [
+        {
+            "src": "/media/shirt/gallery/01-a-hope-for-hearing-event-in-a-church-hall-with-a.webp",
+            "alt": "A Hope For Hearing event in a church hall, with a full audience in the pews",
+            "w": 1600,
+            "h": 900
+        },
+        {
+            "src": "/media/shirt/gallery/02-daniel-speaking-at-a-podium.webp",
+            "alt": "Daniel speaking at a podium",
+            "w": 824,
+            "h": 1238
+        },
+        {
+            "src": "/media/shirt/gallery/03-daniel-presenting-on-stage.webp",
+            "alt": "Daniel presenting on stage",
+            "w": 1600,
+            "h": 1067
+        },
+        {
+            "src": "/media/shirt/gallery/04-daniel-speaking-to-an-audience-with-a-microphone.webp",
+            "alt": "Daniel speaking to an audience with a microphone",
+            "w": 1052,
+            "h": 946
+        },
+        {
+            "src": "/media/shirt/gallery/05-hope-for-hearing-x-chha-video-call.webp",
+            "alt": "Hope For Hearing x CHHA video call",
+            "w": 1600,
+            "h": 870
         }
     ]
 }

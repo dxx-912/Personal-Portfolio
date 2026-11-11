@@ -19,7 +19,6 @@ The dorm copy is done. Left:
 - [ ] **Photos for empty folders:**
   - `1 Dorm/07 Grad cap, Upper Canada College/Graduating class hat toss (1 photo)`
   - `1 Dorm/07 Grad cap, Upper Canada College/You leading Asian Heritage & Culture Club (1 photo)`
-  - `1 Dorm/09 Hope For Hearing shirt/Gallery (any number)`
 
 ## Home (personal): not filled in yet
 

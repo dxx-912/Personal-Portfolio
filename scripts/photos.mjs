@@ -13,7 +13,7 @@
 //
 // Slot options (scripts/photo-slots.json): "file" takes one named file instead of a folder (the headshot);
 // "aspect" (width / height) centre crops every image in the folder to one shape so a gallery lines up;
-// "pdfPages" renders those pages of a PDF in the folder (the L.E.K. deck); "video" compresses the MP4 in
+// "pdfPages" renders those pages (or "all") of a PDF in the folder (the L.E.K. deck); "video" compresses the MP4 in
 // the folder for the web (H.264, with a poster frame); "alts" gives written alt text per file name.
 // Outputs never carry metadata (sharp and ffmpeg drop EXIF, so no GPS locations are published).
 //
@@ -41,6 +41,8 @@ const CAMERA_NAME = /^(img|dsc|dscn|pxl|screenshot|screen shot|photo|image|mvimg
 const manifest = existsSync(manifestPath) ? JSON.parse(readFileSync(manifestPath, 'utf8')) : {};
 let converted = 0;
 const warnings = [];
+/** Alt text for rendered slides that have no written one: "<deck>, slide N: <slide title>". */
+const pdfTitles = {};
 
 const slugify = (s) => s.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '').slice(0, 48) || 'photo';
 /** "2 Roy and me at the meetup.jpg" -> "Roy and me at the meetup" (or null for camera names). */
@@ -69,8 +71,9 @@ try {
         let files = slot.file ? (existsSync(join(dir, slot.file)) ? [slot.file] : [])
             : readdirSync(dir).filter((f) => IMAGE.test(f) && !f.startsWith('.'))
                 .sort((a, b) => a.localeCompare(b, undefined, { numeric: true, sensitivity: 'base' }));
-        if (slot.pdfPages) files = pdfPages(dir, slot.pdfPages);
+        if (slot.pdfPages) files = pdfPages(dir, slot.pdfPages, slot.deck);
         if (slot.splitRows) files = (await Promise.all(files.map((f) => slot.splitRows.includes(f) ? splitRows(join(dir, f)) : [f]))).flat();
+        if (slot.first) files = [...files.filter((f) => slot.first.includes(f)), ...files.filter((f) => !slot.first.includes(f))];
         if (!files.length) continue;
         if (slot.max && files.length > slot.max) {
             warnings.push(`"${slot.folder}" takes ${slot.max}; using the first ${slot.max} of ${files.length}.`);
@@ -95,7 +98,7 @@ try {
         const entries = [];
         for (const [i, f] of files.entries()) {
             const src = f.startsWith('/') ? f : readable(join(dir, f), tmp);
-            const alt = slot.alts?.[basename(f)] ?? describe(f.replace(/#\d+\.png$/, ''));
+            const alt = altFor(slot, basename(f)) ?? pdfTitles[f] ?? describe(f.replace(/#\d+\.png$/, ''));
             const name = `${String(i + 1).padStart(2, '0')}-${slugify(alt ?? 'photo')}.webp`;
             const info = await (await cropToAspect(sharp(src).rotate(), slot.aspect))
                 .resize({ width: 1600, height: 1600, fit: 'inside', withoutEnlargement: true })
@@ -154,15 +157,31 @@ async function splitRows(file) {
     return [top, bottom];
 }
 
+/** Written alt text for a file; spaces are compared loosely (macOS puts a narrow space before AM/PM in screenshot names). */
+function altFor(slot, name) {
+    if (!slot.alts) return undefined;
+    const norm = (x) => x.normalize('NFKC').replace(/\s+/g, ' ');
+    const hit = Object.entries(slot.alts).find(([k]) => norm(k) === norm(name));
+    return hit?.[1];
+}
+
 /** Renders the listed pages of the first PDF in a folder to PNGs (poppler's pdftoppm). Names: "page-5.png". */
-function pdfPages(dir, pages) {
+function pdfPages(dir, pages, deck) {
     const pdf = readdirSync(dir).find((f) => /\.pdf$/i.test(f));
     if (!pdf) return [];
+    if (pages === 'all') {
+        const info = execFileSync('pdfinfo', [join(dir, pdf)]).toString();
+        const count = Number(/Pages:\s+(\d+)/.exec(info)?.[1] ?? 0);
+        pages = Array.from({ length: count }, (_, i) => i + 1);
+    }
     const out = [];
     for (const n of pages) {
         const base = join(tmp, `page-${n}`);
         execFileSync('pdftoppm', ['-png', '-r', '170', '-f', String(n), '-l', String(n), '-singlefile', join(dir, pdf), base]);
         out.push(`${base}.png`);
+        const text = execFileSync('pdftotext', ['-f', String(n), '-l', String(n), join(dir, pdf), '-']).toString();
+        const title = text.split('\n').map((l) => l.trim()).find((l) => l.length > 2 && /[a-z]/i.test(l));
+        pdfTitles[`${base}.png`] = `${deck ?? 'Slide deck'}, slide ${n}${title ? `: ${title}` : ''}`;
     }
     return out;
 }
