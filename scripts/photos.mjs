@@ -11,11 +11,16 @@
 // e.g. "Roy and me at the first meetup.jpg". Start names with 1, 2, 3 to set the order.
 // Camera names like IMG_1234 fall back to a generic description.
 //
+// Slot options (scripts/photo-slots.json): "file" takes one named file instead of a folder (the headshot);
+// "pdfPages" renders those pages of a PDF in the folder (the L.E.K. deck); "video" compresses the MP4 in
+// the folder for the web (H.264, with a poster frame); "alts" gives written alt text per file name.
+// Outputs never carry metadata (sharp and ffmpeg drop EXIF, so no GPS locations are published).
+//
 // Folders that are empty are left alone, so a fresh clone (where originals are not in git)
 // keeps the converted photos that are already committed.
 
 import { execFileSync } from 'node:child_process';
-import { existsSync, mkdirSync, mkdtempSync, readdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
+import { existsSync, mkdirSync, mkdtempSync, readdirSync, readFileSync, rmSync, statSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { basename, dirname, extname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -54,11 +59,16 @@ function readable(file, tmp) {
 const tmp = mkdtempSync(join(tmpdir(), 'dx-photos-'));
 try {
     for (const slot of slots) {
-        const dir = join(inbox, slot.folder);
-        mkdirSync(dir, { recursive: true });
-        if (!existsSync(join(dir, '.gitkeep'))) writeFileSync(join(dir, '.gitkeep'), '');
-        let files = readdirSync(dir).filter((f) => IMAGE.test(f) && !f.startsWith('.'))
-            .sort((a, b) => a.localeCompare(b, undefined, { numeric: true, sensitivity: 'base' }));
+        if (slot.video) { await convertVideo(slot); continue; }
+        const dir = slot.file ? inbox : join(inbox, slot.folder);
+        if (!slot.file) {
+            mkdirSync(dir, { recursive: true });
+            if (!existsSync(join(dir, '.gitkeep'))) writeFileSync(join(dir, '.gitkeep'), '');
+        }
+        let files = slot.file ? (existsSync(join(dir, slot.file)) ? [slot.file] : [])
+            : readdirSync(dir).filter((f) => IMAGE.test(f) && !f.startsWith('.'))
+                .sort((a, b) => a.localeCompare(b, undefined, { numeric: true, sensitivity: 'base' }));
+        if (slot.pdfPages) files = pdfPages(dir, slot.pdfPages);
         if (!files.length) continue;
         if (slot.max && files.length > slot.max) {
             warnings.push(`"${slot.folder}" takes ${slot.max}; using the first ${slot.max} of ${files.length}.`);
@@ -82,12 +92,14 @@ try {
         mkdirSync(outDir, { recursive: true });
         const entries = [];
         for (const [i, f] of files.entries()) {
-            const src = readable(join(dir, f), tmp);
-            const name = `${String(i + 1).padStart(2, '0')}-${slugify(describe(f) ?? 'photo')}.webp`;
+            const src = f.startsWith('/') ? f : readable(join(dir, f), tmp);
+            const alt = slot.alts?.[basename(f)] ?? describe(f);
+            const name = `${String(i + 1).padStart(2, '0')}-${slugify(alt ?? 'photo')}.webp`;
             const info = await sharp(src).rotate()
                 .resize({ width: 1600, height: 1600, fit: 'inside', withoutEnlargement: true })
-                .webp({ quality: 80 }).toFile(join(outDir, name));
-            entries.push({ src: `/media/${slot.key}/${name}`, alt: describe(f), w: info.width, h: info.height });
+                // slides and screenshots are mostly text: a higher quality keeps them crisp
+                .webp({ quality: slot.text ? 88 : 80 }).toFile(join(outDir, name));
+            entries.push({ src: `/media/${slot.key}/${name}`, alt, w: info.width, h: info.height });
             converted++;
         }
         manifest[slot.key] = entries;
@@ -109,6 +121,43 @@ warnings.forEach((w) => console.warn(`  note: ${w}`));
 const filled = Object.keys(sorted).length;
 const needed = slots.filter((s) => !s.decor).length;
 log(`Photos: converted ${converted} file(s). ${filled} of ${needed} photo spots filled.${converted ? ' Restart npm run dev to see them.' : ''}`);
+
+/** Renders the listed pages of the first PDF in a folder to PNGs (poppler's pdftoppm). Names: "page-5.png". */
+function pdfPages(dir, pages) {
+    const pdf = readdirSync(dir).find((f) => /\.pdf$/i.test(f));
+    if (!pdf) return [];
+    const out = [];
+    for (const n of pages) {
+        const base = join(tmp, `page-${n}`);
+        execFileSync('pdftoppm', ['-png', '-r', '170', '-f', String(n), '-l', String(n), '-singlefile', join(dir, pdf), base]);
+        out.push(`${base}.png`);
+    }
+    return out;
+}
+
+/** Compresses the first video in a folder for the web, with a poster frame. Skipped when already up to date. */
+async function convertVideo(slot) {
+    const dir = join(inbox, slot.folder);
+    const file = existsSync(dir) && readdirSync(dir).find((f) => /\.(mp4|mov|m4v)$/i.test(f) && !f.startsWith('.'));
+    if (!file) return;
+    const outDir = join(mediaDir, slot.key);
+    const out = join(outDir, 'video.mp4'), poster = join(outDir, 'poster.webp');
+    const srcPath = join(dir, file);
+    const fresh = existsSync(out) && existsSync(poster) && statSync(out).mtimeMs > statSync(srcPath).mtimeMs;
+    if (!fresh) {
+        mkdirSync(outDir, { recursive: true });
+        execFileSync('ffmpeg', ['-y', '-loglevel', 'error', '-i', srcPath, '-map_metadata', '-1',
+            '-vf', "scale='min(720,iw)':-2", '-c:v', 'libx264', '-preset', 'slow', '-crf', '27', '-profile:v', 'high',
+            '-pix_fmt', 'yuv420p', '-c:a', 'aac', '-b:a', '96k', '-movflags', '+faststart', out]);
+        const still = join(tmp, 'poster.png');
+        execFileSync('ffmpeg', ['-y', '-loglevel', 'error', '-ss', String(slot.posterAt ?? 1), '-i', out, '-frames:v', '1', still]);
+        await sharp(still).webp({ quality: 80 }).toFile(poster);
+        converted++;
+    }
+    const meta = await sharp(poster).metadata();
+    manifest[slot.key] = [{ src: `/media/${slot.key}/video.mp4`, poster: `/media/${slot.key}/poster.webp`, alt: slot.alt ?? null, w: meta.width, h: meta.height }];
+    log(`  video  ${slot.key}${fresh ? ' (up to date)' : ''}`);
+}
 
 /**
  * For logos saved with a fake "transparent" background (a grey and white checkerboard, or plain white, baked

@@ -1,1 +1,241 @@
-{}
+{
+    "about/headshot": [
+        {
+            "src": "/media/about/headshot/01-headshot-of-daniel-xing.webp",
+            "alt": "Headshot of Daniel Xing",
+            "w": 1146,
+            "h": 1260
+        }
+    ],
+    "about/photos": [
+        {
+            "src": "/media/about/photos/01-daniel-holding-up-a-caricature-drawing-of-himsel.webp",
+            "alt": "Daniel holding up a caricature drawing of himself",
+            "w": 1200,
+            "h": 1600
+        },
+        {
+            "src": "/media/about/photos/02-daniel-his-sister-and-fluffy-the-cat-behind-a-bi.webp",
+            "alt": "Daniel, his sister, and Fluffy the cat behind a birthday cake",
+            "w": 1280,
+            "h": 1600
+        }
+    ],
+    "binder/lek": [
+        {
+            "src": "/media/binder/lek/01-l-e-k-case-competition-deck-title-slide-corvista.webp",
+            "alt": "L.E.K. Case Competition deck, title slide: CorVista Health expansion strategy",
+            "w": 1600,
+            "h": 900
+        },
+        {
+            "src": "/media/binder/lek/02-slide-market-sizing-for-a-corvista-data-analytic.webp",
+            "alt": "Slide: market sizing for a CorVista data analytics product (TAM $1.41B, SAM $150.3M)",
+            "w": 1600,
+            "h": 900
+        },
+        {
+            "src": "/media/binder/lek/03-slide-market-sizing-for-a-corvista-cardiac-surge.webp",
+            "alt": "Slide: market sizing for a CorVista cardiac surgery platform (TAM $344M, SAM about $250M)",
+            "w": 1600,
+            "h": 900
+        },
+        {
+            "src": "/media/binder/lek/04-slide-prioritization-and-5-year-plan-data-analyt.webp",
+            "alt": "Slide: prioritization and 5 year plan, data analytics first, then surgical",
+            "w": 1600,
+            "h": 900
+        }
+    ],
+    "closet/ra": [
+        {
+            "src": "/media/closet/ra/01-daniel-cheering-with-a-megaphone-in-front-of-a-c.webp",
+            "alt": "Daniel cheering with a megaphone in front of a crowd",
+            "w": 1200,
+            "h": 1600
+        },
+        {
+            "src": "/media/closet/ra/02-daniel-holding-a-giant-go-bruins-foam-finger-on-.webp",
+            "alt": "Daniel holding a giant Go Bruins foam finger on campus",
+            "w": 1600,
+            "h": 1600
+        }
+    ],
+    "gradcap/business-club": [
+        {
+            "src": "/media/gradcap/business-club/01-daniel-with-business-competition-club-members-ou.webp",
+            "alt": "Daniel with Business Competition Club members outside Upper Canada College",
+            "w": 1600,
+            "h": 1067
+        },
+        {
+            "src": "/media/gradcap/business-club/02-daniel-and-teammates-with-medals-at-a-deca-confe.webp",
+            "alt": "Daniel and teammates with medals at a DECA conference",
+            "w": 1280,
+            "h": 1600
+        },
+        {
+            "src": "/media/gradcap/business-club/03-daniel-with-business-competition-club-members-in.webp",
+            "alt": "Daniel with Business Competition Club members in school blazers",
+            "w": 1315,
+            "h": 987
+        },
+        {
+            "src": "/media/gradcap/business-club/04-a-business-competition-club-session-in-a-packed-.webp",
+            "alt": "A Business Competition Club session in a packed lecture hall",
+            "w": 1440,
+            "h": 1080
+        }
+    ],
+    "laptop/ateball": [
+        {
+            "src": "/media/laptop/ateball/01-ateball-sign-up-screen.webp",
+            "alt": "Ateball sign up screen",
+            "w": 720,
+            "h": 1600
+        },
+        {
+            "src": "/media/laptop/ateball/02-ateball-onboarding-swipe-right-on-places-and-add.webp",
+            "alt": "Ateball onboarding: swipe right on places and add your cravings",
+            "w": 720,
+            "h": 1600
+        },
+        {
+            "src": "/media/laptop/ateball/03-ateball-welcome-screen-can-t-decide-where-to-eat.webp",
+            "alt": "Ateball welcome screen: can't decide where to eat?",
+            "w": 720,
+            "h": 1600
+        }
+    ],
+    "laptop/cold-email": [
+        {
+            "src": "/media/laptop/cold-email/01-cold-outreach-automator-dashboard-with-campaigns.webp",
+            "alt": "Cold Outreach Automator dashboard with campaigns and send counts",
+            "w": 1600,
+            "h": 900
+        },
+        {
+            "src": "/media/laptop/cold-email/02-cold-outreach-automator-landing-page-personal-co.webp",
+            "alt": "Cold Outreach Automator landing page: personal cold emails, sent from your own Gmail",
+            "w": 1600,
+            "h": 1036
+        }
+    ],
+    "laptop/saved-posts": [
+        {
+            "src": "/media/laptop/saved-posts/01-saved-posts-scroller-intro-screen-your-saves-act.webp",
+            "alt": "Saved posts scroller intro screen: your saves, actually seen",
+            "w": 739,
+            "h": 1600
+        },
+        {
+            "src": "/media/laptop/saved-posts/02-saved-posts-scroller-daily-feed-sorted-into-cate.webp",
+            "alt": "Saved posts scroller daily feed, sorted into categories",
+            "w": 739,
+            "h": 1600
+        },
+        {
+            "src": "/media/laptop/saved-posts/03-saved-posts-scroller-library-of-saved-posts-with.webp",
+            "alt": "Saved posts scroller library of saved posts with category filters",
+            "w": 739,
+            "h": 1600
+        }
+    ],
+    "pennant/friends": [
+        {
+            "src": "/media/pennant/friends/01-daniel-and-friends-posing-together-at-ucla.webp",
+            "alt": "Daniel and friends posing together at UCLA",
+            "w": 1200,
+            "h": 1600
+        },
+        {
+            "src": "/media/pennant/friends/02-daniel-and-friends-out-together-at-night.webp",
+            "alt": "Daniel and friends out together at night",
+            "w": 1200,
+            "h": 1600
+        },
+        {
+            "src": "/media/pennant/friends/03-daniel-and-friends-at-a-party-with-balloons.webp",
+            "alt": "Daniel and friends at a party with balloons",
+            "w": 1457,
+            "h": 1093
+        }
+    ],
+    "phone/dsp-rush": [
+        {
+            "src": "/media/phone/dsp-rush/video.mp4",
+            "poster": "/media/phone/dsp-rush/poster.webp",
+            "alt": "DSP rush video",
+            "w": 720,
+            "h": 406
+        }
+    ],
+    "phone/dsp-vogue": [
+        {
+            "src": "/media/phone/dsp-vogue/01-dsp-fall-2026-rush-flyer-styled-as-a-vogue-cover.webp",
+            "alt": "DSP Fall 2026 rush flyer styled as a Vogue cover: The Next Big Thing",
+            "w": 1131,
+            "h": 1600
+        },
+        {
+            "src": "/media/phone/dsp-vogue/02-dsp-rush-week-schedule-flyer.webp",
+            "alt": "DSP rush week schedule flyer",
+            "w": 1131,
+            "h": 1600
+        },
+        {
+            "src": "/media/phone/dsp-vogue/03-dsp-rush-week-schedule-on-a-red-vogue-style-cove.webp",
+            "alt": "DSP rush week schedule on a red Vogue style cover",
+            "w": 1131,
+            "h": 1600
+        },
+        {
+            "src": "/media/phone/dsp-vogue/04-dsp-careers-flyer-with-company-logos.webp",
+            "alt": "DSP careers flyer with company logos",
+            "w": 1235,
+            "h": 1600
+        }
+    ],
+    "phone/dsp-website": [
+        {
+            "src": "/media/phone/dsp-website/01-ucladsp-com-home-page-ucla-s-premier-co-ed-busin.webp",
+            "alt": "ucladsp.com home page: UCLA's premier co-ed business fraternity",
+            "w": 1600,
+            "h": 1036
+        }
+    ],
+    "phone/ibb-graphics": [
+        {
+            "src": "/media/phone/ibb-graphics/01-ibb-fall-2026-recruitment-timeline-graphic.webp",
+            "alt": "IBB Fall 2026 recruitment timeline graphic",
+            "w": 1236,
+            "h": 1600
+        },
+        {
+            "src": "/media/phone/ibb-graphics/02-ibb-get-to-know-ibb-event-graphic.webp",
+            "alt": "IBB Get to Know IBB event graphic",
+            "w": 1302,
+            "h": 1600
+        },
+        {
+            "src": "/media/phone/ibb-graphics/03-ibb-member-spotlight-of-daniel-director-of-marke.webp",
+            "alt": "IBB member spotlight of Daniel, Director of Marketing",
+            "w": 1088,
+            "h": 1344
+        },
+        {
+            "src": "/media/phone/ibb-graphics/04-ibb-info-session-graphic.webp",
+            "alt": "IBB info session graphic",
+            "w": 1280,
+            "h": 1600
+        }
+    ],
+    "phone/ibb-website": [
+        {
+            "src": "/media/phone/ibb-website/01-ibbatucla-com-home-page.webp",
+            "alt": "ibbatucla.com home page",
+            "w": 1600,
+            "h": 1036
+        }
+    ]
+}

@@ -1,30 +1,64 @@
 {
-    "_about": "Every photo the site needs. 'folder' is the drop folder under photos/. 'key' links to the slot on an image in src/content. 'max' is how many photos are used (0 means any number). 'decor' slots become room art in public/assets/decor/.",
+    "_about": "Every photo the site needs. 'folder' is the drop folder under photos/. 'key' links to the slot on an image in src/content. 'max' is how many photos are used (0 means any number). 'decor' slots become room art in public/assets/decor/. Optional: 'file' (one named file under photos/), 'pdfPages' (render those PDF pages), 'video' (compress the MP4 in the folder), 'alts' (alt text by file name), 'text' (higher quality for slides and screenshots).",
     "slots": [
         {
             "key": "about/headshot",
-            "folder": "1 Dorm/01 About me (HUD portrait)/Headshot (1 photo)",
-            "max": 1
+            "file": "Professional Headshot.png",
+            "max": 1,
+            "alts": {
+                "Professional Headshot.png": "Headshot of Daniel Xing"
+            }
         },
         {
-            "key": "pennant/royce-hall",
-            "folder": "1 Dorm/02 UCLA pennant/You in front of Royce Hall (1 photo)",
-            "max": 1
+            "key": "about/photos",
+            "folder": "1 Dorm/01 About me (HUD portrait)/HUD Photos",
+            "max": 0,
+            "alts": {
+                "Me with my caricature.HEIC": "Daniel holding up a caricature drawing of himself",
+                "Me, my sister, and my cat.HEIC": "Daniel, his sister, and Fluffy the cat behind a birthday cake"
+            }
+        },
+        {
+            "key": "pennant/friends",
+            "folder": "1 Dorm/02 UCLA pennant/me and friends at UCLA",
+            "max": 0,
+            "alts": {
+                "IMG_4688.HEIC": "Daniel and friends posing together at UCLA",
+                "IMG_4691.HEIC": "Daniel and friends out together at night",
+                "IMG_6015.jpg": "Daniel and friends at a party with balloons"
+            }
         },
         {
             "key": "laptop/cold-email",
             "folder": "1 Dorm/04 Laptop, software projects/Cold email automator screenshots (2 to 4)",
-            "max": 4
+            "max": 4,
+            "text": true,
+            "alts": {
+                "Cold Email Automator Dashboard.png": "Cold Outreach Automator dashboard with campaigns and send counts",
+                "Onboarding page .png": "Cold Outreach Automator landing page: personal cold emails, sent from your own Gmail"
+            }
         },
         {
             "key": "laptop/saved-posts",
             "folder": "1 Dorm/04 Laptop, software projects/Saved posts scroller screenshots (2 to 4)",
-            "max": 4
+            "max": 4,
+            "text": true,
+            "alts": {
+                "IMG_5712.PNG": "Saved posts scroller intro screen: your saves, actually seen",
+                "IMG_5713.PNG": "Saved posts scroller daily feed, sorted into categories",
+                "IMG_5714.PNG": "Saved posts scroller library of saved posts with category filters"
+            }
         },
         {
             "key": "laptop/ateball",
             "folder": "1 Dorm/04 Laptop, software projects/Ateball UI screenshots (2 to 4)",
-            "max": 4
+            "max": 4,
+            "text": true,
+            "alts": {
+                "onboarding 1.png": "Ateball sign up screen",
+                "onboarding 2 .png": "Ateball onboarding: swipe right on places and add your cravings",
+                "Onboarding Screenshot Ateball Application.png": "Ateball welcome screen: can't decide where to eat?"
+            }
         },
         {
             "key": "binder/genesis",
@@ -34,27 +68,67 @@
         {
             "key": "binder/lek",
             "folder": "1 Dorm/05 Binder, consulting/LEK Case Competition slides (2 to 4)",
-            "max": 4
+            "max": 4,
+            "pdfPages": [
+                1,
+                5,
+                6,
+                12
+            ],
+            "text": true,
+            "alts": {
+                "page-1.png": "L.E.K. Case Competition deck, title slide: CorVista Health expansion strategy",
+                "page-5.png": "Slide: market sizing for a CorVista data analytics product (TAM $1.41B, SAM $150.3M)",
+                "page-6.png": "Slide: market sizing for a CorVista cardiac surgery platform (TAM $344M, SAM about $250M)",
+                "page-12.png": "Slide: prioritization and 5 year plan, data analytics first, then surgical"
+            }
         },
         {
             "key": "phone/dsp-vogue",
             "folder": "1 Dorm/06 Phone, club marketing/DSP Vogue campaign graphics (3 or more)",
-            "max": 0
+            "max": 0,
+            "alts": {
+                "Flyer 1.png": "DSP Fall 2026 rush flyer styled as a Vogue cover: The Next Big Thing",
+                "Flyer 2.png": "DSP rush week schedule flyer",
+                "Flyer 3.png": "DSP rush week schedule on a red Vogue style cover",
+                "Offers Flyer.jpg": "DSP careers flyer with company logos"
+            }
+        },
+        {
+            "key": "phone/dsp-rush",
+            "folder": "1 Dorm/06 Phone, club marketing/DSP Vogue campaign graphics (3 or more)",
+            "video": true,
+            "posterAt": 2,
+            "alt": "DSP rush video"
         },
         {
             "key": "phone/dsp-website",
             "folder": "1 Dorm/06 Phone, club marketing/DSP website screenshot (1 photo)",
-            "max": 1
+            "max": 1,
+            "text": true,
+            "alts": {
+                "DSP Website .png": "ucladsp.com home page: UCLA's premier co-ed business fraternity"
+            }
         },
         {
             "key": "phone/ibb-graphics",
             "folder": "1 Dorm/06 Phone, club marketing/IBB graphics (3 or more)",
-            "max": 0
+            "max": 0,
+            "alts": {
+                "Instagram Image (1).jpg": "IBB Fall 2026 recruitment timeline graphic",
+                "Instagram Image (2).jpg": "IBB Get to Know IBB event graphic",
+                "Instagram Image (11).jpg": "IBB member spotlight of Daniel, Director of Marketing",
+                "Instagram Image.jpg": "IBB info session graphic"
+            }
         },
         {
             "key": "phone/ibb-website",
             "folder": "1 Dorm/06 Phone, club marketing/IBB website screenshot (1 photo)",
-            "max": 1
+            "max": 1,
+            "text": true,
+            "alts": {
+                "IBB Website.png": "ibbatucla.com home page"
+            }
         },
         {
             "key": "gradcap/hat-toss",
@@ -64,7 +138,13 @@
         {
             "key": "gradcap/business-club",
             "folder": "1 Dorm/07 Grad cap, Upper Canada College/You leading Business Club (1 photo)",
-            "max": 1
+            "max": 0,
+            "alts": {
+                "_R0A9073.JPEG": "Daniel with Business Competition Club members outside Upper Canada College",
+                "IMG_0207.jpg": "Daniel and teammates with medals at a DECA conference",
+                "UCC Business Club (4) 2.jpg": "Daniel with Business Competition Club members in school blazers",
+                "UCC Business Club.jpg": "A Business Competition Club session in a packed lecture hall"
+            }
         },
         {
             "key": "gradcap/asian-heritage-club",
@@ -74,7 +154,11 @@
         {
             "key": "closet/ra",
             "folder": "1 Dorm/08 Closet, Resident Assistant/You as an RA (1 photo)",
-            "max": 1
+            "max": 0,
+            "alts": {
+                "IMG_5443.JPG": "Daniel cheering with a megaphone in front of a crowd",
+                "Yeawonderland (8) 2.jpg": "Daniel holding a giant Go Bruins foam finger on campus"
+            }
         },
         {
             "key": "shirt/gallery",
