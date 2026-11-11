@@ -127,8 +127,8 @@ Quick view leadership gallery order: Sharpe Fellows first, then DSP, IBB, BEA, U
 - IB Diploma 40/45 · SAT 1560
 - HL: Mathematics A&I, English L&L, Economics. SL: Mandarin B, Global Politics, ESS.
 - Extended essay: Economic and Geopolitical Implications of Taiwan's Semiconductor Industry. Link: https://drive.google.com/file/d/14pv1NG7O9NHQkYhc4oL-PvGsY7-hgb9g/view?usp=sharing
-- **Business Competition Club, President** (Sep 2023 to May 2025): Led UCC's DECA and FBLA teams, growing membership by 400% through promotional videos and graphics (16,000+ impressions) and running weekly prep sessions, guest lectures, and a 1-on-1 mentorship system.
-- **Asian Heritage & Culture Club, President** (Sep 2023 to May 2025): Led 40+ members in running school wide cultural events for Lunar New Year and AAPI Month, plus potlucks, karaoke nights, trivia tournaments, and performances, with promo content reaching 12,000+ impressions.
+- **Business Competition Club, President**: Led UCC's DECA and FBLA teams, growing membership by 400% through promotional videos and graphics (16,000+ impressions) and running weekly prep sessions, guest lectures, and a 1-on-1 mentorship system.
+- **Asian Heritage & Culture Club, President**: Led 40+ members in running school wide cultural events for Lunar New Year and AAPI Month, plus potlucks, karaoke nights, trivia tournaments, and performances, with promo content reaching 12,000+ impressions.
 - Use these exact club names everywhere (not "Business Club" or "Asian Heritage Club").
 - Photos: `photos/1 Dorm/07 Grad cap, Upper Canada College/` (hat toss and Asian Heritage folders are empty for now: keep placeholders).
 
