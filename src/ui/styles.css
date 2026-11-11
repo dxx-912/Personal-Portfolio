@@ -330,12 +330,13 @@ a.link:hover { background: #eef4ff; text-decoration: underline; }
 
 /* notes: sticky notes on the TO DO board, each ticked off */
 .tabs-notes .tablist {
-    display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px;
-    padding: 12px; background: #c69863; border: 3px solid #6b4429; margin-bottom: 14px;
+    /* six notes: three across, two down, every note the same size */
+    display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); grid-auto-rows: 1fr; gap: 14px 16px;
+    padding: 16px; background: #c69863; border: 3px solid #6b4429; margin-bottom: 14px;
 }
 .tab-notes {
-    position: relative; display: flex; align-items: flex-start; gap: 8px; text-align: left; min-height: 74px;
-    font: 600 15px/1.25 var(--pixel); padding: 10px 10px 10px 8px; border: none; box-shadow: 2px 3px 0 rgba(60, 30, 10, 0.35);
+    position: relative; display: flex; align-items: flex-start; gap: 8px; text-align: left; min-height: 96px;
+    font: 600 16px/1.3 var(--pixel); padding: 14px 12px 12px 10px; border: none; box-shadow: 2px 3px 0 rgba(60, 30, 10, 0.35);
     background: var(--note); color: var(--ink); transform: rotate(var(--tilt));
 }
 .tab-notes:nth-child(6n+1) { --note: #f7de6a; --tilt: -1.5deg; }
