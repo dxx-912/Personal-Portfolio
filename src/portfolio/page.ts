@@ -249,7 +249,6 @@ export function renderPortfolio(opts: { production: boolean }): RenderResult {
         ${link(linkByLabel('Instagram'), C.instagram, 'clink')}
         <a class="clink clink-game" href="/" data-track="game-footer">${icon('gamepad')}<span>${esc(C.game)}</span></a>
       </p>
-      <p class="foot-note">${esc(C.footerNote)}</p>
     </footer>
   </div>
 </section>`;

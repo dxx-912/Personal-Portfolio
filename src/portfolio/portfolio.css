@@ -224,7 +224,6 @@ a.clink:hover span { text-decoration: underline; text-underline-offset: 4px; }
 .sky-night .clink-ico[src*="github"] { filter: invert(1); }
 .clink-game { color: var(--hl); animation: pulse 2.4s ease-in-out infinite; }
 @keyframes pulse { 50% { opacity: 0.6; } }
-.foot-note { flex-basis: 100%; margin: 6px 0 0; font-size: 13px; color: #aab8d4; }
 
 /* ---------- details: anchored sections without JS, panel content with JS ---------- */
 

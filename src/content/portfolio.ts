@@ -126,6 +126,5 @@ export const portfolioCopy = {
     leadPick: 'Pick a card',
     leadPrev: 'Previous card',
     leadNext: 'Next card',
-    footerNote: 'Same stories as the game, minus the walking.',
     sectionNames: { work: 'Selected work', leadership: 'Leadership', education: 'Education', inventory: 'Inventory' } as Record<PortfolioSection, string>
 };
