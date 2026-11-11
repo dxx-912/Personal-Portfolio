@@ -219,6 +219,9 @@ main:not(.dev) .shot:not(.has-img) .shot-ph { display: none; }
 .clink { display: inline-flex; align-items: center; gap: 8px; min-height: 40px; font-size: 15px; text-decoration: none; padding: 4px 2px; }
 a.clink:hover span { text-decoration: underline; text-underline-offset: 4px; }
 .clink-ico { width: 20px; height: 20px; border-radius: 6px; flex: none; }
+.btn .clink-ico { width: 18px; height: 18px; border-radius: 4px; }
+/* the GitHub mark is black: flip it to white on the dark night sky */
+.sky-night .clink-ico[src*="github"] { filter: invert(1); }
 .clink-game { color: var(--hl); animation: pulse 2.4s ease-in-out infinite; }
 @keyframes pulse { 50% { opacity: 0.6; } }
 .foot-note { flex-basis: 100%; margin: 6px 0 0; font-size: 13px; color: #aab8d4; }

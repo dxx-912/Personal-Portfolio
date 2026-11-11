@@ -45,7 +45,8 @@ export function renderPortfolio(opts: { production: boolean }): RenderResult {
 
     const linkByLabel = (label: string) => profile.links.find((l) => l.label.toLowerCase().startsWith(label.toLowerCase()));
     const link = (l: LinkItem | undefined, text: string, cls: string, iconName?: Parameters<typeof icon>[0], where = 'contact') => {
-        const ic = iconName ? icon(iconName) : l ? linkIcon(l, 'clink-ico') : '';
+        // the real logo when Daniel provided one (LinkedIn, Gmail, GitHub, Instagram), else the pixel icon
+        const ic = l?.icon ? linkIcon(l, 'clink-ico') : iconName ? icon(iconName) : '';
         if (!l?.href || l.href.includes('[TODO')) {
             todos.push(`${where}: ${text} link`);
             return prod ? '' : `<span class="${cls} is-todo">${ic}<span>${esc(text)}</span> <span class="todo">[TODO: link]</span></span>`;

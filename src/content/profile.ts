@@ -1,11 +1,18 @@
 import type { Profile } from './types';
-import decorFiles from 'virtual:decor-files';
 
-// From Daniel (iteration 5 feedback). The logo is the instagram-logo image slot (section 5.4): only used once the file exists.
+/** Contact logos Daniel provided (public/assets/logos/, cleaned up small transparent copies). */
+const LOGOS = {
+    github: '/assets/logos/github.png',
+    gmail: '/assets/logos/gmail.png',
+    instagram: '/assets/logos/instagram.png',
+    linkedin: '/assets/logos/linkedin.png'
+};
+
+// From Daniel (iteration 5 feedback). The phone screens in the rooms use the instagram-logo decor slot.
 const instagram = {
     handle: '@dxx_912',
     url: 'https://www.instagram.com/dxx_912/',
-    logo: decorFiles.includes('instagram-logo.png') ? '/assets/decor/instagram-logo.png' : undefined
+    logo: LOGOS.instagram
 };
 
 /**
@@ -20,9 +27,9 @@ export const profile: Profile = {
     tagline: 'UCLA sophomore. I like being creative.',
     location: 'UCLA, Los Angeles. From North York, Toronto.',
     links: [
-        { label: 'LinkedIn', href: 'https://www.linkedin.com/in/dxing01/' },
-        { label: 'Email', href: 'mailto:dxing01@ucla.edu' },
-        { label: 'GitHub', href: 'https://github.com/dxx-912' },
+        { label: 'LinkedIn', href: 'https://www.linkedin.com/in/dxing01/', icon: LOGOS.linkedin },
+        { label: 'Email', href: 'mailto:dxing01@ucla.edu', icon: LOGOS.gmail },
+        { label: 'GitHub', href: 'https://github.com/dxx-912', icon: LOGOS.github },
         { label: 'Instagram', href: instagram.url, icon: instagram.logo },
         { label: 'Resume (PDF)', href: '/resume.pdf' }
     ],
