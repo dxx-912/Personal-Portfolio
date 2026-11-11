@@ -48,7 +48,7 @@ Order is a draft for Daniel to confirm. Lead with product work for product manag
 | [02] | SOFTWARE | Saved posts scroller | what it does, why built `[TODO]`; live link |
 | [03] | PRODUCT | Ateball, Creative Labs | Project manager. result `[TODO]` |
 | [04] | CONSULTING | Genesis Alternative Ventures | Project manager. scope, result `[TODO]` |
-| [05] | CASE COMP | L.E.K. Case Competition | Winner. problem and answer `[TODO]` |
+| [05] | CASE COMP | L.E.K. Case Competition | 3rd place finalist out of 50+ teams. Case and answer from CONTENT_FINAL.md |
 | [06] | MARKETING | DSP and IBB | Campaigns, rush videos, website rebuilds. metrics `[TODO]` |
 
 Each card face must stand on its own: title, role, one line result, two or three tags. Clicking is optional depth.

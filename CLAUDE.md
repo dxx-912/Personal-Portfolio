@@ -27,6 +27,41 @@ Screenshots of iteration 1 as it looks now: `reference/current-dorm-iteration-1.
 
 ---
 
+## 0.3 Content pass 1 (current work, after 0.2)
+
+Daniel has finalized the professional content. `CONTENT_FINAL.md` (repo root) is now the single source of truth for site copy and replaces `CONTENT_INTAKE.md`. His filled intake form is `reference/content-intake-filled.pdf`; the L.E.K. deck is `reference/lek-case-competition.pptx` (also as a PDF in his photos folder).
+
+**Order:** finish any remaining groups of section 0.2 first, then do this pass. If 0.2 is already done, start here.
+
+### Steps
+1. **Apply the copy.** Update `src/content/` to match `CONTENT_FINAL.md` exactly: About me, dialogue lines, every dorm panel, the org one liners and roles, the Hope For Hearing panel (short version plus "Read the whole story"), and the completion message. Never add facts that are not in that file.
+2. **Wire the photos.** Daniel's photos live in `photos/` (not `inbox/`), sorted by room and item with descriptive folder names. Map each folder to its item, convert to WebP (max about 1600px long edge, sensible quality), strip location metadata (EXIF GPS), and write alt text. Put processed files in `public/media/<item-id>/`. Keep `photos/` itself out of git (add it to `.gitignore` if it is not already), since it holds full size personal originals.
+   - Empty folders keep their current placeholders. Do not invent or stock-fill anything.
+   - `rush video.mp4` in the DSP graphics folder is the DSP rush video: compress it (H.264, web friendly size) and use it in the rush video slot, click to play.
+   - The L.E.K. deck: render 3 to 4 slides to images for the gallery (the two market sizing slides and the prioritization slide are the strongest).
+   - `photos/Professional Headshot.png` is the About me headshot and the reference for the HUD portrait.
+   - Decor images in `photos/3 Room decor (optional)/` go to their slots in `public/assets/decor/` (section 5.4 rules, convert to PNG).
+3. **Global corrections across code, both md specs, `/portfolio`, and `TODO_ASSETS.md`:**
+   - L.E.K. is "3rd place finalist out of 50+ teams", never a win. Update the item table in section 7 and PORTFOLIO_VIEW card [05] (label "3rd Place").
+   - The cold email tool is named "Cold Outreach Automator".
+   - Club names: "Business Competition Club" and "Asian Heritage & Culture Club" at UCC.
+   - "Resident Assistant", never "Residential Assistant".
+   - Hope For Hearing scale is always past tense: "At its peak, ... 500+ members across 12 high school chapters in Canada."
+   - Piano credential: "The Associate Diploma (ARCT) in Piano Performance and Harmony".
+   - The major lives in one constant (`B.A. Economics, B.S. Cognitive Science` for now; Daniel may change it).
+4. **Structure changes:**
+   - DSP and IBB website rebuilds are part of the club marketing panel, not separate projects.
+   - Genesis card: role, team, timeline, problem only (NDA, no slides, no "what I did", no result).
+   - L.E.K. card: no "what I did on the team" line.
+   - Cold Outreach Automator and Saved posts scroller: solo, no team line. Ateball: no link.
+   - Hope For Hearing: no TED milestone. Link Instagram only (the website is offline).
+   - Closet outfits: white tee (default), black Stussy shirt, UCLA shirt, white tank top, full suit. The tank top and suit need their own sprite shapes; build them (approved). Logos on shirts use image slots.
+   - Quick view leadership gallery order: Sharpe Fellows first, Hope For Hearing last and largest.
+5. **TODO_ASSETS.md:** rewrite it from `CONTENT_FINAL.md`: list only what is still missing (home side content, empty photo folders, fun facts, Ateball quarter, card order, Hope For Hearing tone pass, art and decisions). Remove the "Consider adding" list entirely; Daniel decided.
+6. **Verify:** Playwright screenshots of every dorm panel, the HUD About me, and the quick view (desktop and phone), checking that no TODO text appears in a production build, images load and are sharp, and nothing says "win" for L.E.K. Commit and push.
+
+---
+
 ## 0.2 Iteration 5 changelist (current work)
 
 Iteration 4 (section 0.1) is built. Daniel's notes on it are in `reference/iteration-5-feedback.pdf`; the current state is in `reference/current-dorm-iteration-4.png` and `reference/current-home-iteration-4.png`. Everything below is approved and wins over older sections. Some of it already exists in part (the drinkable fridge, napping in the dorm bed): refine what is there to match this spec rather than rebuilding it. Work through the groups in order, commit and push after each, verify each with Playwright screenshots.
@@ -326,7 +361,7 @@ Each content item has exactly one standing spot (yellow numbers in the layout im
 | 2 | Big UCLA pennant | none (F only) | **UCLA education.** Major `[TODO: confirm major]`, Royce Hall photo, courses (advanced micro theory, advanced macro theory, intro to C++, accounting fundamentals), honours student. |
 | 3 | "TO DO" pin board | none (F only) | **Student orgs**, shown as a close up of the board where each sticky note is an org with a checked box: William F. Sharpe Fellows (technology vice president), Delta Sigma Pi, the entertainment association (exact name `[TODO]`), International Business for Bruins, UBS Technology Committee, UCLA ResLife. Selecting a note shows a one line description of the org and Daniel's role. |
 | 4 | Laptop on the desk | none (F only) | **Software projects.** Tabs: Cold email automator (https://cold-email-automator-two.vercel.app/), Saved posts scroller (https://morning-scroller.vercel.app/), Ateball at Creative Labs (UI screenshots). What, why, role, link. |
-| 5 | Binder labeled "Consulting stuff" | none (F only) | **Consulting.** Genesis Alternative Ventures (Project Manager) and the L.E.K. Case Competition win, with slide screenshots. No trophy anywhere. |
+| 5 | Binder labeled "Consulting stuff" | none (F only) | **Consulting.** Genesis Alternative Ventures (Project Manager) and the L.E.K. Case Competition (3rd place finalist out of 50+ teams), with slide screenshots. No trophy anywhere. |
 | 6 | Phone with an Instagram style screen | none (F only) | **Club marketing.** The panel is styled like a phone feed (original styling, see 5.4 for the screen image slot). Tabs DSP and IBB: description, skills used, measurable results, graphics grid (DSP Vogue campaign), rush video, website build (screenshots plus a link out). |
 | 7 | Grad cap on the dresser | none (F only) | **High school only: Upper Canada College IB Diploma.** Hat toss photo, 40/45, 1560 SAT, HL Math A&I, English L&L, Economics; SL Mandarin B, Global Politics, ESS; extended essay on the geopolitical implications of Taiwan's semiconductor industry (link); Business Club President and Asian Heritage Club President with photos. UCLA content moves to item 2. |
 | 8 | Closet | **Change outfit**: cycles the character's shirt through a few colors (white, black, UCLA blue, a graphic tee color), with a small wardrobe puff effect. Persist the choice in localStorage. | **Resident Assistant.** Photo, and why: it saves money and it is genuinely fun. |
@@ -504,6 +539,9 @@ Keep this list current in `TODO_ASSETS.md`, grouped by item.
 | `reference/iteration-2-feedback.pdf` | Daniel's written feedback on iteration 1 |
 | `reference/iteration-5-feedback.pdf` | Daniel's written feedback on iteration 4 |
 | `reference/current-dorm-iteration-4.png`, `reference/current-home-iteration-4.png` | Screenshots of both rooms after iteration 4 |
+| `CONTENT_FINAL.md` (repo root) | Approved site copy, the source of truth for all content |
+| `reference/content-intake-filled.pdf` | Daniel's filled content intake (includes the full Hope For Hearing founding story) |
+| `reference/lek-case-competition.pptx` | The L.E.K. Case Competition deck |
 | `reference/iteration-4-feedback.pdf` | Daniel's written feedback on iterations 2 and 3 (includes the oar blade reference image) |
 | `reference/current-dorm-iteration-3.png`, `reference/current-home-iteration-3.png` | Screenshots of both rooms after iteration 3 |
 | `reference/daniel-photos.png` | Photos of Daniel (hair, face, outfit) and his cat, for the sprites |

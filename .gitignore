@@ -34,3 +34,6 @@ photos/**
 !photos/**/
 !photos/**/.gitkeep
 !photos/README.md
+
+# The L.E.K. deck source (teammates' photos inside); only the rendered slides in public/media are published
+reference/lek-case-competition.pptx
