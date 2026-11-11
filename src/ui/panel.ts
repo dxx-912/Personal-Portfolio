@@ -68,8 +68,9 @@ function mount(html: string, open: Omit<Open, 'root'>, focusSel?: string) {
 export function openPanel(entry: Entry, onClose?: () => void) {
     const style = entry.tabStyle ?? 'tabs';
     const titleId = `panel-title-${entry.id}`;
+    const compact = !entry.tabs?.length && !entry.images?.some((i) => i.src) && !entry.videos?.length;
     const root = mount(`
-        <section class="panel panel-${style}" role="dialog" aria-modal="true" aria-labelledby="${titleId}">
+        <section class="panel panel-${style}${compact ? ' panel-compact' : ''}" role="dialog" aria-modal="true" aria-labelledby="${titleId}">
             <header class="panel-head">
                 <h2 id="${titleId}">${rich(entry.title)}</h2>
                 <button class="panel-close" aria-label="${esc(ui.close)}" title="${esc(ui.close)} (Esc)">✕</button>
