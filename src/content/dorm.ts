@@ -67,7 +67,7 @@ export const dormContent: Record<string, Entry> = withMedia({
         id: 'todo',
         prompt: 'Student orgs',
         plainGroup: 'experience',
-        title: 'To do: student orgs',
+        title: 'Student org leadership',
         plainTitle: 'Student orgs',
         subtitle: 'Pick a sticky note.',
         tabStyle: 'notes',
