@@ -74,7 +74,7 @@ export function openPanel(entry: Entry, onClose?: () => void) {
                 <button class="panel-close" aria-label="${esc(ui.close)}" title="${esc(ui.close)} (Esc)">✕</button>
             </header>
             <div class="panel-body">
-                ${sectionHtml({ ...entry, title: entry.title }, 0)}
+                ${sectionHtml({ ...entry, title: entry.title, tags: entry.tabs?.length ? undefined : entry.tags }, 0)}
                 ${tabsHtml(entry)}
             </div>
         </section>`, { onClose }, '[role="tab"]');
