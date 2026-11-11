@@ -214,20 +214,7 @@ export const dormContent: Record<string, Entry> = withMedia({
         plainGroup: 'projects',
         title: 'Consulting',
         tabStyle: 'tabs',
-        defaultTab: 'lek',
         tabs: [
-            {
-                // NDA: no slides, no "what I did", no result.
-                id: 'genesis',
-                title: 'Genesis Alternative Ventures',
-                subtitle: 'Project manager, through International Business for Bruins',
-                role: 'Project manager (through International Business for Bruins)',
-                team: '6 people',
-                timeline: 'Spring quarter 2026',
-                summary: 'Whether and how a Southeast Asian venture debt fund should expand its credit products.',
-                omit: ['whatIDid', 'result'],
-                problem: 'Genesis Alternative Ventures, a Southeast Asian venture debt fund, wanted to know whether and how to expand the credit products in its Fund III across Southeast Asia, without cannibalizing its existing business.'
-            },
             {
                 id: 'lek',
                 title: 'L.E.K. Case Competition',
@@ -249,6 +236,18 @@ export const dormContent: Record<string, Entry> = withMedia({
                     { alt: 'L.E.K. Case Competition slide', slot: 'binder/lek' },
                     { alt: 'L.E.K. Case Competition slide', slot: 'binder/lek' }
                 ]
+            },
+            {
+                // NDA: no slides, no "what I did", no result.
+                id: 'genesis',
+                title: 'Genesis Alternative Ventures',
+                subtitle: 'Project manager, through International Business for Bruins',
+                role: 'Project manager (through International Business for Bruins)',
+                team: '6 people',
+                timeline: 'Spring quarter 2026',
+                summary: 'Whether and how a Southeast Asian venture debt fund should expand its credit products.',
+                omit: ['whatIDid', 'result'],
+                problem: 'Genesis Alternative Ventures, a Southeast Asian venture debt fund, wanted to know whether and how to expand the credit products in its Fund III across Southeast Asia, without cannibalizing its existing business.'
             }
         ]
     },
