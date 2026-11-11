@@ -2,7 +2,7 @@ import Phaser from 'phaser';
 import { CHAR_BODY, CHAR_FRAME, WALK_SPEED } from '../config';
 import type { Facing } from '../rooms/types';
 import type { Pt } from './nav';
-import { danielChestY } from '../assets/placeholders';
+import { danielBackY, danielChestY } from '../assets/placeholders';
 import { makeCanvas, pixelText, Px } from '../assets/paint';
 
 export const FACING_VEC: Record<Facing, Pt> = {
@@ -14,21 +14,23 @@ export interface Outfit {
     /** Overlay sheet drawn over the base sprite: the recolourable tee, or a shape of its own. */
     texture: 'daniel_shirt' | 'daniel_tank' | 'daniel_suit';
     tint: number;
-    /** Chest logo: an image slot texture (public/assets/decor/), never a drawn logo. */
+    /** Logo print: an image slot texture (public/assets/decor/), never a drawn logo. */
     logo?: 'shirt_logo_stussy' | 'shirt_logo_ucla';
+    /** Where the print sits: the chest (seen facing the camera) or the back (seen facing away). */
+    print?: 'chest' | 'back';
 }
 
 /** What the closet cycles through (CONTENT_FINAL.md 2.7). The first is the default. */
 export const OUTFITS: Outfit[] = [
     { texture: 'daniel_shirt', tint: 0xffffff },
-    { texture: 'daniel_shirt', tint: 0x2c2d35, logo: 'shirt_logo_stussy' },
+    { texture: 'daniel_shirt', tint: 0x2c2d35, logo: 'shirt_logo_stussy', print: 'back' },
     { texture: 'daniel_shirt', tint: 0x3a78c0, logo: 'shirt_logo_ucla' },
     { texture: 'daniel_tank', tint: 0xffffff },
     { texture: 'daniel_suit', tint: 0xffffff }
 ];
 
-/** Left edge of the chest logo inside the character frame. */
-const LOGO_X = 6;
+/** Print areas inside the character frame: left edge and width. */
+const PRINT = { chest: { x: 6, w: 5 }, back: { x: 5, w: 7 } };
 
 /**
  * Daniel. The body sprite has physics; the shirt is a second sprite on top that copies its frame,
@@ -39,6 +41,7 @@ export class Player {
     readonly shirt: Phaser.GameObjects.Sprite;
     private logo: Phaser.GameObjects.Image | null = null;
     private logoN = 1;
+    private print: 'chest' | 'back' = 'chest';
     facing: Facing = 'down';
     /** A fixed frame (sitting, hanging) instead of the walk and idle animations. */
     private posed: number | null = null;
@@ -73,6 +76,7 @@ export class Player {
         this.logo?.destroy();
         this.logo = null;
         const key = o.logo && this.logoTexture(o.logo);
+        this.print = o.print ?? 'chest';
         if (key) {
             this.logoN = (this.scene.textures.get(key).customData as { n?: number }).n ?? 1;
             this.logo = this.scene.add.image(0, 0, key).setOrigin(0);
@@ -110,12 +114,14 @@ export class Player {
         this.shirt.setVisible(s.visible);
         this.shirt.setAlpha(s.alpha);
         if (this.logo) {
-            const chest = danielChestY(Number(s.frame.name));
-            this.logo.setVisible(s.visible && chest !== null && !s.flipX);
-            if (chest !== null) {
+            const frame = Number(s.frame.name);
+            const y = this.print === 'back' ? danielBackY(frame) : danielChestY(frame);
+            const area = PRINT[this.print];
+            this.logo.setVisible(s.visible && y !== null && !s.flipX);
+            if (y !== null) {
                 const left = s.x - CHAR_FRAME.w * s.scaleX / 2, top = s.y - CHAR_FRAME.h * s.scaleY;
-                const lw = this.logo.width / this.logoN * s.scaleX;
-                this.logo.setPosition(left + (LOGO_X + (5 - lw / s.scaleX) / 2) * s.scaleX, top + chest * s.scaleY);
+                const lw = this.logo.width / this.logoN;
+                this.logo.setPosition(left + (area.x + (area.w - lw) / 2) * s.scaleX, top + y * s.scaleY);
                 this.logo.setScale(s.scaleX / this.logoN, s.scaleY / this.logoN);
                 this.logo.setDepth(s.depth + 0.002).setAlpha(s.alpha);
             }

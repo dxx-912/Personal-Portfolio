@@ -62,7 +62,8 @@ export const ASSETS = {
     daniel_tank: { ...CHAR, paint: painters.danielTank, outline: false },
     daniel_suit: { ...CHAR, paint: painters.danielSuit, outline: false },
     // shirt logos (image slots, white logos on a dark ground print through knockout); shown on the chest
-    shirt_logo_stussy: { w: 5, h: 3, paint: painters.empty, outline: false, slot: { file: 'shirt-logo-stussy.png', rect: { x: 0, y: 0, w: 5, h: 3 }, sharp: 6, fit: 'contain', knockout: true } },
+    // the Stussy print goes on the back of the shirt, so it gets the wider back area
+    shirt_logo_stussy: { w: 7, h: 4, paint: painters.empty, outline: false, slot: { file: 'shirt-logo-stussy.png', rect: { x: 0, y: 0, w: 7, h: 4 }, sharp: 6, fit: 'contain', knockout: true } },
     shirt_logo_ucla: { w: 5, h: 3, paint: painters.empty, outline: false, slot: { file: 'shirt-logo-ucla.png', rect: { x: 0, y: 0, w: 5, h: 3 }, sharp: 6, fit: 'contain', knockout: true } },
     daniel_sleep: { w: 30, h: 14, frames: 2, paint: painters.danielSleep, outline: true },
     daniel_sleep_home: { w: 30, h: 14, frames: 2, paint: painters.danielSleepHome, outline: true },

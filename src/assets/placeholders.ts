@@ -308,6 +308,13 @@ function drawOutfitOver(p: Px, dir: Dir, bob: number, step: number, pose: Pose, 
  * Where the chest is (top of the logo area) in each character frame, or null when the chest is not
  * visible (facing away or sideways, or an arm is across it). Shirt logos follow this.
  */
+/** Top of the back print area in each frame (only when facing away, frames 6 to 11), else null. */
+export function danielBackY(frame: number): number | null {
+    if (frame < 6 || frame > 11) return null;
+    const f = frame - 6;
+    return 12 + (f < 2 ? f : f % 2 === 1 ? 1 : 0);
+}
+
 export function danielChestY(frame: number): number | null {
     if (frame <= 5) return 12 + (frame < 2 ? frame : frame % 2 === 1 ? 1 : 0) + 1;
     const posed: Record<number, number | null> = {
