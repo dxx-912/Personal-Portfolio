@@ -41,7 +41,6 @@ export const dormContent: Record<string, Entry> = withMedia({
         summary: `${MAJOR}. GPA 3.72. Expected graduation June 2029.`,
         facts: [
             { label: 'Major', value: MAJOR },
-            { label: 'GPA', value: '3.72' },
             { label: 'Expected graduation', value: 'June 2029' },
             { label: 'Honours', value: 'College Honours Student' }
         ],
