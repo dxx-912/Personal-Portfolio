@@ -285,8 +285,8 @@ a.link:hover { background: #eef4ff; text-decoration: underline; }
 .embed.video { aspect-ratio: 16 / 9; }
 .embed.spotify { height: 352px; border-radius: 12px; overflow: hidden; }
 .embed iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
-.media.video { margin: 8px 0 14px; max-width: 420px; }
-.embed.mp4 { display: block; height: auto; margin: 0; max-height: 70vh; }
+.media.video { margin: 8px 0 14px; }
+.embed.mp4 { display: block; width: 100%; height: auto; margin: 0; max-height: 70vh; }
 
 /* "Read the whole story" expander */
 .story-more { margin: 2px 0 14px; }
