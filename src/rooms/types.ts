@@ -41,7 +41,7 @@ export interface InteractableDef {
     /** Standing spot (feet position) in tiles. Ignored for moving things. */
     spot: TPoint;
     facing: Facing;
-    /** F: content id in src/content/<room>.ts. Counts toward "Found X of 19". */
+    /** F: content id in src/content/<room>.ts. Counts toward "Found X of 18". */
     info?: string;
     /** E: the action. */
     action?: ActionKind;

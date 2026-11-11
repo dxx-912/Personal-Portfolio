@@ -59,7 +59,7 @@ Each card face must stand on its own: title, role, one line result, two or three
 - Education: UCLA (major `[TODO: confirm]`, honours student) and Upper Canada College (IB Diploma 40/45, SAT 1560). Each card opens a detail panel with the full education content.
 
 ### Night content (inventory)
-Item boxes with labels from `CONTENT_FINAL.md`: Rowing, national champ; Piano, ARCT; Built a longboard; Fluffy; Photography; Baking; Music; Lift and sprint; Beach volleyball. Plus North York and family as two more boxes or as part of the footer story, Claude Code's call. Acting is removed everywhere. Honour of Kings is not included.
+Item boxes with labels from `CONTENT_FINAL.md`: Rowing, national champ; Piano, ARCT; Built a longboard; Fluffy; Photography; Baking; Music; Lift and sprint; Beach volleyball. Plus family as one more box. North York was removed as an item. Acting is removed everywhere. Honour of Kings is not included.
 
 ---
 

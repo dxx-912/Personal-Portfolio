@@ -1,4 +1,4 @@
-import { TOTAL_ITEMS, type RoomKey } from './content';
+import { TOTAL_ITEMS, allEntryKeys, type RoomKey } from './content';
 
 const STORAGE_KEY = 'dx-portfolio-v2';
 /** Iteration 1 save: only "woke" and "sound" carry over (item ids changed). */
@@ -16,10 +16,10 @@ interface Saved {
     secrets: string[];
 }
 
-/** The three bonus interactables. Not part of the 19. */
+/** The three bonus interactables. Not part of the 18. */
 /**
  * The Secrets counter: everything you can just press E for (sleeping aside). None of these count toward
- * the 19 found items. Ids match the room interactables (the basketball's is 'ball').
+ * the 18 found items. Ids match the room interactables (the basketball's is 'ball').
  */
 export const SECRETS = ['beanbag', 'closet', 'fridge', 'basketball', 'pullup', 'speaker', 'camera', 'piano', 'pie', 'cat', 'longboard', 'phone'] as const;
 export type SecretKey = typeof SECRETS[number];
@@ -82,7 +82,8 @@ class GameState {
             if (raw) {
                 const s = JSON.parse(raw) as Partial<Saved>;
                 this.woke = !!s.woke;
-                this.found = new Set(Array.isArray(s.found) ? s.found : []);
+                // items that were removed from the site (e.g. the North York window) no longer count
+                this.found = new Set((Array.isArray(s.found) ? s.found : []).filter((k) => allEntryKeys.includes(k)));
                 this.sound = !!s.sound;
                 this.music = s.music !== false;
                 this.celebrated = !!s.celebrated;

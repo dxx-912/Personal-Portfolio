@@ -53,7 +53,6 @@ export const home: RoomDef = {
         { id: 'sign', texture: 'sign_left', x: 0.05, y: 0.1, layer: 'floor', depthRow: 10 }
     ],
     interactables: [
-        { id: 'window', target: 'window', spot: { x: 11.55, y: 0.6 }, facing: 'up', info: 'window' },
         { id: 'shelf', target: 'shelf', spot: { x: 5.3, y: 3.6 }, facing: 'up', info: 'shelf' },
         { id: 'pullup', target: 'pullup', spot: { x: 18.1, y: 2.35 }, facing: 'up', info: 'pullup', action: 'pullup' },
         { id: 'speaker', target: 'speaker', spot: { x: 15.95, y: 4.1 }, facing: 'right', info: 'speaker', action: 'music' },
@@ -65,7 +64,7 @@ export const home: RoomDef = {
         { id: 'longboard', target: 'longboard', spot: { x: 0, y: 0 }, facing: 'up', info: 'longboard', action: 'ride' },
         // E: sleep (lights down, Zs, the window moves on, Sleep back to 8/8)
         { id: 'bed', target: 'bed', spot: { x: 4.9, y: 6.3 }, facing: 'down', action: 'nap' },
-        // bonus: E or F shows his Instagram handle (not one of the 19)
+        // bonus: E or F shows his Instagram handle (not one of the 18)
         { id: 'phone', target: 'phone', spot: { x: 15.95, y: 7.55 }, facing: 'right', action: 'phone' }
     ],
     doors: [{ side: 'left', rowTop: 1.25, rowBottom: 3.25, to: 'dorm' }],

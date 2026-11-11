@@ -22,7 +22,7 @@ export const allEntryKeys: string[] = (Object.keys(content) as RoomKey[]).flatMa
     (room) => Object.keys(content[room]).map((id) => contentKey(room, id))
 );
 
-export const TOTAL_ITEMS = allEntryKeys.length; // 19
+export const TOTAL_ITEMS = allEntryKeys.length; // 18
 
 /** The About me entry lives on the HUD portrait, not in a room. */
 export const ABOUT_KEY = contentKey('dorm', 'about');

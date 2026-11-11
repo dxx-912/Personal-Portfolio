@@ -68,8 +68,7 @@ export const portfolioItems: PortfolioItem[] = [
     { id: 'edm', portfolioSection: 'inventory', cardOrder: 7, icon: 'headphones', section: homeContent.speaker },
     { id: 'lifting', portfolioSection: 'inventory', cardOrder: 8, icon: 'barbell', section: homeContent.pullup },
     { id: 'beach-volleyball', portfolioSection: 'inventory', cardOrder: 9, icon: 'ball', section: volleyball },
-    { id: 'north-york', portfolioSection: 'inventory', cardOrder: 10, icon: 'house', section: homeContent.window },
-    { id: 'family', portfolioSection: 'inventory', cardOrder: 11, icon: 'heart', section: homeContent.nightstand }
+    { id: 'family', portfolioSection: 'inventory', cardOrder: 10, icon: 'heart', section: homeContent.nightstand }
 ];
 
 export const itemsIn = (s: PortfolioSection) =>

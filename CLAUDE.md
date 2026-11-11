@@ -80,7 +80,7 @@ The HUD has three bars. They start fresh on every visit (do not persist across v
 1. **Starting values:** Caffeine 0/7, Sleep 8/8, Creativity 200/200. Rename Curiosity to Creativity. Creativity never changes. This replaces the randomized stats from iteration 4.
 2. **Base speed stays normal.** Do not slow the starting speed: recruiters' first seconds must feel responsive.
 3. **Caffeine and the Red Bull:**
-   - The dorm mini fridge is a bonus interactable (not one of the 19): E opens it and Daniel drinks a can. A short burst of pixel stars comes off the sprite, Caffeine fills to 7/7 and stays there for the rest of the visit, and walking speed rises by 30%, so the boost is clearly noticeable.
+   - The dorm mini fridge is a bonus interactable (not one of the 18): E opens it and Daniel drinks a can. A short burst of pixel stars comes off the sprite, Caffeine fills to 7/7 and stays there for the rest of the visit, and walking speed rises by 30%, so the boost is clearly noticeable.
    - Hints: starting about 20 seconds after waking, Daniel says a short line in his speech bubble, then again every 45 to 60 seconds, at most 4 times, and only until he has had the can. Never while a panel or mode is open. Rotate lines such as "where can I get a Red Bull...", "need caffeine", "I swear there's a Red Bull in the fridge". After the first hint, the fridge gets a soft glow until it is used.
    - The can's logo is an image slot (`can-logo`, section 5.4). Until Daniel provides a file, draw a plain blue and silver can.
 4. **Sleep:**
@@ -92,7 +92,7 @@ The HUD has three bars. They start fresh on every visit (do not persist across v
 
 ### C. HUD and buttons
 1. **Top right buttons** (sound, pause, found counter, minimap): twice their current size and clearly more noticeable, still never overlapping the game area. Give them a consistent pixel button style with readable labels.
-2. **Secrets counter:** next to the found counter, "Secrets X/12": every E action you can find (beanbag, closet, fridge, basketball pick up, pull ups, speaker, camera, piano, pie, petting Fluffy, longboard, home phone), sleeping aside. Changed from the three bonus items at Daniel's request. Secrets never count toward the 19.
+2. **Secrets counter:** next to the found counter, "Secrets X/12": every E action you can find (beanbag, closet, fridge, basketball pick up, pull ups, speaker, camera, piano, pie, petting Fluffy, longboard, home phone), sleeping aside. Changed from the three bonus items at Daniel's request. Secrets never count toward the 18.
 3. **The quick view link must always stay visible.** The room title card currently takes its place at the top center during the first seconds. Move the title card lower, over the top of the room, so "No time to play? Quick view" never disappears.
 
 ### D. Dorm room
@@ -113,7 +113,7 @@ The HUD has three bars. They start fresh on every visit (do not persist across v
 3. **Speaker:** slightly smaller.
 4. **Longboard rug:** slightly wider.
 5. **Piano black keys:** the playable keyboard gets working black keys. Use the standard computer piano layout: A S D F G H J K for the white keys and W E T Y U for the black keys, plus clicking or tapping any key, with key labels shown on the keys. Keep number keys 1 to 8 as an alternative for white keys.
-6. **Home phone (bonus):** a phone on a table with the same `instagram-logo` slot on its screen. E or F opens a small card with his Instagram handle **@dxx_912** and a link to https://www.instagram.com/dxx_912/. Not one of the 19.
+6. **Home phone (bonus):** a phone on a table with the same `instagram-logo` slot on its screen. E or F opens a small card with his Instagram handle **@dxx_912** and a link to https://www.instagram.com/dxx_912/. Not one of the 18.
 7. **Volleyball:** slightly bigger, drawn as a classic volleyball with yellow, black, and orange panels. Any brand logo text goes in the `volleyball-logo` slot, never drawn.
 8. **Sleep on the home bed:** E sleeps (section B.4).
 9. **Fluffy (the cat):**
@@ -129,7 +129,7 @@ The HUD has three bars. They start fresh on every visit (do not persist across v
 | `volleyball-logo` | `public/assets/decor/volleyball-logo.png` (optional) | Volleyball on the home shelf | No logo |
 Same rules as section 5.4: never draw or trace these logos yourself; render whatever file Daniel provides.
 
-**Definition of done for iteration 5:** the slow walking bug is found, explained in the commit message, and covered by a test; all stats behaviors work exactly as above without ever interrupting a panel; the basketball is fun and never gets stuck; Fluffy's mischief never blocks a path or moves an interactive item; the quick view link is visible from the first frame; three playthroughs still reach 19 of 19; `npm run build` passes; `TODO_ASSETS.md` lists the new slots and the Instagram handle as done.
+**Definition of done for iteration 5:** the slow walking bug is found, explained in the commit message, and covered by a test; all stats behaviors work exactly as above without ever interrupting a panel; the basketball is fun and never gets stuck; Fluffy's mischief never blocks a path or moves an interactive item; the quick view link is visible from the first frame; three playthroughs still reach 18 of 18; `npm run build` passes; `TODO_ASSETS.md` lists the new slots and the Instagram handle as done.
 
 ---
 
@@ -332,7 +332,7 @@ Open `reference/home-layout.png` (target) and `reference/current-home-iteration-
   - Three tier shelf (item 2). Top tier: the trophy moved to the left, a blue and white striped oar to its right; remove the two white sticks. Middle tier: three plaques (keep for now; once Daniel uploads plaque photos, redraw each pixel plaque to resemble its real plaque). Bottom tier: exactly four books standing upright with readable spine text "AOT", "Lookism", "Sweet Home", "Solo Levelling" (book shaped, not binder shaped; plain text titles only, no franchise art).
   - Potted floor plant between the shelf and the window. Decor.
   - Wall clock showing the visitor's local time.
-  - Window with dark blue curtains, a Toronto skyline view, and a small plant on the sill (item 1).
+  - Window with dark blue curtains, a Toronto skyline view, and a small plant on the sill (decor only; the North York item was removed).
   - A hoodie on a wall hook with the `hoodie-logo` slot (section 5.4). Decor.
   - Pull up tower in the top right corner (item 3).
 - **Right wall:** work table along the wall, reached from the left. Big black speaker with the `speaker-logo` slot (item 4), camera (item 5), one spare dashed slot. The laptop and the acting item are removed entirely.
@@ -352,7 +352,7 @@ Open `reference/home-layout.png` (target) and `reference/current-home-iteration-
 
 ---
 
-## 7. Interactables (19 total)
+## 7. Interactables (18 total)
 
 Each content item has exactly one standing spot (yellow numbers in the layout images). Keys: **E = action**, **F = learn more (panel)**. Items marked "F only" have no action.
 
@@ -372,10 +372,9 @@ Each content item has exactly one standing spot (yellow numbers in the layout im
 | E only | Dorm bed | Sit on the edge | none |
 | | Right door | Walk in to go home | |
 
-### Home (personal), 10 items
+### Home (personal), 9 items
 | # | Object | E action | F panel content |
 |---|---|---|---|
-| 1 | Window (Toronto skyline) | none (F only) | **North York.** 18 years there, the same library and cafe through high school, a gallery. |
 | 2 | Three tier shelf | none | Shelf close up with three selectable tiers. Top, "Sports": **rowing** (high school varsity, national championship, trophy and oar blade photos) and **beach volleyball** (free time, `[TODO]`). Middle: three **award plaques** (DECA Provincial Champion; FBLA Business Management National Champion at CNLC; FBLA International 6th place at NLC). Bottom: **favorite reads**, Attack on Titan and the webtoons Lookism, Sweet Home, Solo Levelling. |
 | 3 | Pull up tower | **Do pull ups**: mash E (or tap) to do reps with a counter and strain animation for a few seconds, then a "nice" pop | **Exercise.** Lifts and sprints or runs almost every day; photos and videos (muscle up, trap bar deadlift, physique). |
 | 4 | Big black speaker | **Play featured track**: plays the file in `public/assets/audio/featured/` (Rachmaninoff, Piano Concerto No. 2, coda, Lisitsa), speaker bumps, lofi ducks; E again stops. If master sound is off, show "Sound is off" with a one click "turn on" button. | **Music.** Dubstep, EDM, classical, R&B, hip hop; why he loves them; Spotify playlist links including his lofi playlist. |
@@ -389,9 +388,9 @@ Each content item has exactly one standing spot (yellow numbers in the layout im
 | | Left door | Walk in to go back to the dorm | |
 | | Work table spare slot | reserved, not counted | |
 
-Removed for good: acting (item, laptop, YouTube embed, content, `/plain` section, TODO entries), the dorm mirror, the dorm floor lamp as an item (it is decor now), the multiple pennants, the L.E.K. trophy, the camera in the dorm, the headphones item (black headphones remain as dorm decor), Honour of Kings.
+Removed for good: the North York window item (the window stays as decor), acting (item, laptop, YouTube embed, content, `/plain` section, TODO entries), the dorm mirror, the dorm floor lamp as an item (it is decor now), the multiple pennants, the L.E.K. trophy, the camera in the dorm, the headphones item (black headphones remain as dorm decor), Honour of Kings.
 
-The found counter reads "Found X of 19". Update `/plain` to match this item list and grouping.
+The found counter reads "Found X of 18". Update `/plain` to match this item list and grouping.
 
 ---
 
@@ -447,7 +446,7 @@ The found counter reads "Found X of 19". Update `/plain` to match this item list
 - **Idle thoughts:** if the player stands still for about 12 seconds, a small thought bubble appears with one of a few lines `[TODO: Daniel to write 5 to 8 lines]`, for example "should probably do my readings". Not while a panel is open.
 - **Ambient sound** (only when sound is on): background lofi from `public/assets/audio/lofi/` (section 0.1 A); soft dorm hum in the dorm; no white noise at home; footsteps that differ on carpet and wood. Use royalty free or self made sounds and record their sources and licenses in `public/assets/audio/CREDITS.md`.
 - **Camera and screen fill:** the room currently fills only about 60% of the window. Zoom in so the room fills most of the viewport height at an integer scale, or use a gently following camera with room bounds. HUD elements stay pinned to screen corners and never cover interactive items.
-- **Completion:** at 19 of 19, a small celebration (confetti, Daniel does a little dance) and a "Thanks for exploring, let's talk" panel with contact links.
+- **Completion:** at 18 of 18, a small celebration (confetti, Daniel does a little dance) and a "Thanks for exploring, let's talk" panel with contact links.
 - **Easter eggs (keep or add):** Konami code flip; poking a sleeping cat; the cat occasionally pushes something off the desk.
 
 ---
@@ -456,7 +455,7 @@ The found counter reads "Found X of 19". Update `/plain` to match this item list
 
 - Move: WASD and arrows. Act: E or Space. Learn more: F or Enter. Close: Esc. Pause: P. About me: I. Hints: H.
 - Mobile: joystick, two contextual action buttons, tap to walk. Test portrait and landscape.
-- Persistent "Plain version" link to `/plain`, which renders all 19 items from `src/content/`.
+- Persistent "Plain version" link to `/plain`, which renders all 18 items from `src/content/`.
 - Panels are real HTML, text at least 16px equivalent, WCAG AA contrast, `prefers-reduced-motion` respected (cut shake, particles, long fades, twinkle).
 - Audio muted by default, visible toggle. No sound or video autoplays before a user action.
 
@@ -492,7 +491,7 @@ The found counter reads "Found X of 19". Update `/plain` to match this item list
 
 Do these in order, committing and pushing after each, verifying with Playwright screenshots each time.
 
-1. **Interaction model.** Split E and F (section 8), new prompts, two button bubble for click and tap, mobile buttons, I and P keys. Update the counter to 19 and the item registry.
+1. **Interaction model.** Split E and F (section 8), new prompts, two button bubble for click and tap, mobile buttons, I and P keys. Update the counter to 18 and the item registry.
 2. **Content remap.** Move content per section 7: pennant gets UCLA, pin board gets orgs, shirt gets Hope For Hearing, grad cap is high school only, binder replaces trophy, phone replaces camera in the dorm, acting removed, camera and speaker added at home, HUD About me. Update `/plain`.
 3. **Layout and furniture.** Rebuild both rooms per section 6 and the layout images: working desk, bigger dresser, beanbag, rugs, narrower closet, home work table contents, nightstand, shelf contents, pie, bed plushes, hoodie hook. Re-check every rule in section 9.
 4. **Decor and coziness.** Plants, fairy lights, LED strip, lamps, clutter clusters, mess, clocks, the image slots with original placeholders, layered lighting.
@@ -500,9 +499,9 @@ Do these in order, committing and pushing after each, verifying with Playwright 
 6. **Actions.** Sit, outfit change, pull ups, speaker toggle, camera snap, piano play, cat petting and cat AI including the bed nap, longboard ride.
 7. **Sprites.** Updated Daniel placeholder (hair, white tee, recolorable shirt), new cat placeholder.
 8. **Life and polish.** Idle thoughts, ambient sound, window time of day, easter eggs, completion.
-9. **Final verification.** Three full playthroughs to 19 of 19 (keyboard only, mouse only, touch only on a phone sized screen). Screenshots of every item and panel. `npm run build` with no type errors. Load time check. Update `TODO_ASSETS.md`.
+9. **Final verification.** Three full playthroughs to 18 of 18 (keyboard only, mouse only, touch only on a phone sized screen). Screenshots of every item and panel. `npm run build` with no type errors. Load time check. Update `TODO_ASSETS.md`.
 
-**Done means:** a first time visitor can tell within five seconds that they are in Daniel's UCLA dorm and that there is a second room; every one of the 19 items is reachable and readable with all three input methods; both rooms look full, warm, and cozy without any item being hard to spot; nothing overlaps a door or standing spot; the character and cat are never hidden; all removed items are gone everywhere, including `/plain`.
+**Done means:** a first time visitor can tell within five seconds that they are in Daniel's UCLA dorm and that there is a second room; every one of the 18 items is reachable and readable with all three input methods; both rooms look full, warm, and cozy without any item being hard to spot; nothing overlaps a door or standing spot; the character and cat are never hidden; all removed items are gone everywhere, including `/plain`.
 
 ---
 
@@ -523,7 +522,7 @@ Keep this list current in `TODO_ASSETS.md`, grouped by item.
 - Confirmations from section 12.
 
 **Media**
-- Headshot; Royce Hall photo; UCC hat toss and club photos; Ateball screenshots; consulting slides; DSP and IBB graphics, rush videos, website screenshots; Hope For Hearing gallery; RA photo; North York gallery; family photo and gallery; cat photos; rowing, plaque, exercise, recital, food photos; longboard build photos; a gallery of his own photography.
+- Headshot; Royce Hall photo; UCC hat toss and club photos; Ateball screenshots; consulting slides; DSP and IBB graphics, rush videos, website screenshots; Hope For Hearing gallery; RA photo; family photo and gallery; cat photos; rowing, plaque, exercise, recital, food photos; longboard build photos; a gallery of his own photography.
 - Links: resume PDF, LinkedIn, email, GitHub, extended essay, Spotify playlist.
 
 **Decisions**

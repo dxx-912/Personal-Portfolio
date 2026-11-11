@@ -22,9 +22,8 @@ The dorm copy is done. Left:
 
 ## Home (personal): not filled in yet
 
-Every home panel keeps its current copy and placeholders. Photos are in for the shelf (rowing, plaques), exercise, camera, piano, pie, and Fluffy. Still empty: window, beach volleyball, family, longboard.
+Every home panel keeps its current copy and placeholders. Photos are in for the shelf (rowing, plaques), exercise, camera, piano, pie, and Fluffy. Still empty: beach volleyball, family, longboard.
 
-- [ ] **1. Window, North York:** names of the library and cafe (or keep them unnamed), a line or two on what home means to you. Gallery photos.
 - [ ] **2. Shelf:** rowing (which crew, which championship, year, result), beach volleyball (how often, where, who with), the three plaques (event and year for each), a line on each favorite read. Rowing photos, the nationals video, and award photos are in. Still needed: beach volleyball photos; photos of the plaques themselves if you want the pixel plaques redrawn to match.
 - [ ] **3. Pull up tower, exercise:** confirm "lifts and sprints or runs almost every day", a current goal or favorite lift.
 - [ ] **4. Speaker, music:** why music matters to you, a few favorite artists, your main Spotify playlist link (the lofi playlist is in).
@@ -38,7 +37,7 @@ Every home panel keeps its current copy and placeholders. Photos are in for the 
 ## Quick view (`/portfolio`)
 
 - [ ] **Work card order** (`cardOrder` in `src/content/portfolio.ts`). Undecided; the current order stays: Cold Outreach Automator, Saved posts scroller, Ateball, Genesis, L.E.K., DSP and IBB.
-- [ ] **One fun fact per inventory box** (`funFact`, shown when a box flips): rowing, piano, longboard, Fluffy, photography, baking, music, exercise, beach volleyball (also North York and family, which stay as boxes).
+- [ ] **One fun fact per inventory box** (`funFact`, shown when a box flips): rowing, piano, longboard, Fluffy, photography, baking, music, exercise, beach volleyball (also family, which stays as a box).
 - [ ] **Open Graph image:** `public/og/portfolio.png` is an old screenshot of the hero. Retake it now that the headshot and tagline are in.
 - [ ] **Site URL** (`profile.siteUrl`) once the domain is chosen, for canonical and Open Graph URLs.
 

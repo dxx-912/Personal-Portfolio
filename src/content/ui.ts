@@ -9,7 +9,7 @@ export const ui = {
     controlsTouch: 'Use the stick or tap to walk. The door on the right goes home.',
     found: (n: number, total: number) => `Found ${n} of ${total}`,
     foundLabel: 'Found',
-    /** Everything you can press E for (sleeping aside). They never count toward the 19. */
+    /** Everything you can press E for (sleeping aside). They never count toward the 18. */
     secretsLabel: 'Secrets',
     secrets: (n: number, total: number) => `Secrets ${n} of ${total}`,
     secretFound: (name: string, n: number, total: number) => `Secret found: ${name} (${n}/${total})`,
@@ -123,7 +123,7 @@ export const completion: Entry = {
     id: 'complete',
     prompt: '',
     plainGroup: 'intro',
-    title: 'You found all 19',
+    title: 'You found all 18',
     body: ["Thanks for exploring, let's connect sometime!"],
     links: profile.links
 };

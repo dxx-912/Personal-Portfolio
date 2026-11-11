@@ -33,27 +33,6 @@ export const volleyball: Section = resolveSection({
 // Never invent facts. Unknowns are "[TODO: ...]" and are listed in TODO_ASSETS.md.
 
 export const homeContent: Record<string, Entry> = withMedia({
-    // 1. Window with the Toronto skyline
-    window: {
-        id: 'window',
-        short: 'North York',
-        prompt: 'North York',
-        plainGroup: 'personal',
-        title: 'North York',
-        subtitle: 'Toronto',
-        body: [
-            'I was born and raised in North York, Toronto, and lived there for 18 years before I left for college.',
-            'It means a lot to me. All through high school I went to the same library and the same cafe.',
-            '[TODO: name the library and cafe, if you want]'
-        ],
-        gallery: 'grid',
-        images: [
-            { alt: 'North York photo 1', slot: 'window/gallery' },
-            { alt: 'North York photo 2', slot: 'window/gallery' },
-            { alt: 'North York photo 3', slot: 'window/gallery' }
-        ]
-    },
-
     // 2. Three tier shelf: rowing, awards, favorite reads
     shelf: {
         id: 'shelf',
