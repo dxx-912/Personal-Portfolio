@@ -276,6 +276,14 @@ a.link:hover { background: #eef4ff; text-decoration: underline; }
 .gallery.slides .media { scroll-snap-align: start; }
 @media (max-width: 520px) { .gallery.slides { grid-auto-columns: 85%; } }
 /* stack: wide photos full width; tall photos pair up side by side at the same size */
+/* scroll: a sideways gallery, every photo the same height, its caption no wider than the photo */
+.gallery.scroll {
+    display: flex; align-items: flex-start; gap: 14px; overflow-x: auto; scroll-snap-type: x mandatory; padding-bottom: 8px; overscroll-behavior-x: contain;
+}
+.gallery.scroll .media { display: table; flex: none; scroll-snap-align: start; }
+.gallery.scroll .media img { height: 320px; width: auto; max-width: none; }
+.gallery.scroll figcaption { display: table-caption; caption-side: bottom; font-size: 14px; line-height: 1.4; }
+@media (max-width: 520px) { .gallery.scroll .media img { height: 240px; } }
 /* full: every photo the full width of the panel, one under another */
 .gallery.full { grid-template-columns: minmax(0, 1fr); gap: 14px; }
 .gallery.stack { grid-template-columns: repeat(2, minmax(0, 1fr)); grid-auto-flow: row dense; gap: 14px; }

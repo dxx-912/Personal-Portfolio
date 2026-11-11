@@ -230,14 +230,7 @@
         {
             "key": "shirt/gallery",
             "folder": "1 Dorm/09 Hope For Hearing shirt/Gallery (any number)",
-            "max": 0,
-            "alts": {
-                "IMG 5882 from pics.jpg": "A Hope For Hearing event in a church hall, with a full audience in the pews",
-                "May 8 Screenshot from pics.png": "Daniel speaking at a podium",
-                "Pics 2U8A7715.jpg": "Daniel presenting on stage",
-                "Screenshot 2026-11-10 at 9.22.12 PM.png": "Daniel speaking to an audience with a microphone",
-                "Screenshot 2026-11-10 at 9.23.34 PM.png": "Hope For Hearing x CHHA video call"
-            }
+            "max": 0
         },
         {
             "key": "window/gallery",

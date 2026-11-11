@@ -492,39 +492,60 @@
     ],
     "shirt/gallery": [
         {
-            "src": "/media/shirt/gallery/01-a-hope-for-hearing-event-in-a-church-hall-with-a.webp",
-            "alt": "A Hope For Hearing event in a church hall, with a full audience in the pews",
-            "w": 1600,
-            "h": 900,
-            "file": "IMG 5882 from pics"
-        },
-        {
-            "src": "/media/shirt/gallery/02-daniel-speaking-at-a-podium.webp",
-            "alt": "Daniel speaking at a podium",
-            "w": 824,
-            "h": 1238,
-            "file": "May 8 Screenshot from pics"
-        },
-        {
-            "src": "/media/shirt/gallery/03-daniel-presenting-on-stage.webp",
-            "alt": "Daniel presenting on stage",
-            "w": 1600,
-            "h": 1067,
-            "file": "Pics 2U8A7715"
-        },
-        {
-            "src": "/media/shirt/gallery/04-daniel-speaking-to-an-audience-with-a-microphone.webp",
-            "alt": "Daniel speaking to an audience with a microphone",
+            "src": "/media/shirt/gallery/01-me-pitching-my-cause-to-more-judges.webp",
+            "alt": "Me pitching my cause to more judges",
             "w": 1052,
             "h": 946,
-            "file": "Screenshot 2026-11-10 at 9.22.12 PM"
+            "file": "Me pitching my cause to more judges"
         },
         {
-            "src": "/media/shirt/gallery/05-hope-for-hearing-x-chha-video-call.webp",
-            "alt": "Hope For Hearing x CHHA video call",
+            "src": "/media/shirt/gallery/02-me-pitching-our-cause-to-many-judges.webp",
+            "alt": "Me pitching our cause to many judges",
+            "w": 1600,
+            "h": 1067,
+            "file": "Me pitching our cause to many judges"
+        },
+        {
+            "src": "/media/shirt/gallery/03-me-speaking-at-our-second-school-charity-concert.webp",
+            "alt": "Me speaking at our second school charity concert",
+            "w": 824,
+            "h": 1238,
+            "file": "Me speaking at our second school charity concert"
+        },
+        {
+            "src": "/media/shirt/gallery/04-meeting-with-president-of-chha.webp",
+            "alt": "Meeting with president of CHHA",
             "w": 1600,
             "h": 870,
-            "file": "Screenshot 2026-11-10 at 9.23.34 PM"
+            "file": "Meeting with president of CHHA"
+        },
+        {
+            "src": "/media/shirt/gallery/05-one-of-many-charity-concerts-we-ran.webp",
+            "alt": "One of many charity concerts we ran",
+            "w": 1600,
+            "h": 900,
+            "file": "One of many charity concerts we ran"
+        },
+        {
+            "src": "/media/shirt/gallery/06-pitching-and-handing-out-flyers-at-the-ymci-chap.webp",
+            "alt": "Pitching and handing out flyers at the YMCI chapter",
+            "w": 1066,
+            "h": 1600,
+            "file": "Pitching and handing out flyers at the YMCI chapter"
+        },
+        {
+            "src": "/media/shirt/gallery/07-the-og-team.webp",
+            "alt": "The OG Team",
+            "w": 1600,
+            "h": 1066,
+            "file": "The OG Team"
+        },
+        {
+            "src": "/media/shirt/gallery/08-trying-to-fundraise-at-a-local-event.webp",
+            "alt": "Trying to Fundraise at a Local Event",
+            "w": 1600,
+            "h": 1200,
+            "file": "Trying to Fundraise at a Local Event"
         }
     ],
     "todo/dsp": [

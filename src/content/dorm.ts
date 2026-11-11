@@ -446,13 +446,8 @@ export const dormContent: Record<string, Entry> = withMedia({
             }
         ],
         links: [{ label: 'Hope For Hearing on Instagram', href: 'https://www.instagram.com/hopeforhearing/' }],
-        // wide photos full width; the two tall ones side by side
-        gallery: 'stack',
-        images: [
-            { alt: 'Hope For Hearing photo', slot: 'shirt/gallery' },
-            { alt: 'Hope For Hearing photo', slot: 'shirt/gallery' },
-            { alt: 'Hope For Hearing photo', slot: 'shirt/gallery' },
-            { alt: 'Hope For Hearing photo', slot: 'shirt/gallery' }
-        ]
+        // a gallery to scroll through sideways, each photo captioned with its file name
+        gallery: 'scroll',
+        images: [{ alt: 'Hope For Hearing photo', slot: 'shirt/gallery', captionFromFile: true }]
     }
 });
