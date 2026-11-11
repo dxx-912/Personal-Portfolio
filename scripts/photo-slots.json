@@ -212,25 +212,19 @@
             }
         },
         {
-            "key": "gradcap/hat-toss",
-            "folder": "1 Dorm/07 Grad cap, Upper Canada College/Graduating class hat toss (1 photo)",
-            "max": 1
+            "key": "gradcap/academics",
+            "folder": "1 Dorm/07 Grad cap, Upper Canada College/Academics (any number)",
+            "max": 0
         },
         {
-            "key": "gradcap/business-club",
-            "folder": "1 Dorm/07 Grad cap, Upper Canada College/You leading Business Competition Club (any number)",
-            "max": 0,
-            "alts": {
-                "_R0A9073.JPEG": "Daniel with Business Competition Club members outside Upper Canada College",
-                "IMG_0207.jpg": "Daniel and teammates with medals at a DECA conference",
-                "UCC Business Club (4) 2.jpg": "Daniel with Business Competition Club members in school blazers",
-                "UCC Business Club.jpg": "A Business Competition Club session in a packed lecture hall"
-            }
+            "key": "gradcap/business",
+            "folder": "1 Dorm/07 Grad cap, Upper Canada College/Business Club Head (any number)",
+            "max": 0
         },
         {
-            "key": "gradcap/asian-heritage-club",
-            "folder": "1 Dorm/07 Grad cap, Upper Canada College/You leading Asian Heritage & Culture Club (1 photo)",
-            "max": 1
+            "key": "gradcap/asian-heritage",
+            "folder": "1 Dorm/07 Grad cap, Upper Canada College/Asian Heritage Club Head (any number)",
+            "max": 0
         },
         {
             "key": "closet/ra",

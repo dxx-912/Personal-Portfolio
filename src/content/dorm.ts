@@ -337,7 +337,7 @@ export const dormContent: Record<string, Entry> = withMedia({
         ]
     },
 
-    // 7. Grad cap on the dresser: high school only. Three tabs; photos are off for now.
+    // 7. Grad cap on the dresser: high school only. Three tabs, each with its own photo drop folder.
     gradcap: {
         id: 'gradcap',
         prompt: 'High school',
@@ -355,19 +355,25 @@ export const dormContent: Record<string, Entry> = withMedia({
                     { title: 'Standard Levels', style: 'chips', items: ['Mandarin B', 'Global Politics', 'Environmental Systems'] },
                     { title: 'Extended essay', style: 'plain', items: ["Economic and Geopolitical Implications of Taiwan's Semiconductor Industry: To what extent has Taiwan’s semiconductor chip industry effectively deterred enforcement of the One-China policy by creating interdependence between China, the U.S., and Taiwan?"] }
                 ],
-                links: [{ label: 'Read the extended essay', href: 'https://drive.google.com/file/d/14pv1NG7O9NHQkYhc4oL-PvGsY7-hgb9g/view?usp=sharing' }]
+                links: [{ label: 'Read the extended essay', href: 'https://drive.google.com/file/d/14pv1NG7O9NHQkYhc4oL-PvGsY7-hgb9g/view?usp=sharing' }],
+                gallery: 'full',
+                images: [{ alt: 'Upper Canada College academics photo', slot: 'gradcap/academics', captionFromFile: true }]
             },
             {
                 id: 'ucc-business',
                 title: 'Business Club Head',
                 subtitle: 'Business Competition Club, President (Sep 2023 to May 2025)',
-                body: ["Led UCC's DECA and FBLA teams, growing membership by 400% through promotional videos and graphics (16,000+ impressions) and running weekly prep sessions, guest lectures, and a 1-on-1 mentorship system."]
+                body: ["Led UCC's DECA and FBLA teams, growing membership by 400% through promotional videos and graphics (16,000+ impressions) and running weekly prep sessions, guest lectures, and a 1-on-1 mentorship system."],
+                gallery: 'full',
+                images: [{ alt: 'Business Competition Club photo', slot: 'gradcap/business', captionFromFile: true }]
             },
             {
                 id: 'ucc-asian-heritage',
                 title: 'Asian Heritage Club Head',
                 subtitle: 'Asian Heritage & Culture Club, President (Sep 2023 to May 2025)',
-                body: ['Led 40+ members in running school wide cultural events for Lunar New Year and AAPI Month, plus potlucks, karaoke nights, trivia tournaments, and performances, with promo content reaching 12,000+ impressions.']
+                body: ['Led 40+ members in running school wide cultural events for Lunar New Year and AAPI Month, plus potlucks, karaoke nights, trivia tournaments, and performances, with promo content reaching 12,000+ impressions.'],
+                gallery: 'full',
+                images: [{ alt: 'Asian Heritage & Culture Club photo', slot: 'gradcap/asian-heritage', captionFromFile: true }]
             }
         ]
     },
