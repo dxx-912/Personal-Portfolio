@@ -74,6 +74,8 @@ export interface Section {
      * have no team). They are never shown or flagged as missing.
      */
     omit?: ('role' | 'team' | 'timeline' | 'problem' | 'whatIDid' | 'result')[];
+    /** Game panel only: skip the Role, Team, Timeline tiles (the quick view still shows them). */
+    hideGlance?: boolean;
     /** A long story shown behind a "Read the whole story" expander, after the body. */
     more?: { label: string; body: string[] };
     tags?: string[];

@@ -183,6 +183,7 @@ export const dormContent: Record<string, Entry> = withMedia({
                 role: 'Project Manager',
                 team: '12 people across design, frontend, and backend',
                 timeline: '12 weeks [TODO: quarter and year]',
+                hideGlance: true,
                 summary: 'Led a 12-person team from zero to one over 12 weeks.',
                 tags: ['PM'],
                 problem: 'Everyone always has opinions on everything, especially when a friend group has to decide where to eat out together. All of a sudden, people are "okay with anything" and end up going to Raising Cane\'s for the nth time. Built this app to fix this problem.',

@@ -106,7 +106,7 @@ export function renderSection(s: Section, o: RenderOpts): string {
         out.push(`<details class="story-more"><summary>${rich(s.more.label)}</summary>${s.more.body.filter((p) => !blank(p)).map((p) => `<p>${rich(p)}</p>`).join('')}</details>`);
     }
     const glance = ([['Role', 'role'], ['Team', 'team'], ['Timeline', 'timeline']] as const)
-        .filter(([, k]) => !omit.has(k) && !blank(s[k])).map(([label, k]) => [label, s[k]!] as [string, string]);
+        .filter(([, k]) => !s.hideGlance && !omit.has(k) && !blank(s[k])).map(([label, k]) => [label, s[k]!] as [string, string]);
     const counters = (s.counters ?? []).map((c) => [c.label, `${c.prefix ?? ''}${c.value.toLocaleString('en-US')}${c.suffix ?? ''}`] as [string, string]);
     if (glance.length || counters.length) {
         out.push('<dl class="facts">');
