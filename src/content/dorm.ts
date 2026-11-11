@@ -150,7 +150,7 @@ export const dormContent: Record<string, Entry> = withMedia({
                     { label: 'Built with', text: 'Next.js, React, TypeScript, Supabase (Postgres, Auth), Vercel, Google Apps Script, Google OAuth, Claude Code' }
                 ],
                 result: '7 users so far with over 650 emails sent.',
-                gallery: 'viewer',
+                gallery: 'stack',
                 images: [
                     { alt: 'Cold Outreach Automator screenshot', slot: 'laptop/cold-email' },
                     { alt: 'Cold Outreach Automator screenshot', slot: 'laptop/cold-email' }

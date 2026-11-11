@@ -269,6 +269,7 @@ a.link:hover { background: #eef4ff; text-decoration: underline; }
 .gallery.grid { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); }
 .gallery.viewer { grid-auto-flow: column; grid-auto-columns: minmax(240px, 80%); overflow-x: auto; scroll-snap-type: x mandatory; padding-bottom: 6px; }
 .gallery.viewer .media { scroll-snap-align: start; }
+.gallery.stack { grid-template-columns: minmax(0, 1fr); gap: 14px; }
 .gallery.row { grid-auto-flow: column; grid-auto-columns: minmax(0, 1fr); gap: 12px; }
 .gallery.row img { aspect-ratio: 4 / 5; object-fit: cover; }
 .gallery.row figcaption { font-size: 13px; text-align: center; }
