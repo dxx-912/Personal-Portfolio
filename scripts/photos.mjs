@@ -12,6 +12,7 @@
 // Camera names like IMG_1234 fall back to a generic description.
 //
 // Slot options (scripts/photo-slots.json): "file" takes one named file instead of a folder (the headshot);
+// "aspect" (width / height) centre crops every image in the folder to one shape so a gallery lines up;
 // "pdfPages" renders those pages of a PDF in the folder (the L.E.K. deck); "video" compresses the MP4 in
 // the folder for the web (H.264, with a poster frame); "alts" gives written alt text per file name.
 // Outputs never carry metadata (sharp and ffmpeg drop EXIF, so no GPS locations are published).
@@ -95,7 +96,7 @@ try {
             const src = f.startsWith('/') ? f : readable(join(dir, f), tmp);
             const alt = slot.alts?.[basename(f)] ?? describe(f);
             const name = `${String(i + 1).padStart(2, '0')}-${slugify(alt ?? 'photo')}.webp`;
-            const info = await sharp(src).rotate()
+            const info = await (await cropToAspect(sharp(src).rotate(), slot.aspect))
                 .resize({ width: 1600, height: 1600, fit: 'inside', withoutEnlargement: true })
                 // slides and screenshots are mostly text: a higher quality keeps them crisp
                 .webp({ quality: slot.text ? 88 : 80 }).toFile(join(outDir, name));
@@ -121,6 +122,17 @@ warnings.forEach((w) => console.warn(`  note: ${w}`));
 const filled = Object.keys(sorted).length;
 const needed = slots.filter((s) => !s.decor).length;
 log(`Photos: converted ${converted} file(s). ${filled} of ${needed} photo spots filled.${converted ? ' Restart npm run dev to see them.' : ''}`);
+
+/** Centre crops to a width / height ratio, trimming only the longer side. No ratio: unchanged. */
+async function cropToAspect(img, aspect) {
+    if (!aspect) return img;
+    const { data, info } = await img.toBuffer({ resolveWithObject: true });
+    const { width: w, height: h } = info;
+    let cw = w, ch = h;
+    if (w / h > aspect) cw = Math.round(h * aspect); else ch = Math.round(w / aspect);
+    if (Math.abs(cw - w) < 2 && Math.abs(ch - h) < 2) return sharp(data);
+    return sharp(data).extract({ left: Math.floor((w - cw) / 2), top: Math.floor((h - ch) / 2), width: cw, height: ch });
+}
 
 /** Renders the listed pages of the first PDF in a folder to PNGs (poppler's pdftoppm). Names: "page-5.png". */
 function pdfPages(dir, pages) {
