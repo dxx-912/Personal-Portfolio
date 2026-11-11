@@ -362,7 +362,7 @@ export const dormContent: Record<string, Entry> = withMedia({
             {
                 id: 'ucc-business',
                 title: 'Business Club Head',
-                subtitle: 'Business Competition Club, President (Sep 2023 to May 2025)',
+                subtitle: 'Business Competition Club, President',
                 body: ["Led UCC's DECA and FBLA teams, growing membership by 400% through promotional videos and graphics (16,000+ impressions) and running weekly prep sessions, guest lectures, and a 1-on-1 mentorship system."],
                 gallery: 'scroll',
                 images: [{ alt: 'Business Competition Club photo', slot: 'gradcap/business', captionFromFile: true }]
@@ -370,7 +370,7 @@ export const dormContent: Record<string, Entry> = withMedia({
             {
                 id: 'ucc-asian-heritage',
                 title: 'Asian Heritage Club Head',
-                subtitle: 'Asian Heritage & Culture Club, President (Sep 2023 to May 2025)',
+                subtitle: 'Asian Heritage & Culture Club, President',
                 body: ['Led 40+ members in running school wide cultural events for Lunar New Year and AAPI Month, plus potlucks, karaoke nights, trivia tournaments, and performances, with promo content reaching 12,000+ impressions.'],
                 gallery: 'full',
                 images: [{ alt: 'Asian Heritage & Culture Club photo', slot: 'gradcap/asian-heritage', captionFromFile: true }]
