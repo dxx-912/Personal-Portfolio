@@ -276,6 +276,8 @@ a.link:hover { background: #eef4ff; text-decoration: underline; }
 .gallery.slides .media { scroll-snap-align: start; }
 @media (max-width: 520px) { .gallery.slides { grid-auto-columns: 85%; } }
 /* stack: wide photos full width; tall photos pair up side by side at the same size */
+/* full: every photo the full width of the panel, one under another */
+.gallery.full { grid-template-columns: minmax(0, 1fr); gap: 14px; }
 .gallery.stack { grid-template-columns: repeat(2, minmax(0, 1fr)); grid-auto-flow: row dense; gap: 14px; }
 .gallery.stack .media { grid-column: 1 / -1; }
 .gallery.stack .media.tall { grid-column: auto; }

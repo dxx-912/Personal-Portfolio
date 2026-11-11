@@ -81,7 +81,9 @@ export const dormContent: Record<string, Entry> = withMedia({
                 role: 'Technology Track Vice President',
                 omit: ['timeline', 'whatIDid'],
                 hideGlance: true,
-                body: ["Fellowship providing UCLA's top business students with mentorship, resources, and professional development."]
+                body: ["Fellowship providing UCLA's top business students with mentorship, resources, and professional development."],
+                gallery: 'full',
+                images: [{ alt: 'William F. Sharpe Fellows photo', slot: 'todo/sharpe', captionFromFile: true }]
             },
             {
                 id: 'dsp-org',
@@ -91,7 +93,9 @@ export const dormContent: Record<string, Entry> = withMedia({
                 role: 'Director of Marketing',
                 omit: ['timeline', 'whatIDid'],
                 hideGlance: true,
-                body: ["UCLA chapter of the nation's leading co-ed professional business fraternity, developing members through professional events, leadership, and service."]
+                body: ["UCLA chapter of the nation's leading co-ed professional business fraternity, developing members through professional events, leadership, and service."],
+                gallery: 'full',
+                images: [{ alt: 'Delta Sigma Pi photo', slot: 'todo/dsp', captionFromFile: true }]
             },
             {
                 id: 'ibb-org',
@@ -101,7 +105,9 @@ export const dormContent: Record<string, Entry> = withMedia({
                 role: 'Director of Marketing',
                 omit: ['timeline', 'whatIDid'],
                 hideGlance: true,
-                body: ['Consulting club providing members with professional development, real client work, and a network in international business.']
+                body: ['Consulting club providing members with professional development, real client work, and a network in international business.'],
+                gallery: 'full',
+                images: [{ alt: 'International Business for Bruins photo', slot: 'todo/ibb', captionFromFile: true }]
             },
             {
                 id: 'bea',

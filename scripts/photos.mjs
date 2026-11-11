@@ -104,7 +104,9 @@ try {
                 .resize({ width: 1600, height: 1600, fit: 'inside', withoutEnlargement: true })
                 // slides and screenshots are mostly text: a higher quality keeps them crisp
                 .webp({ quality: slot.text ? 88 : 80 }).toFile(join(outDir, name));
-            entries.push({ src: `/media/${slot.key}/${name}`, alt, w: info.width, h: info.height });
+            // the original file name (no extension), for panels that caption photos with it
+            const file = f.startsWith('/') ? null : basename(f, extname(f)).trim();
+            entries.push({ src: `/media/${slot.key}/${name}`, alt, w: info.width, h: info.height, ...(file ? { file } : {}) });
             converted++;
         }
         manifest[slot.key] = entries;

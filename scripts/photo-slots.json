@@ -38,6 +38,32 @@
             ]
         },
         {
+            "key": "todo/sharpe",
+            "folder": "1 Dorm/03 To-do List, Student Organizations/William F. Sharpe Fellows",
+            "max": 0,
+            "alts": {
+                "William F. Sharpe Fellows 2026 Cohort.png": "The William F. Sharpe Fellows 2026 cohort"
+            }
+        },
+        {
+            "key": "todo/dsp",
+            "folder": "1 Dorm/03 To-do List, Student Organizations/Delta Sigma Pi ",
+            "max": 0,
+            "alts": {
+                "Fall 2026 Board Members.JPEG": "Delta Sigma Pi Fall 2026 board members",
+                "My DSP Twin and our Paddle For our Big.PNG": "Daniel and his DSP twin with the paddle for their big"
+            }
+        },
+        {
+            "key": "todo/ibb",
+            "folder": "1 Dorm/03 To-do List, Student Organizations/International Bruins For Business",
+            "max": 0,
+            "alts": {
+                "Club Retreat and Hike!.jpg": "IBB club retreat and hike",
+                "My IBB Class at The Boiling Crab.HEIC": "Daniel's IBB class at The Boiling Crab"
+            }
+        },
+        {
             "key": "laptop/cold-email",
             "folder": "1 Dorm/04 Laptop, software projects/Cold Outreach Automator screenshots (2 to 4)",
             "max": 4,

@@ -4,7 +4,7 @@
 import media from './media.json';
 import type { Entry, ImageItem, Section, VideoItem } from './types';
 
-interface MediaFile { src: string; alt: string | null; w: number; h: number; poster?: string }
+interface MediaFile { src: string; alt: string | null; w: number; h: number; poster?: string; file?: string }
 const files = media as Record<string, MediaFile[]>;
 
 /** Placeholders that share a slot are one gallery: they become one image per file in that folder. */
@@ -25,7 +25,8 @@ export function resolveImages(images: ImageItem[] | undefined): ImageItem[] | un
                 src: f.src, width: f.w, height: f.h, slot: img.slot, wide: ph.wide,
                 // a single photo keeps its written description; gallery photos use their file names
                 alt: single ? ph.alt : (f.alt ?? ph.alt.replace(/ \d+$/, ` ${k + 1}`)),
-                caption: ph.caption && !ph.caption.includes('[TODO') ? ph.caption : undefined
+                caption: ph.captionFromFile && f.file ? f.file
+                    : ph.caption && !ph.caption.includes('[TODO') ? ph.caption : undefined
             });
         });
         void i;

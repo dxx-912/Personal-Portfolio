@@ -12,6 +12,8 @@ export interface ImageItem {
     height?: number;
     /** Game panel: span the full width of the gallery (website screenshots). */
     wide?: boolean;
+    /** Caption each photo with its original file name (minus the extension). */
+    captionFromFile?: boolean;
 }
 
 export interface VideoItem {
@@ -54,7 +56,7 @@ export interface Section {
     /** A small heading shown right above the photos. */
     galleryTitle?: string;
     /** How images are laid out. */
-    gallery?: 'grid' | 'polaroid' | 'viewer' | 'row' | 'stack' | 'slides';
+    gallery?: 'grid' | 'polaroid' | 'viewer' | 'row' | 'stack' | 'slides' | 'full';
     videos?: VideoItem[];
     links?: LinkItem[];
 
