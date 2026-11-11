@@ -1,5 +1,5 @@
 {
-    "_about": "Every photo the site needs. 'folder' is the drop folder under photos/. 'key' links to the slot on an image in src/content. 'max' is how many photos are used (0 means any number). 'decor' slots become room art in public/assets/decor/. Optional: 'file' (one named file under photos/), 'pdfPages' (render those PDF pages), 'video' (compress the MP4 in the folder), 'alts' (alt text by file name), 'text' (higher quality for slides and screenshots). 'aspect' (width / height) centre crops a folder's images to one shape.",
+    "_about": "Every photo the site needs. 'folder' is the drop folder under photos/. 'key' links to the slot on an image in src/content. 'max' is how many photos are used (0 means any number). 'decor' slots become room art in public/assets/decor/. Optional: 'file' (one named file under photos/), 'pdfPages' (render those PDF pages), 'video' (compress the MP4 in the folder), 'alts' (alt text by file name), 'text' (higher quality for slides and screenshots). 'aspect' (width / height) centre crops a folder's images to one shape. 'splitRows' cuts listed collages (two photos stacked) into two photos.",
     "slots": [
         {
             "key": "about/headshot",
@@ -23,10 +23,16 @@
             "folder": "1 Dorm/02 UCLA pennant/me and friends at UCLA",
             "max": 0,
             "alts": {
-                "IMG_4688.HEIC": "Daniel and friends posing together at UCLA",
-                "IMG_4691.HEIC": "Daniel and friends out together at night",
+                "IMG_4688.HEIC#1.png": "Daniel and friends posing in a dorm hallway at UCLA",
+                "IMG_4688.HEIC#2.png": "Daniel and friends under string lights at UCLA",
+                "IMG_4691.HEIC#1.png": "Daniel and friends out together at night",
+                "IMG_4691.HEIC#2.png": "Daniel and a bigger group of friends at night, thumbs up",
                 "IMG_6015.jpg": "Daniel and friends at a party with balloons"
-            }
+            },
+            "splitRows": [
+                "IMG_4688.HEIC",
+                "IMG_4691.HEIC"
+            ]
         },
         {
             "key": "laptop/cold-email",

@@ -70,6 +70,7 @@ try {
             : readdirSync(dir).filter((f) => IMAGE.test(f) && !f.startsWith('.'))
                 .sort((a, b) => a.localeCompare(b, undefined, { numeric: true, sensitivity: 'base' }));
         if (slot.pdfPages) files = pdfPages(dir, slot.pdfPages);
+        if (slot.splitRows) files = (await Promise.all(files.map((f) => slot.splitRows.includes(f) ? splitRows(join(dir, f)) : [f]))).flat();
         if (!files.length) continue;
         if (slot.max && files.length > slot.max) {
             warnings.push(`"${slot.folder}" takes ${slot.max}; using the first ${slot.max} of ${files.length}.`);
@@ -94,7 +95,7 @@ try {
         const entries = [];
         for (const [i, f] of files.entries()) {
             const src = f.startsWith('/') ? f : readable(join(dir, f), tmp);
-            const alt = slot.alts?.[basename(f)] ?? describe(f);
+            const alt = slot.alts?.[basename(f)] ?? describe(f.replace(/#\d+\.png$/, ''));
             const name = `${String(i + 1).padStart(2, '0')}-${slugify(alt ?? 'photo')}.webp`;
             const info = await (await cropToAspect(sharp(src).rotate(), slot.aspect))
                 .resize({ width: 1600, height: 1600, fit: 'inside', withoutEnlargement: true })
@@ -132,6 +133,25 @@ async function cropToAspect(img, aspect) {
     if (w / h > aspect) cw = Math.round(h * aspect); else ch = Math.round(w / aspect);
     if (Math.abs(cw - w) < 2 && Math.abs(ch - h) < 2) return sharp(data);
     return sharp(data).extract({ left: Math.floor((w - cw) / 2), top: Math.floor((h - ch) / 2), width: cw, height: ch });
+}
+
+/**
+ * A collage of two photos stacked top and bottom becomes two photos: cut at the sharpest row change near
+ * the middle, trimming a few pixels either side of the seam. Outputs are named "<file>#1.png" and "#2.png".
+ */
+async function splitRows(file) {
+    const src = readable(file, tmp);
+    const base = sharp(src).rotate();
+    const { data: grey, info } = await base.clone().greyscale().raw().toBuffer({ resolveWithObject: true });
+    const { width: w, height: h } = info;
+    const row = (y) => { let t = 0; for (let x = 0; x < w; x++) t += grey[y * w + x]; return t / w; };
+    let seam = Math.round(h / 2), best = -1;
+    for (let y = Math.floor(h * 0.4); y < h * 0.6; y++) { const d = Math.abs(row(y) - row(y - 1)); if (d > best) { best = d; seam = y; } }
+    const pad = 3, name = basename(file);
+    const top = join(tmp, `${name}#1.png`), bottom = join(tmp, `${name}#2.png`);
+    await base.clone().extract({ left: 0, top: 0, width: w, height: seam - pad }).png().toFile(top);
+    await base.clone().extract({ left: 0, top: seam + pad, width: w, height: h - seam - pad }).png().toFile(bottom);
+    return [top, bottom];
 }
 
 /** Renders the listed pages of the first PDF in a folder to PNGs (poppler's pdftoppm). Names: "page-5.png". */

@@ -143,19 +143,31 @@
     ],
     "pennant/friends": [
         {
-            "src": "/media/pennant/friends/01-daniel-and-friends-posing-together-at-ucla.webp",
-            "alt": "Daniel and friends posing together at UCLA",
-            "w": 1200,
-            "h": 1600
+            "src": "/media/pennant/friends/01-daniel-and-friends-posing-in-a-dorm-hallway-at-u.webp",
+            "alt": "Daniel and friends posing in a dorm hallway at UCLA",
+            "w": 1600,
+            "h": 1065
         },
         {
-            "src": "/media/pennant/friends/02-daniel-and-friends-out-together-at-night.webp",
+            "src": "/media/pennant/friends/02-daniel-and-friends-under-string-lights-at-ucla.webp",
+            "alt": "Daniel and friends under string lights at UCLA",
+            "w": 1600,
+            "h": 1064
+        },
+        {
+            "src": "/media/pennant/friends/03-daniel-and-friends-out-together-at-night.webp",
             "alt": "Daniel and friends out together at night",
-            "w": 1200,
-            "h": 1600
+            "w": 1600,
+            "h": 1065
         },
         {
-            "src": "/media/pennant/friends/03-daniel-and-friends-at-a-party-with-balloons.webp",
+            "src": "/media/pennant/friends/04-daniel-and-a-bigger-group-of-friends-at-night-th.webp",
+            "alt": "Daniel and a bigger group of friends at night, thumbs up",
+            "w": 1600,
+            "h": 1064
+        },
+        {
+            "src": "/media/pennant/friends/05-daniel-and-friends-at-a-party-with-balloons.webp",
             "alt": "Daniel and friends at a party with balloons",
             "w": 1457,
             "h": 1093
