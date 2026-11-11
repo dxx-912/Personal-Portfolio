@@ -54,6 +54,7 @@ export const dormContent: Record<string, Entry> = withMedia({
             ]
         }],
         // five photos stacked, each the full width of the panel
+        galleryTitle: 'Photos with friends!',
         gallery: 'stack',
         images: [
             { alt: 'Daniel and friends at UCLA', slot: 'pennant/friends' },

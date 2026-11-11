@@ -51,6 +51,8 @@ export interface Section {
     facts?: Fact[];
     list?: { title?: string; items: string[] }[];
     images?: ImageItem[];
+    /** A small heading shown right above the photos. */
+    galleryTitle?: string;
     /** How images are laid out. */
     gallery?: 'grid' | 'polaroid' | 'viewer' | 'row' | 'stack';
     videos?: VideoItem[];

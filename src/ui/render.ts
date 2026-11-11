@@ -145,6 +145,10 @@ export function renderSection(s: Section, o: RenderOpts): string {
     });
     const imgs = (s.images ?? []).map((i) => renderImage(i, o.mode, o.comingSoonImage)).filter(Boolean);
     if (imgs.length) {
+        if (s.galleryTitle) {
+            const h = Math.min(6, (o.heading || 2) + 1);
+            out.push(`<h${h} class="list-title">${rich(s.galleryTitle)}</h${h}>`);
+        }
         const style = s.gallery ?? (imgs.length > 1 ? 'grid' : 'single');
         out.push(`<div class="gallery ${style}">${imgs.join('')}</div>`);
     }
