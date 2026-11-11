@@ -38,7 +38,7 @@ const inbox = join(root, 'photos');
 const mediaDir = join(root, 'public/media');
 const decorDir = join(root, 'public/assets/decor');
 const manifestPath = join(root, 'src/content/media.json');
-const IMAGE = /\.(jpe?g|png|heic|heif|webp|gif|avif|tiff?)$/i;
+const IMAGE = /\.(jpe?g|png|heic|heif|webp|gif|avif|tiff?|nef|cr2|cr3|arw|dng)$/i;
 const CAMERA_NAME = /^(img|dsc|dscn|pxl|screenshot|screen shot|photo|image|mvimg|whatsapp image)[\s_-]?\d/i;
 
 const manifest = existsSync(manifestPath) ? JSON.parse(readFileSync(manifestPath, 'utf8')) : {};
@@ -54,9 +54,9 @@ const describe = (file) => {
     return !name || CAMERA_NAME.test(name) ? null : name;
 };
 
-/** HEIC needs macOS sips first (sharp cannot read it). */
+/** HEIC and camera RAW (NEF, CR2, ARW, DNG) need macOS sips first (sharp cannot read them). */
 function readable(file, tmp) {
-    if (!/\.hei[cf]$/i.test(file)) return file;
+    if (!/\.(hei[cf]|nef|cr[23]|arw|dng)$/i.test(file)) return file;
     const out = join(tmp, `${slugify(basename(file))}.jpg`);
     execFileSync('sips', ['-s', 'format', 'jpeg', file, '--out', out], { stdio: 'ignore' });
     return out;
