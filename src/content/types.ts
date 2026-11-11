@@ -29,6 +29,8 @@ export interface VideoItem {
     slot?: string;
     /** Still frame shown before the video plays. */
     poster?: string;
+    /** MP4 only: show it as the first tile of the section's photo gallery instead of on its own below it. */
+    inGallery?: boolean;
     width?: number;
     height?: number;
 }

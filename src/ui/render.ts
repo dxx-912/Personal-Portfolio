@@ -51,7 +51,7 @@ function videoSrc(v: VideoItem): string | null {
     return v.id;
 }
 
-function renderVideo(v: VideoItem, mode: RenderMode, comingSoon: string) {
+function renderVideo(v: VideoItem, mode: RenderMode, comingSoon: string, inGallery = false) {
     const src = videoSrc(v);
     if (!src) {
         if (HIDE_TODOS) return '';
@@ -66,8 +66,8 @@ function renderVideo(v: VideoItem, mode: RenderMode, comingSoon: string) {
         const poster = v.poster ? ` poster="${esc(v.poster)}"` : '';
         const size = v.width && v.height ? ` width="${v.width}" height="${v.height}"` : '';
         // tall (phone) videos keep their own shape instead of filling the width with black bars
-        const tall = v.width && v.height && v.height > v.width ? ` style="width: min(100%, calc(60vh * ${v.width} / ${v.height}))"` : '';
-        return `<figure class="media video"${tall}><video class="embed mp4" src="${esc(src)}"${poster}${size} controls preload="none" playsinline aria-label="${esc(v.title)}"></video><figcaption>${esc(v.title)}</figcaption></figure>`;
+        const tall = !inGallery && v.width && v.height && v.height > v.width ? ` style="width: min(100%, calc(60vh * ${v.width} / ${v.height}))"` : '';
+        return `<figure class="media video${inGallery ? ' in-gallery' : ''}"${tall}><video class="embed mp4" src="${esc(src)}"${poster}${size} controls preload="none" playsinline aria-label="${esc(v.title)}"></video><figcaption>${esc(v.title)}</figcaption></figure>`;
     }
     const ratio = v.kind === 'spotify' ? 'spotify' : 'video';
     // Built only when the panel opens, so third party embeds never load with the page.
@@ -154,7 +154,12 @@ export function renderSection(s: Section, o: RenderOpts): string {
     });
     // a sideways 'scroll' gallery keeps wide images (website screenshots) out of the row, full width below it
     const scrollWide = s.gallery === 'scroll' ? (s.images ?? []).filter((i) => i.wide) : [];
-    const imgs = (s.images ?? []).filter((i) => !scrollWide.includes(i)).map((i) => renderImage(i, o.mode, o.comingSoonImage)).filter(Boolean);
+    // videos marked inGallery lead the photo row (not on the plain page, where videos are links)
+    const galleryVideos = o.mode === 'plain' ? [] : (s.videos ?? []).filter((v) => v.inGallery && v.kind === 'mp4' && videoSrc(v));
+    const imgs = [
+        ...galleryVideos.map((v) => renderVideo(v, o.mode, o.comingSoonVideo, true)),
+        ...(s.images ?? []).filter((i) => !scrollWide.includes(i)).map((i) => renderImage(i, o.mode, o.comingSoonImage))
+    ].filter(Boolean);
     const wideImgs = scrollWide.map((i) => renderImage(i, o.mode, o.comingSoonImage)).filter(Boolean);
     if (imgs.length) {
         if (s.galleryTitle) {
@@ -168,7 +173,7 @@ export function renderSection(s: Section, o: RenderOpts): string {
         out.push(`<div class="gallery ${style}"${h}>${imgs.join('')}</div>`);
     }
     if (wideImgs.length) out.push(`<div class="gallery full">${wideImgs.join('')}</div>`);
-    s.videos?.forEach((v) => out.push(renderVideo(v, o.mode, o.comingSoonVideo)));
+    s.videos?.filter((v) => !galleryVideos.includes(v)).forEach((v) => out.push(renderVideo(v, o.mode, o.comingSoonVideo)));
     const tags = s.hideTags ? [] : (s.tags ?? []).filter((t) => !blank(t));
     if (tags.length) out.push(`<p class="tags">${tags.map((t) => `<span class="tag">${rich(t)}</span>`).join('')}</p>`);
     if (!s.linksTop && links.length) out.push(`<p class="links">${links.join('')}</p>`);

@@ -13,7 +13,7 @@ export const rowing: Section = resolveSection({
     ],
     gallery: 'grid',
     images: [{ alt: 'Rowing photo 1', slot: 'shelf/rowing', captionFromFile: true }, { alt: 'Rowing photo 2', slot: 'shelf/rowing', captionFromFile: true }],
-    videos: [{ kind: 'mp4', title: '"The Senator" crew that won nationals (I\'m bow seat)', slot: 'shelf/rowing-video' }]
+    videos: [{ kind: 'mp4', title: '"The Senator" crew that won nationals (I\'m bow seat)', slot: 'shelf/rowing-video', inGallery: true }]
 });
 
 export const volleyball: Section = resolveSection({
