@@ -1,5 +1,5 @@
 {
-    "_about": "Every photo the site needs. 'folder' is the drop folder under photos/. 'key' links to the slot on an image in src/content. 'max' is how many photos are used (0 means any number). 'decor' slots become room art in public/assets/decor/. Optional: 'file' (one named file under photos/), 'pdfPages' (render those PDF pages), 'video' (compress the MP4 in the folder), 'alts' (alt text by file name), 'text' (higher quality for slides and screenshots). 'aspect' (width / height) centre crops a folder's images to one shape. 'splitRows' cuts listed collages (two photos stacked) into two photos. 'first' lists files to show before the rest. 'crops' cuts named photos to a box of fractions [left, top, right, bottom]. 'skip' leaves named files or split halves out.",
+    "_about": "Every photo the site needs. 'folder' is the drop folder under photos/. 'key' links to the slot on an image in src/content. 'max' is how many photos are used (0 means any number). 'decor' slots become room art in public/assets/decor/. Optional: 'file' (one named file under photos/), 'pdfPages' (render those PDF pages), 'video' (compress the MP4 in the folder), 'alts' (alt text by file name), 'text' (higher quality for slides and screenshots). 'aspect' (width / height) centre crops a folder's images to one shape. 'splitRows' cuts listed collages (two photos stacked) into two photos. 'first' lists files to show before the rest. 'crops' cuts named photos to a box of fractions [left, top, right, bottom]. 'skip' leaves named files or split halves out. 'captions' overrides the file-name caption for named files.",
     "slots": [
         {
             "key": "about/headshot",
@@ -65,7 +65,7 @@
             "max": 0,
             "alts": {
                 "Fall 2026 Board Members.JPEG": "Delta Sigma Pi Fall 2026 board members",
-                "My DSP Twin and our Paddle For our Big.PNG": "Daniel and his DSP twin with the paddle for their big"
+                "My DSP Twin and our Paddle For our Big.PNG": "Daniel and his DSP twin with the paddle for their big, Andrew"
             },
             "aspect": 1,
             "crops": {
@@ -81,6 +81,9 @@
                     0.9293,
                     0.7395
                 ]
+            },
+            "captions": {
+                "My DSP Twin and our Paddle For our Big.PNG": "My DSP twin and our paddle for our big, Andrew"
             }
         },
         {

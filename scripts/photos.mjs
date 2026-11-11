@@ -13,6 +13,7 @@
 //
 // Slot options (scripts/photo-slots.json): "file" takes one named file instead of a folder (the headshot);
 // "skip" leaves named files (or split halves, "<file>#2.png") out;
+// "captions" overrides a file-name caption without renaming the file;
 // "crops" cuts one photo to a box of fractions [left, top, right, bottom] (e.g. to drop Instagram arrows);
 // "aspect" (width / height) centre crops every image in the folder to one shape so a gallery lines up;
 // "pdfPages" renders those pages (or "all") of a PDF in the folder (the L.E.K. deck); "video" compresses the MP4 in
@@ -109,7 +110,7 @@ try {
                 // slides and screenshots are mostly text: a higher quality keeps them crisp
                 .webp({ quality: slot.text ? 88 : 80 }).toFile(join(outDir, name));
             // the original file name (no extension), for panels that caption photos with it
-            const file = f.startsWith('/') ? null : basename(f, extname(f)).trim();
+            const file = slot.captions?.[basename(f)] ?? (f.startsWith('/') ? null : basename(f, extname(f)).trim());
             entries.push({ src: `/media/${slot.key}/${name}`, alt, w: info.width, h: info.height, ...(file ? { file } : {}) });
             converted++;
         }
