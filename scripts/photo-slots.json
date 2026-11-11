@@ -216,7 +216,9 @@
             "folder": "1 Dorm/07 Grad cap, Upper Canada College/Academics (any number)",
             "max": 0,
             "alts": {
+                "Freshman year friends.heic": "Daniel and six friends with face paint and UCC hoodies on a printed A-Day 2022 photo",
                 "Graduation!.jpg": "Upper Canada College's graduating class throwing their caps in the air",
+                "Prom Photos.HEIC": "Photo booth strips from the UCC Battalion Ball 2025 with Daniel and friends dressed up",
                 "I got this the day of my graduation which is crazy.HEIC": "A fortune cookie message: Your leadership talents will bring you an incredible opportunity",
                 "Me, my mom, and my sister after graduating.jpg": "Daniel, his mom, and his sister outside Upper Canada College after graduating",
                 "Two tries cuz i'm goated.jpg": "Daniel's SAT score reports: 1560 in October 2024 and 1520 in August 2024",
@@ -226,7 +228,13 @@
         {
             "key": "gradcap/business",
             "folder": "1 Dorm/07 Grad cap, Upper Canada College/Business Club Head (any number)",
-            "max": 0
+            "max": 0,
+            "alts": {
+                "25'-26' Board (we're trying to look tuff).JPEG": "The Business Competition Club board posing with crossed arms in front of Upper Canada College",
+                "At ICDC!.jpg": "Daniel and teammates wearing medals outside the DECA international conference at night",
+                "First 2025 Club Meeting.jpg": "A packed lecture hall of students at the first Business Competition Club meeting of 2025",
+                "First and last time at DECA regionals.HEIC": "Two photos of Daniel and two friends in suits at DECA Ontario regionals"
+            }
         },
         {
             "key": "gradcap/asian-heritage",
