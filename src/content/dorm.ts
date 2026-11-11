@@ -245,6 +245,7 @@ export const dormContent: Record<string, Entry> = withMedia({
                 role: 'Project manager (through International Business for Bruins)',
                 team: '6 people',
                 timeline: 'Spring quarter 2026',
+                hideGlance: true,
                 summary: 'Whether and how a Southeast Asian venture debt fund should expand its credit products.',
                 omit: ['whatIDid', 'result'],
                 problem: 'Genesis Alternative Ventures, a Southeast Asian venture debt fund, wanted to know whether and how to expand the credit products in its Fund III across Southeast Asia, without cannibalizing its existing business.'
