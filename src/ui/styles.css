@@ -256,6 +256,7 @@ body.touch .message { bottom: 160px; }
 .fun-fact { background: #fff6c8; border: 2px solid var(--edge); padding: 6px 10px; }
 
 .links { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
+.links.links-top { margin: 2px 0 14px; }
 .link {
     display: inline-block; padding: 6px 12px; border: 2px solid var(--edge); background: #fff; color: var(--accent-2);
     font-weight: 600; text-decoration: none; box-shadow: 0 2px 0 var(--edge);

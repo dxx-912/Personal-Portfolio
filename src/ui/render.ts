@@ -114,6 +114,8 @@ export function renderSection(s: Section, o: RenderOpts): string {
         out.push(`<h${o.heading} class="sec-title">${rich(s.title)}</h${o.heading}>`);
     }
     if (!blank(s.subtitle)) out.push(`<p class="subtitle">${rich(s.subtitle!)}</p>`);
+    const links = (s.links ?? []).map(renderLink).filter(Boolean);
+    if (s.linksTop && links.length) out.push(`<p class="links links-top">${links.join('')}</p>`);
     s.body?.forEach((p) => { if (!blank(p)) out.push(`<p>${rich(p)}</p>`); });
     const glance = ([['Role', 'role'], ['Team', 'team'], ['Timeline', 'timeline']] as const)
         .filter(([, k]) => !s.hideGlance && !omit.has(k) && !blank(s[k])).map(([label, k]) => [label, s[k]!] as [string, string]);
@@ -155,7 +157,6 @@ export function renderSection(s: Section, o: RenderOpts): string {
     s.videos?.forEach((v) => out.push(renderVideo(v, o.mode, o.comingSoonVideo)));
     const tags = s.hideTags ? [] : (s.tags ?? []).filter((t) => !blank(t));
     if (tags.length) out.push(`<p class="tags">${tags.map((t) => `<span class="tag">${rich(t)}</span>`).join('')}</p>`);
-    const links = (s.links ?? []).map(renderLink).filter(Boolean);
-    if (links.length) out.push(`<p class="links">${links.join('')}</p>`);
+    if (!s.linksTop && links.length) out.push(`<p class="links">${links.join('')}</p>`);
     return out.join('\n');
 }

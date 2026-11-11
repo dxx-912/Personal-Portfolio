@@ -84,6 +84,8 @@ export interface Section {
     hideGlance?: boolean;
     /** Game panel only: skip the tag strip (the quick view card still shows the tags). */
     hideTags?: boolean;
+    /** Game panel: show the links right under the subtitle instead of at the bottom. */
+    linksTop?: boolean;
     /**
      * A long story in its own scrollable box: a heading, the opening paragraphs, then the rest
      * behind a "Read the whole story" expander.
