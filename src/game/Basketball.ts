@@ -98,8 +98,48 @@ export class Basketball {
 
     /** Power that drops it in from (px, py): the middle of the sweet spot, for the meter. */
     sweetSpot(px: number, py: number) {
-        const v = this.idealSpeed(Math.hypot(this.geom.rimX - px, this.geom.rimY - py), this.angleFor(px, py));
-        return Phaser.Math.Clamp(v / this.maxSpeed(), 0.12, 0.92);
+        const a = this.aim(px, py, 0);
+        const v = this.launch(a.R, a.d);
+        return Phaser.Math.Clamp(Math.hypot(v.vh, v.vz) / this.maxSpeed(), 0.12, 0.92);
+    }
+
+    /**
+     * Where a shot from the feet at (px, py) leaves the hands, and how far it has to travel to land e px past
+     * the rim centre. The ball leaves a little in front of the feet (less when standing right under the hoop,
+     * so it never starts past the rim).
+     */
+    private aim(px: number, py: number, e: number) {
+        const g = this.geom;
+        const dx = g.rimX - px, dy = g.rimY - py;
+        const d = Math.hypot(dx, dy);
+        const ux = d > 0.01 ? dx / d : 0, uy = d > 0.01 ? dy / d : 1;
+        const lead = Math.min(4, d * 0.5);
+        const ox = px + ux * lead, oy = py + uy * lead;
+        // aim at a real point e px past (+) or short of (-) the rim along the shot line, so a miss from right
+        // under the hoop still lands off the rim instead of being squeezed back into it
+        const tx = g.rimX + ux * e, ty = g.rimY + uy * e;
+        const R = Math.max(0.3, Math.hypot(tx - ox, ty - oy));
+        const sx = R > 0.31 ? (tx - ox) / R : ux, sy = R > 0.31 ? (ty - oy) / R : uy;
+        return { ox, oy, ux: sx, uy: sy, R, d };
+    }
+
+    /**
+     * Horizontal and vertical launch speed for an arc that comes down through the rim height R px away.
+     * Close in (under 30 px) the arc is set by its peak, a few px above the rim, so the ball always drops
+     * through on the way down (a fixed angle there tops out level with the rim and slides off). Further out
+     * a fixed launch angle per distance band.
+     */
+    private launch(R: number, d: number) {
+        const dh = this.geom.rimZ - HAND_Z;
+        if (d < 30) {
+            const peak = dh + 9;
+            const vz = Math.sqrt(2 * G * peak);
+            const t = vz / G + Math.sqrt((2 * (peak - dh)) / G);
+            return { vh: R / t, vz };
+        }
+        const theta = Phaser.Math.DegToRad(d < 40 ? 68 : d < 90 ? 60 : 52);
+        const v = this.idealSpeed(R, theta);
+        return { vh: v * Math.cos(theta), vz: v * Math.sin(theta) };
     }
 
     /**
@@ -107,10 +147,6 @@ export class Basketball {
      * crosses the rim height: inside the rim, on the rim, short, or long into the backboard.
      */
     shoot(px: number, py: number, p: number) {
-        const g = this.geom;
-        const dx = g.rimX - px, dy = g.rimY - py;
-        const d = Math.max(1, Math.hypot(dx, dy));
-        const theta = this.angleFor(px, py);
         const delta = p - this.sweetSpot(px, py);
         const a = Math.abs(delta), sgn = Math.sign(delta) || 1;
         const SWEET = this.sweetWidth(px, py);
@@ -120,16 +156,15 @@ export class Basketball {
         else if (a <= SWEET * 2.2) e = sgn * (RIM_R - BALL_R + ((a - SWEET) / (SWEET * 1.2)) * (2 * BALL_R + 1)); // rim
         else if (sgn < 0) e = -(RIM_R + BALL_R + 2 + (a - SWEET * 2.2) * 160); // falls short
         else e = Math.min(20, RIM_R + BALL_R + 4 + (a - SWEET * 2.2) * 45); // long: into the backboard
-        // the ball leaves the hands 4 px in front of the feet
-        const R = Math.max(2, d - 4 + e);
-        const v = Math.min(this.maxSpeed() * 1.1, this.idealSpeed(R, theta));
-        const ux = dx / d, uy = dy / d;
+        const { ox, oy, ux, uy, R, d } = this.aim(px, py, e);
+        const l = this.launch(R, d);
+        const k = Math.min(1, (this.maxSpeed() * 1.1) / Math.hypot(l.vh, l.vz));
         // a hair of sideways scatter so no two misses look identical
         const side = (Math.random() - 0.5) * (a <= SWEET ? 0.004 : 0.03);
-        this.x = px + ux * 4; this.y = py + uy * 4; this.z = HAND_Z;
-        this.vx = (ux - uy * side) * v * Math.cos(theta);
-        this.vy = (uy + ux * side) * v * Math.cos(theta);
-        this.vz = v * Math.sin(theta);
+        this.x = ox; this.y = oy; this.z = HAND_Z;
+        this.vx = (ux - uy * side) * l.vh * k;
+        this.vy = (uy + ux * side) * l.vh * k;
+        this.vz = l.vz * k;
         this.state = 'air'; this.airTime = 0; this.through = false;
         this.attempts++;
     }
@@ -261,11 +296,6 @@ export class Basketball {
     private clampToRoom() {
         this.x = Phaser.Math.Clamp(this.x, FLOOR_X + BALL_R, FLOOR_X + FLOOR_W - BALL_R);
         this.y = Phaser.Math.Clamp(this.y, FLOOR_Y + BALL_R, FLOOR_Y + FLOOR_H - BALL_R);
-    }
-
-    private angleFor(px: number, py: number) {
-        const d = Math.hypot(this.geom.rimX - px, this.geom.rimY - py);
-        return Phaser.Math.DegToRad(d < 40 ? 68 : d < 90 ? 60 : 52);
     }
 
     /** Launch speed whose arc comes down through the rim height R px away. */
