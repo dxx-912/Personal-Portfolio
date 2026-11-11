@@ -231,7 +231,7 @@ export const dormContent: Record<string, Entry> = withMedia({
                     { label: 'Our answer', text: 'Sequence it. Launch data analytics first, as a 4-month build sold as an upsell to existing clinic customers before private equity rollups lock them into competitors. Then use that cash flow and those relationships to enter cardiac surgery, which is a larger but harder market with no purpose-built competitor today.' }
                 ],
                 result: '3rd place finalist out of 50+ teams.',
-                gallery: 'viewer',
+                gallery: 'slides',
                 images: [
                     { alt: 'L.E.K. Case Competition slide', slot: 'binder/lek' },
                     { alt: 'L.E.K. Case Competition slide', slot: 'binder/lek' },
@@ -250,7 +250,7 @@ export const dormContent: Record<string, Entry> = withMedia({
                 summary: 'Whether and how a Southeast Asian venture debt fund should expand its credit products.',
                 omit: ['whatIDid', 'result'],
                 problem: 'Genesis Alternative Ventures, a Southeast Asian venture debt fund, wanted to know whether and how to expand the credit products in its Fund III across Southeast Asia, without cannibalizing its existing business.',
-                gallery: 'viewer',
+                gallery: 'slides',
                 images: [
                     { alt: 'Genesis Alternative Ventures slide', slot: 'binder/genesis' },
                     { alt: 'Genesis Alternative Ventures slide', slot: 'binder/genesis' },

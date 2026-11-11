@@ -54,7 +54,7 @@ export interface Section {
     /** A small heading shown right above the photos. */
     galleryTitle?: string;
     /** How images are laid out. */
-    gallery?: 'grid' | 'polaroid' | 'viewer' | 'row' | 'stack';
+    gallery?: 'grid' | 'polaroid' | 'viewer' | 'row' | 'stack' | 'slides';
     videos?: VideoItem[];
     links?: LinkItem[];
 
