@@ -351,6 +351,7 @@ export const dormContent: Record<string, Entry> = withMedia({
         body: [
             'Supporting 98 residents: I handle conflicts, policy issues, and emergencies, organize programming, and help run move-in and orientation. I get a free single and free food in return, which is great cause UCLA has free food.'
         ],
+        gallery: 'row',
         images: [{ alt: 'Daniel as a Resident Assistant', slot: 'closet/ra' }]
     },
 
