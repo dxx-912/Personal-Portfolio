@@ -493,18 +493,18 @@
     ],
     "shirt/gallery": [
         {
-            "src": "/media/shirt/gallery/01-me-pitching-my-cause-to-more-judges.webp",
-            "alt": "Me pitching my cause to more judges",
+            "src": "/media/shirt/gallery/01-me-pitching-my-cause-to-judges.webp",
+            "alt": "Me pitching my cause to judges",
             "w": 1052,
             "h": 946,
-            "file": "Me pitching my cause to more judges"
+            "file": "Me pitching my cause to judges"
         },
         {
-            "src": "/media/shirt/gallery/02-me-pitching-our-cause-to-many-judges.webp",
-            "alt": "Me pitching our cause to many judges",
+            "src": "/media/shirt/gallery/02-me-pitching-pt-2.webp",
+            "alt": "Me pitching pt 2",
             "w": 1600,
             "h": 1067,
-            "file": "Me pitching our cause to many judges"
+            "file": "Me pitching pt 2"
         },
         {
             "src": "/media/shirt/gallery/03-me-speaking-at-our-second-school-charity-concert.webp",
@@ -521,32 +521,60 @@
             "file": "Meeting with president of CHHA"
         },
         {
-            "src": "/media/shirt/gallery/05-one-of-many-charity-concerts-we-ran.webp",
+            "src": "/media/shirt/gallery/05-new-brunswick-chapter.webp",
+            "alt": "New Brunswick Chapter",
+            "w": 1600,
+            "h": 899,
+            "file": "New Brunswick Chapter"
+        },
+        {
+            "src": "/media/shirt/gallery/06-one-of-many-charity-concerts-we-ran.webp",
             "alt": "One of many charity concerts we ran",
             "w": 1600,
             "h": 900,
             "file": "One of many charity concerts we ran"
         },
         {
-            "src": "/media/shirt/gallery/06-pitching-and-handing-out-flyers-at-the-ymci-chap.webp",
+            "src": "/media/shirt/gallery/07-pitch-stand.webp",
+            "alt": "Pitch Stand",
+            "w": 1600,
+            "h": 1200,
+            "file": "Pitch Stand"
+        },
+        {
+            "src": "/media/shirt/gallery/08-pitching-and-handing-out-flyers-at-the-ymci-chap.webp",
             "alt": "Pitching and handing out flyers at the YMCI chapter",
             "w": 1066,
             "h": 1600,
             "file": "Pitching and handing out flyers at the YMCI chapter"
         },
         {
-            "src": "/media/shirt/gallery/07-the-og-team.webp",
+            "src": "/media/shirt/gallery/09-the-og-team.webp",
             "alt": "The OG Team",
             "w": 1600,
             "h": 1066,
             "file": "The OG Team"
         },
         {
-            "src": "/media/shirt/gallery/08-trying-to-fundraise-at-a-local-event.webp",
+            "src": "/media/shirt/gallery/10-trying-to-fundraise-at-a-local-event.webp",
             "alt": "Trying to Fundraise at a Local Event",
             "w": 1600,
             "h": 1200,
             "file": "Trying to Fundraise at a Local Event"
+        },
+        {
+            "src": "/media/shirt/gallery/11-tys-chapter-head-speaking.webp",
+            "alt": "TYS Chapter Head Speaking",
+            "w": 1600,
+            "h": 1067,
+            "file": "TYS Chapter Head Speaking"
+        },
+        {
+            "src": "/media/shirt/gallery/12-volunteers.webp",
+            "alt": "Volunteers!",
+            "w": 1600,
+            "h": 1091,
+            "file": "Volunteers!"
         }
     ],
     "todo/dsp": [
