@@ -214,7 +214,14 @@
         {
             "key": "gradcap/academics",
             "folder": "1 Dorm/07 Grad cap, Upper Canada College/Academics (any number)",
-            "max": 0
+            "max": 0,
+            "alts": {
+                "Graduation!.jpg": "Upper Canada College's graduating class throwing their caps in the air",
+                "I got this the day of my graduation which is crazy.HEIC": "A fortune cookie message: Your leadership talents will bring you an incredible opportunity",
+                "Me, my mom, and my sister after graduating.jpg": "Daniel, his mom, and his sister outside Upper Canada College after graduating",
+                "Two tries cuz i'm goated.jpg": "Daniel's SAT score reports: 1560 in October 2024 and 1520 in August 2024",
+                "With two closest friends before graduating.heic": "Daniel and his two closest friends in graduation gowns, taking a mirror selfie"
+            }
         },
         {
             "key": "gradcap/business",

@@ -284,6 +284,43 @@
             "file": "Yeawonderland (8) 2"
         }
     ],
+    "gradcap/academics": [
+        {
+            "src": "/media/gradcap/academics/01-upper-canada-college-s-graduating-class-throwing.webp",
+            "alt": "Upper Canada College's graduating class throwing their caps in the air",
+            "w": 1168,
+            "h": 1532,
+            "file": "Graduation!"
+        },
+        {
+            "src": "/media/gradcap/academics/02-a-fortune-cookie-message-your-leadership-talents.webp",
+            "alt": "A fortune cookie message: Your leadership talents will bring you an incredible opportunity",
+            "w": 1200,
+            "h": 1600,
+            "file": "I got this the day of my graduation which is crazy"
+        },
+        {
+            "src": "/media/gradcap/academics/03-daniel-his-mom-and-his-sister-outside-upper-cana.webp",
+            "alt": "Daniel, his mom, and his sister outside Upper Canada College after graduating",
+            "w": 1199,
+            "h": 1600,
+            "file": "Me, my mom, and my sister after graduating"
+        },
+        {
+            "src": "/media/gradcap/academics/04-daniel-s-sat-score-reports-1560-in-october-2024-.webp",
+            "alt": "Daniel's SAT score reports: 1560 in October 2024 and 1520 in August 2024",
+            "w": 1280,
+            "h": 1600,
+            "file": "Two tries cuz i'm goated"
+        },
+        {
+            "src": "/media/gradcap/academics/05-daniel-and-his-two-closest-friends-in-graduation.webp",
+            "alt": "Daniel and his two closest friends in graduation gowns, taking a mirror selfie",
+            "w": 1200,
+            "h": 1600,
+            "file": "With two closest friends before graduating"
+        }
+    ],
     "laptop/ateball": [
         {
             "src": "/media/laptop/ateball/01-ateball-sign-up-screen.webp",

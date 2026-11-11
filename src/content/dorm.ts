@@ -356,7 +356,7 @@ export const dormContent: Record<string, Entry> = withMedia({
                     { title: 'Extended essay', style: 'plain', items: ["Economic and Geopolitical Implications of Taiwan's Semiconductor Industry: To what extent has Taiwan’s semiconductor chip industry effectively deterred enforcement of the One-China policy by creating interdependence between China, the U.S., and Taiwan?"] }
                 ],
                 links: [{ label: 'Read the extended essay', href: 'https://drive.google.com/file/d/14pv1NG7O9NHQkYhc4oL-PvGsY7-hgb9g/view?usp=sharing' }],
-                gallery: 'full',
+                gallery: 'scroll',
                 images: [{ alt: 'Upper Canada College academics photo', slot: 'gradcap/academics', captionFromFile: true }]
             },
             {
