@@ -92,7 +92,7 @@ The HUD has three bars. They start fresh on every visit (do not persist across v
 
 ### C. HUD and buttons
 1. **Top right buttons** (sound, pause, found counter, minimap): twice their current size and clearly more noticeable, still never overlapping the game area. Give them a consistent pixel button style with readable labels.
-2. **Bonus counter:** next to the found counter, a small "Secrets X/3" for the three bonus interactables: the fridge, the basketball, the home phone. Bonus items never count toward the 19.
+2. **Secrets counter:** next to the found counter, "Secrets X/12": every E action you can find (beanbag, closet, fridge, basketball pick up, pull ups, speaker, camera, piano, pie, petting Fluffy, longboard, home phone), sleeping aside. Changed from the three bonus items at Daniel's request. Secrets never count toward the 19.
 3. **The quick view link must always stay visible.** The room title card currently takes its place at the top center during the first seconds. Move the title card lower, over the top of the room, so "No time to play? Quick view" never disappears.
 
 ### D. Dorm room

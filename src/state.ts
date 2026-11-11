@@ -17,7 +17,11 @@ interface Saved {
 }
 
 /** The three bonus interactables. Not part of the 19. */
-export const SECRETS = ['fridge', 'basketball', 'phone'] as const;
+/**
+ * The Secrets counter: everything you can just press E for (sleeping aside). None of these count toward
+ * the 19 found items. Ids match the room interactables (the basketball's is 'ball').
+ */
+export const SECRETS = ['beanbag', 'closet', 'fridge', 'basketball', 'pullup', 'speaker', 'camera', 'piano', 'pie', 'cat', 'longboard', 'phone'] as const;
 export type SecretKey = typeof SECRETS[number];
 
 type Listener<T> = (payload: T) => void;

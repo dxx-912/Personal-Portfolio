@@ -9,7 +9,7 @@ import { hlKey } from '../assets/manifest';
 import { DANIEL_FRAMES } from '../assets/placeholders';
 import { ROOMS } from '../rooms';
 import type { ActionKind, DoorDef, Facing, InteractableDef, LabelDef, RoomDef } from '../rooms/types';
-import { bus, state, type GameMode } from '../state';
+import { bus, SECRETS, state, type GameMode, type SecretKey } from '../state';
 import { Player, FACING_VEC, OUTFITS } from '../game/Player';
 import { Cat } from '../game/Cat';
 import { Lighting } from '../game/Lighting';
@@ -779,6 +779,9 @@ export class Room extends Phaser.Scene {
 
     private doAction(t: Target, a: ActionKind) {
         this.pinned = null;
+        // every E action counts toward Secrets the first time, except sleeping
+        const id = t.def?.id === 'ball' ? 'basketball' : t.def?.id;
+        if (a !== 'nap' && id && (SECRETS as readonly string[]).includes(id)) state.markSecret(id as SecretKey);
         switch (a) {
             case 'sit': this.sitDown(t); break;
             case 'outfit': this.changeOutfit(t); break;
