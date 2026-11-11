@@ -328,8 +328,6 @@ export const dormContent: Record<string, Entry> = withMedia({
             { label: 'SAT', value: '1560' }
         ],
         list: [
-            { title: 'Higher level', items: ['Mathematics A&I', 'English L&L', 'Economics'] },
-            { title: 'Standard level', items: ['Mandarin B', 'Global Politics', 'ESS'] },
             {
                 title: 'Leadership',
                 items: [
@@ -338,7 +336,11 @@ export const dormContent: Record<string, Entry> = withMedia({
                 ]
             }
         ],
-        body: ["Extended essay: Economic and Geopolitical Implications of Taiwan's Semiconductor Industry."],
+        body: [
+            'Higher Levels: Mathematics (A&I), English (L&L), Economics',
+            'Standard Levels: Mandarin B, Global Politics, ESS',
+            "Extended essay: Economic and Geopolitical Implications of Taiwan's Semiconductor Industry."
+        ],
         links: [{ label: 'Read the extended essay', href: 'https://drive.google.com/file/d/14pv1NG7O9NHQkYhc4oL-PvGsY7-hgb9g/view?usp=sharing' }],
         gallery: 'grid',
         images: [
