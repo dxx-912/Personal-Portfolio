@@ -270,9 +270,10 @@ export const dormContent: Record<string, Entry> = withMedia({
                 }],
                 gallery: 'grid',
                 images: [
-                    { alt: 'DSP Vogue campaign graphic', caption: 'Vogue campaign', slot: 'phone/dsp-vogue' },
-                    { alt: 'DSP Vogue campaign graphic', caption: 'Vogue campaign', slot: 'phone/dsp-vogue' },
-                    { alt: 'DSP Vogue campaign graphic', caption: 'Vogue campaign', slot: 'phone/dsp-vogue' },
+                    { alt: 'DSP Vogue campaign graphic', caption: 'Main Graphic', slot: 'phone/dsp-vogue' },
+                    { alt: 'DSP Vogue campaign graphic', caption: 'Rush Schedule 1', slot: 'phone/dsp-vogue' },
+                    { alt: 'DSP Vogue campaign graphic', caption: 'Rush Schedule 2', slot: 'phone/dsp-vogue' },
+                    { alt: 'DSP Vogue campaign graphic', caption: 'Offers Graphic', slot: 'phone/dsp-vogue' },
                     { alt: 'Delta Sigma Pi chapter website', caption: 'Website build', slot: 'phone/dsp-website', wide: true }
                 ],
                 videos: [{ kind: 'mp4', title: 'DSP rush video', slot: 'phone/dsp-rush', url: 'https://www.instagram.com/p/DdsWVwHBf9C/' }],
