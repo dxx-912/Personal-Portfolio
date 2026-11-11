@@ -76,7 +76,8 @@ try {
         if (slot.pdfPages) files = pdfPages(dir, slot.pdfPages, slot.deck);
         if (slot.splitRows) files = (await Promise.all(files.map((f) => slot.splitRows.includes(f) ? splitRows(join(dir, f)) : [f]))).flat();
         if (slot.skip) files = files.filter((f) => !slot.skip.includes(basename(f)));
-        if (slot.first) files = [...files.filter((f) => slot.first.includes(f)), ...files.filter((f) => !slot.first.includes(f))];
+        // "first" files lead, in the order listed
+        if (slot.first) files = [...slot.first.filter((f) => files.includes(f)), ...files.filter((f) => !slot.first.includes(f))];
         if (!files.length) continue;
         if (slot.max && files.length > slot.max) {
             warnings.push(`"${slot.folder}" takes ${slot.max}; using the first ${slot.max} of ${files.length}.`);

@@ -53,9 +53,9 @@ export const dormContent: Record<string, Entry> = withMedia({
                 'Accounting principles'
             ]
         }],
-        // five photos stacked, each the full width of the panel
+        // photos one under another, each the full width of the panel
         galleryTitle: 'Photos with friends!',
-        gallery: 'stack',
+        gallery: 'full',
         images: [
             { alt: 'Daniel and friends at UCLA', slot: 'pennant/friends' },
             { alt: 'Daniel and friends at UCLA', slot: 'pennant/friends' },
