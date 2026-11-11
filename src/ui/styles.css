@@ -269,7 +269,11 @@ a.link:hover { background: #eef4ff; text-decoration: underline; }
 .gallery.grid { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); }
 .gallery.viewer { grid-auto-flow: column; grid-auto-columns: minmax(240px, 80%); overflow-x: auto; scroll-snap-type: x mandatory; padding-bottom: 6px; }
 .gallery.viewer .media { scroll-snap-align: start; }
-.gallery.stack { grid-template-columns: minmax(0, 1fr); gap: 14px; }
+/* stack: wide photos full width; tall photos pair up side by side at the same size */
+.gallery.stack { grid-template-columns: repeat(2, minmax(0, 1fr)); grid-auto-flow: row dense; gap: 14px; }
+.gallery.stack .media { grid-column: 1 / -1; }
+.gallery.stack .media.tall { grid-column: auto; }
+.gallery.stack .media.tall img { aspect-ratio: 4 / 5; object-fit: cover; }
 .gallery.row { grid-auto-flow: column; grid-auto-columns: minmax(0, 1fr); gap: 12px; }
 .gallery.row img { aspect-ratio: 4 / 5; object-fit: cover; }
 .gallery.row figcaption { font-size: 13px; text-align: center; }

@@ -436,7 +436,8 @@ export const dormContent: Record<string, Entry> = withMedia({
             }
         ],
         links: [{ label: 'Hope For Hearing on Instagram', href: 'https://www.instagram.com/hopeforhearing/' }],
-        gallery: 'polaroid',
+        // wide photos full width; the two tall ones side by side
+        gallery: 'stack',
         images: [
             { alt: 'Hope For Hearing photo', slot: 'shirt/gallery' },
             { alt: 'Hope For Hearing photo', slot: 'shirt/gallery' },
