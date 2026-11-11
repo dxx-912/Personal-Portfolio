@@ -77,9 +77,9 @@ export interface Counter {
 
 /**
  * How an entry's tabs look in the panel.
- * tabs: plain tabs. notes: sticky notes on a TO DO board. shelf: three shelf tiers. phone: a phone feed.
+ * tabs: plain tabs. notes: sticky notes on a TO DO board. shelf: three shelf tiers.
  */
-export type TabStyle = 'tabs' | 'notes' | 'shelf' | 'phone';
+export type TabStyle = 'tabs' | 'notes' | 'shelf';
 
 export interface Entry extends Section {
     /** Short label after "F" in the in-game prompt, e.g. "UCLA" or "About him". */

@@ -319,19 +319,6 @@ a.link:hover { background: #eef4ff; text-decoration: underline; }
 .tab-notes::before { content: ''; position: absolute; top: -4px; left: 50%; width: 8px; height: 8px; border-radius: 50%; background: #d33a3a; box-shadow: 0 1px 0 #7a1a1a; }
 .tab-notes[aria-selected="true"] { background: var(--note); color: var(--ink); outline: 3px solid var(--ink); outline-offset: 2px; transform: rotate(0) scale(1.03); }
 
-/* phone: the club marketing panel looks like a phone feed (original styling) */
-.panel-phone { width: min(520px, 100%); border-radius: 26px; border-width: 4px; box-shadow: 0 0 0 4px #2a2b31, 0 0 0 7px var(--edge), 0 10px 0 7px rgba(0, 0, 0, 0.45); overflow: hidden; }
-.panel-phone .panel-head { background: #fff; border-bottom: 1px solid #e3dccd; }
-.panel-phone .panel-head h2 { font-size: 20px; }
-.panel-phone .panel-body { background: #fff; }
-.tabs-phone .tablist { gap: 14px; padding-bottom: 10px; border-bottom: 1px solid #ece6da; }
-.tab-phone {
-    width: 68px; height: 68px; border-radius: 50%; padding: 0; display: grid; place-items: center; font-size: 15px;
-    background: #fff; border: 3px solid #d8cfbd; box-shadow: none;
-}
-.tab-phone[aria-selected="true"] { background: #fff; color: var(--ink); border-color: transparent; box-shadow: 0 0 0 3px #e58bc9, 0 0 0 6px #f7c46a; }
-.tabs-phone .gallery.grid { grid-template-columns: repeat(3, 1fr); gap: 3px; }
-
 /* shelf: three tiers to pick from */
 .tabs-shelf { display: grid; grid-template-columns: 180px 1fr; gap: 16px; align-items: start; }
 .tabs-shelf .tablist { flex-direction: column; gap: 0; background: #8f5f3d; border: 3px solid var(--edge); padding: 6px; }
@@ -620,8 +607,5 @@ body.title-on .plain-link { opacity: 0.85; visibility: visible; pointer-events: 
 .ig-card { display: grid; justify-items: center; gap: 8px; text-align: center; padding: 6px 0 4px; }
 .ig-logo { width: 56px; height: 56px; border-radius: 14px; image-rendering: auto; }
 .ig-ph { display: block; background: #c8417e; }
-/* the club marketing panel's header shows the Instagram logo like an app icon */
-.panel-phone .panel-head .head-logo { width: 28px; height: 28px; border-radius: 8px; margin-right: 10px; flex: none; image-rendering: auto; }
-.panel-phone .panel-head h2 { display: flex; align-items: center; }
 .ig-handle { margin: 0; font: 700 22px var(--font-label); color: var(--ink); }
 .ig-line { margin: 0; }

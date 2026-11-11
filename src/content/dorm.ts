@@ -201,13 +201,13 @@ export const dormContent: Record<string, Entry> = withMedia({
         ]
     },
 
-    // 6. Phone with a feed on screen
+    // 6. Phone on the desk
     phone: {
         id: 'phone',
         prompt: 'Club marketing',
         plainGroup: 'projects',
         title: 'Club marketing',
-        tabStyle: 'phone',
+        tabStyle: 'tabs',
         short: 'DSP and IBB',
         summary: 'Campaigns, rush videos, website rebuilds. [TODO: metrics]',
         tags: ['Brand', 'Web'],
