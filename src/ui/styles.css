@@ -220,6 +220,8 @@ body.touch .message { bottom: 160px; }
     font-size: 17px; line-height: 1.55;
 }
 .panel-backdrop.open .panel { transform: none; }
+/* panels with tabs keep one size, the same for all of them, so switching tabs never resizes the panel */
+.panel.panel-tabs, .panel.panel-shelf, .panel.panel-notes { height: min(86vh, 900px); }
 
 .panel-head {
     display: flex; align-items: center; justify-content: space-between; gap: 12px;
@@ -381,14 +383,14 @@ a.link:hover { background: #eef4ff; text-decoration: underline; }
 .tab-notes[aria-selected="true"] { background: var(--note); color: var(--ink); outline: 3px solid var(--ink); outline-offset: 2px; transform: rotate(0) scale(1.03); }
 
 /* shelf: three tiers to pick from */
-/* minmax(0, 1fr): the tier column never grows wider than the panel, so only a gallery scrolls sideways */
-.tabs-shelf { display: grid; grid-template-columns: 180px minmax(0, 1fr); gap: 16px; align-items: start; }
-.tabs-shelf .tablist { flex-direction: column; gap: 0; background: #8f5f3d; border: 3px solid var(--edge); padding: 6px; }
+/* tiers in a row above the content (like the other tabbed panels), so each tier gets the full panel width;
+   minmax(0, 1fr) keeps the column to the panel width, so only a gallery scrolls sideways */
+.tabs-shelf { display: grid; grid-template-columns: minmax(0, 1fr); gap: 16px; align-items: start; }
+.tabs-shelf .tablist { flex-direction: row; gap: 6px; background: #8f5f3d; border: 3px solid var(--edge); padding: 6px; }
 .tab-shelf {
-    text-align: left; background: #5a3e2a; color: #f6efe0; border: none; border-bottom: 5px solid #b88a5a; box-shadow: none;
-    padding: 14px 10px; margin-bottom: 6px;
+    flex: 1; text-align: center; background: #5a3e2a; color: #f6efe0; border: none; border-bottom: 5px solid #b88a5a; box-shadow: none;
+    padding: 12px 10px; margin: 0;
 }
-.tab-shelf:last-child { margin-bottom: 0; }
 .tab-shelf[aria-selected="true"] { background: #fff6c8; color: var(--ink); }
 
 
@@ -441,10 +443,9 @@ a.link:hover { background: #eef4ff; text-decoration: underline; }
 
 @media (max-width: 640px) {
     .panel { font-size: 16px; max-height: 92vh; }
+    .panel.panel-tabs, .panel.panel-shelf, .panel.panel-notes { height: 92vh; }
     .panel-head h2 { font-size: 20px; }
-    .tabs-shelf { grid-template-columns: minmax(0, 1fr); }
-    .tabs-shelf .tablist { flex-direction: row; }
-    .tab-shelf { flex: 1; margin: 0 4px 0 0; padding: 10px 6px; }
+    .tab-shelf { padding: 10px 6px; }
     .tabs-notes .tablist { grid-template-columns: 1fr 1fr; padding: 8px; }
     .portrait .stat { width: 104px; }
 }
