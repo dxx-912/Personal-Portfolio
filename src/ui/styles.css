@@ -477,7 +477,7 @@ a.link:hover { background: #eef4ff; text-decoration: underline; }
     .hud-btn { min-height: 30px; }
     .mm-room { width: 44px; height: 24px; font-size: 10px; }
     .title-card { top: 140px; }
-    body.touch .rotate-hint { top: 196px; }
+    body.touch .rotate-hint { top: 196px; max-width: calc(100vw - 136px); width: auto; line-height: 1.4; }
     .title-card { font-size: 16px; }
     .plain-link { font-size: 13px; }
 }
@@ -601,9 +601,9 @@ body.title-on .plain-link { opacity: 0; visibility: hidden; pointer-events: none
 }
 @media (max-width: 560px) {
     .portrait .face { width: 34px; height: 28px; }
-    .portrait .stat { width: 92px; height: 11px; }
-    .portrait .stat .txt { font-size: 9px; line-height: 11px; }
-    .plain-link, .hud-top-left .plain-link { top: calc(max(8px, env(safe-area-inset-top)) + 56px); left: 8px; transform: none; font-size: 14px; padding: 5px 10px; }
+    .portrait .stat { width: 112px; height: 11px; }
+    .portrait .stat .txt { font-size: 9px; line-height: 11px; white-space: nowrap; }
+    .plain-link, .hud-top-left .plain-link { top: calc(max(8px, env(safe-area-inset-top)) + 70px); left: 8px; transform: none; font-size: 14px; padding: 5px 10px; }
 }
 
 /* ---------- stat refill (fridge) ---------- */

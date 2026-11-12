@@ -505,6 +505,8 @@ function initGallery(article: HTMLElement) {
     const sync = () => {
         const i = index();
         dots.forEach((d, k) => d.setAttribute('aria-current', String(k === i)));
+        const count = $('.gal-count', gal);
+        if (count) count.textContent = `${i + 1} / ${slides.length}`;
         if (prev) prev.disabled = i <= 0;
         if (next) next.disabled = i >= slides.length - 1;
     };

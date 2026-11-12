@@ -278,9 +278,10 @@ export function renderPortfolio(opts: { production: boolean }): RenderResult {
         return `
         <div class="gal" data-gal aria-label="Photos">
           <ul class="gal-track" tabindex="0">${slides}</ul>
-          ${total > 1 ? `<div class="gal-ctrl">
+          ${total > 1 ? `<div class="gal-ctrl${total > 8 ? ' many' : ''}">
             <button type="button" class="nb gal-prev" aria-label="Previous photo">${icon('arrowLeft')}</button>
             <span class="gal-dots">${Array.from({ length: total }, (_, k) => `<button type="button" class="dot" aria-label="${esc(C.galleryLabel(k + 1, total))}"${k === 0 ? ' aria-current="true"' : ''}></button>`).join('')}</span>
+            <span class="gal-count" aria-hidden="true">1 / ${total}</span>
             <button type="button" class="nb gal-next" aria-label="Next photo">${icon('arrowRight')}</button>
           </div>` : ''}
         </div>`;

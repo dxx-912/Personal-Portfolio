@@ -491,3 +491,9 @@ a.clink:hover span { text-decoration: underline; text-underline-offset: 4px; }
 /* videos inside a gallery, and side by side Spotify embeds */
 .gal-video { display: block; width: 100%; max-height: 60vh; background: #000; border: var(--line) solid var(--ink); }
 .d-embeds { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 14px; margin: 10px 0 14px; }
+
+/* long galleries: a "3 / 15" counter instead of a row of dots that would push the arrows off a phone */
+.gal-count { display: none; font: 700 14px var(--font-lbl); min-width: 5ch; text-align: center; }
+.gal-ctrl.many .gal-dots { display: none; }
+.gal-ctrl.many .gal-count { display: inline-block; }
+@media (max-width: 700px) { .d-embeds iframe { height: 152px; } .d-embeds { gap: 10px; } }

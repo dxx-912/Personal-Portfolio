@@ -60,9 +60,10 @@ export function aboutHtml(entry: Entry) {
         ? `<img class="ab-shot" src="${esc(shot.src)}" alt="${esc(shot.alt)}" width="160" height="205" />`
         : `<div class="ab-shot ab-shot-ph" role="img" aria-label="${esc(shot?.alt ?? 'Headshot')}"></div>`;
 
-    const howTo = a.keys.map((k) => `
+    const touch = document.body.classList.contains('touch');
+    const howTo = (touch ? a.touchKeys : a.keys).map((k) => `
         <li class="ab-how-item">
-            <span class="ab-keys">${k.mouse ? MOUSE_ICON : keys(k.keys)}</span>
+            ${k.mouse || k.keys.length ? `<span class="ab-keys">${k.mouse ? MOUSE_ICON : keys(k.keys)}</span>` : ''}
             <span class="ab-how-l">${esc(k.label)}</span>
         </li>`).join('');
 
@@ -83,7 +84,7 @@ export function aboutHtml(entry: Entry) {
             <h3 id="ab-how-h" class="ab-how-h">${esc(a.howTitle)}</h3>
             <ul class="ab-how-row">${howTo}</ul>
             <p class="ab-line">${esc(a.rooms)}</p>
-            <p class="ab-line">${esc(a.counts(TOTAL_ITEMS, SECRETS.length))}</p>
+            <p class="ab-line">${esc(a.counts(TOTAL_ITEMS, SECRETS.length, touch))}</p>
             <p class="ab-line ab-recruiters">${esc(a.recruiters)}</p>
         </div>`;
 }

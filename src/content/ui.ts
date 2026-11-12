@@ -32,8 +32,15 @@ export const ui = {
             { keys: ['E'], label: 'Interact' },
             { keys: [], mouse: true, label: 'Click to walk' }
         ] as { keys: string[]; mouse?: boolean; label: string }[],
+        /** Same, on phones and tablets: the joystick and the two round buttons. */
+        touchKeys: [
+            { keys: ['Joystick'], label: 'Move' },
+            { keys: ['Info'], label: 'Learn more' },
+            { keys: ['Do'], label: 'Interact' },
+            { keys: [], label: 'Tap to walk' }
+        ] as { keys: string[]; mouse?: boolean; label: string }[],
         rooms: 'UCLA dorm = professional stuff. Toronto bedroom = personal life.',
-        counts: (stories: number, secrets: number) => `Find all ${stories} items that represent me (F) and ${secrets} interactions (E) --> ex. Try shooting the basketball!`,
+        counts: (stories: number, secrets: number, touch = false) => `Find all ${stories} items that represent me (${touch ? 'Info' : 'F'}) and ${secrets} interactions (${touch ? 'Do' : 'E'}) --> ex. Try shooting the basketball!`,
         recruiters: 'For any recruiters - check out the quick view version of this portfolio. Or play the full game if you have time.',
         start: 'Start exploring',
         quick: 'No time? Quick view'
