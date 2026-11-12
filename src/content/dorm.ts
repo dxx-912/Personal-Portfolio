@@ -32,15 +32,11 @@ export const dormContent: Record<string, Entry> = withMedia({
         prompt: 'UCLA',
         plainGroup: 'education',
         title: 'UCLA',
-        subtitle: `${MAJOR}. College Honours Student.`,
+        subtitle: `${MAJOR}. College Honours Student. Expected June 2029.`,
         summary: `${MAJOR}. GPA 3.72. Expected graduation June 2029.`,
-        facts: [
-            { label: 'Major', value: MAJOR },
-            { label: 'Expected graduation', value: 'June 2029' },
-            { label: 'Honours', value: 'College Honours Student' }
-        ],
         list: [{
             title: 'Coursework',
+            style: 'chips-row',
             items: [
                 'Microeconomic theory',
                 'Macroeconomic theory',
@@ -65,7 +61,6 @@ export const dormContent: Record<string, Entry> = withMedia({
         plainGroup: 'experience',
         title: 'Student org leadership',
         plainTitle: 'Student orgs',
-        subtitle: 'Pick a sticky note.',
         tabStyle: 'notes',
         tabs: [
             {
@@ -151,6 +146,7 @@ export const dormContent: Record<string, Entry> = withMedia({
                 subtitle: 'Solo project',
                 linksTop: true,
                 summary: 'Personalized cold emails from your own Gmail. 7 users so far, 650+ emails sent.',
+                hideTags: true,
                 tags: ['Builder', 'Live'],
                 omit: ['role', 'team', 'timeline', 'problem', 'whatIDid'],
                 notes: [
@@ -159,7 +155,7 @@ export const dormContent: Record<string, Entry> = withMedia({
                     { label: 'Built with', text: 'Next.js, React, TypeScript, Supabase (Postgres, Auth), Vercel, Google Apps Script, Google OAuth, Claude Code' }
                 ],
                 result: '7 users so far with over 650 emails sent.',
-                gallery: 'stack',
+                gallery: 'scroll',
                 images: [
                     { alt: 'Cold Outreach Automator screenshot', slot: 'laptop/cold-email' },
                     { alt: 'Cold Outreach Automator screenshot', slot: 'laptop/cold-email' }
@@ -172,6 +168,7 @@ export const dormContent: Record<string, Entry> = withMedia({
                 subtitle: 'Solo project',
                 linksTop: true,
                 summary: 'Turns your Instagram saved posts into a daily feed you actually revisit.',
+                hideTags: true,
                 tags: ['Builder', 'Live'],
                 omit: ['role', 'team', 'timeline', 'problem', 'whatIDid'],
                 notes: [
@@ -197,6 +194,7 @@ export const dormContent: Record<string, Entry> = withMedia({
                 timeline: '12 weeks [TODO: quarter and year]',
                 hideGlance: true,
                 summary: 'Led a 12-person team from zero to one over 12 weeks.',
+                hideTags: true,
                 tags: ['PM'],
                 problem: 'Everyone always has opinions on everything, especially when a friend group has to decide where to eat out together. All of a sudden, people are "okay with anything" and end up going to Raising Cane\'s for the nth time. Built this app to fix this problem.',
                 whatIDid: 'Led a 12-person team from zero to one over 12 weeks, running two to three syncs a week across design, frontend, and backend.',
@@ -350,6 +348,7 @@ export const dormContent: Record<string, Entry> = withMedia({
                     { title: 'Standard Levels', style: 'chips', items: ['Mandarin B', 'Global Politics', 'Environmental Systems'] },
                     { title: 'Extended essay', style: 'plain', items: ["Economic and Geopolitical Implications of Taiwan's Semiconductor Industry: To what extent has Taiwan’s semiconductor chip industry effectively deterred enforcement of the One-China policy by creating interdependence between China, the U.S., and Taiwan?"] }
                 ],
+                linksBeforeGallery: true,
                 links: [{ label: 'Read the extended essay', href: 'https://drive.google.com/file/d/14pv1NG7O9NHQkYhc4oL-PvGsY7-hgb9g/view?usp=sharing' }],
                 gallery: 'scroll',
                 images: [{ alt: 'Upper Canada College academics photo', slot: 'gradcap/academics', captionFromFile: true }]
@@ -391,19 +390,14 @@ export const dormContent: Record<string, Entry> = withMedia({
         prompt: 'Hope For Hearing',
         plainGroup: 'projects',
         title: 'Hope For Hearing',
+        panelTitle: 'Hope For Hearing - Co-Founder',
         // Roy Feng started it; Daniel scaled it
         role: 'Co-founder',
         summary: 'At its peak, Hope For Hearing grew to 500+ members across 12 high school chapters in Canada.',
         omit: ['team', 'timeline', 'problem', 'whatIDid', 'result'],
-        counters: [
-            { value: 500, suffix: '+', label: 'members' },
-            { value: 12, label: 'high school chapters' },
-            { value: 25000, prefix: '$', suffix: '+', label: 'raised for charity' },
-            { value: 50, suffix: '+', label: 'events' }
-        ],
+        hideGlance: true,
         body: [
-            'Raising awareness of hearing loss and the stigma surrounding it, as well as raising funding for cochlear implant research.',
-            'At its peak, Hope For Hearing grew to 500+ members across 12 high school chapters in Canada.'
+            'Raising awareness of hearing loss and the stigma surrounding it, as well as raising funding for cochlear implant research. At its peak, Hope For Hearing grew to 500+ members across 12 high school chapters in Canada.'
         ],
         more: {
             title: 'The founding story',
@@ -414,7 +408,7 @@ export const dormContent: Record<string, Entry> = withMedia({
             label: 'Read the whole story',
             body: [
                 "Seemed interesting, and Roy seemed like a cool, nice dude who just offered me his coat in the middle of Toronto's shitty ass weather. My father also had hearing loss, so this mattered to me personally as well.",
-                "We started texting and planning how to raise funds, and settled on spamming snack stands and running a big music night centered around hearing loss awareness. Admittedly, Roy did probably 90% of the work at first and got together a big team that comprised mostly his friends who were all older than me. By the end of the year, we had raised over $3,000 for Sunnybrook Hospital's cochlear implant R&D department.",
+                "We started texting and planning how to raise funds, and settled on spamming snack stands and running a big music night centred around hearing loss awareness. Admittedly, Roy did probably 90% of the work at first and got together a big team that comprised mostly his friends who were all older than me. By the end of the year, we had raised over $3,000 for Sunnybrook Hospital's cochlear implant R&D department.",
                 "Over the summer, I went to a STEM summer program called SHAD Canada. Great experience, but my big takeaway from that camp was that people were hella struggling to fulfill Ontario's 40-hour volunteer requirement. Coincidentally, Roy had also prefaced that he was going to be a lot busier going into his senior year with college apps and the hellfire that IB DP 2 is.",
                 'Naturally, I started thinking about the possibility of replicating everything we did at my high school, but across multiple schools. This would not only scale our impact tenfold, but also give people a chance to take on leadership roles at their school for extracurricular experience or simply earn volunteer hours.',
                 'As such, I started doing heavy outreach. I DMed every possible person I could think of through Instagram, Discord, LinkedIn, any platform, cold-messaged and got ghosted a million times, and posted graphics everywhere. I ended up with over 30 people interested in starting a chapter. Oops.',
@@ -425,12 +419,10 @@ export const dormContent: Record<string, Entry> = withMedia({
                 "Now, as I look back on this whole experience, I realize how much Hope For Hearing has shaped me as a person, a friend, a leader, and a visionary. But at the end of the day, none of this would have happened without that one act of kindness from Roy offering me his coat that one random day. And for that, I'll be quite indebted to Roy for a long-ass time."
             ]
         },
-        facts: [
-            { label: 'Won in funding grants', value: '$3,500+' }
-        ],
         list: [
             {
                 title: 'Milestones',
+                style: 'chips',
                 items: [
                     'Dec 2022: Founded in Toronto (Roy meets Daniel at Davisville Station)',
                     'Jan 2023: Partnered officially with Sunnybrook Hospital',
@@ -442,6 +434,7 @@ export const dormContent: Record<string, Entry> = withMedia({
             },
             {
                 title: 'Funding grants won',
+                style: 'chips',
                 items: [
                     'Youth Impact Challenge, $1,000',
                     'Ingenious+ Youth Innovation Award, $1,000',

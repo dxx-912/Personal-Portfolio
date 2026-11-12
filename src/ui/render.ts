@@ -155,11 +155,20 @@ export function renderSection(s: Section, o: RenderOpts): string {
         if (!items.length) return;
         const h = Math.min(6, (o.heading || 2) + 1);
         if (l.title) out.push(`<h${h} class="list-title">${rich(l.title)}</h${h}>`);
-        if (l.style === 'chips') out.push(`<ul class="chips">${items.map((i) => `<li class="tag">${rich(i)}</li>`).join('')}</ul>`);
+        if (l.style === 'chips' || l.style === 'chips-row') out.push(`<ul class="chips${l.style === 'chips-row' ? ' one-line' : ''}">${items.map((i) => `<li class="tag">${rich(i)}</li>`).join('')}</ul>`);
         else if (l.style === 'plain') items.forEach((i) => out.push(`<p class="list-plain">${rich(i)}</p>`));
         else if (l.style === 'setlist') out.push(setlist(items.map(rich)));
         else out.push(`<ul class="list">${items.map((i) => `<li>${rich(i)}</li>`).join('')}</ul>`);
     });
+    if (s.linksBeforeGallery && !s.linksTop && links.length) out.push(`<p class="links">${links.join('')}</p>`);
+    if (s.pairs?.length) {
+        const h = Math.min(6, (o.heading || 2) + 1);
+        s.pairs.forEach((p) => {
+            if (p.title) out.push(`<h${h} class="list-title">${rich(p.title)}</h${h}>`);
+            const pics = p.images.map((i) => renderImage(i, o.mode, o.comingSoonImage)).filter(Boolean);
+            out.push(`<div class="pair"><ul class="chips"><li class="tag">${rich(p.text)}</li></ul>${pics.length ? `<div class="pair-imgs">${pics.join('')}</div>` : ''}</div>`);
+        });
+    }
     // a sideways 'scroll' gallery keeps wide images (website screenshots) out of the row, full width below it
     const scrollWide = s.gallery === 'scroll' ? (s.images ?? []).filter((i) => i.wide) : [];
     // videos marked inGallery lead the photo row (not on the plain page, where videos are links)
@@ -181,9 +190,15 @@ export function renderSection(s: Section, o: RenderOpts): string {
         out.push(`<div class="gallery ${style}"${h}>${imgs.join('')}</div>`);
     }
     if (wideImgs.length) out.push(`<div class="gallery full">${wideImgs.join('')}</div>`);
-    s.videos?.filter((v) => !galleryVideos.includes(v)).forEach((v) => out.push(renderVideo(v, o.mode, o.comingSoonVideo)));
+    const restVideos = (s.videos ?? []).filter((v) => !galleryVideos.includes(v));
+    const embeds = restVideos.filter((v) => v.kind === 'spotify');
+    // several Spotify playlists sit side by side (they stack on a narrow screen)
+    if (o.mode !== 'plain' && embeds.length > 1) {
+        restVideos.filter((v) => !embeds.includes(v)).forEach((v) => out.push(renderVideo(v, o.mode, o.comingSoonVideo)));
+        out.push(`<div class="embed-row">${embeds.map((v) => renderVideo(v, o.mode, o.comingSoonVideo)).join('')}</div>`);
+    } else restVideos.forEach((v) => out.push(renderVideo(v, o.mode, o.comingSoonVideo)));
     const tags = s.hideTags ? [] : (s.tags ?? []).filter((t) => !blank(t));
     if (tags.length) out.push(`<p class="tags">${tags.map((t) => `<span class="tag">${rich(t)}</span>`).join('')}</p>`);
-    if (!s.linksTop && links.length) out.push(`<p class="links">${links.join('')}</p>`);
+    if (!s.linksTop && !s.linksBeforeGallery && links.length) out.push(`<p class="links">${links.join('')}</p>`);
     return out.join('\n');
 }

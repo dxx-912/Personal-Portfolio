@@ -27,37 +27,26 @@ export const rowing: Section = resolveSection({
     videos: [{ kind: 'mp4', title: '"The Senator" crew that won nationals (I\'m bow seat)', slot: 'shelf/rowing-video', inGallery: true }]
 });
 
-const volleyballLine = "I larp this. I'm terrible, but I love to play.";
-
-export const volleyball: Section = resolveSection({
-    id: 'volleyball',
-    title: 'Beach volleyball',
-    short: 'Beach volleyball',
-    subtitle: 'In my free time',
-    body: [volleyballLine],
-    funFact: volleyballLine
-});
-
 // Home bedroom (North York, Toronto): everything personal. Keyed by interactable id (see src/rooms/home.ts).
 // Never invent facts. Unknowns are "[TODO: ...]" and are listed in TODO_ASSETS.md.
 
 export const homeContent: Record<string, Entry> = withMedia({
-    // 2. Three tier shelf: sports, awards, favorite reads
+    // 2. Three tier shelf: sports, awards, favourite reads
     shelf: {
         id: 'shelf',
         prompt: 'The shelf',
         plainGroup: 'personal',
         title: 'The shelf',
-        plainTitle: 'Sports, awards, and favorite reads',
+        plainTitle: 'Sports, awards, and favourite reads',
         subtitle: 'Pick a tier.',
         tabStyle: 'shelf',
         tabs: [
             {
                 id: 'sports',
                 title: 'Sports',
-                subtitle: 'Top shelf: the rowing trophy, the oar blade, and a beach volleyball.',
+                subtitle: 'Top shelf: the rowing trophy and the oar blade.',
                 body: rowing.body,
-                list: [...rowing.list!, { title: 'Beach volleyball', style: 'plain', items: [volleyballLine] }],
+                list: rowing.list,
                 gallery: 'grid',
                 images: rowing.images,
                 videos: rowing.videos
@@ -83,22 +72,31 @@ export const homeContent: Record<string, Entry> = withMedia({
             },
             {
                 id: 'reads',
-                title: 'Favorite reads',
+                title: 'Favourite reads',
                 subtitle: 'Bottom shelf',
-                list: [
-                    { title: 'Anime', style: 'plain', items: ['Attack on Titan: Have only watched one anime ever. It was AOT, and I loved it.'] },
+                // each read with its pictures on the right (no captions)
+                pairs: [
+                    {
+                        title: 'Anime',
+                        text: 'Attack on Titan: Have only watched one anime ever. It was AOT, and I loved it. My residential floor theme is AOT!',
+                        images: [
+                            { alt: 'Daniel recreating a scene from Attack on Titan', slot: 'shelf/anime', file: 'AOT 1' }
+                        ]
+                    },
                     {
                         title: 'Webtoons',
-                        style: 'plain',
-                        items: [
-                            'Lookism: Been reading this webtoon every Sunday for over 10 years. The first ~200 episodes were really good.',
-                            "Sweet Home: Insanely good character development. I've reread it maybe 8 times now and tear up every time at the ending.",
-                            'Solo Levelling: Super fun power fantasy story with a pretty interesting plot.'
-                        ]
+                        text: 'Lookism: Been reading this webtoon every Sunday for over 10 years. The first ~200 episodes were really good.',
+                        images: [{ alt: 'Lookism cover', slot: 'shelf/anime', file: 'Lookism Cover' }]
+                    },
+                    {
+                        text: "Sweet Home: Insanely good character development. I've reread it like 8 times and tear up every time at the end.",
+                        images: [{ alt: 'Sweet Home cover', slot: 'shelf/anime', file: 'Sweet Home' }]
+                    },
+                    {
+                        text: 'Solo Levelling: Super fun power fantasy story with a pretty interesting plot.',
+                        images: [{ alt: 'Solo Levelling cover', slot: 'shelf/anime', file: 'Solo Levelling' }]
                     }
-                ],
-                gallery: 'grid',
-                images: [{ alt: 'Daniel recreating a scene from Attack on Titan', slot: 'shelf/anime', captionFromFile: true }]
+                ]
             }
         ]
     },
@@ -113,13 +111,6 @@ export const homeContent: Record<string, Entry> = withMedia({
         body: [
             "Currently trying to stick to a pretty intense routine: push, pull, legs, chest and back, arms, rest, sprints or long runs. Not the most consistent, but I'm getting there.",
             'Currently trying to hit 2 plates before the end of 2026 and learn a handstand.'
-        ],
-        // PRs as small stat tiles
-        facts: [
-            { label: 'Bench', value: '205 lbs' },
-            { label: 'Trap bar deadlift', value: '365 lbs' },
-            { label: '5 km', value: '19:27' },
-            { label: 'Unlocked', value: 'Muscle up, elbow lever' }
         ],
         funFact: 'Trap bar deadlift 365 lbs, bench 205 lbs.',
         gallery: 'scroll',
@@ -139,19 +130,20 @@ export const homeContent: Record<string, Entry> = withMedia({
         title: 'Music',
         body: [
             'I love music and actually want to learn production one day. My favourite genres are definitely classical, dubstep, and hip hop.',
-            "Press E at the speaker for one of my favourites: the coda of Rachmaninoff's Piano Concerto No. 2, played by Valentina Lisitsa."
+            "Press E to play the Coda of Rachmaninoff's Piano Concerto No. 2, one of my favourite songs of all time."
         ],
         // artist names as plain text only: no album art, logos, or photos of the artists
         list: [
             { title: 'Top artists (according to Spotify)', style: 'chips', items: ['Rachmaninoff', 'Chopin', 'Kanye', 'Tyler, the Creator', 'Keshi', 'wave to earth'] },
-            { title: 'Also love', style: 'chips', items: ['Sullivan King', 'Wooli', 'Riot', 'Knock2', 'Fakemink'] }
+            { title: 'Also love', style: 'chips', items: ['Sullivan King', 'Wooli', 'Riot', 'Knock2', 'fakemink', 'Daniel Caesar', 'The Weeknd', 'Nas', 'Drake', 'Kendrick'] }
         ],
         funFact: 'My top 2 genres are classical and dubstep.',
-        videos: [{ kind: 'spotify', title: 'My lofi playlist', id: 'playlist/0vvXsWCC9xrXsKd4FyS8kM', url: 'https://open.spotify.com/playlist/0vvXsWCC9xrXsKd4FyS8kM' }],
-        links: [
-            { label: 'My dubstep playlist on Spotify', href: 'https://open.spotify.com/playlist/6u0kVAzcws3L14vrUz6ZqC' },
-            { label: 'My lofi playlist on Spotify', href: 'https://open.spotify.com/playlist/0vvXsWCC9xrXsKd4FyS8kM' }
-        ]
+        // two playlists side by side, then a button to the Spotify profile
+        videos: [
+            { kind: 'spotify', title: 'My "songs" playlist on Spotify', id: 'playlist/0ZUTfgbFIicz27m0NEmBaX', url: 'https://open.spotify.com/playlist/0ZUTfgbFIicz27m0NEmBaX' },
+            { kind: 'spotify', title: 'My "headbangers" playlist on Spotify', id: 'playlist/6u0kVAzcws3L14vrUz6ZqC', url: 'https://open.spotify.com/playlist/6u0kVAzcws3L14vrUz6ZqC' }
+        ],
+        links: [{ label: 'My Spotify profile', href: 'https://open.spotify.com/user/73dcccz9vzjvpj11tz7fe4tyb' }]
     },
 
     // 5. Camera on the work table (E snaps a photo of the room)
@@ -275,13 +267,10 @@ export const homeContent: Record<string, Entry> = withMedia({
                 "Subsequently, my mom got really mad at my idiocy and told me to stop before I burn the house down. I'm still hoping to finish this project someday, since I have a really intuitive understanding of how electric longboards work inside out now (check out the Master Google Doc I used for this project below), but this time I'll be sure to source more legitimate parts. At least I have a pretty sick longboard now."
             ]
         },
-        links: [{ label: 'My Master Google Doc', href: 'https://docs.google.com/document/d/1GeFjlEI0BBgI-yIhaeFw6F2dBhx2u-wVWmrTyLuOT_o/edit?usp=sharing' }],
+        links: [{ label: 'Master doc: research, sourcing, process', href: 'https://docs.google.com/document/d/1GeFjlEI0BBgI-yIhaeFw6F2dBhx2u-wVWmrTyLuOT_o/edit?usp=sharing' }],
         funFact: 'Originally supposed to be electric, before I put a hole in my table.',
-        gallery: 'grid',
-        images: [
-            { alt: 'Building the longboard', slot: 'longboard/building' },
-            { alt: 'Soldering', slot: 'longboard/soldering' },
-            { alt: 'The destroyed battery', slot: 'longboard/battery' }
-        ]
+        // build photos in one row that scrolls sideways, each captioned with its file name
+        gallery: 'scroll',
+        images: [{ alt: 'Longboard build photo', slot: 'longboard/gallery', captionFromFile: true }]
     }
 });

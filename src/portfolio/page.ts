@@ -312,7 +312,7 @@ export function renderPortfolio(opts: { production: boolean }): RenderResult {
             const lis = l.items.map((x) => t(x, where)).filter(Boolean);
             if (!lis.length) return;
             if (l.title) out.push(`<h${level + 1} class="px list-h">${t(l.title, where)}</h${level + 1}>`);
-            if (l.style === 'chips') out.push(`<ul class="tags chips" role="list">${lis.map((x) => `<li class="tag">${x}</li>`).join('')}</ul>`);
+            if (l.style === 'chips' || l.style === 'chips-row') out.push(`<ul class="tags chips" role="list">${lis.map((x) => `<li class="tag">${x}</li>`).join('')}</ul>`);
             else if (l.style === 'plain') lis.forEach((x) => out.push(`<p>${x}</p>`));
             else if (l.style === 'setlist') out.push(setlist(lis));
             else out.push(`<ul class="list">${lis.map((x) => `<li>${x}</li>`).join('')}</ul>`);

@@ -200,7 +200,7 @@ main:not(.dev) .shot:not(.has-img) .shot-ph { display: none; }
 }
 @keyframes twinkle { from { opacity: 0.35; } to { opacity: 1; } }
 
-.inv-grid { grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 12px; }
+.inv-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
 .inv { display: block; height: 100%; min-height: 112px; text-decoration: none; color: var(--on-night); perspective: 600px; }
 .inv-in { position: relative; display: block; height: 100%; min-height: 112px; transform-style: preserve-3d; transition: transform 0.5s var(--ease-out); }
 .inv-front, .inv-back {
@@ -332,11 +332,9 @@ a.clink:hover span { text-decoration: underline; text-underline-offset: 4px; }
 /* ---------- responsive ---------- */
 
 @media (max-width: 1100px) {
-    .inv-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
 }
 @media (max-width: 860px) {
     .hero { grid-template-columns: minmax(0, 1fr) 210px; }
-    .inv-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
     .nav-links span { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
     .nav-links a { padding: 6px 8px; }
     .nav-links .pi { font-size: 16px; }
@@ -350,7 +348,6 @@ a.clink:hover span { text-decoration: underline; text-underline-offset: 4px; }
     .hud { max-width: 320px; display: grid; grid-template-columns: 96px 1fr; gap: 14px; align-items: center; }
     .shot { margin: 0; }
     .work-grid, .edu-grid { grid-template-columns: 1fr; }
-    .inv-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
     .wordmark { font-size: 10px; }
     .nav-in { gap: 10px; }
     .nav-game span { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }

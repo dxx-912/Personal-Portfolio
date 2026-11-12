@@ -444,41 +444,41 @@
     ],
     "laptop/ateball": [
         {
-            "src": "/media/laptop/ateball/01-ateball-sign-up-screen.webp",
+            "src": "/media/laptop/ateball/01-ateball-welcome-screen-can-t-decide-where-to-eat.webp",
+            "alt": "Ateball welcome screen: can't decide where to eat?",
+            "w": 720,
+            "h": 1600,
+            "file": "Onboarding Screenshot Ateball Application"
+        },
+        {
+            "src": "/media/laptop/ateball/02-ateball-sign-up-screen.webp",
             "alt": "Ateball sign up screen",
             "w": 720,
             "h": 1600,
             "file": "onboarding 1"
         },
         {
-            "src": "/media/laptop/ateball/02-ateball-onboarding-swipe-right-on-places-and-add.webp",
+            "src": "/media/laptop/ateball/03-ateball-onboarding-swipe-right-on-places-and-add.webp",
             "alt": "Ateball onboarding: swipe right on places and add your cravings",
             "w": 720,
             "h": 1600,
             "file": "onboarding 2"
-        },
-        {
-            "src": "/media/laptop/ateball/03-ateball-welcome-screen-can-t-decide-where-to-eat.webp",
-            "alt": "Ateball welcome screen: can't decide where to eat?",
-            "w": 720,
-            "h": 1600,
-            "file": "Onboarding Screenshot Ateball Application"
         }
     ],
     "laptop/cold-email": [
         {
-            "src": "/media/laptop/cold-email/01-cold-outreach-automator-dashboard-with-campaigns.webp",
-            "alt": "Cold Outreach Automator dashboard with campaigns and send counts",
-            "w": 1600,
-            "h": 900,
-            "file": "Cold Email Automator Dashboard"
-        },
-        {
-            "src": "/media/laptop/cold-email/02-cold-outreach-automator-landing-page-personal-co.webp",
+            "src": "/media/laptop/cold-email/01-cold-outreach-automator-landing-page-personal-co.webp",
             "alt": "Cold Outreach Automator landing page: personal cold emails, sent from your own Gmail",
             "w": 1600,
             "h": 1036,
             "file": "Onboarding page"
+        },
+        {
+            "src": "/media/laptop/cold-email/02-cold-outreach-automator-dashboard-with-campaigns.webp",
+            "alt": "Cold Outreach Automator dashboard with campaigns and send counts",
+            "w": 1600,
+            "h": 900,
+            "file": "Cold Email Automator Dashboard"
         }
     ],
     "laptop/saved-posts": [
@@ -504,34 +504,85 @@
             "file": "IMG_5714"
         }
     ],
+    "longboard/gallery": [
+        {
+            "src": "/media/longboard/gallery/01-all-the-parts-for-the-electric-longboard-laid-ou.webp",
+            "alt": "All the parts for the electric longboard laid out",
+            "w": 1280,
+            "h": 1600,
+            "file": "All the parts"
+        },
+        {
+            "src": "/media/longboard/gallery/02-building-the-longboard-at-a-desk-mounting-the-mo.webp",
+            "alt": "Building the longboard at a desk, mounting the motor bracket with the trucks and wheels beside the board",
+            "w": 1170,
+            "h": 656,
+            "file": "Building the board"
+        },
+        {
+            "src": "/media/longboard/gallery/03-tightening-the-truck-with-a-wrench-motor-mount-a.webp",
+            "alt": "Tightening the truck with a wrench, motor mount and screws on the desk",
+            "w": 1170,
+            "h": 656,
+            "file": "More building"
+        },
+        {
+            "src": "/media/longboard/gallery/04-soldering-the-motor-and-battery-wires-over-a-foi.webp",
+            "alt": "Soldering the motor and battery wires over a foil wrapped battery",
+            "w": 1170,
+            "h": 656,
+            "file": "Worst soldering setup oat"
+        },
+        {
+            "src": "/media/longboard/gallery/05-riding-the-finished-longboard-in-a-parking-lot-a.webp",
+            "alt": "Riding the finished longboard in a parking lot, a school bus behind",
+            "w": 1170,
+            "h": 656,
+            "file": "Riding for the first time"
+        }
+    ],
     "nightstand/gallery": [
         {
-            "src": "/media/nightstand/gallery/01-daniel-with-his-parents-and-sister-behind-his-16.webp",
-            "alt": "Daniel with his parents and sister behind his 16th birthday cake",
-            "w": 1218,
-            "h": 1546,
-            "file": "16th birthday w/ fam"
+            "src": "/media/nightstand/gallery/01-daniel-and-his-family-on-a-pier-in-japan-with-a-.webp",
+            "alt": "Daniel and his family on a pier in Japan with a sightseeing boat behind them",
+            "w": 960,
+            "h": 690,
+            "file": "Tokyo pt 1"
         },
         {
-            "src": "/media/nightstand/gallery/02-daniel-and-his-family-with-umbrellas-reflected-i.webp",
-            "alt": "Daniel and his family with umbrellas, reflected in a window on a rainy day in Tokyo",
+            "src": "/media/nightstand/gallery/02-daniel-and-his-family-in-front-of-a-red-temple-g.webp",
+            "alt": "Daniel and his family in front of a red temple gate",
             "w": 1200,
             "h": 1600,
-            "file": "Family trip to Tokyo"
+            "file": "Tokyo pt 2"
         },
         {
-            "src": "/media/nightstand/gallery/03-daniel-his-sister-and-fluffy-the-cat-behind-a-bi.webp",
+            "src": "/media/nightstand/gallery/03-daniel-his-mom-holding-fluffy-and-his-sister-wit.webp",
+            "alt": "Daniel, his mom holding Fluffy, and his sister with a cake and flowers for his mom's birthday",
+            "w": 600,
+            "h": 800,
+            "file": "Mom's bday"
+        },
+        {
+            "src": "/media/nightstand/gallery/04-daniel-his-sister-and-fluffy-the-cat-behind-a-bi.webp",
             "alt": "Daniel, his sister, and Fluffy the cat behind a birthday cake",
             "w": 1280,
             "h": 1600,
             "file": "Me, my sister, and my cat"
         },
         {
-            "src": "/media/nightstand/gallery/04-daniel-his-mom-holding-fluffy-and-his-sister-wit.webp",
-            "alt": "Daniel, his mom holding Fluffy, and his sister with a cake and flowers for his mom's birthday",
-            "w": 600,
-            "h": 800,
-            "file": "Mom's bday"
+            "src": "/media/nightstand/gallery/05-daniel-and-his-family-on-the-janss-steps-at-ucla.webp",
+            "alt": "Daniel and his family on the Janss Steps at UCLA with a clear blue sky behind them",
+            "w": 1301,
+            "h": 1600,
+            "file": "Fam at UCLA!"
+        },
+        {
+            "src": "/media/nightstand/gallery/06-daniel-and-his-family-at-a-restaurant-high-above.webp",
+            "alt": "Daniel and his family at a restaurant high above Shanghai, with a skyscraper in the window behind them",
+            "w": 1200,
+            "h": 1600,
+            "file": "Shanghai"
         }
     ],
     "pennant/friends": [
@@ -652,11 +703,11 @@
     ],
     "piano/recitals": [
         {
-            "src": "/media/piano/recitals/01-and-another-recital.webp",
-            "alt": "And another recital",
-            "w": 1169,
-            "h": 1523,
-            "file": "And another recital"
+            "src": "/media/piano/recitals/01-my-first-piano-recital.webp",
+            "alt": "My first piano recital",
+            "w": 1200,
+            "h": 1600,
+            "file": "My first piano recital"
         },
         {
             "src": "/media/piano/recitals/02-another-recital.webp",
@@ -666,62 +717,62 @@
             "file": "Another recital"
         },
         {
-            "src": "/media/piano/recitals/03-daniel-and-his-sister-holding-flowers-at-his-arc.webp",
+            "src": "/media/piano/recitals/03-and-another-recital.webp",
+            "alt": "And another recital",
+            "w": 1169,
+            "h": 1523,
+            "file": "And another recital"
+        },
+        {
+            "src": "/media/piano/recitals/04-daniel-and-his-sister-holding-flowers-at-his-arc.webp",
             "alt": "Daniel and his sister holding flowers at his ARCT diploma ceremony",
             "w": 828,
             "h": 1104,
             "file": "ARCT diploma graduation Ceremony"
         },
         {
-            "src": "/media/piano/recitals/04-daniel-with-his-family-and-flowers-at-his-arct-d.webp",
+            "src": "/media/piano/recitals/05-daniel-with-his-family-and-flowers-at-his-arct-d.webp",
             "alt": "Daniel with his family and flowers at his ARCT diploma ceremony",
             "w": 1600,
             "h": 1200,
             "file": "Ceremony with family!"
-        },
-        {
-            "src": "/media/piano/recitals/05-my-first-piano-recital.webp",
-            "alt": "My first piano recital",
-            "w": 1200,
-            "h": 1600,
-            "file": "My first piano recital"
         }
     ],
     "pie/food": [
         {
-            "src": "/media/pie/food/01-cny-dishes-i-made-with-mom.webp",
-            "alt": "CNY dishes I made with mom",
-            "w": 1200,
-            "h": 1600,
-            "file": "CNY dishes I made with mom"
-        },
-        {
-            "src": "/media/pie/food/02-daniel-in-an-apron-holding-a-bowl-of-coke-chicke.webp",
+            "src": "/media/pie/food/01-daniel-in-an-apron-holding-a-bowl-of-coke-chicke.webp",
             "alt": "Daniel in an apron holding a bowl of coke chicken in the kitchen",
             "w": 1200,
             "h": 1600,
             "file": "Cooking coke chicken"
         },
         {
-            "src": "/media/pie/food/03-me-cooking-steak-2021-vs-2024.webp",
+            "src": "/media/pie/food/02-me-cooking-steak-2021-vs-2024.webp",
             "alt": "Me cooking steak 2021 vs 2024",
             "w": 1200,
             "h": 1600,
             "file": "Me cooking steak 2021 vs 2024"
         },
         {
-            "src": "/media/pie/food/04-a-plate-of-daniel-s-apple-crisp-topped-with-whip.webp",
+            "src": "/media/pie/food/03-a-plate-of-daniel-s-apple-crisp-topped-with-whip.webp",
             "alt": "A plate of Daniel's apple crisp topped with whipped cream",
             "w": 1200,
             "h": 1600,
             "file": "My apple crisp"
         },
         {
-            "src": "/media/pie/food/05-prepping-steak-again.webp",
+            "src": "/media/pie/food/04-prepping-steak-again.webp",
             "alt": "Prepping steak again",
             "w": 772,
             "h": 1188,
             "file": "Prepping steak again"
+        },
+        {
+            "src": "/media/pie/food/05-cny-dishes-i-made-with-mom.webp",
+            "alt": "CNY dishes I made with mom",
+            "w": 1200,
+            "h": 1600,
+            "file": "CNY dishes I made with mom"
         }
     ],
     "pullup/deadlift": [
@@ -831,42 +882,49 @@
             "file": "Winning the national championships!!"
         },
         {
-            "src": "/media/shelf/rowing/02-flipped-our-boat.webp",
+            "src": "/media/shelf/rowing/02-our-eight-rowing-in-unison-on-the-water-at-sunse.webp",
+            "alt": "Our eight rowing in unison on the water at sunset",
+            "w": 1104,
+            "h": 736,
+            "file": "Cool shot"
+        },
+        {
+            "src": "/media/shelf/rowing/03-flipped-our-boat.webp",
             "alt": "Flipped our boat...",
             "w": 1280,
             "h": 1600,
             "file": "Flipped our boat..."
         },
         {
-            "src": "/media/shelf/rowing/03-my-first-regatta-win.webp",
+            "src": "/media/shelf/rowing/04-my-first-regatta-win.webp",
             "alt": "My first regatta win",
             "w": 1024,
             "h": 768,
             "file": "My first regatta win"
         },
         {
-            "src": "/media/shelf/rowing/04-one-of-my-favourite-photos-from-training.webp",
+            "src": "/media/shelf/rowing/05-one-of-my-favourite-photos-from-training.webp",
             "alt": "One of my favourite photos from training",
             "w": 1600,
             "h": 1200,
             "file": "One of my favourite photos from training"
         },
         {
-            "src": "/media/shelf/rowing/05-regatta-medals.webp",
+            "src": "/media/shelf/rowing/06-regatta-medals.webp",
             "alt": "Regatta medals",
             "w": 1200,
             "h": 1600,
             "file": "Regatta medals"
         },
         {
-            "src": "/media/shelf/rowing/06-second-favourite-photo-from-training.webp",
+            "src": "/media/shelf/rowing/07-second-favourite-photo-from-training.webp",
             "alt": "Second favourite photo from training",
             "w": 1600,
             "h": 1200,
             "file": "Second favourite photo from training"
         },
         {
-            "src": "/media/shelf/rowing/07-training-in-tennessee-seat-3.webp",
+            "src": "/media/shelf/rowing/08-training-in-tennessee-seat-3.webp",
             "alt": "Training in Tennessee (seat 3)",
             "w": 1600,
             "h": 1200,

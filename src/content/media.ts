@@ -13,7 +13,15 @@ export function resolveImages(images: ImageItem[] | undefined): ImageItem[] | un
     const out: ImageItem[] = [];
     const done = new Set<string>();
     images.forEach((img, i) => {
-        const list = img.slot ? files[img.slot] : undefined;
+        const all = img.slot ? files[img.slot] : undefined;
+        if (img.slot && img.file && all?.length) {
+            // one named photo from the folder
+            const f = all.find((x) => x.file === img.file);
+            if (f) out.push({ src: f.src, width: f.w, height: f.h, slot: img.slot, alt: img.alt || f.alt || '', caption: img.caption });
+            else out.push(img);
+            return;
+        }
+        const list = all;
         if (!img.slot || !list?.length) { out.push(img); return; }
         if (done.has(img.slot)) return;
         done.add(img.slot);
@@ -42,6 +50,7 @@ const resolveVideo = (v: VideoItem): VideoItem => {
 
 const walk = (s: Section & { tabs?: Section[] }) => {
     s.images = resolveImages(s.images);
+    s.pairs?.forEach((p) => { p.images = resolveImages(p.images) ?? p.images; });
     s.videos = s.videos?.map(resolveVideo);
     s.tabs?.forEach(walk);
 };

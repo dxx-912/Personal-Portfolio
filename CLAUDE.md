@@ -306,7 +306,6 @@ Daniel wants some real world art and brand items in the rooms. The site is priva
 | `shirt-logo-stussy` | `public/assets/decor/shirt-logo-stussy.png` | Chest of the black Stussy shirt (closet outfit) | Plain black shirt, no logo |
 | `shirt-logo-ucla` | `public/assets/decor/shirt-logo-ucla.png` | Chest of the UCLA shirt (closet outfit) | Plain "UCLA" in the pixel font, gold |
 | `volleyball-logo` (optional) | `public/assets/decor/volleyball-logo.png` | Home shelf volleyball | No logo |
-| `poster-caricature` (optional) | `public/assets/decor/poster-caricature.png` | Dorm wall, optional extra frame | Empty frame, hidden until the file exists |
 
 Slot rules: scale the image down to the slot with nearest neighbour sampling, optionally reduce it to the room palette so it matches the pixel style, keep the frame and lighting consistent, and make slots purely decorative (no glow, no prompt). List every slot in `TODO_ASSETS.md` under "Decor images to provide (optional)".
 

@@ -193,9 +193,9 @@ Use Daniel's text as written (his casual voice is intentional). Light fixes only
 - Plaque photos are in `photos/2 Home/02 Shelf/` (one folder per plaque).
 
 ### 3.3 Shelf, Reading tier
-- Attack on Titan: Have only watched one anime ever. It was AOT, and I loved it.
+- Attack on Titan: Have only watched one anime ever. It was AOT, and I loved it. My residential floor theme is AOT!
 - Lookism: Been reading this webtoon every Sunday for over 10 years. The first ~200 episodes were really good.
-- Sweet Home: Insanely good character development. I've reread it maybe 8 times now and tear up every time at the ending.
+- Sweet Home: Insanely good character development. I've reread it like 8 times and tear up every time at the end.
 - Solo Levelling: Super fun power fantasy story with a pretty interesting plot.
 - Photos: `photos/2 Home/02 Shelf/Animes/`
 
@@ -244,7 +244,7 @@ Use Daniel's text as written (his casual voice is intentional). Light fixes only
 ### 3.11 Longboard
 - No short version and no status line: the panel opens with the first two paragraphs of the full story, then "Read the whole story" for the rest.
 - Full story: Daniel's text in `reference/content-todo-filled.pdf` (pages 3 to 4, section 2.11), with only these fixes: "that rides really smoothly" (not "that's rides"), "idiocy" (not "idiocracy"), "splice" or "join" instead of "meld". Keep everything else, including his tone, for his own later edit.
-- Link: "My Master Google Doc" https://docs.google.com/document/d/1GeFjlEI0BBgI-yIhaeFw6F2dBhx2u-wVWmrTyLuOT_o/edit?usp=sharing (open in a new tab).
+- Link: "Master doc: research, sourcing, process" https://docs.google.com/document/d/1GeFjlEI0BBgI-yIhaeFw6F2dBhx2u-wVWmrTyLuOT_o/edit?usp=sharing (open in a new tab).
 - Photos: `photos/2 Home/10 Longboard/` (keep placeholders for empty folders).
 
 ## 4. Quick view only

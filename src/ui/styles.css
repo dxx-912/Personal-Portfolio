@@ -259,6 +259,9 @@ body.touch .message { bottom: 160px; }
 .tags .tag { font: 600 13px var(--pixel); padding: 2px 8px; border: 2px solid var(--edge); background: #fff; }
 /* course chips: small white labels under a subheading */
 .chips { display: flex; flex-wrap: wrap; gap: 8px; list-style: none; margin: 4px 0 14px; padding: 0; }
+.chips.one-line { flex-wrap: nowrap; gap: 6px; }
+.chips.one-line .tag { font-size: 13px; padding: 4px 8px; white-space: nowrap; }
+@media (max-width: 760px) { .chips.one-line { flex-wrap: wrap; } }
 .chips .tag { font: 600 14px var(--font-label); padding: 4px 10px; border: 2px solid var(--edge); background: #fff; box-shadow: 0 2px 0 var(--edge); }
 .list-plain { margin: 0 0 12px; }
 .fun-fact { background: #fff6c8; border: 2px solid var(--edge); padding: 6px 10px; }
@@ -275,6 +278,13 @@ a.link:hover { background: #eef4ff; text-decoration: underline; }
 .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 
 /* media */
+.pair { display: grid; grid-template-columns: minmax(0, 1fr) 170px; gap: 8px 18px; align-items: center; margin: 0 0 16px; }
+.pair .chips { margin: 0; }
+.pair .chips .tag { line-height: 1.45; padding: 8px 12px; }
+.pair-imgs { display: grid; gap: 8px; align-items: start; }
+.pair:has(.pair-imgs > :nth-child(2)) { grid-template-columns: minmax(0, 1fr) 340px; }
+.pair-imgs:has(> :nth-child(2)) { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+@media (max-width: 520px) { .pair, .pair:has(.pair-imgs > :nth-child(2)) { grid-template-columns: 1fr; } .pair-imgs { grid-template-columns: repeat(auto-fit, minmax(120px, 160px)); } }
 .gallery { display: grid; gap: 10px; margin: 8px 0 14px; }
 .gallery.single { grid-template-columns: minmax(0, 360px); }
 .gallery.grid { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); }
@@ -321,7 +331,10 @@ a.link:hover { background: #eef4ff; text-decoration: underline; }
 .ph-video { aspect-ratio: 16 / 9; margin: 8px 0 14px; }
 .embed { position: relative; width: 100%; margin: 8px 0 14px; border: 3px solid var(--edge); background: #000; }
 .embed.video { aspect-ratio: 16 / 9; }
-.embed.spotify { height: 352px; border-radius: 12px; overflow: hidden; }
+.embed.spotify { height: 96px; border: 0; background: transparent; border-radius: 12px; overflow: hidden; }
+.embed-row { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+.embed-row .embed { margin: 8px 0 14px; }
+@media (max-width: 640px) { .embed-row { grid-template-columns: 1fr; gap: 0; } }
 .embed iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
 .media.video { margin: 8px 0 14px; }
 .embed.mp4 { display: block; width: 100%; height: auto; margin: 0; max-height: 70vh; }

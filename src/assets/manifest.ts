@@ -87,7 +87,6 @@ export const ASSETS = {
     slot_poster_home_1: { w: 32, h: 18, paint: painters.slotHome1, outline: true, slot: { file: 'poster-home-1.png', sharp: 4 } },
     slot_poster_home_2: { w: 18, h: 18, paint: painters.slotHome2, outline: true, slot: { file: 'poster-home-2.png', sharp: 4 } },
     slot_poster_home_3: { w: 26, h: 18, paint: painters.slotHome3, outline: true, slot: { file: 'poster-home-3.png', sharp: 4 } },
-    slot_poster_caricature: { w: 18, h: 24, paint: painters.slotEmpty, outline: true, slot: { file: 'poster-caricature.png', hideIfMissing: true, sharp: 4 } },
 
     // dorm
     dorm_window: { w: 48, h: 42, frames: 3, paint: painters.dormWindow, outline: true },
@@ -128,8 +127,7 @@ export const ASSETS = {
 
     // home
     home_shelf: {
-        w: 76, h: 112, paint: painters.homeShelf, outline: true, highlight: true,
-        slot: { file: 'volleyball-logo.png', rect: { x: 61, y: 27, w: 7, h: 5 }, sharp: 4, fit: 'contain', knockout: true }
+        w: 76, h: 112, paint: painters.homeShelf, outline: true, highlight: true
     },
     home_plant: { w: 16, h: 28, paint: painters.homeFloorPlant, outline: true },
     home_window: { w: 76, h: 46, frames: 3, paint: painters.homeWindow, outline: true, highlight: true },

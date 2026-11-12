@@ -1214,25 +1214,6 @@ const homeShelf: Painter = (p, w, h) => {
     }
     p.r(30, t + 7, 29, 1, '#16295a'); p.r(30, t + 7, 1, 16, '#16295a'); // crisp edge
     p.r(59, t + 10, 11, 3, '#2a2b31'); p.r(59, t + 10, 11, 1, '#4a4d57'); // the handle stub
-    // top: a beach volleyball (yellow, black and orange panels), resting on the shelf. Any logo is the
-    // volleyball-logo image slot, never drawn.
-    {
-        const bx = 58, by = t + 17, n = 13, c = (n - 1) / 2;
-        const Y = '#f2c230', YL = '#f8dc6a', K = '#25252c', O = '#e8742e', seam = '#7a5a1a';
-        for (let y = 0; y < n; y++) for (let x = 0; x < n; x++) {
-            const dx = x - c, dy = y - c;
-            if (dx * dx + dy * dy > (c + 0.45) ** 2) continue;
-            // three curved bands: black sweeping across the top left, orange down the right, yellow below
-            const a = Math.atan2(dy, dx), r = Math.hypot(dx, dy);
-            let col = Y;
-            if (dy + 0.45 * dx * dx / c < -1.5) col = K;
-            else if (dx - 0.35 * dy * dy / c > 1.8) col = O;
-            if (Math.abs(dy + 0.45 * dx * dx / c + 1.5) < 0.6 || Math.abs(dx - 0.35 * dy * dy / c - 1.8) < 0.5) col = seam;
-            if (col === Y && r < 3.2 && a < -0.4 && a > -2.6) col = YL;
-            p.p(bx + x, by + y, col);
-        }
-        p.p(bx + 3, by + 3, '#fffbe0'); // shine
-    }
     // middle: three plaques, then the Gold Service Tie on the right
     const m = tiers[1];
     [['#c9a24a', 6], ['#2f4a8a', 22], ['#7a2f2f', 38]].forEach(([c, x]) => {

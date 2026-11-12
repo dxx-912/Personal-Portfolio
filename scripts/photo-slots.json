@@ -94,6 +94,9 @@
             "folder": "1 Dorm/04 Laptop, software projects/Cold Outreach Automator screenshots (2 to 4)",
             "max": 4,
             "text": true,
+            "first": [
+                "Onboarding page .png"
+            ],
             "alts": {
                 "Cold Email Automator Dashboard.png": "Cold Outreach Automator dashboard with campaigns and send counts",
                 "Onboarding page .png": "Cold Outreach Automator landing page: personal cold emails, sent from your own Gmail"
@@ -115,6 +118,9 @@
             "folder": "1 Dorm/04 Laptop, software projects/Ateball UI screenshots (2 to 4)",
             "max": 4,
             "text": true,
+            "first": [
+                "Onboarding Screenshot Ateball Application.png"
+            ],
             "alts": {
                 "onboarding 1.png": "Ateball sign up screen",
                 "onboarding 2 .png": "Ateball onboarding: swipe right on places and add your cravings",
@@ -252,6 +258,9 @@
             "key": "shelf/rowing",
             "folder": "2 Home/02 Shelf/Rowing, trophy and oar (any number)",
             "max": 0,
+            "alts": {
+                "Cool shot.JPG": "Our eight rowing in unison on the water at sunset"
+            },
             "first": [
                 "Winning the national championships!!.JPG"
             ]
@@ -328,20 +337,36 @@
             "key": "nightstand/gallery",
             "folder": "2 Home/06 Nightstand, family",
             "max": 0,
+            "skip": [
+                "Cover Photo.JPEG"
+            ],
+            "first": [
+                "Tokyo pt 1.JPEG",
+                "Tokyo pt 2.heic",
+                "Mom's bday.JPEG",
+                "Me, my sister, and my cat.HEIC",
+                "Fam at UCLA!.heic"
+            ],
             "alts": {
-                "16th birthday w: fam.png": "Daniel with his parents and sister behind his 16th birthday cake",
-                "Family trip to Tokyo.HEIC": "Daniel and his family with umbrellas, reflected in a window on a rainy day in Tokyo",
+                "Fam at UCLA!.heic": "Daniel and his family on the Janss Steps at UCLA with a clear blue sky behind them",
+                "Me, my sister, and my cat.HEIC": "Daniel, his sister, and Fluffy the cat behind a birthday cake",
                 "Mom's bday.JPEG": "Daniel, his mom holding Fluffy, and his sister with a cake and flowers for his mom's birthday",
-                "Me, my sister, and my cat.HEIC": "Daniel, his sister, and Fluffy the cat behind a birthday cake"
-            },
-            "captions": {
-                "16th birthday w: fam.png": "16th birthday w/ fam"
+                "Shanghai.HEIC": "Daniel and his family at a restaurant high above Shanghai, with a skyscraper in the window behind them",
+                "Tokyo pt 1.JPEG": "Daniel and his family on a pier in Japan with a sightseeing boat behind them",
+                "Tokyo pt 2.heic": "Daniel and his family in front of a red temple gate"
             }
         },
         {
             "key": "piano/recitals",
             "folder": "2 Home/07 Piano",
             "max": 0,
+            "first": [
+                "My first piano recital.HEIC",
+                "Another recital.HEIC",
+                "And another recital.jpg",
+                "ARCT diploma graduation Ceremony.JPG",
+                "Ceremony with family!.jpg"
+            ],
             "alts": {
                 "ARCT diploma graduation Ceremony.JPG": "Daniel and his sister holding flowers at his ARCT diploma ceremony",
                 "Ceremony with family!.jpg": "Daniel with his family and flowers at his ARCT diploma ceremony"
@@ -351,6 +376,9 @@
             "key": "pie/food",
             "folder": "2 Home/08 Pie, baking and cooking",
             "max": 0,
+            "last": [
+                "CNY dishes I made with mom.HEIC"
+            ],
             "alts": {
                 "Cooking coke chicken.HEIC": "Daniel in an apron holding a bowl of coke chicken in the kitchen",
                 "My apple crisp.heic": "A plate of Daniel's apple crisp topped with whipped cream"
@@ -376,19 +404,29 @@
             }
         },
         {
-            "key": "longboard/building",
-            "folder": "2 Home/10 Longboard/Building it (1 photo)",
-            "max": 1
-        },
-        {
-            "key": "longboard/soldering",
-            "folder": "2 Home/10 Longboard/Soldering (1 photo)",
-            "max": 1
-        },
-        {
-            "key": "longboard/battery",
-            "folder": "2 Home/10 Longboard/The destroyed battery (1 photo)",
-            "max": 1
+            "key": "longboard/gallery",
+            "folder": "2 Home/10 Longboard",
+            "max": 0,
+            "first": [
+                "All the parts.heic",
+                "Building the board.PNG",
+                "More building.PNG",
+                "Worst soldering setup oat.PNG",
+                "Riding for the first time.PNG"
+            ],
+            "crops": {
+                "Building the board.PNG": [0, 0.3705, 1, 0.6295],
+                "More building.PNG": [0, 0.3705, 1, 0.6295],
+                "Worst soldering setup oat.PNG": [0, 0.3705, 1, 0.6295],
+                "Riding for the first time.PNG": [0, 0.3705, 1, 0.6295]
+            },
+            "alts": {
+                "All the parts.heic": "All the parts for the electric longboard laid out",
+                "Building the board.PNG": "Building the longboard at a desk, mounting the motor bracket with the trucks and wheels beside the board",
+                "More building.PNG": "Tightening the truck with a wrench, motor mount and screws on the desk",
+                "Worst soldering setup oat.PNG": "Soldering the motor and battery wires over a foil wrapped battery",
+                "Riding for the first time.PNG": "Riding the finished longboard in a parking lot, a school bus behind"
+            }
         },
         {
             "key": "poster-graduation",
@@ -413,20 +451,6 @@
             "folder": "3 Room decor (optional)/Poster P4, dorm wall above desk (1 image)",
             "max": 1,
             "decor": true
-        },
-        {
-            "key": "poster-caricature",
-            "folder": "3 Room decor (optional)/Caricature, extra dorm frame (1 image)",
-            "max": 1,
-            "decor": true,
-            "crops": {
-                "Me with my caricature.HEIC": [
-                    0.305,
-                    0.455,
-                    0.685,
-                    0.885
-                ]
-            }
         },
         {
             "key": "hoodie-logo",
@@ -454,16 +478,14 @@
             "decor": true
         },
         {
-            "key": "volleyball-logo",
-            "folder": "3 Room decor (optional)/Volleyball logo, home shelf (1 image)",
-            "max": 1,
-            "decor": true
-        },
-        {
             "key": "family-photo",
-            "folder": "3 Room decor (optional)/Family photo for the nightstand frame (1 photo)",
+            "file": "2 Home/06 Nightstand, family/Cover Photo.JPEG",
+            "folder": "2 Home/06 Nightstand, family",
             "max": 1,
-            "decor": true
+            "decor": true,
+            "crops": {
+                "2 Home/06 Nightstand, family/Cover Photo.JPEG": [0, 0, 1, 0.93]
+            }
         },
         {
             "key": "poster-home-1",

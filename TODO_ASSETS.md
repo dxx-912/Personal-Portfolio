@@ -21,7 +21,6 @@ How things show up until they are filled: in development (`npm run dev`) a missi
 
 All home copy is in (content pass 2). Left:
 
-- [ ] **Beach volleyball:** a description if you want one (for now the line is your fun fact), and photos (the folder and photo slot were removed at your request; say when you want them back).
 - [ ] **Family photos:** `2 Home/06 Nightstand, family/Gallery (any number)`, plus `family-photo.png` for the nightstand frame (see Decor images).
 - [ ] **Longboard photos:** `2 Home/10 Longboard/` (Building it, Soldering, The destroyed battery).
 - [ ] **Tone pass pending: baking and longboard.** Both are in as you wrote them (light spelling and grammar fixes only). Edit `home.pie` and `home.longboard` in `src/content/home.ts` when ready.
@@ -43,7 +42,6 @@ Never drawn by us; an original placeholder shows until the file exists. Drop eac
 |---|---|---|
 | `can-logo.png` | The Red Bull can from the dorm fridge | Plain blue and silver can |
 | `shirt-logo-ucla.png` | Chest of the UCLA shirt (closet outfit) | Plain "UCLA" in gold pixel text |
-| `volleyball-logo.png` | Volleyball on the home shelf | No logo |
 | `family-photo.png` | Home nightstand photo frame | Outline silhouettes of people |
 
 ## Audio (`public/assets/audio/`, credits in `CREDITS.md`)

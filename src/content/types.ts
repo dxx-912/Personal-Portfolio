@@ -12,6 +12,8 @@ export interface ImageItem {
     height?: number;
     /** Game panel: span the full width of the gallery (website screenshots). */
     wide?: boolean;
+    /** With a slot: use only the photo with this original file name (minus the extension). */
+    file?: string;
     /** Caption each photo with its original file name (minus the extension). */
     captionFromFile?: boolean;
     /** Clicking the image opens this page in a new tab (website screenshots). */
@@ -58,11 +60,13 @@ export interface Section {
     callout?: string;
     facts?: Fact[];
     /**
-     * Lists under small headings. style 'chips': each item a small white label; 'plain': items as lines, no bullets;
+     * Lists under small headings. style 'chips': each item a small white label ('chips-row' keeps them on one line); 'plain': items as lines, no bullets;
      * 'setlist': a numbered recital program, "Composer, Piece" (the composer in bold).
      */
-    list?: { title?: string; items: string[]; style?: 'chips' | 'plain' | 'setlist' }[];
+    list?: { title?: string; items: string[]; style?: 'chips' | 'chips-row' | 'plain' | 'setlist' }[];
     images?: ImageItem[];
+    /** Text with its photos on the right, one row each (favourite reads). `title` heads a group of rows. */
+    pairs?: { title?: string; text: string; images: ImageItem[] }[];
     /** 'scroll' gallery: photo height in px (default 320). */
     galleryHeight?: number;
     /** A small heading shown right above the photos. */
@@ -98,6 +102,8 @@ export interface Section {
     hideTags?: boolean;
     /** Game panel: show the links right under the subtitle instead of at the bottom. */
     linksTop?: boolean;
+    /** Game panel: show the links right above the photo gallery. */
+    linksBeforeGallery?: boolean;
     /**
      * A long story in its own scrollable box: a heading, the opening paragraphs, then the rest
      * behind a "Read the whole story" expander.
@@ -130,6 +136,8 @@ export interface Entry extends Section {
     prompt: string;
     /** Where this lives on /plain. */
     plainGroup: PlainGroup;
+    /** Heading at the top of the game panel, when it should say more than `title` (e.g. a role). */
+    panelTitle?: string;
     /** Title on /plain when the in-game title only makes sense in the room. */
     plainTitle?: string;
     tabs?: Section[];

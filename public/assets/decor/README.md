@@ -12,12 +12,10 @@ Restart `npm run dev` after adding a file.
 | `poster-damn.png` | Dorm back wall above the desk, P2 |
 | `poster-duck.png` | Dorm wardrobe left door, P3 |
 | `poster-igor.png` | Dorm wall above the desk, P4 |
-| `poster-caricature.png` | Dorm wall, optional extra frame (hidden until the file exists) |
 | `hoodie-logo.png` | Home hoodie on the wall hook, chest area |
 | `speaker-logo.png` | Home speaker badge |
 | `instagram-logo.png` | Dorm phone screen and home phone screen (and the home phone's card) |
 | `can-logo.png` | The Red Bull can from the dorm fridge |
-| `volleyball-logo.png` | Volleyball on the home shelf (optional) |
 | `family-photo.png` | Home nightstand photo frame |
 
 Portrait images work best for the posters (about 3:4). Small, simple images read best at this size.
