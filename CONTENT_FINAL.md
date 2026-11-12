@@ -77,7 +77,7 @@ Photos: only `photos/Professional Headshot.png` (the HUD portrait source and the
 | William F. Sharpe Fellows | Fellowship providing UCLA's top business students with mentorship, resources, and professional development. | Technology Track Vice President |
 | Delta Sigma Pi, Xi Omicron Chapter | UCLA chapter of the nation's leading co-ed professional business fraternity, developing members through professional events, leadership, and service. | Director of Marketing |
 | International Business for Bruins | Consulting club providing members with professional development, real client work, and a network in international business. | Director of Marketing |
-| Business in Entertainment Association | Club connecting UCLA students to careers in the business of entertainment through panels, networking events, and premieres. | Director of Digital Media |
+| Business in Entertainment Association | Club connecting UCLA students to careers in the business of entertainment through panels, networking events, and premieres. | Director of Digital Media Committee |
 | UBS Technology Committee | Committee of UCLA's largest student organization that runs events and recruiting programs at the intersection of tech and business. | Committee Member |
 | UCLA Residential Life | Campus department that manages, programs, and supports the student living communities across "The Hill" and University Apartments. | Resident Assistant at Rieber Hall South, Floor 6 |
 
@@ -102,7 +102,7 @@ Quick view leadership gallery order: Sharpe Fellows first, then DSP, IBB, BEA, U
 
 **Ateball, Creative Labs** · `photos/1 Dorm/04 Laptop, software projects/Ateball UI screenshots (2 to 4)/`
 - Role: Project Manager
-- Team: 12 people across design, frontend, and backend. Timeline: 12 weeks `[TODO: quarter and year]`
+- Team: 12 people across design, frontend, and backend. Timeline: fall quarter 2025 (Sep to Dec 2025, 12 weeks)
 - The problem: Everyone always has opinions on everything, especially when a friend group has to decide where to eat out together. All of a sudden, people are "okay with anything" and end up going to Raising Cane's for the nth time. Built this app to fix this problem.
 - What I did: Led a 12-person team from zero to one over 12 weeks, running two to three syncs a week across design, frontend, and backend.
 - Result: Although we didn't finish the entire application on time, this was my first time building a tech product end-to-end and a great experience leading multiple teams toward one goal.

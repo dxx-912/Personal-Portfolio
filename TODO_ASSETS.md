@@ -12,7 +12,6 @@ How things show up until they are filled: in development (`npm run dev`) a missi
 
 ## Dorm (professional)
 
-- [ ] **Ateball quarter and year** (`timeline` on the Ateball tab in `src/content/dorm.ts`; now "12 weeks").
 - [ ] **Hope For Hearing tone pass pending.** The founding story is in as written. Do your own tone edit in `dorm.shirt.more` when ready.
 - [ ] **Photos for empty folders:**
   - `1 Dorm/07 Grad cap, Upper Canada College/Graduating class hat toss (1 photo)`
