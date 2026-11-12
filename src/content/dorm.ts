@@ -15,8 +15,8 @@ export const dormContent: Record<string, Entry> = withMedia({
         title: 'About me',
         // The game panel lays this out on its own (src/ui/about.ts): headshot, intro, links, how to play.
         body: [
-            `UCLA sophomore studying ${MAJOR_PLAIN}, born and raised in Toronto.`,
-            'I grew up in specialized art programs, so I want to build and create in whatever I do, whether through the arts or technology.'
+            `UCLA sophomore studying ${MAJOR_PLAIN}, born and raised in North York, Toronto.`,
+            "I grew up learning the creative arts and spent 4 years in a specialized art program. I'm looking to build and create in any career path I end up in, whether through the arts or technology."
         ],
         callout: 'Currently recruiting for product management, product marketing, and growth roles for summer 2027.',
         // only the headshot; the quick view uses it as the hero photo

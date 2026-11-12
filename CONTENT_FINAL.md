@@ -25,8 +25,8 @@ Layout: headshot on the left, then the headline, intro, recruiting line, and lin
 Headline: Hi, I'm Daniel.
 
 Intro (the major wording comes from the `MAJOR` constant):
-1. UCLA sophomore studying economics and cognitive science, born and raised in Toronto.
-2. I grew up in specialized art programs, so I want to build and create in whatever I do, whether through the arts or technology.
+1. UCLA sophomore studying economics and cognitive science, born and raised in North York, Toronto.
+2. I grew up learning the creative arts and spent 4 years in a specialized art program. I'm looking to build and create in any career path I end up in, whether through the arts or technology.
 
 Recruiting line (its own highlighted line): Currently recruiting for product management, product marketing, and growth roles for summer 2027.
 
