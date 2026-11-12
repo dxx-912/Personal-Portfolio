@@ -54,7 +54,7 @@ export function aboutHtml(entry: Entry) {
     const shot = entry.images?.[0];
     const links = entry.links ?? [];
     const resume = links.find((l) => /resume/i.test(l.label));
-    const others = links.filter((l) => l !== resume);
+    const others = links.filter((l) => l !== resume && !/instagram/i.test(l.label));
 
     const photo = shot?.src
         ? `<img class="ab-shot" src="${esc(shot.src)}" alt="${esc(shot.alt)}" width="160" height="205" />`
