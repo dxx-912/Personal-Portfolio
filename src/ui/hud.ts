@@ -21,7 +21,7 @@ export function initHud() {
     root.insertAdjacentHTML('beforeend', `
         <div class="hud-top-left">
             <button class="portrait" hidden aria-label="${esc(ui.aboutButton)}" title="${esc(ui.aboutButton)}">
-                <canvas class="face" width="15" height="19" aria-hidden="true"></canvas>
+                <canvas class="face" width="16" height="13" aria-hidden="true"></canvas>
                 <span class="stats">${profile.stats.map((s) => `
                     <span class="stat" data-stat="${esc(s.label)}" style="--c: ${esc(s.color)}; --f: ${Math.max(0, Math.min(1, s.value / s.max))}">
                         <span class="bar"></span><span class="txt">${esc(s.label)} ${s.value}/${s.max}</span>
