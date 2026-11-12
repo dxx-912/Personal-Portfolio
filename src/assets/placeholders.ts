@@ -1233,14 +1233,28 @@ const homeShelf: Painter = (p, w, h) => {
         }
         p.p(bx + 3, by + 3, '#fffbe0'); // shine
     }
-    // middle: three plaques
+    // middle: three plaques, then the Gold Service Tie on the right
     const m = tiers[1];
-    [['#c9a24a', 7], ['#2f4a8a', 29], ['#7a2f2f', 51]].forEach(([c, x]) => {
-        p.box(x as number, m + 5, 18, 22, '#6b4429');
-        p.r((x as number) + 2, m + 7, 14, 18, c as string);
-        p.r((x as number) + 4, m + 10, 10, 6, '#efe7d2');
-        p.r((x as number) + 5, m + 19, 8, 1, '#efe7d2'); p.r((x as number) + 6, m + 21, 6, 1, '#efe7d2');
+    [['#c9a24a', 6], ['#2f4a8a', 22], ['#7a2f2f', 38]].forEach(([c, x]) => {
+        const px = x as number;
+        p.box(px, m + 5, 14, 22, '#6b4429');
+        p.r(px + 2, m + 7, 10, 18, c as string);
+        p.r(px + 3, m + 10, 8, 6, '#efe7d2');
+        p.r(px + 4, m + 19, 6, 1, '#efe7d2'); p.r(px + 5, m + 21, 4, 1, '#efe7d2');
     });
+    {
+        // a gold tie standing on the shelf: knot, then a blade that widens and ends in a point, diagonal stripes
+        const cx = 63, top = m + 7, shelfTop = m + tierH - 2;
+        p.box(cx - 2, top, 5, 4, gold, OUTLINE); p.r(cx - 1, top + 1, 2, 1, goldL);
+        for (let y = top + 4; y < shelfTop; y++) {
+            const k = y - (top + 4), len = shelfTop - (top + 4);
+            const half = k < len - 4 ? 1 + Math.round(k * 0.22) : Math.max(0, 1 + Math.round((len - 4) * 0.22) - (k - (len - 4)) * 2);
+            for (let x = cx - half; x <= cx + half; x++) {
+                const edge = x === cx - half || x === cx + half;
+                p.p(x, y, edge ? OUTLINE : (x + y) % 4 === 0 ? goldD : x < cx ? goldL : gold);
+            }
+        }
+    }
     // bottom: four thinner books, centered: two lying flat in a stack, one upright, one leaning on it
     const b = tiers[2];
     const base = b + tierH - 2; // top of the shelf board

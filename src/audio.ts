@@ -64,7 +64,7 @@ function hiss(dur: number, vol: number, filter: BiquadFilterType, freq: number, 
     s.stop(t + dur + 0.02);
 }
 
-export type Sfx = 'can' | 'gulp' | 'open' | 'close' | 'tick' | 'found' | 'door' | 'wake' | 'meow' | 'purr' | 'puff' | 'shutter'
+export type Sfx = 'can' | 'gulp' | 'open' | 'close' | 'tick' | 'found' | 'door' | 'wake' | 'meow' | 'meowLoud' | 'purr' | 'puff' | 'shutter'
     | 'rep' | 'nice' | 'bump' | 'hop' | 'chomp' | 'swish' | 'clank' | 'bounce' | 'board';
 
 export function sfx(name: Sfx) {
@@ -76,6 +76,8 @@ export function sfx(name: Sfx) {
         case 'door': blip(220, 0.18, 'triangle', 0.08, 110); break;
         case 'wake': blip(392, 0.12, 'triangle', 0.06, 784); break;
         case 'meow': blip(700, 0.12, 'sawtooth', 0.025, 980); blip(980, 0.28, 'sawtooth', 0.025, 560, 0.1); break;
+        // begging for food: louder and longer
+        case 'meowLoud': blip(720, 0.14, 'sawtooth', 0.05, 1040); blip(1040, 0.42, 'sawtooth', 0.05, 520, 0.12); break;
         case 'purr': purr(2.6); break;
         case 'chomp': hiss(0.07, 0.06, 'bandpass', 900); blip(140, 0.05, 'triangle', 0.03, 110); break;
         case 'puff': hiss(0.25, 0.08, 'bandpass', 1800); break;

@@ -25,6 +25,9 @@ export interface CatOpts {
     freeNear?: (p: Pt) => Pt;
     /** Depth for the cat while it naps on the bed. */
     bedDepth?: number;
+    /** The food (the pie): when the player walks near it he begs, following and meowing loudly. */
+    begAt?: Pt;
+    onBeg?: () => void;
 }
 
 /**
@@ -46,6 +49,9 @@ export class Cat {
     private perchPause = 0;
     private perchGoal: Pt | null = null;
     private followLeft = 0;
+    private begCooldown = 0;
+    private petStreakStart = -1e9;
+    private lastPetAt = -1e9;
     held = false; // frozen while a panel is open
 
     constructor(private scene: Phaser.Scene, private opts: CatOpts) {
@@ -82,8 +88,21 @@ export class Cat {
         return { spot: { x: this.x + side * 14, y: this.y + 1 }, facing: side < 0 ? 'right' : 'left' };
     }
 
-    /** Pet him. Returns whether he was asleep. */
-    pet(): 'awake' | 'asleep' {
+    /**
+     * Pet him. Returns whether he was asleep, or 'leaves' when the petting has gone on for more than a couple of
+     * seconds: he does not like prolonged touch, so he gets up and walks off.
+     */
+    pet(): 'awake' | 'asleep' | 'leaves' {
+        const now = this.scene.time.now;
+        if (now - this.lastPetAt > 1500) this.petStreakStart = now;
+        this.lastPetAt = now;
+        if (this.st !== 'nap' && this.st !== 'perch' && this.st !== 'hop' && now - this.petStreakStart > 2000 && this.points.length) {
+            const far = this.points.reduce((a, p) => (Math.hypot(p.x - this.x, p.y - this.y) > Math.hypot(a.x - this.x, a.y - this.y) ? p : a));
+            this.petStreakStart = -1e9;
+            this.st = 'walk';
+            this.target = far;
+            return 'leaves';
+        }
         if (this.st === 'nap') {
             this.scene.tweens.add({ targets: this.sprite, scaleY: 0.92, duration: 120, yoyo: true });
             return 'asleep';
@@ -122,6 +141,7 @@ export class Cat {
         this.timer -= dt;
         this.untilNap -= dt;
         this.untilPerch -= dt;
+        this.begCooldown -= dt;
 
         switch (this.st) {
             case 'petted':
@@ -138,6 +158,16 @@ export class Cat {
             case 'perch':
                 this.updatePerch(dt);
                 return;
+        }
+
+        // the player is near the food: beg (follow and meow loudly), at most every 15 seconds
+        const b = this.opts.begAt;
+        if (b && this.begCooldown <= 0 && (this.st === 'idle' || this.st === 'walk') && Math.hypot(player.x - b.x, player.y - b.y) < 44) {
+            this.begCooldown = 15000;
+            this.st = 'follow';
+            this.followLeft = 5000;
+            this.opts.onBeg?.();
+            return;
         }
 
         // pause near the player while idling or wandering (a cat on his way to a nap does not stop)

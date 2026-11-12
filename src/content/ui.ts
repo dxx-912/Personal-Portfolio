@@ -91,6 +91,7 @@ export const ui = {
     ballHintTouch: 'Hold the button, let go to shoot',
     tally: (makes: number, attempts: number) => `${makes} for ${attempts}`,
     meow: 'meow',
+    meowLoud: 'MEOW!',
     purr: 'prrr...',
     yum: 'yum!',
     drinkLine: 'Caffeine 7/7. Locked in.',

@@ -299,6 +299,8 @@ export class Room extends Phaser.Scene {
         const avoid = this.def.interactables.filter((i) => i.target !== 'cat' && i.target !== 'longboard').map((i) => ({ x: tx(i.spot.x), y: ty(i.spot.y) }));
         this.def.doors.forEach((d) => { const { x, top, bottom } = this.doorPx(d); avoid.push({ x: d.side === 'right' ? x - 12 : x + 12, y: (top + bottom) / 2 }); });
         const bed = this.sprites.get('bed');
+        const pieT = this.def.interactables.find((d) => d.id === 'pie');
+        const pie = pieT ? { x: tx(pieT.spot.x), y: ty(pieT.spot.y) } : null;
         const perches = (this.def.perches ?? []).map((p) => ({
             on: p.on, from: { x: tx(p.from.x), y: ty(p.from.y) },
             path: [{ x: tx(p.path[0].x), y: ty(p.path[0].y) }, { x: tx(p.path[1].x), y: ty(p.path[1].y) }] as [Pt, Pt],
@@ -309,7 +311,14 @@ export class Room extends Phaser.Scene {
             bedDepth: bed?.depth,
             perches,
             onPerch: (on, x, y, dt) => this.mischief(on, x, y, dt),
-            freeNear: (p) => this.nav.nearestFreePoint(p)
+            freeNear: (p) => this.nav.nearestFreePoint(p),
+            begAt: pie ? { x: pie.x, y: pie.y } : undefined,
+            onBeg: () => {
+                if (state.modal || this.sleeping) return;
+                if (state.sound) sfx('meowLoud');
+                else showBubble('cat', ui.meowLoud, 'small');
+                this.time.delayedCall(1400, () => hideBubble('cat'));
+            }
         });
     }
 
@@ -1160,6 +1169,7 @@ export class Room extends Phaser.Scene {
         const cat = this.cat;
         this.player.pose(DANIEL_FRAMES.crouch);
         this.time.delayedCall(650, () => { if (this.mode === 'free') this.player.pose(null); });
+        if (r === 'leaves') return; // petted too long: he just walks off
         const hearts = r === 'asleep' ? 1 : (this.rm ? 1 : 4);
         for (let i = 0; i < hearts; i++) {
             const h = this.add.image(cat.x - 4 + i * 3, cat.y - 13, 'fx_heart').setDepth(8500);
