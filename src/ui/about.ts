@@ -57,7 +57,7 @@ export function aboutHtml(entry: Entry) {
     const others = links.filter((l) => l !== resume);
 
     const photo = shot?.src
-        ? `<img class="ab-shot" src="${esc(shot.src)}" alt="${esc(shot.alt)}" width="160" height="160" />`
+        ? `<img class="ab-shot" src="${esc(shot.src)}" alt="${esc(shot.alt)}" width="160" height="205" />`
         : `<div class="ab-shot ab-shot-ph" role="img" aria-label="${esc(shot?.alt ?? 'Headshot')}"></div>`;
 
     const howTo = a.keys.map((k) => `

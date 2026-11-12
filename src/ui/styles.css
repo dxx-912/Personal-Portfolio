@@ -705,7 +705,7 @@ body.title-on .plain-link { opacity: 0.85; visibility: visible; pointer-events: 
 .panel.panel-id-about { width: min(880px, 100%); max-height: min(94vh, 960px); }
 .ab-top { display: grid; grid-template-columns: 160px minmax(0, 1fr); gap: 40px; align-items: start; }
 .ab-shot {
-    width: 160px; height: 160px; object-fit: cover; display: block; background: var(--paper-2);
+    width: 160px; height: 205px; object-fit: cover; object-position: center 20%; display: block; background: var(--paper-2);
     border: 3px solid var(--edge); box-shadow: 0 0 0 3px #c9b596, 0 0 0 6px var(--edge), 0 6px 0 6px rgba(0, 0, 0, 0.18);
     margin: 6px;
 }
@@ -751,7 +751,7 @@ svg.ab-ico { fill: currentColor; border-radius: 0; width: 15px; height: 18px; }
 
 @media (max-width: 600px) {
     .ab-top { grid-template-columns: minmax(0, 1fr); justify-items: center; gap: 12px; }
-    .ab-shot { width: 120px; height: 120px; }
+    .ab-shot { width: 120px; height: 154px; }
     .ab-intro { text-align: left; width: 100%; }
     .panel-body .ab-hi { font-size: 16px; text-align: center; }
     .ab-how-row { gap: 10px 16px; }
