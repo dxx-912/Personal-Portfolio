@@ -69,7 +69,15 @@ export function aboutHtml(entry: Entry) {
 
     return `
         <div class="ab-top">
-            ${photo}
+            <div class="ab-side">
+                ${photo}
+                <div class="ab-card" aria-label="Character card">
+                    <p class="ab-card-name">${esc(a.card.name)}</p>
+                    <dl class="ab-card-rows">
+                        ${a.card.rows.map((r) => `<div class="ab-card-row"><dt>${esc(r.k)}</dt><dd>${esc(r.v)}</dd></div>`).join('')}
+                    </dl>
+                </div>
+            </div>
             <div class="ab-intro">
                 <p class="ab-hi">${esc(a.headline)}</p>
                 <p class="ab-thanks">${esc(a.thanks)}</p>

@@ -25,6 +25,16 @@ export const ui = {
     /** The About me panel (src/ui/about.ts). The counts come from the item list and the secrets list. */
     about: {
         headline: "Hi, I'm Daniel.",
+        /** Soul Knight style character card under the headshot. Only facts already on the site. */
+        card: {
+            name: 'Daniel Xing',
+            rows: [
+                { k: 'Class', v: 'Product & Growth' },
+                { k: 'Year', v: 'Sophomore' },
+                { k: 'Base', v: 'UCLA' },
+                { k: 'Home', v: 'Toronto' }
+            ]
+        },
         /** White strip under the headline (same look as the coursework chips). */
         thanks: 'Thanks for visiting - this portfolio means a lot to me and reflects who I am professionally and personally. The design was inspired by my favourite childhood game, Soul Knight. I hope you enjoy exploring!',
         howTitle: 'How to play',
