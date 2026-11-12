@@ -244,11 +244,6 @@ export const homeContent: Record<string, Entry> = withMedia({
         prompt: 'About Fluffy',
         plainGroup: 'personal',
         title: 'About Fluffy',
-        facts: [
-            { label: 'Breed', value: 'British longhair' },
-            { label: 'Age', value: '6' },
-            { label: 'With us since', value: '2021' }
-        ],
         body: [
             'British longhair that we got back in 2021, in the middle of COVID. Funny because my mom was super against pets up until Fluffy, and now she loves him more than me, I swear.',
             "This cat is extremely fat, greedy, and selectively stupid. Typically, Fluffy is very ignorant and quiet, but he'll immediately start screaming and pull out every trick he knows for food. Generally he's very social and loves loafing or sleeping around people, but doesn't like prolonged physical touch. Fluffy is 6 years old now and fatter than ever."

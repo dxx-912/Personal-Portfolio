@@ -231,7 +231,7 @@ Use Daniel's text as written (his casual voice is intentional). Light fixes only
 - Photos are in.
 
 ### 3.10 Fluffy
-- Panel title: About Fluffy. Breed: British longhair. Age: 6. With the family since 2021.
+- Panel title: About Fluffy. No fact tiles (breed, age, and year are in the text).
 - Text: British longhair that we got back in 2021, in the middle of COVID. Funny because my mom was super against pets up until Fluffy, and now she loves him more than me, I swear. This cat is extremely fat, greedy, and selectively stupid. Typically, Fluffy is very ignorant and quiet, but he'll immediately start screaming and pull out every trick he knows for food. Generally he's very social and loves loafing or sleeping around people, but doesn't like prolonged physical touch. Fluffy is 6 years old now and fatter than ever.
 - Game behavior tie ins (small, optional, nice): Fluffy meows louder and follows Daniel if he walks near the pie; petting him for more than a couple of seconds makes him walk away. Keep it subtle.
 - Photos are in.
