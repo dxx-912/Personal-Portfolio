@@ -16,7 +16,7 @@ export const home: RoomDef = {
         { id: 'plant', texture: 'home_plant', x: 7.9, y: -0.7, layer: 'floor', solid: { x: 8.1, y: 0.55, w: 0.6, h: 0.5 } },
         { id: 'window', texture: 'home_window', x: 9.2, y: -3.8, layer: 'wall' },
         // empty poster frames for Daniel's posters (image slots)
-        { id: 'posterH1', texture: 'slot_poster_home_1', x: 0.55, y: -3.3, layer: 'wall' },
+        { id: 'posterH1', texture: 'slot_poster_home_1', x: 0.6, y: -3.1, layer: 'wall' },
         { id: 'posterH2', texture: 'slot_poster_home_2', x: 7.95, y: -2.6, layer: 'wall' },
         { id: 'posterH3', texture: 'slot_poster_home_3', x: 17.35, y: -3.65, layer: 'wall' },
         { id: 'hoodie', texture: 'home_hoodie', x: 14.25, y: -3.4, layer: 'wall' },
