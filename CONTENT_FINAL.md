@@ -237,10 +237,9 @@ Use Daniel's text as written (his casual voice is intentional). Light fixes only
 - Photos are in.
 
 ### 3.11 Longboard
-- Short version: After getting no internship offers for my freshman summer, I decided to build something difficult, useful, and interesting: an electric longboard. I ended up with a fully functional longboard that rides really smoothly, and a fried motor and battery.
+- No short version and no status line: the panel opens with the first two paragraphs of the full story, then "Read the whole story" for the rest.
 - Full story: Daniel's text in `reference/content-todo-filled.pdf` (pages 3 to 4, section 2.11), with only these fixes: "that rides really smoothly" (not "that's rides"), "idiocy" (not "idiocracy"), "splice" or "join" instead of "meld". Keep everything else, including his tone, for his own later edit.
 - Link: "My Master Google Doc" https://docs.google.com/document/d/1GeFjlEI0BBgI-yIhaeFw6F2dBhx2u-wVWmrTyLuOT_o/edit?usp=sharing (open in a new tab).
-- Current state: built and rideable as a regular longboard; the electric part is unfinished.
 - Photos: `photos/2 Home/10 Longboard/` (keep placeholders for empty folders).
 
 ## 4. Quick view only

@@ -260,16 +260,15 @@ export const homeContent: Record<string, Entry> = withMedia({
         prompt: 'The build',
         plainGroup: 'personal',
         title: 'Longboard build',
-        subtitle: 'Built and rideable as a regular longboard; the electric part is unfinished.',
-        body: [
-            'After getting no internship offers for my freshman summer, I decided to build something difficult, useful, and interesting: an electric longboard. I ended up with a fully functional longboard that rides really smoothly, and a fried motor and battery.'
-        ],
+        // the story opens with its first two paragraphs; the rest sits behind "Read the whole story"
         more: {
             title: 'The build',
+            intro: [
+                'After receiving NO internship offers for my freshman summer, I decided not to chud around and build something that was 1. difficult, 2. useful, 3. interesting.',
+                'Consequently, I decided to build an electric longboard. It was useful for getting to class at UCLA and was also pretty interesting. Unfortunately, this shit was way too difficult. I spent a full week sourcing every single part I needed with the endless list of required compatible specifications, primarily from Chinese manufacturers. I also travelled across every end of Toronto to source the different longboard parts I needed.'
+            ],
             label: 'Read the whole story',
             body: [
-                'After receiving NO internship offers for my freshman summer, I decided not to chud around and build something that was 1. difficult, 2. useful, 3. interesting.',
-                'Consequently, I decided to build an electric longboard. It was useful for getting to class at UCLA and was also pretty interesting. Unfortunately, this shit was way too difficult. I spent a full week sourcing every single part I needed with the endless list of required compatible specifications, primarily from Chinese manufacturers. I also travelled across every end of Toronto to source the different longboard parts I needed.',
                 'I actually ended up building a fully functional longboard that rides really smoothly. Unfortunately, the specs between the motor and battery did not end up being compatible, so I decided to learn how to solder off YouTube, cut the wiring, and splice them myself.',
                 'This was a terrible mistake.',
                 "With a charged battery and fully exposed wires, I think I short-circuited the wiring, which burned a mark on my table and absolutely fried the motor and battery. I'm really lucky it didn't burn my skin, because I was holding the wires when it happened.",
