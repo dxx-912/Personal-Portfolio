@@ -513,6 +513,29 @@
             "file": "IMG_5714"
         }
     ],
+    "nightstand/gallery": [
+        {
+            "src": "/media/nightstand/gallery/01-daniel-with-his-parents-and-sister-behind-his-16.webp",
+            "alt": "Daniel with his parents and sister behind his 16th birthday cake",
+            "w": 1218,
+            "h": 1546,
+            "file": "16th birthday w/ fam"
+        },
+        {
+            "src": "/media/nightstand/gallery/02-daniel-and-his-family-with-umbrellas-reflected-i.webp",
+            "alt": "Daniel and his family with umbrellas, reflected in a window on a rainy day in Tokyo",
+            "w": 1200,
+            "h": 1600,
+            "file": "Family trip to Tokyo"
+        },
+        {
+            "src": "/media/nightstand/gallery/03-daniel-his-mom-holding-fluffy-and-his-sister-wit.webp",
+            "alt": "Daniel, his mom holding Fluffy, and his sister with a cake and flowers for his mom's birthday",
+            "w": 600,
+            "h": 800,
+            "file": "Mom's bday"
+        }
+    ],
     "pennant/friends": [
         {
             "src": "/media/pennant/friends/01-daniel-and-friends-at-a-party-with-balloons.webp",

@@ -187,9 +187,9 @@ export const homeContent: Record<string, Entry> = withMedia({
         funFact: 'My #1 fans and supporters.',
         gallery: 'grid',
         images: [
-            { alt: 'Family photo 1', slot: 'nightstand/gallery' },
-            { alt: 'Family photo 2', slot: 'nightstand/gallery' },
-            { alt: 'Family photo 3', slot: 'nightstand/gallery' }
+            { alt: 'Family photo 1', slot: 'nightstand/gallery', captionFromFile: true },
+            { alt: 'Family photo 2', slot: 'nightstand/gallery', captionFromFile: true },
+            { alt: 'Family photo 3', slot: 'nightstand/gallery', captionFromFile: true }
         ]
     },
 

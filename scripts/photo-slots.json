@@ -335,8 +335,16 @@
         },
         {
             "key": "nightstand/gallery",
-            "folder": "2 Home/06 Nightstand, family/Gallery (any number)",
-            "max": 0
+            "folder": "2 Home/06 Nightstand, family",
+            "max": 0,
+            "alts": {
+                "16th birthday w: fam.png": "Daniel with his parents and sister behind his 16th birthday cake",
+                "Family trip to Tokyo.HEIC": "Daniel and his family with umbrellas, reflected in a window on a rainy day in Tokyo",
+                "Mom's bday.JPEG": "Daniel, his mom holding Fluffy, and his sister with a cake and flowers for his mom's birthday"
+            },
+            "captions": {
+                "16th birthday w: fam.png": "16th birthday w/ fam"
+            }
         },
         {
             "key": "piano/recitals",
