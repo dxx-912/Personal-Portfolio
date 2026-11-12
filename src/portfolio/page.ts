@@ -255,10 +255,17 @@ export function renderPortfolio(opts: { production: boolean }): RenderResult {
 
     // ---------- detail sections (the panels; anchored sections without JS) ----------
 
-    const gallery = (imgs: ImageItem[] | undefined, where: string) => {
+    const gallery = (imgs: ImageItem[] | undefined, where: string, vids: NonNullable<Section['videos']> = []) => {
         const list = (imgs ?? []).filter((im) => prod ? !!im.src : true);
+        const vlist = vids.filter((v) => v.id);
         (imgs ?? []).filter((im) => !im.src).forEach((im) => todos.push(`${where}: photo "${im.alt}"`));
-        if (!list.length) return '';
+        if (!list.length && !vlist.length) return '';
+        const total = list.length + vlist.length;
+        const vslides = vlist.map((v, k) => `
+          <li class="gal-slide" aria-label="${esc(C.galleryLabel(list.length + k + 1, total))}">
+            <video class="gal-video" src="${esc(v.id!)}" controls preload="none" playsinline aria-label="${esc(v.title)}"></video>
+            <p class="gal-cap">${esc(v.title)}</p>
+          </li>`).join('');
         const slides = list.map((im, k) => `
           <li class="gal-slide" aria-label="${esc(C.galleryLabel(k + 1, list.length))}">
             ${im.src && im.href
@@ -267,13 +274,13 @@ export function renderPortfolio(opts: { production: boolean }): RenderResult {
                 ? `<button type="button" class="gal-zoom" data-zoom="${esc(im.src)}" aria-label="${esc(C.enlarge)}: ${esc(im.alt)}"><img src="${esc(im.src)}" alt="${esc(im.alt)}" loading="lazy" decoding="async" width="${im.width ?? 800}" height="${im.height ?? 500}" /></button>`
                 : `<div class="gal-ph"><span>${esc(im.alt)}</span><span class="todo">[TODO: photo coming soon]</span></div>`}
             ${im.caption ? `<p class="gal-cap">${t(im.caption, where)}</p>` : ''}
-          </li>`).join('');
+          </li>`).join('') + vslides;
         return `
         <div class="gal" data-gal aria-label="Photos">
           <ul class="gal-track" tabindex="0">${slides}</ul>
-          ${list.length > 1 ? `<div class="gal-ctrl">
+          ${total > 1 ? `<div class="gal-ctrl">
             <button type="button" class="nb gal-prev" aria-label="Previous photo">${icon('arrowLeft')}</button>
-            <span class="gal-dots">${list.map((_, k) => `<button type="button" class="dot" aria-label="${esc(C.galleryLabel(k + 1, list.length))}"${k === 0 ? ' aria-current="true"' : ''}></button>`).join('')}</span>
+            <span class="gal-dots">${Array.from({ length: total }, (_, k) => `<button type="button" class="dot" aria-label="${esc(C.galleryLabel(k + 1, total))}"${k === 0 ? ' aria-current="true"' : ''}></button>`).join('')}</span>
             <button type="button" class="nb gal-next" aria-label="Next photo">${icon('arrowRight')}</button>
           </div>` : ''}
         </div>`;
@@ -302,7 +309,9 @@ export function renderPortfolio(opts: { production: boolean }): RenderResult {
     const extras = (s: Section, where: string, level = 4) => {
         const out: string[] = [];
         (s.body ?? []).forEach((b) => { const x = t(b, where); if (x) out.push(`<p>${x}</p>`); });
-        (s.videos ?? []).filter((v) => v.kind === 'mp4' && v.id).forEach((v) => out.push(video(v)));
+        (s.videos ?? []).filter((v) => v.kind === 'mp4' && v.id && !v.inGallery).forEach((v) => out.push(video(v)));
+        const embeds = (s.videos ?? []).filter((v) => v.kind === 'spotify' && v.id);
+        if (embeds.length) out.push(`<div class="d-embeds">${embeds.map((v) => `<iframe src="https://open.spotify.com/embed/${v.id!.split('/').map(encodeURIComponent).join('/')}" title="${esc(v.title)}" width="100%" height="352" loading="lazy" allow="encrypted-media; clipboard-write" style="border:0"></iframe>`).join('')}</div>`);
         if (s.facts?.length) {
             const rows = s.facts.map((f) => [t(f.label, where), t(f.value, where)]).filter(([, v]) => v);
             if (rows.length) out.push(`<dl class="facts">${rows.map(([k, v]) => `<div><dt class="px">${k}</dt><dd>${v}</dd></div>`).join('')}</dl>`);
@@ -318,7 +327,7 @@ export function renderPortfolio(opts: { production: boolean }): RenderResult {
             else out.push(`<ul class="list">${lis.map((x) => `<li>${x}</li>`).join('')}</ul>`);
         });
         const links = [
-            ...(s.videos ?? []).filter((v) => v.kind !== 'mp4').map((v) => link(v.id ? { label: v.title, href: v.url ?? (v.kind === 'youtube' ? `https://www.youtube.com/watch?v=${v.id}` : v.id) } : undefined, v.title, 'btn btn-s', undefined, where)),
+            ...(s.videos ?? []).filter((v) => v.kind !== 'mp4' && v.kind !== 'spotify').map((v) => link(v.id ? { label: v.title, href: v.url ?? (v.kind === 'youtube' ? `https://www.youtube.com/watch?v=${v.id}` : v.id) } : undefined, v.title, 'btn btn-s', undefined, where)),
             ...(s.links ?? []).map((l) => link(l, l.label.replace(TODO_RE, '').trim() || 'Link', 'btn btn-s', undefined, where))
         ].filter(Boolean);
         if (links.length) out.push(`<p class="d-links">${links.join('')}</p>`);
@@ -342,7 +351,7 @@ export function renderPortfolio(opts: { production: boolean }): RenderResult {
         // gather images from the story and its tabs (DSP and IBB)
         const imgs = [...(s.images ?? []), ...(s.tabs ?? []).flatMap((x) => x.images ?? [])];
         [s, ...(s.tabs ?? [])].forEach((x) => missingVideos(x, w));
-        parts.push(gallery(imgs, w));
+        parts.push(gallery(imgs, w, (s.videos ?? []).filter((v) => v.inGallery && v.kind === 'mp4')));
         if (i.kind === 'org') {
             const glance = [[C.glance.role, t(s.role ?? s.subtitle, w)], [C.glance.timeline, field(s, 'timeline', w)]].filter(([, v]) => v);
             if (glance.length) parts.push(`<dl class="glance">${glance.map(([k, v]) => `<div><dt class="px">${esc(k)}</dt><dd>${v}</dd></div>`).join('')}</dl>`);
@@ -366,8 +375,6 @@ export function renderPortfolio(opts: { production: boolean }): RenderResult {
         if (isHobby) {
             const story = (s.body ?? []).map((b) => t(b, w)).filter(Boolean);
             if (story.length) parts.push(`<h4 class="px wl">${esc(C.story)}</h4>${story.map((b) => `<p>${b}</p>`).join('')}`);
-            const ff = need(s.funFact, w, 'fun fact');
-            if (ff) parts.push(`<div class="fun"><p class="px wl">${esc(C.funFact)}</p><p>${ff}</p></div>`);
             const rest = extras({ ...s, body: [] }, w);
             if (rest) parts.push(rest);
         } else if (i.kind !== 'org') {

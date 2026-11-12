@@ -724,18 +724,25 @@
             "file": "And another recital"
         },
         {
-            "src": "/media/piano/recitals/04-daniel-and-his-sister-holding-flowers-at-his-arc.webp",
-            "alt": "Daniel and his sister holding flowers at his ARCT diploma ceremony",
+            "src": "/media/piano/recitals/04-daniel-and-his-sister-holding-flowers-at-his-pia.webp",
+            "alt": "Daniel and his sister holding flowers at his piano graduation ceremony",
             "w": 828,
             "h": 1104,
-            "file": "ARCT diploma graduation Ceremony"
+            "file": "Graduation ceremony"
         },
         {
-            "src": "/media/piano/recitals/05-daniel-with-his-family-and-flowers-at-his-arct-d.webp",
-            "alt": "Daniel with his family and flowers at his ARCT diploma ceremony",
+            "src": "/media/piano/recitals/05-daniel-with-his-family-and-flowers-at-his-piano-.webp",
+            "alt": "Daniel with his family and flowers at his piano graduation ceremony",
             "w": 1600,
             "h": 1200,
             "file": "Ceremony with family!"
+        },
+        {
+            "src": "/media/piano/recitals/06-practicing-after-surgery.webp",
+            "alt": "Practicing after surgery",
+            "w": 1200,
+            "h": 1600,
+            "file": "Practicing after surgery"
         }
     ],
     "pie/food": [
@@ -747,32 +754,32 @@
             "file": "Cooking coke chicken"
         },
         {
-            "src": "/media/pie/food/02-me-cooking-steak-2021-vs-2024.webp",
+            "src": "/media/pie/food/02-cooking-with-grandma.webp",
+            "alt": "Cooking with grandma",
+            "w": 1107,
+            "h": 1600,
+            "file": "Cooking with grandma"
+        },
+        {
+            "src": "/media/pie/food/03-me-cooking-steak-2021-vs-2024.webp",
             "alt": "Me cooking steak 2021 vs 2024",
             "w": 1200,
             "h": 1600,
             "file": "Me cooking steak 2021 vs 2024"
         },
         {
-            "src": "/media/pie/food/03-a-plate-of-daniel-s-apple-crisp-topped-with-whip.webp",
+            "src": "/media/pie/food/04-a-plate-of-daniel-s-apple-crisp-topped-with-whip.webp",
             "alt": "A plate of Daniel's apple crisp topped with whipped cream",
             "w": 1200,
             "h": 1600,
             "file": "My apple crisp"
         },
         {
-            "src": "/media/pie/food/04-prepping-steak-again.webp",
+            "src": "/media/pie/food/05-prepping-steak-again.webp",
             "alt": "Prepping steak again",
             "w": 772,
             "h": 1188,
             "file": "Prepping steak again"
-        },
-        {
-            "src": "/media/pie/food/05-cny-dishes-i-made-with-mom.webp",
-            "alt": "CNY dishes I made with mom",
-            "w": 1200,
-            "h": 1600,
-            "file": "CNY dishes I made with mom"
         }
     ],
     "pullup/deadlift": [

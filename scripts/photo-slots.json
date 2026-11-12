@@ -367,9 +367,12 @@
                 "ARCT diploma graduation Ceremony.JPG",
                 "Ceremony with family!.jpg"
             ],
+            "captions": {
+                "ARCT diploma graduation Ceremony.JPG": "Graduation ceremony"
+            },
             "alts": {
-                "ARCT diploma graduation Ceremony.JPG": "Daniel and his sister holding flowers at his ARCT diploma ceremony",
-                "Ceremony with family!.jpg": "Daniel with his family and flowers at his ARCT diploma ceremony"
+                "ARCT diploma graduation Ceremony.JPG": "Daniel and his sister holding flowers at his piano graduation ceremony",
+                "Ceremony with family!.jpg": "Daniel with his family and flowers at his piano graduation ceremony"
             }
         },
         {

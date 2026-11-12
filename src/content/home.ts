@@ -8,7 +8,7 @@ import { resolveSection, withMedia } from './media';
 export const rowing: Section = resolveSection({
     id: 'rowing',
     title: 'Rowing',
-    short: 'Rowing, national champ',
+    short: 'Rowing',
     subtitle: 'High school junior varsity',
     body: ["Rowed for two years on my high school's junior varsity team. Seats 1 and 2 (bow pair); can row port and starboard."],
     list: [{
@@ -21,7 +21,7 @@ export const rowing: Section = resolveSection({
             'South Niagara Invitational, Junior 8+'
         ]
     }],
-    funFact: 'Won the national championships! (Novice 8+, CSSRA)',
+    funFact: 'Won the national championships!',
     gallery: 'grid',
     images: [{ alt: 'Rowing photo 1', slot: 'shelf/rowing', captionFromFile: true }, { alt: 'Rowing photo 2', slot: 'shelf/rowing', captionFromFile: true }],
     videos: [{ kind: 'mp4', title: '"The Senator" crew that won nationals (I\'m bow seat)', slot: 'shelf/rowing-video', inGallery: true }]
@@ -104,7 +104,7 @@ export const homeContent: Record<string, Entry> = withMedia({
     // 3. Pull up tower (E does pull ups)
     pullup: {
         id: 'pullup',
-        short: 'Lift and sprint',
+        short: 'Lifting',
         prompt: 'Exercise',
         plainGroup: 'personal',
         title: 'Exercise',
@@ -188,14 +188,13 @@ export const homeContent: Record<string, Entry> = withMedia({
     // 7. Digital piano (E plays it)
     piano: {
         id: 'piano',
-        short: 'Piano, ARCT',
+        short: 'Piano',
         prompt: 'Piano',
         plainGroup: 'personal',
         title: 'Piano',
-        subtitle: 'The Associate Diploma (ARCT) in Piano Performance and Harmony',
-        body: ['Played piano for 12 years, from age 4 to 16, when I completed my ARCT diploma.'],
+        body: ['Played piano for 12 years, from age 4 to 16.'],
         list: [{
-            title: 'My ARCT program',
+            title: 'ARCT Program',
             style: 'setlist',
             items: [
                 'Bach, Partita in A minor (Fantasia, Sarabande, Gigue)',
@@ -205,7 +204,7 @@ export const homeContent: Record<string, Entry> = withMedia({
                 'Tan Dun, Eight Memories in Watercolor'
             ]
         }],
-        funFact: 'I have the ARCT diploma in Piano Performance.',
+        funFact: 'Twelve years of piano, from age 4 to 16.',
         gallery: 'grid',
         images: [{ alt: 'Recital photo 1', slot: 'piano/recitals', captionFromFile: true }, { alt: 'Recital photo 2', slot: 'piano/recitals', captionFromFile: true }]
     },

@@ -487,3 +487,7 @@ a.clink:hover span { text-decoration: underline; text-underline-offset: 4px; }
 .setlist strong { margin-right: 8px; }
 .setlist span { color: var(--muted); }
 .setlist li p { margin: 0; }
+
+/* videos inside a gallery, and side by side Spotify embeds */
+.gal-video { display: block; width: 100%; max-height: 60vh; background: #000; border: var(--line) solid var(--ink); }
+.d-embeds { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 14px; margin: 10px 0 14px; }
