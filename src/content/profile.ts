@@ -21,6 +21,12 @@ const instagram = {
  */
 export const MAJOR = 'B.A. Economics, B.S. Cognitive Science';
 
+/** The major in a sentence ("economics and cognitive science"), worked out from MAJOR so the two never drift. */
+export const MAJOR_PLAIN = (() => {
+    const parts = MAJOR.split(',').map((m) => m.trim().replace(/^B\.\s?[A-Z]+\.\s*/, '').toLowerCase()).filter(Boolean);
+    return parts.length > 1 ? `${parts.slice(0, -1).join(', ')} and ${parts[parts.length - 1]}` : parts[0] ?? '';
+})();
+
 // Contact details, HUD stats, and the little lines Daniel says (CONTENT_FINAL.md section 1).
 export const profile: Profile = {
     name: 'Daniel Xing',

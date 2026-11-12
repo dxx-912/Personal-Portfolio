@@ -129,6 +129,7 @@ export function renderSection(s: Section, o: RenderOpts): string {
     const links = (s.links ?? []).map(renderLink).filter(Boolean);
     if (s.linksTop && links.length) out.push(`<p class="links links-top">${links.join('')}</p>`);
     s.body?.forEach((p) => { if (!blank(p)) out.push(`<p>${rich(p)}</p>`); });
+    if (!blank(s.callout)) out.push(`<p class="callout">${rich(s.callout!)}</p>`);
     const glance = ([['Role', 'role'], ['Team', 'team'], ['Timeline', 'timeline']] as const)
         .filter(([, k]) => !s.hideGlance && !omit.has(k) && !blank(s[k])).map(([label, k]) => [label, s[k]!] as [string, string]);
     const counters = (s.counters ?? []).map((c) => [c.label, `${c.prefix ?? ''}${c.value.toLocaleString('en-US')}${c.suffix ?? ''}`] as [string, string]);

@@ -8,22 +8,6 @@
             "file": "Professional Headshot"
         }
     ],
-    "about/photos": [
-        {
-            "src": "/media/about/photos/01-daniel-holding-up-a-caricature-drawing-of-himsel.webp",
-            "alt": "Daniel holding up a caricature drawing of himself",
-            "w": 1200,
-            "h": 1600,
-            "file": "Me with my caricature"
-        },
-        {
-            "src": "/media/about/photos/02-daniel-his-sister-and-fluffy-the-cat-behind-a-bi.webp",
-            "alt": "Daniel, his sister, and Fluffy the cat behind a birthday cake",
-            "w": 1280,
-            "h": 1600,
-            "file": "Me, my sister, and my cat"
-        }
-    ],
     "binder/genesis": [
         {
             "src": "/media/binder/genesis/01-genesis-alternative-ventures-final-deliverable-t.webp",
@@ -345,6 +329,13 @@
             "w": 1200,
             "h": 1600,
             "file": "IMG_6295"
+        },
+        {
+            "src": "/media/cat/gallery/09-daniel-his-sister-and-fluffy-the-cat-behind-a-bi.webp",
+            "alt": "Daniel, his sister, and Fluffy the cat behind a birthday cake",
+            "w": 1280,
+            "h": 1600,
+            "file": "Me, my sister, and my cat"
         }
     ],
     "closet/ra": [
@@ -529,7 +520,14 @@
             "file": "Family trip to Tokyo"
         },
         {
-            "src": "/media/nightstand/gallery/03-daniel-his-mom-holding-fluffy-and-his-sister-wit.webp",
+            "src": "/media/nightstand/gallery/03-daniel-his-sister-and-fluffy-the-cat-behind-a-bi.webp",
+            "alt": "Daniel, his sister, and Fluffy the cat behind a birthday cake",
+            "w": 1280,
+            "h": 1600,
+            "file": "Me, my sister, and my cat"
+        },
+        {
+            "src": "/media/nightstand/gallery/04-daniel-his-mom-holding-fluffy-and-his-sister-wit.webp",
             "alt": "Daniel, his mom holding Fluffy, and his sister with a cake and flowers for his mom's birthday",
             "w": 600,
             "h": 800,

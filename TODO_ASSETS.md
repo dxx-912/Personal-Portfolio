@@ -45,7 +45,6 @@ Never drawn by us; an original placeholder shows until the file exists. Drop eac
 | `shirt-logo-ucla.png` | Chest of the UCLA shirt (closet outfit) | Plain "UCLA" in gold pixel text |
 | `volleyball-logo.png` | Volleyball on the home shelf | No logo |
 | `family-photo.png` | Home nightstand photo frame | Outline silhouettes of people |
-| `poster-caricature.png` | Not placed yet; say where you want it | Hidden until the file exists |
 
 ## Audio (`public/assets/audio/`, credits in `CREDITS.md`)
 

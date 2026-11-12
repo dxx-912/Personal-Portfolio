@@ -10,15 +10,6 @@
             }
         },
         {
-            "key": "about/photos",
-            "folder": "1 Dorm/01 About me (HUD portrait)/HUD Photos",
-            "max": 0,
-            "alts": {
-                "Me with my caricature.HEIC": "Daniel holding up a caricature drawing of himself",
-                "Me, my sister, and my cat.HEIC": "Daniel, his sister, and Fluffy the cat behind a birthday cake"
-            }
-        },
-        {
             "key": "pennant/friends",
             "folder": "1 Dorm/02 UCLA pennant/me and friends at UCLA",
             "max": 0,
@@ -340,7 +331,8 @@
             "alts": {
                 "16th birthday w: fam.png": "Daniel with his parents and sister behind his 16th birthday cake",
                 "Family trip to Tokyo.HEIC": "Daniel and his family with umbrellas, reflected in a window on a rainy day in Tokyo",
-                "Mom's bday.JPEG": "Daniel, his mom holding Fluffy, and his sister with a cake and flowers for his mom's birthday"
+                "Mom's bday.JPEG": "Daniel, his mom holding Fluffy, and his sister with a cake and flowers for his mom's birthday",
+                "Me, my sister, and my cat.HEIC": "Daniel, his sister, and Fluffy the cat behind a birthday cake"
             },
             "captions": {
                 "16th birthday w: fam.png": "16th birthday w/ fam"
@@ -379,7 +371,8 @@
                 "IMG_2850.JPG#1.png": "Fluffy playing with a red envelope on the floor",
                 "IMG_2850.JPG#2.png": "Fluffy sitting on a red envelope",
                 "IMG_6295.HEIC": "Close up of Fluffy looking at the camera",
-                "IMG_0012.jpg": "Fluffy looking up at the camera with his green eyes"
+                "IMG_0012.jpg": "Fluffy looking up at the camera with his green eyes",
+                "Me, my sister, and my cat.HEIC": "Daniel, his sister, and Fluffy the cat behind a birthday cake"
             }
         },
         {
@@ -425,7 +418,15 @@
             "key": "poster-caricature",
             "folder": "3 Room decor (optional)/Caricature, extra dorm frame (1 image)",
             "max": 1,
-            "decor": true
+            "decor": true,
+            "crops": {
+                "Me with my caricature.HEIC": [
+                    0.305,
+                    0.455,
+                    0.685,
+                    0.885
+                ]
+            }
         },
         {
             "key": "hoodie-logo",

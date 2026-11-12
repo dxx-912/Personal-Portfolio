@@ -87,7 +87,7 @@ export const ASSETS = {
     slot_poster_home_1: { w: 32, h: 18, paint: painters.slotHome1, outline: true, slot: { file: 'poster-home-1.png', sharp: 4 } },
     slot_poster_home_2: { w: 18, h: 18, paint: painters.slotHome2, outline: true, slot: { file: 'poster-home-2.png', sharp: 4 } },
     slot_poster_home_3: { w: 26, h: 18, paint: painters.slotHome3, outline: true, slot: { file: 'poster-home-3.png', sharp: 4 } },
-    slot_poster_caricature: { w: 16, h: 20, paint: painters.slotEmpty, outline: true, slot: { file: 'poster-caricature.png', hideIfMissing: true } },
+    slot_poster_caricature: { w: 18, h: 24, paint: painters.slotEmpty, outline: true, slot: { file: 'poster-caricature.png', hideIfMissing: true, sharp: 4 } },
 
     // dorm
     dorm_window: { w: 48, h: 42, frames: 3, paint: painters.dormWindow, outline: true },

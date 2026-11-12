@@ -22,6 +22,22 @@ export const ui = {
     musicBtn: (on: boolean) => (on ? 'Music on' : 'Music off'),
     pauseBtn: 'Pause',
 
+    /** The About me panel (src/ui/about.ts). The counts come from the item list and the secrets list. */
+    about: {
+        headline: "Hi, I'm Daniel.",
+        howTitle: 'How to play',
+        keys: [
+            { keys: ['W', 'A', 'S', 'D'], label: 'Move' },
+            { keys: ['F'], label: 'Learn more' },
+            { keys: ['E'], label: 'Interact' },
+            { keys: [], mouse: true, label: 'Click to walk' }
+        ] as { keys: string[]; mouse?: boolean; label: string }[],
+        rooms: 'UCLA dorm = work. Toronto bedroom = life.',
+        counts: (stories: number, secrets: number) => `Find all ${stories} stories (F) and ${secrets} secrets (E). Try the basketball.`,
+        start: 'Start exploring',
+        quick: 'No time? Quick view'
+    },
+
     /** E verbs, by action. */
     verbs: {
         sit: 'Sit',

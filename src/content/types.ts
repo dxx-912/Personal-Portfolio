@@ -54,6 +54,8 @@ export interface Section {
     title: string;
     subtitle?: string;
     body?: string[];
+    /** One short highlighted line after the body (About me: what Daniel is recruiting for). */
+    callout?: string;
     facts?: Fact[];
     /**
      * Lists under small headings. style 'chips': each item a small white label; 'plain': items as lines, no bullets;

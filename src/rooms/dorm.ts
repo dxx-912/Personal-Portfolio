@@ -16,6 +16,8 @@ export const dorm: RoomDef = {
         { id: 'window', texture: 'dorm_window', x: 0.4, y: -3.55, layer: 'wall' },
         { id: 'pennant', texture: 'dorm_pennant', x: 3.25, y: -3.5, layer: 'wall' },
         { id: 'todo', texture: 'dorm_todo', x: 7.5, y: -3.55, layer: 'wall' },
+        // Daniel's caricature, framed under the pennant's tip (hidden until the image exists)
+        { id: 'caricature', texture: 'slot_poster_caricature', x: 6.0, y: -2.05, layer: 'wall' },
         // three posters above the desk: Graduation, DAMN, IGOR
         { id: 'poster1', texture: 'slot_poster_graduation', x: 12.3, y: -3.5, layer: 'wall' },
         { id: 'poster2', texture: 'slot_poster_damn', x: 13.65, y: -3.6, layer: 'wall' },

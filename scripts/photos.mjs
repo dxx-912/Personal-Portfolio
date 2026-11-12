@@ -91,7 +91,7 @@ try {
         if (slot.decor) {
             mkdirSync(decorDir, { recursive: true });
             const src = readable(join(dir, files[0]), tmp);
-            const img = sharp(src).rotate().resize({ width: 600, height: 600, fit: 'inside', withoutEnlargement: true });
+            const img = (await cropBox(sharp(src).rotate(), slot.crops?.[files[0]])).resize({ width: 600, height: 600, fit: 'inside', withoutEnlargement: true });
             const out = join(decorDir, `${slot.key}.png`);
             if (slot.clearBackground) await clearBackground(img, out);
             else await img.png().toFile(out);

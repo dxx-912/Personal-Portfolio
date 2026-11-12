@@ -1,5 +1,5 @@
 import type { Entry } from './types';
-import { MAJOR, profile } from './profile';
+import { MAJOR, MAJOR_PLAIN, profile } from './profile';
 import { withMedia } from './media';
 
 // Dorm room (Rieber Hall, UCLA): everything professional. Keyed by item id (see src/rooms/dorm.ts).
@@ -13,31 +13,15 @@ export const dormContent: Record<string, Entry> = withMedia({
         prompt: 'About me',
         plainGroup: 'intro',
         title: 'About me',
-        // contact links sit right under the title
-        linksTop: true,
+        // The game panel lays this out on its own (src/ui/about.ts): headshot, intro, links, how to play.
         body: [
-            "Hey I'm Daniel, thanks for visiting my portfolio :)",
-            "I'm a sophomore at UCLA right now majoring in economics and cognitive science, born and raised in Toronto.",
-            "I come from a pretty artistic background (spent my formative years in specialized art programs), so I hope to build and create in whatever I end up doing professionally, whether through the arts or technology. I'm currently recruiting and hope to land product management, product marketing, or growth roles for 2027."
+            `UCLA sophomore studying ${MAJOR_PLAIN}, born and raised in Toronto.`,
+            'I grew up in specialized art programs, so I want to build and create in whatever I do, whether through the arts or technology.'
         ],
-        list: [{
-            title: 'Navigating this portfolio',
-            items: [
-                'UCLA dorm showcases my professional side: projects, experiences, student orgs., education, etc.',
-                'Toronto bedroom showcases my personal life: hobbies, interests, sports, what makes me, me.',
-                'Press F to learn more about one of 18 items that represent my professional and personal stories (this HUD panel is one).',
-                'Press E to interact with an object. There are 18 total things you can interact with (solely for fun; e.g., try shooting the basketball!).',
-                'If you\'re a recruiter and want to quickly scan over everything, press the "Quick View" button.',
-                'Have fun! Reach out to me for any feedback :)'
-            ]
-        }],
-        // The headshot comes first: the quick view uses it as the hero photo.
-        // one row of equal photos across the panel, each captioned with its file name
-        gallery: 'row',
+        callout: 'Currently recruiting for product management, product marketing, and growth roles for summer 2027.',
+        // only the headshot; the quick view uses it as the hero photo
         images: [
-            { alt: 'Headshot of Daniel Xing', caption: 'Professional Headshot', slot: 'about/headshot' },
-            { alt: 'Daniel outside of class', caption: 'Me with my caricature', slot: 'about/photos' },
-            { alt: 'Daniel outside of class', caption: 'Me, my sister, and my cat', slot: 'about/photos' }
+            { alt: 'Headshot of Daniel Xing', caption: 'Professional Headshot', slot: 'about/headshot' }
         ],
         links: profile.links
     },

@@ -6,6 +6,7 @@ import { ui } from '../content';
 import { state } from '../state';
 import { esc, rich, renderSection } from './render';
 import { duck, sfx } from '../audio';
+import { aboutFooterHtml, aboutHtml } from './about';
 
 interface Open {
     root: HTMLElement;
@@ -66,6 +67,7 @@ function mount(html: string, open: Omit<Open, 'root'>, focusSel?: string) {
 }
 
 export function openPanel(entry: Entry, onClose?: () => void) {
+    if (entry.id === 'about') return openAbout(entry, onClose);
     const style = entry.tabStyle ?? 'tabs';
     const titleId = `panel-title-${entry.id}`;
     // only a few lines of text: no tabs, photos, videos, or long story
@@ -84,6 +86,21 @@ export function openPanel(entry: Entry, onClose?: () => void) {
         </section>`, { onClose }, '[role="tab"][aria-selected="true"]');
     root.querySelectorAll<HTMLButtonElement>('[role="tab"]').forEach((btn) =>
         btn.addEventListener('click', () => selectTab(root, Number(btn.dataset.i))));
+}
+
+/** About me: its own layout, with the two footer buttons outside the scrolling body so they stay in view. */
+function openAbout(entry: Entry, onClose?: () => void) {
+    const titleId = 'panel-title-about';
+    const root = mount(`
+        <section class="panel panel-id-about" role="dialog" aria-modal="true" aria-labelledby="${titleId}">
+            <header class="panel-head">
+                <h2 id="${titleId}">${rich(entry.title)}</h2>
+                <button class="panel-close" aria-label="${esc(ui.close)}" title="${esc(ui.close)} (Esc)">✕</button>
+            </header>
+            <div class="panel-body">${aboutHtml(entry)}</div>
+            ${aboutFooterHtml()}
+        </section>`, { onClose }, '.ab-start');
+    root.querySelector('.ab-start')?.addEventListener('click', () => closePanel());
 }
 
 /** A custom overlay (piano, snapshot). `body` is trusted HTML built by our code. */
