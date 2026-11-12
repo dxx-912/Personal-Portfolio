@@ -6,7 +6,9 @@ import { Room } from './scenes/Room';
 import { initHud } from './ui/hud';
 import { initInput } from './ui/input';
 import { initEmailCopy } from './ui/copyEmail';
+import { inject } from '@vercel/analytics';
 
+inject();
 initInput();
 initHud();
 initEmailCopy();
