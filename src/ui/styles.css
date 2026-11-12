@@ -703,7 +703,7 @@ body.title-on .plain-link { opacity: 0.85; visibility: visible; pointer-events: 
 
 /* ---------- About me (src/ui/about.ts): reads in one view on a laptop, no scrolling ---------- */
 .panel.panel-id-about { width: min(880px, 100%); max-height: min(94vh, 960px); }
-.ab-top { display: grid; grid-template-columns: 160px minmax(0, 1fr); gap: 22px; align-items: start; }
+.ab-top { display: grid; grid-template-columns: 160px minmax(0, 1fr); gap: 40px; align-items: start; }
 .ab-shot {
     width: 160px; height: 160px; object-fit: cover; display: block; background: var(--paper-2);
     border: 3px solid var(--edge); box-shadow: 0 0 0 3px #c9b596, 0 0 0 6px var(--edge), 0 6px 0 6px rgba(0, 0, 0, 0.18);
