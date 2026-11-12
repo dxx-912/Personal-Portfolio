@@ -715,11 +715,11 @@ body.title-on .plain-link { opacity: 0.85; visibility: visible; pointer-events: 
     margin: 0; padding: 7px 6px 6px; text-align: center; font: 400 10px/1.4 var(--font-heading);
     color: #fff6c8; background: var(--accent-2); border-bottom: 3px solid var(--edge);
 }
-.ab-card-rows { margin: 0; padding: 6px 7px; }
+.ab-card-rows { margin: 0; padding: 6px 8px; }
 .ab-card-row { display: flex; justify-content: space-between; gap: 6px; padding: 3px 0; border-bottom: 1px dashed #c9b596; }
 .ab-card-row:last-child { border-bottom: 0; }
-.ab-card-row dt { font: 700 11px/1.4 var(--font-label); text-transform: uppercase; letter-spacing: 0.02em; color: var(--muted); }
-.ab-card-row dd { margin: 0; font: 700 11px/1.4 var(--font-label); color: var(--ink); text-align: right; white-space: nowrap; }
+.ab-card-row dt { font: 700 11px/1.4 var(--font-label); text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); }
+.ab-card-row dd { margin: 0; font: 700 12px/1.4 var(--font-label); color: var(--ink); text-align: right; }
 .panel-body .ab-hi { font: 400 20px/1.4 var(--font-heading); margin: 2px 0 12px; color: var(--ink); }
 .panel-body .ab-thanks { font: 600 13px/1.5 var(--font-label); padding: 6px 10px; margin: 0 0 12px; border: 2px solid var(--edge); background: #fff; box-shadow: 0 2px 0 var(--edge); color: var(--ink); }
 .panel-body .ab-text { margin: 0 0 6px; font-size: 17px; line-height: 1.55; }
