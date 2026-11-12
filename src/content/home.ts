@@ -24,9 +24,7 @@ export const volleyball: Section = resolveSection({
     body: [
         'Beach volleyball: I play it in my free time.',
         '[TODO: where you play, who with, and why you love it]'
-    ],
-    gallery: 'grid',
-    images: [{ alt: 'Beach volleyball photo 1', slot: 'shelf/volleyball' }, { alt: 'Beach volleyball photo 2', slot: 'shelf/volleyball' }]
+    ]
 });
 
 // Home bedroom (North York, Toronto): everything personal. Keyed by interactable id (see src/rooms/home.ts).
@@ -49,7 +47,7 @@ export const homeContent: Record<string, Entry> = withMedia({
                 subtitle: 'Top shelf: the rowing trophy, the oar blade, and a beach volleyball.',
                 body: [...rowing.body!, ...volleyball.body!],
                 gallery: 'grid',
-                images: [...rowing.images!, ...volleyball.images!],
+                images: rowing.images,
                 videos: rowing.videos
             },
             {

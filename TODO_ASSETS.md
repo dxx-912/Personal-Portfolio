@@ -22,9 +22,9 @@ The dorm copy is done. Left:
 
 ## Home (personal): not filled in yet
 
-Every home panel keeps its current copy and placeholders. Photos are in for the shelf (rowing, plaques), exercise, camera, piano, pie, and Fluffy. Still empty: beach volleyball, family, longboard.
+Every home panel keeps its current copy and placeholders. Photos are in for the shelf (rowing, plaques), exercise, camera, piano, pie, and Fluffy. Still empty: family, longboard. Beach volleyball has no photos (by choice).
 
-- [ ] **2. Shelf:** rowing (which crew, which championship, year, result), beach volleyball (how often, where, who with), the three plaques (event and year for each), a line on each favorite read. Rowing photos, the nationals video, and award photos are in. Still needed: beach volleyball photos; photos of the plaques themselves if you want the pixel plaques redrawn to match.
+- [ ] **2. Shelf:** rowing (which crew, which championship, year, result), beach volleyball (how often, where, who with), the three plaques (event and year for each), a line on each favorite read. Rowing photos, the nationals video, and award photos are in. Still needed: photos of the plaques themselves if you want the pixel plaques redrawn to match.
 - [ ] **3. Pull up tower, exercise:** confirm "lifts and sprints or runs almost every day", a current goal or favorite lift.
 - [ ] **4. Speaker, music:** why music matters to you, a few favorite artists, your main Spotify playlist link (the lofi playlist is in).
 - [ ] **5. Camera, photography:** how you got into it, what you like to shoot, which camera. (3 photos are in; add more of your best shots any time.)
