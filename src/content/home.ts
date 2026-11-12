@@ -91,11 +91,11 @@ export const homeContent: Record<string, Entry> = withMedia({
             'I lift and sprint or run almost every day.',
             '[TODO: a line on why, or a current goal]'
         ],
-        gallery: 'grid',
+        gallery: 'scroll',
         images: [{ alt: 'Physique photo', slot: 'pullup/physique', captionFromFile: true }],
         videos: [
-            { kind: 'mp4', title: 'Got my first muscle up freshman year', slot: 'pullup/muscle-up' },
-            { kind: 'mp4', title: '365 lbs trap bar deadlift PR (senior year, I\'m washed now)', slot: 'pullup/deadlift' }
+            { kind: 'mp4', title: 'Got my first muscle up freshman year', slot: 'pullup/muscle-up', inGallery: true },
+            { kind: 'mp4', title: '365 lbs trap bar deadlift PR (senior year, I\'m washed now)', slot: 'pullup/deadlift', inGallery: true }
         ]
     },
 
@@ -177,7 +177,7 @@ export const homeContent: Record<string, Entry> = withMedia({
         plainGroup: 'personal',
         title: 'Baking and cooking',
         body: ['I love baking and cooking for my family.', '[TODO: favourite things to make]'],
-        gallery: 'grid',
+        gallery: 'scroll',
         images: [
             { alt: 'Food photo 1', slot: 'pie/food', captionFromFile: true },
             { alt: 'Food photo 2', slot: 'pie/food', captionFromFile: true }
