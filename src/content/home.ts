@@ -200,9 +200,9 @@ export const homeContent: Record<string, Entry> = withMedia({
                 'Bach, Partita in A minor (Fantasia, Sarabande, Gigue)',
                 'Beethoven, Pathétique Sonata',
                 'Chopin, Grande Valse Brillante',
-                'Chopin, Etude in F minor',
                 "Debussy, Reflets dans l'eau",
-                'Tan Dun, Eight Memories in Watercolor'
+                'Tan Dun, Eight Memories in Watercolor',
+                'Chopin, Etude in F minor'
             ]
         }],
         funFact: 'Twelve years of piano, from age 4 to 16.',
