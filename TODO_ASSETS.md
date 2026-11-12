@@ -1,6 +1,6 @@
-# TODO: what the site still needs (after content pass 1)
+# TODO: what the site still needs (after content pass 2)
 
-Rewritten from `CONTENT_FINAL.md`. Only what is still missing is listed here; everything else is on the site.
+Rewritten from `CONTENT_FINAL.md` after content pass 2 (home side). Only what is still missing is listed here; everything else is on the site.
 
 How things show up until they are filled: in development (`npm run dev`) a missing line shows as a yellow `[TODO: ...]` and a missing photo as a striped "photo coming soon" box. A production build (`npm run build`) hides both, in the game and in the quick view, and prints the remaining TODOs in the build log.
 
@@ -12,39 +12,30 @@ How things show up until they are filled: in development (`npm run dev`) a missi
 
 ## Dorm (professional)
 
-The dorm copy is done. Left:
-
 - [ ] **Ateball quarter and year** (`timeline` on the Ateball tab in `src/content/dorm.ts`; now "12 weeks").
-- [ ] **Hope For Hearing tone pass pending.** The founding story is in as written (with the dollar fixes). Do your own tone edit in `dorm.shirt.more` when ready.
+- [ ] **Hope For Hearing tone pass pending.** The founding story is in as written. Do your own tone edit in `dorm.shirt.more` when ready.
 - [ ] **Photos for empty folders:**
   - `1 Dorm/07 Grad cap, Upper Canada College/Graduating class hat toss (1 photo)`
   - `1 Dorm/07 Grad cap, Upper Canada College/You leading Asian Heritage & Culture Club (1 photo)`
 
-## Home (personal): not filled in yet
+## Home (personal)
 
-Every home panel keeps its current copy and placeholders. Photos are in for the shelf (rowing, plaques), exercise, camera, piano, pie, and Fluffy. Still empty: family, longboard. Beach volleyball has no photos (by choice).
+All home copy is in (content pass 2). Left:
 
-- [ ] **2. Shelf:** rowing (which crew, which championship, year, result), beach volleyball (how often, where, who with), the three plaques (event and year for each), a line on each favorite read. Rowing photos, the nationals video, and award photos are in. Still needed: photos of the plaques themselves if you want the pixel plaques redrawn to match.
-- [ ] **3. Pull up tower, exercise:** confirm "lifts and sprints or runs almost every day", a current goal or favorite lift.
-- [ ] **4. Speaker, music:** why music matters to you, a few favorite artists, your main Spotify playlist link (the lofi playlist is in).
-- [ ] **5. Camera, photography:** how you got into it, what you like to shoot, which camera. (3 photos are in; add more of your best shots any time.)
-- [ ] **6. Nightstand, family:** how you want to describe them, one line. Family photos (and `family-photo.png` for the frame).
-- [ ] **7. Piano:** confirm 12 years, favorite piece, one line on what piano means to you. (The credential and 5 photos are in.)
-- [ ] **8. Pie, baking and cooking:** signature things you make, one line. (3 photos are in; a baking photo would round it out.)
-- [ ] **9. Fluffy:** breed or description, age, how you got him, personality. (7 photos are in.)
-- [ ] **10. Longboard:** how the build went, what happened to the battery, what you learned, current state. Build, soldering, and battery photos.
+- [ ] **Beach volleyball:** a description if you want one (for now the line is your fun fact), and photos (the folder and photo slot were removed at your request; say when you want them back).
+- [ ] **Gold Service Tie photo:** `2 Home/02 Shelf/Gold Service Tie (1 photo)`.
+- [ ] **Family photos:** `2 Home/06 Nightstand, family/Gallery (any number)`, plus `family-photo.png` for the nightstand frame (see Decor images).
+- [ ] **Longboard photos:** `2 Home/10 Longboard/` (Building it, Soldering, The destroyed battery).
+- [ ] **Tone pass pending: baking and longboard.** Both are in as you wrote them (light spelling and grammar fixes only). Edit `home.pie` and `home.longboard` in `src/content/home.ts` when ready.
 
 ## Quick view (`/portfolio`)
 
-- [ ] **Work card order** (`cardOrder` in `src/content/portfolio.ts`). Undecided; the current order stays: Cold Outreach Automator, Saved posts scroller, Ateball, Genesis, L.E.K., DSP and IBB.
-- [ ] **One fun fact per inventory box** (`funFact`, shown when a box flips): rowing, piano, longboard, Fluffy, photography, baking, music, exercise, beach volleyball (also family, which stays as a box).
 - [ ] **Open Graph image:** `public/og/portfolio.png` is an old screenshot of the hero. Retake it now that the headshot and tagline are in.
 - [ ] **Site URL** (`profile.siteUrl`) once the domain is chosen, for canonical and Open Graph URLs.
 
 ## Wording to confirm
 
 - **Major.** The site says "B.A. Economics, B.S. Cognitive Science" (one constant, `MAJOR` in `src/content/profile.ts`). You are double checking it against your resume, which says Business Economics.
-- **Hope For Hearing role.** The site calls you "Founder" (card label and role). The story credits Roy with the foundation; say if "Co-founder" fits better.
 
 ## Decor images (optional)
 
@@ -56,13 +47,12 @@ Never drawn by us; an original placeholder shows until the file exists. Drop eac
 | `shirt-logo-ucla.png` | Chest of the UCLA shirt (closet outfit) | Plain "UCLA" in gold pixel text |
 | `volleyball-logo.png` | Volleyball on the home shelf | No logo |
 | `family-photo.png` | Home nightstand photo frame | Outline silhouettes of people |
-| `poster-home-1.png`, `poster-home-2.png`, `poster-home-3.png` | Home wall frames | Abstract patterns in the home palette |
 | `poster-caricature.png` | Not placed yet; say where you want it | Hidden until the file exists |
 
 ## Audio (`public/assets/audio/`, credits in `CREDITS.md`)
 
 - [ ] **PRIVATE ONLY: replace before public launch.** `lofi/Lofi Beats.mp3` and `featured/Rachmaninoff Piano Concerto No 2 Allegro Scherzando.mp3` have no license for public use. Swap them for licensed tracks (or confirm you have the rights) before sharing the site publicly, and fill in artist and source in `CREDITS.md`.
-- [ ] **Coda start time:** the speaker starts the featured track at 10:12 (`featuredStart` in `src/content/music.ts`). Confirm by ear.
+- [ ] **Rachmaninoff start time:** the speaker starts the featured track at 10:12 (`featuredStart` in `src/content/music.ts`). Confirm by ear.
 
 ## Art and decisions
 
