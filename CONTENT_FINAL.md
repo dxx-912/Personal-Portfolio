@@ -227,6 +227,7 @@ Use Daniel's text as written (his casual voice is intentional). Light fixes only
   - Bach, Partita in A minor (Fantasia, Sarabande, Gigue)
   - Beethoven, Pathétique Sonata
   - Chopin, Grande Valse Brillante
+  - Chopin, Etude in F minor
   - Debussy, Reflets dans l'eau
   - Tan Dun, Eight Memories in Watercolor
 - Recital photos are in.
