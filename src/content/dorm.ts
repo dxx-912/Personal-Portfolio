@@ -13,7 +13,6 @@ export const dormContent: Record<string, Entry> = withMedia({
         prompt: 'About me',
         plainGroup: 'intro',
         title: 'About me',
-        subtitle: profile.tagline,
         body: [
             "Hey I'm Daniel, thanks for visiting my portfolio :)",
             "I'm a sophomore at UCLA right now majoring in economics and cognitive science, born and raised in Toronto.",
