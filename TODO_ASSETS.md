@@ -23,7 +23,6 @@ How things show up until they are filled: in development (`npm run dev`) a missi
 All home copy is in (content pass 2). Left:
 
 - [ ] **Beach volleyball:** a description if you want one (for now the line is your fun fact), and photos (the folder and photo slot were removed at your request; say when you want them back).
-- [ ] **Gold Service Tie photo:** `2 Home/02 Shelf/Gold Service Tie (1 photo)`.
 - [ ] **Family photos:** `2 Home/06 Nightstand, family/Gallery (any number)`, plus `family-photo.png` for the nightstand frame (see Decor images).
 - [ ] **Longboard photos:** `2 Home/10 Longboard/` (Building it, Soldering, The destroyed battery).
 - [ ] **Tone pass pending: baking and longboard.** Both are in as you wrote them (light spelling and grammar fixes only). Edit `home.pie` and `home.longboard` in `src/content/home.ts` when ready.

@@ -175,7 +175,7 @@ Use Daniel's text as written (his casual voice is intentional). Light fixes only
 - DECA Provincial Champion, Marketing Communications Series
 - FBLA National Champion (CNLC), Business Management
 - FBLA International 6th place (NLC), Business Management
-- **New fourth award:** Gold Service Tie, for completing 200+ volunteer hours. Add a small folded tie (gold) on the middle tier next to the three plaques, as its own selectable award. Photo folder: create `photos/2 Home/02 Shelf/Gold Service Tie (1 photo)` (empty placeholder until Daniel adds one).
+- **New fourth award:** Gold Service Tie, for completing 200+ volunteer hours. Add a small folded tie (gold) on the middle tier next to the three plaques, as its own selectable award. No photo (Daniel removed the placeholder).
 - Plaque photos are in `photos/2 Home/02 Shelf/` (one folder per plaque).
 
 ### 3.3 Shelf, Reading tier
