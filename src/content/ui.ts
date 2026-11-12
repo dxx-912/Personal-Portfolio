@@ -32,8 +32,8 @@ export const ui = {
             { keys: ['E'], label: 'Interact' },
             { keys: [], mouse: true, label: 'Click to walk' }
         ] as { keys: string[]; mouse?: boolean; label: string }[],
-        rooms: 'UCLA dorm = work. Toronto bedroom = life.',
-        counts: (stories: number, secrets: number) => `Find all ${stories} stories (F) and ${secrets} secrets (E). Try the basketball.`,
+        rooms: 'UCLA dorm = professional stuff. Toronto bedroom = personal life.',
+        counts: (stories: number, secrets: number) => `Find all ${stories} items that represent me (F) and ${secrets} interactions (E) --> ex. Try shooting the basketball!`,
         start: 'Start exploring',
         quick: 'No time? Quick view'
     },
