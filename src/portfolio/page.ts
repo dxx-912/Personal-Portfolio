@@ -263,7 +263,7 @@ export function renderPortfolio(opts: { production: boolean }): RenderResult {
         const total = list.length + vlist.length;
         const vslides = vlist.map((v, k) => `
           <li class="gal-slide" aria-label="${esc(C.galleryLabel(list.length + k + 1, total))}">
-            <video class="gal-video" src="${esc(v.id!)}" controls preload="none" playsinline aria-label="${esc(v.title)}"></video>
+            <video class="gal-video" src="${esc(v.id!)}"${v.poster ? ` poster="${esc(v.poster)}"` : ''}${v.width && v.height ? ` width="${v.width}" height="${v.height}"` : ''} controls preload="none" playsinline aria-label="${esc(v.title)}"></video>
             <p class="gal-cap">${esc(v.title)}</p>
           </li>`).join('');
         const slides = list.map((im, k) => `
