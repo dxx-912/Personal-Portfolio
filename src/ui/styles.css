@@ -241,7 +241,13 @@ body.touch .message { bottom: 160px; }
 .panel.panel-compact { width: min(560px, 100%); }
 /* About me: wide and tall enough to read in one view on a laptop, photos sized to the screen height */
 .panel.panel-id-about { width: min(1060px, 100%); max-height: min(94vh, 960px); }
-.panel-id-about .gallery.row img { aspect-ratio: auto; height: clamp(150px, 21vh, 240px); object-position: center 30%; }
+.panel-id-about .gallery.row { display: flex; justify-content: center; align-items: flex-start; }
+.panel-id-about .gallery.row .media { flex: none; margin: 0; }
+.panel-id-about .gallery.row img { aspect-ratio: auto; object-fit: contain; height: clamp(130px, calc(66vh - 370px), 280px); width: auto; max-width: none; }
+@media (max-width: 520px) {
+    .panel-id-about .gallery.row .media { flex: 1 1 0; min-width: 0; }
+    .panel-id-about .gallery.row img { height: auto; width: 100%; }
+}
 .panel-body p { margin: 0 0 12px; }
 .subtitle { color: var(--muted); font-weight: 600; }
 .sec-title { font: 600 21px/1.25 var(--pixel); margin: 4px 0 6px; }
