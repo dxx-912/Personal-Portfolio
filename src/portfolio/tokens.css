@@ -55,7 +55,7 @@
     --max-w: 1080px;
     --gap: 18px;
     --sec-pad: clamp(56px, 9vw, 112px);
-    --blend: 110px; /* height of the sky blend at the top of each section */
+    --blend: 70px; /* height of the sky blend at the top of each section */
 
     /* shapes */
     --line: 2px;

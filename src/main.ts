@@ -5,9 +5,11 @@ import { Boot } from './scenes/Boot';
 import { Room } from './scenes/Room';
 import { initHud } from './ui/hud';
 import { initInput } from './ui/input';
+import { initEmailCopy } from './ui/copyEmail';
 
 initInput();
 initHud();
+initEmailCopy();
 
 const game = new Phaser.Game({
     type: Phaser.AUTO,

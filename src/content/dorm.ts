@@ -33,7 +33,7 @@ export const dormContent: Record<string, Entry> = withMedia({
         plainGroup: 'education',
         title: 'UCLA',
         subtitle: `${MAJOR}. College Honours Student. Expected June 2029.`,
-        summary: `${MAJOR}. GPA 3.72. Expected graduation June 2029.`,
+        summary: `${MAJOR}. Expected graduation June 2029.`,
         list: [{
             title: 'Coursework',
             style: 'chips-row',
@@ -164,7 +164,7 @@ export const dormContent: Record<string, Entry> = withMedia({
             },
             {
                 id: 'saved-posts',
-                title: 'Saved posts scroller',
+                title: 'Saved Posts Scroller',
                 subtitle: 'Solo project',
                 linksTop: true,
                 summary: 'Turns your Instagram saved posts into a daily feed you actually revisit.',
@@ -179,8 +179,8 @@ export const dormContent: Record<string, Entry> = withMedia({
                 result: 'I start every morning quite motivated now. Shared with friends and family; good feedback so far.',
                 gallery: 'viewer',
                 images: [
-                    { alt: 'Saved posts scroller screenshot', slot: 'laptop/saved-posts' },
-                    { alt: 'Saved posts scroller screenshot', slot: 'laptop/saved-posts' }
+                    { alt: 'Saved Posts Scroller screenshot', slot: 'laptop/saved-posts' },
+                    { alt: 'Saved Posts Scroller screenshot', slot: 'laptop/saved-posts' }
                 ],
                 links: [{ label: 'Open the live app', href: 'https://morning-scroller.vercel.app/' }]
             },

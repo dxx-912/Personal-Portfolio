@@ -64,7 +64,7 @@ button { font: inherit; color: inherit; }
 
 /* Continuous blend: each section fades in from the previous sky over its top band (A2). */
 .sky-morning { background: var(--sky-morning); color: var(--on-morning); padding-top: clamp(40px, 7vw, 88px); }
-.sky-work { background: linear-gradient(var(--sky-morning), var(--sky-noon) var(--blend)); color: var(--on-noon); }
+.sky-work { background: linear-gradient(var(--sky-morning), var(--sky-noon) var(--blend)); color: var(--on-noon); padding-top: clamp(28px, 4vw, 56px); }
 .sky-evening { background: linear-gradient(var(--sky-noon), var(--sky-sunset) var(--blend)); color: var(--on-sunset); }
 .sky-night { background: linear-gradient(var(--sky-sunset), var(--sky-night) var(--blend)); color: var(--on-night); padding-bottom: 48px; }
 
@@ -433,10 +433,11 @@ a.clink:hover span { text-decoration: underline; text-underline-offset: 4px; }
 .lead-card .face { max-width: 38em; }
 .lead-card.feature { align-items: flex-start; }
 .lead-ctrl { display: flex; align-items: center; gap: 12px; }
-.lead-tabs { flex: 1; display: flex; flex-wrap: wrap; gap: 8px; }
+.lead-tabs { flex: 1; min-width: 0; display: flex; flex-wrap: nowrap; gap: 6px; overflow-x: auto; scrollbar-width: none; }
+.lead-tabs::-webkit-scrollbar { display: none; }
 .lead-tab {
-    font: 700 13px var(--font-lbl); letter-spacing: 0.04em; text-decoration: none; color: var(--on-sunset);
-    padding: 7px 12px; border: 2px solid var(--on-sunset); background: rgba(255, 253, 247, 0.35); cursor: pointer;
+    font: 700 12px var(--font-lbl); letter-spacing: 0.02em; text-decoration: none; color: var(--on-sunset); white-space: nowrap; flex: none;
+    padding: 7px 9px; border: 2px solid var(--on-sunset); background: rgba(255, 253, 247, 0.35); cursor: pointer;
     transition: background var(--dur-fast), box-shadow var(--dur-fast), transform var(--dur-fast);
 }
 .lead-tab:hover { background: rgba(255, 253, 247, 0.7); }

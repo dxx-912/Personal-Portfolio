@@ -45,14 +45,14 @@ export const portfolioItems: PortfolioItem[] = [
     { id: 'lek', portfolioSection: 'work', cardOrder: 5, label: 'CASE COMP', section: tab(dormContent.binder, 'lek') },
     { id: 'genesis', portfolioSection: 'work', cardOrder: 6, label: 'CONSULTING', section: tab(dormContent.binder, 'genesis') },
 
-    // Leadership: a swipeable gallery. Sharpe Fellows first (the default card), Hope For Hearing last.
+    // Leadership: a swipeable gallery. Sharpe Fellows first (the default card), Hope For Hearing second.
     { id: 'sharpe', portfolioSection: 'leadership', cardOrder: 1, kind: 'org', section: tab(dormContent.todo, 'sharpe') },
-    { id: 'delta-sigma-pi', portfolioSection: 'leadership', cardOrder: 2, kind: 'org', section: tab(dormContent.todo, 'dsp-org') },
-    { id: 'ibb', portfolioSection: 'leadership', cardOrder: 3, kind: 'org', section: tab(dormContent.todo, 'ibb-org') },
-    { id: 'bea', portfolioSection: 'leadership', cardOrder: 4, kind: 'org', section: tab(dormContent.todo, 'bea') },
-    { id: 'ubs', portfolioSection: 'leadership', cardOrder: 5, kind: 'org', section: tab(dormContent.todo, 'ubs') },
-    { id: 'reslife', portfolioSection: 'leadership', cardOrder: 6, kind: 'org', section: tab(dormContent.todo, 'reslife') },
-    { id: 'hope-for-hearing', portfolioSection: 'leadership', cardOrder: 7, label: 'CO-FOUNDER', section: dormContent.shirt },
+    { id: 'delta-sigma-pi', portfolioSection: 'leadership', cardOrder: 3, kind: 'org', section: tab(dormContent.todo, 'dsp-org') },
+    { id: 'ibb', portfolioSection: 'leadership', cardOrder: 4, kind: 'org', section: tab(dormContent.todo, 'ibb-org') },
+    { id: 'bea', portfolioSection: 'leadership', cardOrder: 5, kind: 'org', section: tab(dormContent.todo, 'bea') },
+    { id: 'ubs', portfolioSection: 'leadership', cardOrder: 6, kind: 'org', section: tab(dormContent.todo, 'ubs') },
+    { id: 'reslife', portfolioSection: 'leadership', cardOrder: 7, kind: 'org', section: tab(dormContent.todo, 'reslife') },
+    { id: 'hope-for-hearing', portfolioSection: 'leadership', cardOrder: 2, label: 'CO-FOUNDER', section: dormContent.shirt },
 
     // Education
     { id: 'ucla', portfolioSection: 'education', cardOrder: 1, label: 'UNIVERSITY', section: dormContent.pennant },

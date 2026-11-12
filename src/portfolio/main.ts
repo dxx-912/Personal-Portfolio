@@ -9,6 +9,9 @@ import { makeCanvas, outlineRegion, Px } from '../assets/paint';
 import { DANIEL_FRAMES } from '../assets/placeholders';
 import { portfolioCopy as C } from '../content/portfolio';
 import { icon } from './icons';
+import { initEmailCopy } from '../ui/copyEmail';
+
+initEmailCopy();
 
 const rm = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 const $ = <T extends Element = HTMLElement>(sel: string, root: ParentNode = document) => root.querySelector<T>(sel);
