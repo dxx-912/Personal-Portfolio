@@ -157,7 +157,7 @@ export class Room extends Phaser.Scene {
         this.buildTargets();
 
         const src = this.textures.get('daniel').getSourceImage() as CanvasImageSource;
-        setPortrait(src, 1, 0, 15, 13);
+        setPortrait(src, 1, 0, 15, 19);
 
         this.fitCamera();
         this.scale.on('resize', this.fitCamera, this);
