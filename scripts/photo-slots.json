@@ -28,7 +28,8 @@
                 "IMG_4691.HEIC#1.png": "Daniel and friends out together at night",
                 "IMG_4691.HEIC#2.png": "Daniel and a bigger group of friends at night, thumbs up",
                 "IMG_6015.jpg": "Daniel and friends at a party with balloons",
-                "IMG_5682.jpg": "Daniel and a big group of friends on the beach at sunset"
+                "IMG_5682.jpg": "Daniel and a big group of friends on the beach at sunset",
+                "IMG_1620.JPG": "Daniel and a group of friends celebrating with a cake"
             },
             "splitRows": [
                 "IMG_4688.HEIC",
@@ -36,11 +37,13 @@
             ],
             "first": [
                 "IMG_6015.jpg",
-                "IMG_5682.jpg"
+                "IMG_5682.jpg",
+                "IMG_1620.JPG"
             ],
             "skip": [
                 "IMG_4691.HEIC#2.png",
-                "IMG_4688.HEIC#1.png"
+                "IMG_4688.HEIC#1.png",
+                "IMG_4688.HEIC#2.png"
             ],
             "crops": {
                 "IMG_5682.jpg": [
