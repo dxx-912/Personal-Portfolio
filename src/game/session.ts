@@ -9,6 +9,12 @@ export const CAFFEINE_BOOST = 1.3;
 /** Sleep drops by one every this many ms of active play. */
 export const SLEEP_TICK_MS = 90_000;
 
+/** The quick view (/portfolio) is a separate page, so it reads this per-tab flag to show Caffeine 7/7
+ *  after the Red Bull. Cleared on every game load, so a fresh visit always starts at 0/7. */
+export const CAFFEINE_KEY = 'dx-caffeine';
+export const saveCaffeine = () => { try { sessionStorage.setItem(CAFFEINE_KEY, String(CAFFEINE_MAX)); } catch { /* storage blocked */ } };
+try { sessionStorage.removeItem(CAFFEINE_KEY); } catch { /* storage blocked */ }
+
 export const session = {
     caffeine: 0,
     sleep: SLEEP_MAX,

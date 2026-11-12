@@ -13,6 +13,18 @@ import { initEmailCopy } from '../ui/copyEmail';
 
 initEmailCopy();
 
+// The game's Red Bull (same tab): show Caffeine full here too.
+try {
+    if (sessionStorage.getItem('dx-caffeine') === '7') {
+        document.querySelectorAll<HTMLElement>('.stats li').forEach((li) => {
+            const l = li.querySelector<HTMLElement>('.stat-l');
+            if (!l || !/^caffeine/i.test(l.textContent ?? '')) return;
+            l.textContent = 'CAFFEINE 7/7';
+            (li.querySelector<HTMLElement>('.bar'))?.style.setProperty('--f', '1');
+        });
+    }
+} catch { /* storage blocked */ }
+
 const rm = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 const $ = <T extends Element = HTMLElement>(sel: string, root: ParentNode = document) => root.querySelector<T>(sel);
 const $$ = <T extends Element = HTMLElement>(sel: string, root: ParentNode = document) => [...root.querySelectorAll<T>(sel)];

@@ -16,7 +16,7 @@ import { Lighting } from '../game/Lighting';
 import { NavGrid, type Pt, type Rect } from '../game/nav';
 import { chargeHeld, lastInputAt, markInput, moveVector, onAction, setChargeCapture, userInputAt, type Action } from '../ui/input';
 import { Basketball } from '../game/Basketball';
-import { CAFFEINE_BOOST, CAFFEINE_MAX, SLEEP_MAX, SLEEP_TICK_MS, hintGap, session } from '../game/session';
+import { CAFFEINE_BOOST, CAFFEINE_MAX, SLEEP_MAX, SLEEP_TICK_MS, hintGap, saveCaffeine, session } from '../game/session';
 import type { TimeOfDay } from '../game/Lighting';
 import { closePanel, isPanelOpen, openPanel } from '../ui/panel';
 import {
@@ -1125,6 +1125,7 @@ export class Room extends Phaser.Scene {
             this.busy = false;
             // Caffeine 7/7 for the rest of the visit, and he walks 30% faster (speedModifiers)
             session.caffeine = CAFFEINE_MAX;
+            saveCaffeine();
             setStat('Caffeine', session.caffeine);
             state.markSecret('fridge');
             this.starBurst();
