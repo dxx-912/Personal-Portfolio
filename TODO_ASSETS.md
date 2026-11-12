@@ -16,7 +16,6 @@ How things show up until they are filled: in development (`npm run dev`) a missi
 - [ ] **Hope For Hearing tone pass pending.** The founding story is in as written. Do your own tone edit in `dorm.shirt.more` when ready.
 - [ ] **Photos for empty folders:**
   - `1 Dorm/07 Grad cap, Upper Canada College/Graduating class hat toss (1 photo)`
-  - `1 Dorm/07 Grad cap, Upper Canada College/You leading Asian Heritage & Culture Club (1 photo)`
 
 ## Home (personal)
 

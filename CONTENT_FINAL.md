@@ -130,7 +130,7 @@ Quick view leadership gallery order: Sharpe Fellows first, then DSP, IBB, BEA, U
 - **Business Competition Club, President**: Led UCC's DECA and FBLA teams, growing membership by 400% through promotional videos and graphics (16,000+ impressions) and running weekly prep sessions, guest lectures, and a 1-on-1 mentorship system.
 - **Asian Heritage & Culture Club, President**: Led 40+ members in running school wide cultural events for Lunar New Year and AAPI Month, plus potlucks, karaoke nights, trivia tournaments, and performances, with promo content reaching 12,000+ impressions.
 - Use these exact club names everywhere (not "Business Club" or "Asian Heritage Club").
-- Photos: `photos/1 Dorm/07 Grad cap, Upper Canada College/` (hat toss and Asian Heritage folders are empty for now: keep placeholders).
+- Photos: `photos/1 Dorm/07 Grad cap, Upper Canada College/` (hat toss folder is empty for now: keep its placeholder; the Asian Heritage & Culture Club has no photo, placeholder removed).
 
 ### 2.7 Resident Assistant (closet, item 8)
 - Title: Resident Assistant, Rieber Hall South, Floor 6 (use "Resident Assistant", not "Residential Assistant")
