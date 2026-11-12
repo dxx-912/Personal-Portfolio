@@ -27,7 +27,25 @@ Screenshots of iteration 1 as it looks now: `reference/current-dorm-iteration-1.
 
 ---
 
-## 0.3 Content pass 1 (current work, after 0.2)
+## 0.4 Content pass 2: home side (current work)
+
+Daniel filled in the home side. His answers are in `reference/content-todo-filled.pdf`; they are already merged into `CONTENT_FINAL.md` sections 3 and 4, which are the source of truth. Section 0.3 (content pass 1) is done.
+
+### Steps
+1. **Apply the copy** from `CONTENT_FINAL.md` sections 3 and 4 to `src/content/home.ts`, `src/content/portfolio.ts`, and `/portfolio`. Keep Daniel's voice; only the listed fixes. Long stories (longboard, plus Fluffy if it overflows) use the short version plus "Read the whole story" pattern.
+2. **Hope For Hearing title:** "Co-founder" everywhere (dorm shirt panel, quick view card label and role, `/portfolio`, any meta text). Roy Feng started it; Daniel scaled it.
+3. **Rowing correction:** junior varsity, not varsity; the national gold is CSSRA National Championships, Novice 8+. Fix every older line in code, specs, and `TODO_ASSETS.md`.
+4. **New award on the shelf:** the Gold Service Tie (200+ volunteer hours) as a fourth selectable item on the awards tier: a small gold folded tie drawn next to the plaques, its own photo folder (create it, empty placeholder until filled). Rule 9.2 still applies: the shelf is one interactable with a close up.
+5. **Panel extras:** exercise PRs as small stat tiles; piano ARCT program as a small setlist; music artists as plain text (no artist images or album art); the dubstep playlist link without the `?si=` parameter; the longboard Google Doc link opening in a new tab.
+6. **Fluffy:** use the new text (British longhair, 6, since 2021). Optional subtle behavior: louder meows and following Daniel near the pie; walks away if petted for more than a couple of seconds.
+7. **Quick view:** apply the work card order (1 Cold Outreach Automator, 2 Saved posts scroller, 3 DSP and IBB marketing, 4 Ateball, 5 L.E.K., 6 Genesis) and all 10 fun facts.
+8. **Wire new photos** from `photos/2 Home/` (run `npm run photos`), strip location metadata, keep placeholders for empty folders.
+9. **TODO_ASSETS.md:** remove everything this pass filled. What stays open: the major wording, the Ateball quarter, the beach volleyball description and photos, family and longboard photos, the Gold Service Tie photo, the hat toss and Asian Heritage & Culture Club photos, tone passes (Hope For Hearing, baking, longboard), audio licensing before launch, the Rachmaninoff start time, the Open Graph image, the domain, and art decisions.
+10. **Verify** with Playwright: every home panel and shelf tier, the quick view inventory flips and card order, desktop and phone. Commit and push.
+
+---
+
+## 0.3 Content pass 1 (done)
 
 Daniel has finalized the professional content. `CONTENT_FINAL.md` (repo root) is now the single source of truth for site copy and replaces `CONTENT_INTAKE.md`. His filled intake form is `reference/content-intake-filled.pdf`; the L.E.K. deck is `reference/lek-case-competition.pptx` (also as a PDF in his photos folder).
 
@@ -375,9 +393,9 @@ Each content item has exactly one standing spot (yellow numbers in the layout im
 ### Home (personal), 9 items
 | # | Object | E action | F panel content |
 |---|---|---|---|
-| 2 | Three tier shelf | none | Shelf close up with three selectable tiers. Top, "Sports": **rowing** (high school varsity, national championship, trophy and oar blade photos) and **beach volleyball** (free time, `[TODO]`). Middle: three **award plaques** (DECA Provincial Champion; FBLA Business Management National Champion at CNLC; FBLA International 6th place at NLC). Bottom: **favorite reads**, Attack on Titan and the webtoons Lookism, Sweet Home, Solo Levelling. |
-| 3 | Pull up tower | **Do pull ups**: mash E (or tap) to do reps with a counter and strain animation for a few seconds, then a "nice" pop | **Exercise.** Lifts and sprints or runs almost every day; photos and videos (muscle up, trap bar deadlift, physique). |
-| 4 | Big black speaker | **Play featured track**: plays the file in `public/assets/audio/featured/` (Rachmaninoff, Piano Concerto No. 2, coda, Lisitsa), speaker bumps, lofi ducks; E again stops. If master sound is off, show "Sound is off" with a one click "turn on" button. | **Music.** Dubstep, EDM, classical, R&B, hip hop; why he loves them; Spotify playlist links including his lofi playlist. |
+| 2 | Three tier shelf | none | Shelf close up with three selectable tiers. Top, "Sports": **rowing** (high school junior varsity, gold at the CSSRA National Championships, Novice 8+, and four regattas; photos and the nationals video) and **beach volleyball** (free time, `[TODO]`). Middle: three **award plaques** (DECA Provincial Champion; FBLA Business Management National Champion at CNLC; FBLA International 6th place at NLC) and the **Gold Service Tie** (200+ volunteer hours). Bottom: **favorite reads**, Attack on Titan and the webtoons Lookism, Sweet Home, Solo Levelling. |
+| 3 | Pull up tower | **Do pull ups**: mash E (or tap) to do reps with a counter and strain animation for a few seconds, then a "nice" pop | **Exercise.** His current routine and goals, PRs as stat tiles; photos and videos (muscle up, trap bar deadlift, physique). |
+| 4 | Big black speaker | **Play featured track**: plays the file in `public/assets/audio/featured/` (Rachmaninoff, Piano Concerto No. 2, coda, Lisitsa), speaker bumps, lofi ducks; E again stops. If master sound is off, show "Sound is off" with a one click "turn on" button. | **Music.** Classical, dubstep, and hip hop; top artists as plain text; Spotify links to his dubstep and lofi playlists. |
 | 5 | Camera | **Snap a photo**: white flash, then a polaroid of the current game view slides in, downloadable as a PNG | **Photography.** His love of photography and a gallery of his photos. All content `[TODO]`. |
 | 6 | Nightstand (glowing lamp, family photo frame) | none (F only) | **Family.** Parents and sister, and a gallery. |
 | 7 | Digital piano | **Play**: opens a one octave playable keyboard (mouse, touch, or number keys 1 to 8) with soft synthesized tones | **Piano.** Twelve years, The Associate Diploma (ARCT) in Piano Performance and Harmony, recital photos. |
@@ -543,6 +561,7 @@ Keep this list current in `TODO_ASSETS.md`, grouped by item.
 | `reference/current-dorm-iteration-4.png`, `reference/current-home-iteration-4.png` | Screenshots of both rooms after iteration 4 |
 | `CONTENT_FINAL.md` (repo root) | Approved site copy, the source of truth for all content |
 | `reference/content-intake-filled.pdf` | Daniel's filled content intake (includes the full Hope For Hearing founding story) |
+| `reference/content-todo-filled.pdf` | Daniel's filled answers for the home side (content pass 2), including the full longboard story |
 | `reference/lek-case-competition.pptx` | The L.E.K. Case Competition deck |
 | `reference/iteration-4-feedback.pdf` | Daniel's written feedback on iterations 2 and 3 (includes the oar blade reference image) |
 | `reference/current-dorm-iteration-3.png`, `reference/current-home-iteration-3.png` | Screenshots of both rooms after iteration 3 |

@@ -91,6 +91,13 @@ export function renderLink(l: LinkItem) {
     return `<a class="link" href="${href}"${external ? ' target="_blank" rel="noopener noreferrer"' : ''}>${ico}${rich(l.label)}${external ? ' <span aria-hidden="true">↗</span><span class="sr">(opens in a new tab)</span>' : ''}</a>`;
 }
 
+/** A numbered recital program: "Composer, Piece" with the composer in bold (items are already escaped). */
+export const setlist = (items: string[]) =>
+    `<ol class="setlist">${items.map((x) => {
+        const k = x.indexOf(', ');
+        return `<li><p>${k > 0 ? `<strong>${x.slice(0, k)}</strong><span>${x.slice(k + 2)}</span>` : x}</p></li>`;
+    }).join('')}</ol>`;
+
 /** The long story in its own bordered, scrollable box (opening paragraphs, then the rest behind an expander). */
 function storyBox(s: Section, level: number): string {
     const m = s.more;
@@ -140,7 +147,6 @@ export function renderSection(s: Section, o: RenderOpts): string {
         ...(omit.has('result') ? [] : [['Result', s.result]] as [string, string | undefined][])
     ];
     writeup.forEach(([k, v]) => { if (!blank(v)) out.push(`<p class="writeup"><strong>${rich(k)}.</strong> ${rich(v!)}</p>`); });
-    if (!blank(s.funFact)) out.push(`<p class="fun-fact"><strong>Fun fact.</strong> ${rich(s.funFact!)}</p>`);
     const story = storyBox(s, Math.min(6, (o.heading || 2) + 1));
     if (story) out.push(story);
     s.list?.forEach((l) => {
@@ -150,6 +156,7 @@ export function renderSection(s: Section, o: RenderOpts): string {
         if (l.title) out.push(`<h${h} class="list-title">${rich(l.title)}</h${h}>`);
         if (l.style === 'chips') out.push(`<ul class="chips">${items.map((i) => `<li class="tag">${rich(i)}</li>`).join('')}</ul>`);
         else if (l.style === 'plain') items.forEach((i) => out.push(`<p class="list-plain">${rich(i)}</p>`));
+        else if (l.style === 'setlist') out.push(setlist(items.map(rich)));
         else out.push(`<ul class="list">${items.map((i) => `<li>${rich(i)}</li>`).join('')}</ul>`);
     });
     // a sideways 'scroll' gallery keeps wide images (website screenshots) out of the row, full width below it

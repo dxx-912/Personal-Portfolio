@@ -171,5 +171,5 @@ These are approved and override anything above that conflicts.
 4. **Remove the footer line** "Same stories as the game, minus the walking."
 5. **More dynamic animation, tastefully:** gallery cards drift in with a slight stagger and settle; the active card in a gallery scales up a touch; section headings slide in with a short underline draw; inventory items wobble once on hover; panel images fade and scale in; the nav indicator slides between items instead of jumping. Keep every effect short (under 400ms), never block reading, and keep the reduced motion versions.
 6. **Sports:** add beach volleyball to the inventory (night section) with its own panel `[TODO content]`.
-7. **Music:** the music inventory item now reads "Music" and covers dubstep, EDM, classical, R&B, and hip hop.
+7. **Music:** the music inventory item reads "Music" and covers classical, dubstep, and hip hop (see `CONTENT_FINAL.md` section 3.5).
 8. Re verify with Playwright at 375, 768, and 1280 px after the changes.

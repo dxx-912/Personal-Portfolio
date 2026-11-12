@@ -68,7 +68,9 @@ function mount(html: string, open: Omit<Open, 'root'>, focusSel?: string) {
 export function openPanel(entry: Entry, onClose?: () => void) {
     const style = entry.tabStyle ?? 'tabs';
     const titleId = `panel-title-${entry.id}`;
-    const compact = !entry.tabs?.length && !entry.images?.some((i) => i.src) && !entry.videos?.length;
+    // only a few lines of text: no tabs, photos, videos, or long story
+    const compact = !entry.tabs?.length && !entry.images?.some((i) => i.src) && !entry.videos?.length && !entry.more
+        && (entry.body ?? []).join(' ').length < 400;
     const root = mount(`
         <section class="panel panel-${style}${compact ? ' panel-compact' : ''}" role="dialog" aria-modal="true" aria-labelledby="${titleId}">
             <header class="panel-head">

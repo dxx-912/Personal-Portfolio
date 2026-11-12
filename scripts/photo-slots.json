@@ -299,6 +299,16 @@
             }
         },
         {
+            "key": "shelf/gold-tie",
+            "folder": "2 Home/02 Shelf/Gold Service Tie (1 photo)",
+            "max": 1
+        },
+        {
+            "key": "shelf/anime",
+            "folder": "2 Home/02 Shelf/Animes",
+            "max": 0
+        },
+        {
             "key": "pullup/muscle-up",
             "folder": "2 Home/03 Pull up tower, exercise/Muscle up (1 photo)",
             "video": true,

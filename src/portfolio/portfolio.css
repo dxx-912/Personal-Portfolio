@@ -480,3 +480,12 @@ a.clink:hover span { text-decoration: underline; text-underline-offset: 4px; }
 
 /* course chips (UCC academics) */
 .tags.chips { display: flex; flex-wrap: wrap; gap: 8px; list-style: none; padding: 0; margin: 4px 0 12px; }
+
+/* setlist: the piano ARCT program, numbered, composer in bold */
+.setlist { list-style: none; counter-reset: piece; margin: 0 0 12px; padding: 0; border: 2px solid var(--ink); background: var(--paper); }
+.setlist li { counter-increment: piece; display: grid; grid-template-columns: 2em minmax(0, 1fr); column-gap: 4px; padding: 6px 10px; line-height: 1.4; }
+.setlist li + li { border-top: 1px dashed #c9c4b6; }
+.setlist li::before { content: counter(piece) "."; font-weight: 700; color: var(--muted); }
+.setlist strong { margin-right: 8px; }
+.setlist span { color: var(--muted); }
+.setlist li p { margin: 0; }

@@ -398,8 +398,8 @@ export const dormContent: Record<string, Entry> = withMedia({
         prompt: 'Hope For Hearing',
         plainGroup: 'projects',
         title: 'Hope For Hearing',
-        // [TODO: confirm "Founder" (the story credits Roy with the foundation)]
-        role: 'Founder',
+        // Roy Feng started it; Daniel scaled it
+        role: 'Co-founder',
         summary: 'At its peak, Hope For Hearing grew to 500+ members across 12 high school chapters in Canada.',
         omit: ['team', 'timeline', 'problem', 'whatIDid', 'result'],
         counters: [

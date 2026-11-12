@@ -6,7 +6,7 @@ import { dormContent } from '../content/dorm';
 import { profile } from '../content/profile';
 import { itemsIn, portfolioCopy as C, type PortfolioItem, type PortfolioSection } from '../content/portfolio';
 import type { ImageItem, LinkItem, Section } from '../content/types';
-import { esc, linkIcon } from '../ui/render';
+import { esc, linkIcon, setlist } from '../ui/render';
 import { icon } from './icons';
 
 const TODO_RE = /\[TODO[^\]]*\]/g;
@@ -314,6 +314,7 @@ export function renderPortfolio(opts: { production: boolean }): RenderResult {
             if (l.title) out.push(`<h${level + 1} class="px list-h">${t(l.title, where)}</h${level + 1}>`);
             if (l.style === 'chips') out.push(`<ul class="tags chips" role="list">${lis.map((x) => `<li class="tag">${x}</li>`).join('')}</ul>`);
             else if (l.style === 'plain') lis.forEach((x) => out.push(`<p>${x}</p>`));
+            else if (l.style === 'setlist') out.push(setlist(lis));
             else out.push(`<ul class="list">${lis.map((x) => `<li>${x}</li>`).join('')}</ul>`);
         });
         const links = [

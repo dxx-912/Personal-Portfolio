@@ -1,4 +1,4 @@
-# CONTENT_FINAL.md: approved site content (content pass 1)
+# CONTENT_FINAL.md: approved site content (content passes 1 and 2)
 
 This is the single source of truth for site copy. It replaces `CONTENT_INTAKE.md`. Daniel's original filled intake is at `reference/content-intake-filled.pdf` for context; where the two differ, this file wins (it includes his later decisions).
 
@@ -158,13 +158,97 @@ Quick view leadership gallery order: Sharpe Fellows first, then DSP, IBB, BEA, U
 
 ## 3. Home (personal)
 
-Not filled in yet. Keep every home panel's current content and placeholders. Photo folders already exist under `photos/2 Home/` with the right names; wire whatever is inside them into the matching panels and keep placeholders for empty ones.
+Use Daniel's text as written (his casual voice is intentional). Light fixes only: spelling, grammar, and the typos noted inline. Long stories show a short version first, then a "Read the whole story" expander, same pattern as Hope For Hearing. Mark "tone pass pending" in `TODO_ASSETS.md` for the baking and longboard text.
+
+### 3.1 Shelf, Sports tier (rowing and beach volleyball)
+- Rowing: Rowed for two years on my high school's junior varsity team. Seats 1 and 2 (bow pair); can row port and starboard.
+- Gold medals:
+  - CSSRA National Championships, Novice 8+
+  - Mother's Day Regatta, Novice 8+
+  - Mother's Day Regatta, Junior 8+
+  - South Niagara Invitational, Novice 8+
+  - South Niagara Invitational, Junior 8+
+- Correct every older line that says "varsity" or implies a senior national title: it is junior varsity, and the national gold is the CSSRA Novice 8+.
+- Beach volleyball: no description; use the fun fact (section 4) as its line. Photos `[TODO]`.
+
+### 3.2 Shelf, Awards tier
+- DECA Provincial Champion, Marketing Communications Series
+- FBLA National Champion (CNLC), Business Management
+- FBLA International 6th place (NLC), Business Management
+- **New fourth award:** Gold Service Tie, for completing 200+ volunteer hours. Add a small folded tie (gold) on the middle tier next to the three plaques, as its own selectable award. Photo folder: create `photos/2 Home/02 Shelf/Gold Service Tie (1 photo)` (empty placeholder until Daniel adds one).
+- Plaque photos are in `photos/2 Home/02 Shelf/` (one folder per plaque).
+
+### 3.3 Shelf, Reading tier
+- Attack on Titan: Have only watched one anime ever. It was AOT, and I loved it.
+- Lookism: Been reading this webtoon every Sunday for over 10 years. The first ~200 episodes were really good.
+- Sweet Home: Insanely good character development. I've reread it maybe 8 times now and tear up every time at the ending.
+- Solo Levelling: Super fun power fantasy story with a pretty interesting plot.
+- Photos: `photos/2 Home/02 Shelf/Animes/`
+
+### 3.4 Pull up tower: Exercise
+- Text: Currently trying to stick to a pretty intense routine: push, pull, legs, chest and back, arms, rest, sprints or long runs. Not the most consistent, but I'm getting there. Currently trying to hit 2 plates before the end of 2026 and learn a handstand.
+- PRs: Bench 205 lbs · Trap bar deadlift 365 lbs · 5 km in 19:27 · Unlocked the muscle up and the elbow lever.
+- Show the PRs as small stat tiles. Replace the old "lifts and sprints almost every day" line everywhere.
+
+### 3.5 Speaker: Music
+- Text: I love music and actually want to learn production one day. My favourite genres are definitely classical, dubstep, and hip hop.
+- Top artists (according to Spotify): Rachmaninoff, Chopin, Kanye, Tyler, the Creator, Keshi, wave to earth.
+- Also love: Sullivan King, Wooli, Riot, Knock2, Fakemink.
+- Dubstep playlist: https://open.spotify.com/playlist/6u0kVAzcws3L14vrUz6ZqC (strip the `?si=` tracking parameter)
+- Keep the lofi playlist link too.
+- Artist names are plain text only: no album art, logos, or photos of the artists.
+
+### 3.6 Camera: Photography
+- Text: I love photography. Life moves so fast; time passes in the blink of an eye, but photography can capture a moment in its purest form. I use my parents' old Canon EOS Rebel and like taking well composed photos when travelling. I have hundreds of photos from travelling across China and Japan, but they haven't been colour graded in Lightroom yet. Check out some of my work below!
+- Gallery: `photos/2 Home/05 Camera, photography/Photos you took (any number)`
+
+### 3.7 Nightstand: Family
+- Text: My parents immigrated from China in 2002 and met at Queen's University. My sister is in her first year of high school and has been juggling a ton of extracurriculars.
+- Gallery: `photos/2 Home/06 Nightstand, family/Gallery (any number)` (empty: keep placeholders). Frame photo slot unchanged.
+
+### 3.8 Piano
+- Text: Played piano for 12 years, from age 4 to 16, when I completed my ARCT diploma.
+- Credential: The Associate Diploma (ARCT) in Piano Performance and Harmony
+- My ARCT program (lists A to F), shown as a small "setlist":
+  - Bach, Partita in A minor (Fantasia, Sarabande, Gigue)
+  - Beethoven, Pathétique Sonata
+  - Chopin, Grande Valse Brillante
+  - Debussy, Reflets dans l'eau
+  - Tan Dun, Eight Memories in Watercolor
+- Recital photos are in.
+
+### 3.9 Pie: Baking and cooking
+- Text: I'm a big back and I love eating, so naturally I love cooking and baking as well. I have a fire apple crisp recipe I make multiple times a year. I also make coke chicken and Thai curry chicken pretty often. Apart from that, I can cook up most simple dishes. Fried rice with whatever BS is in my fridge is my go to.
+- Photos are in.
+
+### 3.10 Fluffy
+- Panel title: About Fluffy. Breed: British longhair. Age: 6. With the family since 2021.
+- Text: British longhair that we got back in 2021, in the middle of COVID. Funny because my mom was super against pets up until Fluffy, and now she loves him more than me, I swear. This cat is extremely fat, greedy, and selectively stupid. Typically, Fluffy is very ignorant and quiet, but he'll immediately start screaming and pull out every trick he knows for food. Generally he's very social and loves loafing or sleeping around people, but doesn't like prolonged physical touch. Fluffy is 6 years old now and fatter than ever.
+- Game behavior tie ins (small, optional, nice): Fluffy meows louder and follows Daniel if he walks near the pie; petting him for more than a couple of seconds makes him walk away. Keep it subtle.
+- Photos are in.
+
+### 3.11 Longboard
+- Short version: After getting no internship offers for my freshman summer, I decided to build something difficult, useful, and interesting: an electric longboard. I ended up with a fully functional longboard that rides really smoothly, and a fried motor and battery.
+- Full story: Daniel's text in `reference/content-todo-filled.pdf` (pages 3 to 4, section 2.11), with only these fixes: "that rides really smoothly" (not "that's rides"), "idiocy" (not "idiocracy"), "splice" or "join" instead of "meld". Keep everything else, including his tone, for his own later edit.
+- Link: "My Master Google Doc" https://docs.google.com/document/d/1GeFjlEI0BBgI-yIhaeFw6F2dBhx2u-wVWmrTyLuOT_o/edit?usp=sharing (open in a new tab).
+- Current state: built and rideable as a regular longboard; the electric part is unfinished.
+- Photos: `photos/2 Home/10 Longboard/` (keep placeholders for empty folders).
 
 ## 4. Quick view only
 
-- Work card order: not decided; keep the current order.
-- Inventory labels: Rowing, national champ · Piano, ARCT · Built a longboard · Fluffy · Photography · Baking · Music · Lift and sprint · Beach volleyball
-- Fun facts: not provided; keep placeholders.
+- Work card order: 1 Cold Outreach Automator · 2 Saved posts scroller · 3 DSP and IBB marketing · 4 Ateball · 5 L.E.K. · 6 Genesis
+- Inventory labels: Rowing, national champ · Piano, ARCT · Built a longboard · Fluffy · Photography · Baking · Music · Lift and sprint · Beach volleyball · Family
+- Fun facts (shown when a box flips):
+  - Rowing: Won the national championships! (Novice 8+, CSSRA)
+  - Piano: I have the ARCT diploma in Piano Performance.
+  - Longboard: Originally supposed to be electric, before I put a hole in my table.
+  - Fluffy: Fat and stupid.
+  - Photography: Check out my photography from Asia!
+  - Baking: I can cook up the best apple crisp you'll ever have.
+  - Music: My top 2 genres are classical and dubstep.
+  - Exercise: Trap bar deadlift 365 lbs, bench 205 lbs.
+  - Beach volleyball: I larp this. I'm terrible, but I love to play.
+  - Family: My #1 fans and supporters.
 
 ## 5. Decor and audio files
 

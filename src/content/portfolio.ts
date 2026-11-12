@@ -17,7 +17,7 @@ export interface PortfolioItem {
     /** URL hash: /portfolio#<id>. */
     id: string;
     portfolioSection: PortfolioSection;
-    /** Order within its section. [TODO: Daniel to confirm the work card order] */
+    /** Order within its section (work order from CONTENT_FINAL.md section 4). */
     cardOrder: number;
     /** Small pixel label on the card, e.g. "SOFTWARE". */
     label?: string;
@@ -37,13 +37,13 @@ const tab = (entry: Entry, id: string): Section => {
 };
 
 export const portfolioItems: PortfolioItem[] = [
-    // Work: lead with product work for product management recruiting (draft order)
+    // Work, in Daniel's order
     { id: 'cold-email', portfolioSection: 'work', cardOrder: 1, label: 'SOFTWARE', section: tab(dormContent.laptop, 'cold-email') },
     { id: 'saved-posts', portfolioSection: 'work', cardOrder: 2, label: 'SOFTWARE', section: tab(dormContent.laptop, 'saved-posts') },
-    { id: 'ateball', portfolioSection: 'work', cardOrder: 3, label: 'PRODUCT', title: 'Ateball, Creative Labs', section: tab(dormContent.laptop, 'ateball') },
-    { id: 'genesis', portfolioSection: 'work', cardOrder: 4, label: 'CONSULTING', section: tab(dormContent.binder, 'genesis') },
+    { id: 'marketing', portfolioSection: 'work', cardOrder: 3, label: 'MARKETING', title: 'DSP and IBB', section: dormContent.phone },
+    { id: 'ateball', portfolioSection: 'work', cardOrder: 4, label: 'PRODUCT', title: 'Ateball, Creative Labs', section: tab(dormContent.laptop, 'ateball') },
     { id: 'lek', portfolioSection: 'work', cardOrder: 5, label: 'CASE COMP', section: tab(dormContent.binder, 'lek') },
-    { id: 'marketing', portfolioSection: 'work', cardOrder: 6, label: 'MARKETING', title: 'DSP and IBB', section: dormContent.phone },
+    { id: 'genesis', portfolioSection: 'work', cardOrder: 6, label: 'CONSULTING', section: tab(dormContent.binder, 'genesis') },
 
     // Leadership: a swipeable gallery. Sharpe Fellows first (the default card), Hope For Hearing last.
     { id: 'sharpe', portfolioSection: 'leadership', cardOrder: 1, kind: 'org', section: tab(dormContent.todo, 'sharpe') },
@@ -52,7 +52,7 @@ export const portfolioItems: PortfolioItem[] = [
     { id: 'bea', portfolioSection: 'leadership', cardOrder: 4, kind: 'org', section: tab(dormContent.todo, 'bea') },
     { id: 'ubs', portfolioSection: 'leadership', cardOrder: 5, kind: 'org', section: tab(dormContent.todo, 'ubs') },
     { id: 'reslife', portfolioSection: 'leadership', cardOrder: 6, kind: 'org', section: tab(dormContent.todo, 'reslife') },
-    { id: 'hope-for-hearing', portfolioSection: 'leadership', cardOrder: 7, label: 'FOUNDER', section: dormContent.shirt },
+    { id: 'hope-for-hearing', portfolioSection: 'leadership', cardOrder: 7, label: 'CO-FOUNDER', section: dormContent.shirt },
 
     // Education
     { id: 'ucla', portfolioSection: 'education', cardOrder: 1, label: 'UNIVERSITY', section: dormContent.pennant },

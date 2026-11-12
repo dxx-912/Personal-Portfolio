@@ -677,3 +677,12 @@ body.title-on .plain-link { opacity: 0.85; visibility: visible; pointer-events: 
 /* website screenshots link out to the live site */
 .media-link { display: block; cursor: pointer; }
 .media-link:hover img, .media-link:focus-visible img { outline: 3px solid var(--edge); outline-offset: 2px; filter: brightness(1.05); }
+
+/* setlist: a recital program, numbered, composer in bold */
+.setlist { list-style: none; counter-reset: piece; margin: 4px 0 14px; padding: 0; border: 2px solid var(--edge); background: #fffdf8; }
+.setlist li { counter-increment: piece; display: grid; grid-template-columns: 2em minmax(0, 1fr); column-gap: 4px; padding: 5px 12px; line-height: 1.4; }
+.setlist li + li { border-top: 1px dashed #c9b99a; }
+.setlist li::before { content: counter(piece) "."; font-weight: 700; color: var(--muted); }
+.setlist strong { margin-right: 8px; }
+.setlist span { color: var(--muted); }
+.setlist li p { margin: 0; }

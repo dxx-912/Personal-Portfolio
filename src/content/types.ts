@@ -55,8 +55,11 @@ export interface Section {
     subtitle?: string;
     body?: string[];
     facts?: Fact[];
-    /** Lists under small headings. style 'chips': each item a small white label; 'plain': items as lines, no bullets. */
-    list?: { title?: string; items: string[]; style?: 'chips' | 'plain' }[];
+    /**
+     * Lists under small headings. style 'chips': each item a small white label; 'plain': items as lines, no bullets;
+     * 'setlist': a numbered recital program, "Composer, Piece" (the composer in bold).
+     */
+    list?: { title?: string; items: string[]; style?: 'chips' | 'plain' | 'setlist' }[];
     images?: ImageItem[];
     /** 'scroll' gallery: photo height in px (default 320). */
     galleryHeight?: number;

@@ -708,6 +708,15 @@
             "file": "My back looks pretty good here"
         }
     ],
+    "shelf/anime": [
+        {
+            "src": "/media/shelf/anime/01-recreating-that-one-aot-scene.webp",
+            "alt": "Recreating that one AOT scene",
+            "w": 900,
+            "h": 1600,
+            "file": "Recreating that one AOT scene"
+        }
+    ],
     "shelf/deca": [
         {
             "src": "/media/shelf/deca/01-daniel-at-deca-ontario-provincials.webp",
@@ -726,20 +735,20 @@
     ],
     "shelf/fbla-cnlc": [
         {
-            "src": "/media/shelf/fbla-cnlc/01-daniel-and-his-teammate-in-front-of-upper-canada.webp",
-            "alt": "Daniel and his teammate in front of Upper Canada College",
+            "src": "/media/shelf/fbla-cnlc/01-alex-and-i-with-our-cnlc-champion-plaques.webp",
+            "alt": "Alex and I with our CNLC Champion Plaques",
             "w": 1440,
             "h": 1440,
-            "file": "UCC Business Club (1)"
+            "file": "Alex and I with our CNLC Champion Plaques"
         }
     ],
     "shelf/fbla-nlc": [
         {
-            "src": "/media/shelf/fbla-nlc/01-daniel-on-stage-at-the-fbla-business-management-.webp",
-            "alt": "Daniel on stage at the FBLA Business Management awards",
+            "src": "/media/shelf/fbla-nlc/01-nlc-stage.webp",
+            "alt": "NLC Stage!",
             "w": 1600,
             "h": 1067,
-            "file": "IMG_9488"
+            "file": "NLC Stage!"
         }
     ],
     "shelf/rowing": [
