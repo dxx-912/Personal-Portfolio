@@ -276,7 +276,7 @@
             "folder": "2 Home/02 Shelf/DECA Provincial Champion plaque (1 photo)",
             "max": 0,
             "alts": {
-                "Qualified!.JPG": "Daniel at DECA Ontario provincials",
+                "Qualified for ICDC!.JPG": "Daniel holding his award in front of the DECA Ontario provincials backdrop",
                 "UCC Qualifiers.JPEG": "The UCC DECA team holding up their qualifier medals"
             }
         },
@@ -285,7 +285,7 @@
             "folder": "2 Home/02 Shelf/FBLA CNLC National Champion plaque (1 photo)",
             "max": 1,
             "alts": {
-                "UCC Business Club (1).jpg": "Daniel and his teammate in front of Upper Canada College"
+                "Alex and I with our CNLC Champion Plaques.jpg": "Daniel and his teammate Alex holding their CNLC champion plaques in front of Upper Canada College"
             }
         },
         {
@@ -293,13 +293,20 @@
             "folder": "2 Home/02 Shelf/FBLA NLC 6th place plaque (1 photo)",
             "max": 1,
             "alts": {
-                "IMG_9488.JPG": "Daniel on stage at the FBLA Business Management awards"
+                "6th Place Globally!.JPG": "Daniel on stage at the FBLA Business Management awards"
             }
         },
         {
             "key": "shelf/anime",
             "folder": "2 Home/02 Shelf/Animes",
-            "max": 0
+            "max": 0,
+            "alts": {
+                "AOT 1.HEIC": "Daniel pointing at the ocean at sunset, above the Attack on Titan scene he is recreating",
+                "AOT Cover.jpeg": "Attack on Titan cover",
+                "Lookism Cover.webp": "Lookism cover",
+                "Solo Levelling.jpg": "Solo Levelling cover",
+                "Sweet Home .jpg": "Sweet Home cover"
+            }
         },
         {
             "key": "pullup/muscle-up",
@@ -334,12 +341,20 @@
         {
             "key": "piano/recitals",
             "folder": "2 Home/07 Piano",
-            "max": 0
+            "max": 0,
+            "alts": {
+                "ARCT diploma graduation Ceremony.JPG": "Daniel and his sister holding flowers at his ARCT diploma ceremony",
+                "Ceremony with family!.jpg": "Daniel with his family and flowers at his ARCT diploma ceremony"
+            }
         },
         {
             "key": "pie/food",
             "folder": "2 Home/08 Pie, baking and cooking",
-            "max": 0
+            "max": 0,
+            "alts": {
+                "Cooking coke chicken.HEIC": "Daniel in an apron holding a bowl of coke chicken in the kitchen",
+                "My apple crisp.heic": "A plate of Daniel's apple crisp topped with whipped cream"
+            }
         },
         {
             "key": "cat/gallery",
@@ -355,7 +370,8 @@
                 "IMG_2267.HEIC": "Fluffy rolling on his back on a rug",
                 "IMG_2850.JPG#1.png": "Fluffy playing with a red envelope on the floor",
                 "IMG_2850.JPG#2.png": "Fluffy sitting on a red envelope",
-                "IMG_6295.HEIC": "Close up of Fluffy looking at the camera"
+                "IMG_6295.HEIC": "Close up of Fluffy looking at the camera",
+                "IMG_0012.jpg": "Fluffy looking up at the camera with his green eyes"
             }
         },
         {

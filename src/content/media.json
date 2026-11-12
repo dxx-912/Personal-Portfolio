@@ -293,47 +293,54 @@
     ],
     "cat/gallery": [
         {
-            "src": "/media/cat/gallery/01-fluffy-getting-his-head-scratched.webp",
+            "src": "/media/cat/gallery/01-fluffy-looking-up-at-the-camera-with-his-green-e.webp",
+            "alt": "Fluffy looking up at the camera with his green eyes",
+            "w": 1180,
+            "h": 1572,
+            "file": "IMG_0012"
+        },
+        {
+            "src": "/media/cat/gallery/02-fluffy-getting-his-head-scratched.webp",
             "alt": "Fluffy getting his head scratched",
             "w": 1200,
             "h": 1600,
             "file": "IMG_0751"
         },
         {
-            "src": "/media/cat/gallery/02-fluffy-wearing-a-plush-bunny-with-a-pink-bow-on-.webp",
+            "src": "/media/cat/gallery/03-fluffy-wearing-a-plush-bunny-with-a-pink-bow-on-.webp",
             "alt": "Fluffy wearing a plush bunny with a pink bow on his head",
             "w": 1200,
             "h": 1600,
             "file": "IMG_0930"
         },
         {
-            "src": "/media/cat/gallery/03-fluffy-stretched-out-on-a-pink-chair.webp",
+            "src": "/media/cat/gallery/04-fluffy-stretched-out-on-a-pink-chair.webp",
             "alt": "Fluffy stretched out on a pink chair",
             "w": 1600,
             "h": 1200,
             "file": "IMG_0994"
         },
         {
-            "src": "/media/cat/gallery/04-fluffy-rolling-on-his-back-on-a-rug.webp",
+            "src": "/media/cat/gallery/05-fluffy-rolling-on-his-back-on-a-rug.webp",
             "alt": "Fluffy rolling on his back on a rug",
             "w": 1200,
             "h": 1600,
             "file": "IMG_2267"
         },
         {
-            "src": "/media/cat/gallery/05-fluffy-playing-with-a-red-envelope-on-the-floor.webp",
+            "src": "/media/cat/gallery/06-fluffy-playing-with-a-red-envelope-on-the-floor.webp",
             "alt": "Fluffy playing with a red envelope on the floor",
             "w": 1480,
             "h": 1600
         },
         {
-            "src": "/media/cat/gallery/06-fluffy-sitting-on-a-red-envelope.webp",
+            "src": "/media/cat/gallery/07-fluffy-sitting-on-a-red-envelope.webp",
             "alt": "Fluffy sitting on a red envelope",
             "w": 1480,
             "h": 1600
         },
         {
-            "src": "/media/cat/gallery/07-close-up-of-fluffy-looking-at-the-camera.webp",
+            "src": "/media/cat/gallery/08-close-up-of-fluffy-looking-at-the-camera.webp",
             "alt": "Close up of Fluffy looking at the camera",
             "w": 1200,
             "h": 1600,
@@ -638,48 +645,62 @@
             "file": "Another recital"
         },
         {
-            "src": "/media/piano/recitals/03-grad-ceremony.webp",
-            "alt": "Grad ceremony",
+            "src": "/media/piano/recitals/03-daniel-and-his-sister-holding-flowers-at-his-arc.webp",
+            "alt": "Daniel and his sister holding flowers at his ARCT diploma ceremony",
             "w": 828,
             "h": 1104,
-            "file": "Grad ceremony"
+            "file": "ARCT diploma graduation Ceremony"
         },
         {
-            "src": "/media/piano/recitals/04-my-first-piano-recital.webp",
+            "src": "/media/piano/recitals/04-daniel-with-his-family-and-flowers-at-his-arct-d.webp",
+            "alt": "Daniel with his family and flowers at his ARCT diploma ceremony",
+            "w": 1600,
+            "h": 1200,
+            "file": "Ceremony with family!"
+        },
+        {
+            "src": "/media/piano/recitals/05-my-first-piano-recital.webp",
             "alt": "My first piano recital",
             "w": 1200,
             "h": 1600,
             "file": "My first piano recital"
-        },
-        {
-            "src": "/media/piano/recitals/05-with-family.webp",
-            "alt": "With family!",
-            "w": 1600,
-            "h": 1200,
-            "file": "With family!"
         }
     ],
     "pie/food": [
         {
-            "src": "/media/pie/food/01-chinese-new-year-dishes-i-made-with-mom.webp",
-            "alt": "Chinese New Year dishes I made with mom",
+            "src": "/media/pie/food/01-cny-dishes-i-made-with-mom.webp",
+            "alt": "CNY dishes I made with mom",
             "w": 1200,
             "h": 1600,
-            "file": "Chinese New Year dishes I made with mom"
+            "file": "CNY dishes I made with mom"
         },
         {
-            "src": "/media/pie/food/02-me-cooking-steak-2021-vs-2024.webp",
+            "src": "/media/pie/food/02-daniel-in-an-apron-holding-a-bowl-of-coke-chicke.webp",
+            "alt": "Daniel in an apron holding a bowl of coke chicken in the kitchen",
+            "w": 1200,
+            "h": 1600,
+            "file": "Cooking coke chicken"
+        },
+        {
+            "src": "/media/pie/food/03-me-cooking-steak-2021-vs-2024.webp",
             "alt": "Me cooking steak 2021 vs 2024",
             "w": 1200,
             "h": 1600,
             "file": "Me cooking steak 2021 vs 2024"
         },
         {
-            "src": "/media/pie/food/03-prepping-steak.webp",
-            "alt": "Prepping steak",
+            "src": "/media/pie/food/04-a-plate-of-daniel-s-apple-crisp-topped-with-whip.webp",
+            "alt": "A plate of Daniel's apple crisp topped with whipped cream",
+            "w": 1200,
+            "h": 1600,
+            "file": "My apple crisp"
+        },
+        {
+            "src": "/media/pie/food/05-prepping-steak-again.webp",
+            "alt": "Prepping steak again",
             "w": 772,
             "h": 1188,
-            "file": "Prepping steak"
+            "file": "Prepping steak again"
         }
     ],
     "pullup/deadlift": [
@@ -711,20 +732,48 @@
     ],
     "shelf/anime": [
         {
-            "src": "/media/shelf/anime/01-recreating-that-one-aot-scene.webp",
-            "alt": "Recreating that one AOT scene",
+            "src": "/media/shelf/anime/01-daniel-pointing-at-the-ocean-at-sunset-above-the.webp",
+            "alt": "Daniel pointing at the ocean at sunset, above the Attack on Titan scene he is recreating",
             "w": 900,
             "h": 1600,
-            "file": "Recreating that one AOT scene"
+            "file": "AOT 1"
+        },
+        {
+            "src": "/media/shelf/anime/02-attack-on-titan-cover.webp",
+            "alt": "Attack on Titan cover",
+            "w": 466,
+            "h": 658,
+            "file": "AOT Cover"
+        },
+        {
+            "src": "/media/shelf/anime/03-lookism-cover.webp",
+            "alt": "Lookism cover",
+            "w": 1366,
+            "h": 768,
+            "file": "Lookism Cover"
+        },
+        {
+            "src": "/media/shelf/anime/04-solo-levelling-cover.webp",
+            "alt": "Solo Levelling cover",
+            "w": 697,
+            "h": 1000,
+            "file": "Solo Levelling"
+        },
+        {
+            "src": "/media/shelf/anime/05-sweet-home-cover.webp",
+            "alt": "Sweet Home cover",
+            "w": 480,
+            "h": 540,
+            "file": "Sweet Home"
         }
     ],
     "shelf/deca": [
         {
-            "src": "/media/shelf/deca/01-daniel-at-deca-ontario-provincials.webp",
-            "alt": "Daniel at DECA Ontario provincials",
+            "src": "/media/shelf/deca/01-daniel-holding-his-award-in-front-of-the-deca-on.webp",
+            "alt": "Daniel holding his award in front of the DECA Ontario provincials backdrop",
             "w": 1600,
             "h": 1068,
-            "file": "Qualified!"
+            "file": "Qualified for ICDC!"
         },
         {
             "src": "/media/shelf/deca/02-the-ucc-deca-team-holding-up-their-qualifier-med.webp",
@@ -736,8 +785,8 @@
     ],
     "shelf/fbla-cnlc": [
         {
-            "src": "/media/shelf/fbla-cnlc/01-alex-and-i-with-our-cnlc-champion-plaques.webp",
-            "alt": "Alex and I with our CNLC Champion Plaques",
+            "src": "/media/shelf/fbla-cnlc/01-daniel-and-his-teammate-alex-holding-their-cnlc-.webp",
+            "alt": "Daniel and his teammate Alex holding their CNLC champion plaques in front of Upper Canada College",
             "w": 1440,
             "h": 1440,
             "file": "Alex and I with our CNLC Champion Plaques"
@@ -745,11 +794,11 @@
     ],
     "shelf/fbla-nlc": [
         {
-            "src": "/media/shelf/fbla-nlc/01-nlc-stage.webp",
-            "alt": "NLC Stage!",
+            "src": "/media/shelf/fbla-nlc/01-daniel-on-stage-at-the-fbla-business-management-.webp",
+            "alt": "Daniel on stage at the FBLA Business Management awards",
             "w": 1600,
             "h": 1067,
-            "file": "NLC Stage!"
+            "file": "6th Place Globally!"
         }
     ],
     "shelf/rowing": [
