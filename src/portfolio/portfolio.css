@@ -64,7 +64,7 @@ button { font: inherit; color: inherit; }
 
 /* Continuous blend: each section fades in from the previous sky over its top band (A2). */
 .sky-morning { background: var(--sky-morning); color: var(--on-morning); padding-top: clamp(40px, 7vw, 88px); }
-.sky-work { background: linear-gradient(var(--sky-morning), var(--sky-noon) var(--blend)); color: var(--on-noon); padding-top: clamp(28px, 4vw, 56px); }
+.sky-work { background: linear-gradient(var(--sky-morning), var(--sky-noon) var(--blend)); color: var(--on-noon); }
 .sky-evening { background: linear-gradient(var(--sky-noon), var(--sky-sunset) var(--blend)); color: var(--on-sunset); }
 .sky-night { background: linear-gradient(var(--sky-sunset), var(--sky-night) var(--blend)); color: var(--on-night); padding-bottom: 48px; }
 
