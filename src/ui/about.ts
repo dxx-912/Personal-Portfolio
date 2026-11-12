@@ -72,6 +72,7 @@ export function aboutHtml(entry: Entry) {
             ${photo}
             <div class="ab-intro">
                 <p class="ab-hi">${esc(a.headline)}</p>
+                <p class="ab-thanks">${esc(a.thanks)}</p>
                 ${(entry.body ?? []).map((p) => `<p class="ab-text">${rich(p)}</p>`).join('')}
                 ${entry.callout ? `<p class="ab-callout">${rich(entry.callout)}</p>` : ''}
                 <div class="ab-links">

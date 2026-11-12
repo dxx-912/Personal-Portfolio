@@ -710,6 +710,7 @@ body.title-on .plain-link { opacity: 0.85; visibility: visible; pointer-events: 
     margin: 6px;
 }
 .panel-body .ab-hi { font: 400 20px/1.4 var(--font-heading); margin: 2px 0 12px; color: var(--ink); }
+.panel-body .ab-thanks { font: 600 13px/1.5 var(--font-label); padding: 6px 10px; margin: 0 0 12px; border: 2px solid var(--edge); background: #fff; box-shadow: 0 2px 0 var(--edge); color: var(--ink); }
 .panel-body .ab-text { margin: 0 0 6px; font-size: 17px; line-height: 1.55; }
 .panel-body .ab-callout, .panel-body .callout {
     display: inline-block; margin: 8px 0 12px; padding: 6px 12px; font: 700 15px/1.45 var(--font-label);
