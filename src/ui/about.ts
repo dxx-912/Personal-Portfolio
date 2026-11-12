@@ -84,6 +84,7 @@ export function aboutHtml(entry: Entry) {
             <ul class="ab-how-row">${howTo}</ul>
             <p class="ab-line">${esc(a.rooms)}</p>
             <p class="ab-line">${esc(a.counts(TOTAL_ITEMS, SECRETS.length))}</p>
+            <p class="ab-line ab-recruiters">${esc(a.recruiters)}</p>
         </div>`;
 }
 

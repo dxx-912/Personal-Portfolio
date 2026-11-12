@@ -742,6 +742,7 @@ svg.ab-ico { fill: currentColor; border-radius: 0; width: 15px; height: 18px; }
 .ab-mouse { width: 24px; height: 30px; fill: var(--ink); }
 .ab-how-l { font: 700 14px var(--font-label); }
 .panel-body .ab-line { margin: 2px 0 0; font-size: 16px; }
+.panel-body .ab-recruiters { margin-top: 12px; font-weight: 700; }
 
 .ab-foot {
     display: flex; justify-content: flex-end; gap: 10px; flex-wrap: wrap;

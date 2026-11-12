@@ -34,6 +34,7 @@ export const ui = {
         ] as { keys: string[]; mouse?: boolean; label: string }[],
         rooms: 'UCLA dorm = professional stuff. Toronto bedroom = personal life.',
         counts: (stories: number, secrets: number) => `Find all ${stories} items that represent me (F) and ${secrets} interactions (E) --> ex. Try shooting the basketball!`,
+        recruiters: 'For any recruiters - check out the quick view version of this portfolio. Or play the full game if you have time.',
         start: 'Start exploring',
         quick: 'No time? Quick view'
     },
