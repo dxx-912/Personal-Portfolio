@@ -18,7 +18,7 @@ import { chargeHeld, lastInputAt, markInput, moveVector, onAction, setChargeCapt
 import { Basketball } from '../game/Basketball';
 import { CAFFEINE_BOOST, CAFFEINE_MAX, SLEEP_MAX, SLEEP_TICK_MS, hintGap, session } from '../game/session';
 import type { TimeOfDay } from '../game/Lighting';
-import { closePanel, openPanel } from '../ui/panel';
+import { closePanel, isPanelOpen, openPanel } from '../ui/panel';
 import {
     setStat, hideBubble, maybeSuggestQuickView, moveBubble, setPortrait, setPrompt, setWakeButton, showBubble, showMessage, showTitle, toast,
     type PromptSpec
@@ -603,14 +603,23 @@ export class Room extends Phaser.Scene {
                 showTitle(ui.roomTitles[this.def.key]);
                 this.say(profile.wakeLine, 5000);
                 if (!state.seenTips) {
-                    showMessage(isTouchDevice() ? ui.controlsTouch : ui.controlsKeys, 'tip');
-                    this.time.delayedCall(7000, () => showMessage(null));
                     state.seenTips = true;
                     state.save();
+                    // first visit: About me opens on its own once he is up, then the controls tip
+                    const tip = () => {
+                        showMessage(isTouchDevice() ? ui.controlsTouch : ui.controlsKeys, 'tip');
+                        this.time.delayedCall(7000, () => showMessage(null));
+                        this.time.delayedCall(2500, maybeSuggestQuickView);
+                    };
+                    this.time.delayedCall(this.rm ? 300 : 1800, () => {
+                        if (isPanelOpen() || this.busy || this.sleeping) { tip(); return; }
+                        this.openEntry(getEntry('dorm', 'about'), ABOUT_KEY, undefined, tip);
+                    });
+                } else {
+                    this.time.delayedCall(5500, maybeSuggestQuickView);
                 }
                 this.pulseDoor();
                 startAmbient(this.def.key);
-                this.time.delayedCall(5500, maybeSuggestQuickView);
                 markInput();
             }
         });
@@ -762,13 +771,14 @@ export class Room extends Phaser.Scene {
         this.openEntry(getEntry('dorm', 'about'), ABOUT_KEY);
     }
 
-    private openEntry(entry: Entry, key: string, t?: Target) {
+    private openEntry(entry: Entry, key: string, t?: Target, onClose?: () => void) {
         if (state.markFound(key)) sfx('found');
         if (t) this.refreshSeen(t);
         if (this.cat) this.cat.held = true;
         openPanel(entry, () => {
             if (this.cat) this.cat.held = false;
             if (state.allFound && !state.celebrated) this.celebrate();
+            onClose?.();
         });
     }
 

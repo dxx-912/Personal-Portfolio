@@ -20,11 +20,20 @@ Rules: use this text as written (light grammar fixes only, never new facts). Any
 - Custom domain: decide later.
 
 ### 1.2 About me (HUD portrait panel, item 1)
-Each line is its own paragraph:
+Paragraphs:
 1. Hey I'm Daniel, thanks for visiting my portfolio :)
 2. I'm a sophomore at UCLA right now majoring in economics and cognitive science, born and raised in Toronto.
-3. I come from a pretty artistic background (spent my formative years in specialized art programs), so I hope to build and create in whatever I end up doing professionally, whether through the arts or technology.
-4. I'm currently recruiting and hope to land product management, product marketing, or growth roles for the summer.
+3. I come from a pretty artistic background (spent my formative years in specialized art programs), so I hope to build and create in whatever I end up doing professionally, whether through the arts or technology. I'm currently recruiting and hope to land product management, product marketing, or growth roles for 2027.
+
+Navigating this portfolio (bullets):
+- UCLA dorm showcases my professional side: projects, experiences, student orgs., education, etc.
+- Toronto bedroom showcases my personal life: hobbies, interests, sports, what makes me, me.
+- Press F to learn more about one of 18 items that represent my professional and personal stories (this HUD panel is one).
+- Press E to interact with an object. There are 18 total things you can interact with (solely for fun; e.g., try shooting the basketball!).
+- If you're a recruiter and want to quickly scan over everything, press the "Quick View" button.
+- Have fun! Reach out to me for any feedback :)
+
+The panel opens on its own on a first visit, right after Daniel wakes up.
 
 Photos: `photos/1 Dorm/01 About me (HUD portrait)/HUD Photos/` (2 photos) plus `photos/Professional Headshot.png` as the HUD portrait source and the panel headshot.
 
