@@ -710,7 +710,7 @@ body.title-on .plain-link { opacity: 0.85; visibility: visible; pointer-events: 
     margin: 6px;
 }
 .ab-side { display: flex; flex-direction: column; align-items: center; gap: 16px; }
-.ab-card { width: 172px; border: 3px solid var(--edge); background: #fff; box-shadow: 0 3px 0 var(--edge); }
+.ab-card { width: 100%; box-sizing: border-box; border: 3px solid var(--edge); background: #fff; box-shadow: 0 3px 0 var(--edge); }
 .panel-body .ab-card-name {
     margin: 0; padding: 7px 6px 6px; text-align: center; font: 400 10px/1.4 var(--font-heading);
     color: #fff6c8; background: var(--accent-2); border-bottom: 3px solid var(--edge);
@@ -719,7 +719,7 @@ body.title-on .plain-link { opacity: 0.85; visibility: visible; pointer-events: 
 .ab-card-row { display: flex; justify-content: space-between; gap: 6px; padding: 3px 0; border-bottom: 1px dashed #c9b596; }
 .ab-card-row:last-child { border-bottom: 0; }
 .ab-card-row dt { font: 700 11px/1.4 var(--font-label); text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); }
-.ab-card-row dd { margin: 0; font: 700 12px/1.4 var(--font-label); color: var(--ink); text-align: right; }
+.ab-card-row dd { margin: 0; hyphens: manual; font: 700 12px/1.4 var(--font-label); color: var(--ink); text-align: right; }
 .panel-body .ab-hi { font: 400 20px/1.4 var(--font-heading); margin: 2px 0 12px; color: var(--ink); }
 .panel-body .ab-thanks { font: 600 13px/1.5 var(--font-label); padding: 6px 10px; margin: 0 0 12px; border: 2px solid var(--edge); background: #fff; box-shadow: 0 2px 0 var(--edge); color: var(--ink); }
 .panel-body .ab-text { margin: 0 0 6px; font-size: 17px; line-height: 1.55; }
@@ -774,3 +774,15 @@ svg.ab-ico { fill: currentColor; border-radius: 0; width: 15px; height: 18px; }
     .ab-foot .ab-btn { flex: 1 1 auto; justify-content: center; padding: 9px 8px; font-size: 13px; white-space: nowrap; }
 }
 @media (prefers-reduced-motion: reduce) { .ab-btn:active { transform: none; } }
+
+/* Click a panel photo to see it full size (same idea as the quick view lightbox). */
+img.zoomable { cursor: zoom-in; }
+img.zoomable:focus-visible { outline: 3px solid var(--edge); outline-offset: 2px; }
+.lightbox {
+    position: fixed; inset: 0; z-index: 10; display: grid; place-items: center; padding: 24px;
+    background: rgba(26, 22, 38, 0.9); cursor: zoom-out; opacity: 0; transition: opacity 0.14s ease-out;
+}
+.lightbox.open { opacity: 1; }
+.lightbox img { max-width: min(100%, 1600px); max-height: calc(100vh - 48px); max-height: calc(100dvh - 48px); width: auto; height: auto; object-fit: contain; border: 3px solid var(--paper); image-rendering: auto; }
+.lightbox-close { position: absolute; top: 14px; right: 14px; }
+@media (prefers-reduced-motion: reduce) { .lightbox { transition: none; } }

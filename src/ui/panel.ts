@@ -15,6 +15,49 @@ interface Open {
     cleanup?: () => void;
 }
 let current: Open | null = null;
+/** Full size view of a panel photo, layered over the open panel. */
+let lightbox: HTMLElement | null = null;
+let lightboxFrom: HTMLElement | null = null;
+
+// Photos in panels (and the About me headshot) open full size. Linked images and icons are left alone.
+const ZOOMABLE = '.media img:not(.media-link img), .ab-shot';
+
+function markZoomable(root: HTMLElement) {
+    root.querySelectorAll<HTMLImageElement>(ZOOMABLE).forEach((img) => {
+        if (img.tagName !== 'IMG') return;
+        img.classList.add('zoomable');
+        img.tabIndex = 0;
+        img.setAttribute('role', 'button');
+        img.setAttribute('aria-label', `${ui.enlarge}${img.alt ? `: ${img.alt}` : ''}`);
+    });
+}
+
+function openLightbox(root: HTMLElement, img: HTMLImageElement) {
+    closeLightbox();
+    const box = document.createElement('div');
+    box.className = 'lightbox';
+    box.setAttribute('role', 'dialog');
+    box.setAttribute('aria-modal', 'true');
+    box.setAttribute('aria-label', img.alt || ui.enlarge);
+    box.innerHTML = `<img src="${esc(img.currentSrc || img.src)}" alt="${esc(img.alt)}" /><button class="panel-close lightbox-close" aria-label="${esc(ui.close)}" title="${esc(ui.close)} (Esc)">✕</button>`;
+    box.addEventListener('click', (e) => { e.stopPropagation(); closeLightbox(); });
+    box.addEventListener('pointerdown', (e) => e.stopPropagation());
+    root.appendChild(box);
+    lightbox = box;
+    lightboxFrom = img;
+    requestAnimationFrame(() => box.classList.add('open'));
+    box.querySelector<HTMLElement>('button')!.focus({ preventScroll: true });
+    sfx('tick');
+}
+
+function closeLightbox() {
+    if (!lightbox) return false;
+    lightbox.remove();
+    lightbox = null;
+    lightboxFrom?.focus({ preventScroll: true });
+    lightboxFrom = null;
+    return true;
+}
 
 const sectionHtml = (s: Section, heading: number) =>
     renderSection(s, { mode: 'panel', heading, comingSoonImage: ui.todoImage, comingSoonVideo: ui.todoVideo });
@@ -51,6 +94,11 @@ function mount(html: string, open: Omit<Open, 'root'>, focusSel?: string) {
     root.addEventListener('pointerdown', (e) => { if (e.target === root) closePanel(); });
     root.querySelector('.panel-close')?.addEventListener('click', () => closePanel());
     root.addEventListener('keydown', (e) => onKey(e, root));
+    markZoomable(root);
+    root.addEventListener('click', (e) => {
+        const img = (e.target as HTMLElement).closest<HTMLImageElement>('img.zoomable');
+        if (img && root.contains(img)) { e.preventDefault(); openLightbox(root, img); }
+    });
     // duck the lofi while a video in this panel plays (MP4 events, or focus moving into an embed)
     root.addEventListener('play', (e) => { if ((e.target as HTMLElement).tagName === 'VIDEO') duck('video', true); }, true);
     root.addEventListener('pause', (e) => { if ((e.target as HTMLElement).tagName === 'VIDEO') duck('video', false); }, true);
@@ -132,7 +180,15 @@ function selectTab(root: HTMLElement, i: number) {
 }
 
 function onKey(e: KeyboardEvent, root: HTMLElement) {
+    if (lightbox) {
+        // the lightbox only holds its close button: Esc, Enter, or Space closes it, Tab stays put
+        if (e.key === 'Escape' || e.key === 'Tab') { e.preventDefault(); e.stopPropagation(); }
+        if (e.key === 'Escape') closeLightbox();
+        return;
+    }
     if (e.key === 'Escape') { e.preventDefault(); e.stopPropagation(); closePanel(); return; }
+    const t = e.target as HTMLElement;
+    if ((e.key === 'Enter' || e.key === ' ') && t.classList.contains('zoomable')) { e.preventDefault(); openLightbox(root, t as HTMLImageElement); return; }
     if (current?.onKey?.(e)) return;
     const target = e.target as HTMLElement;
     if (target.getAttribute('role') === 'tab') {
@@ -161,6 +217,8 @@ export function closePanel(silent = false) {
     if (!current) return;
     const { root, onClose, cleanup } = current;
     current = null;
+    lightbox?.remove();
+    lightbox = lightboxFrom = null;
     cleanup?.();
     root.classList.remove('open');
     root.classList.add('closing');

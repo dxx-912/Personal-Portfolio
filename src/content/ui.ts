@@ -29,10 +29,10 @@ export const ui = {
         card: {
             name: 'Daniel Xing',
             rows: [
-                { k: 'Class', v: 'Product & Growth' },
-                { k: 'Year', v: 'Sophomore' },
-                { k: 'Base', v: 'UCLA' },
-                { k: 'Home', v: 'Toronto' }
+                { k: 'Type', v: 'Product' },
+                { k: 'Level', v: '19' },
+                { k: 'Strength', v: 'Hyper\u00ADfocusing' },
+                { k: 'Weakness', v: 'Morning classes' }
             ]
         },
         /** White strip under the headline (same look as the coursework chips). */
@@ -117,6 +117,7 @@ export const ui = {
     turnSoundOn: 'Turn it on',
     startOver: 'Start over',
     close: 'Close',
+    enlarge: 'Enlarge photo',
     hint: 'H shows anything you have not found yet. I opens About me.',
     todoImage: 'Photo coming soon',
     todoVideo: 'Video coming soon',
