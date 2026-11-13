@@ -124,7 +124,8 @@ export function renderPortfolio(opts: { production: boolean }): RenderResult {
             : `<span class="shot-ph">${esc(C.headshotAlt)}<br><span class="todo">[TODO: headshot]</span></span>`;
     if (!headshot?.src) todos.push('hero: headshot photo');
 
-    const lede = [t(profile.tagline, 'hero tagline'), t(profile.focus, 'hero focus')].filter(Boolean).join(' ');
+    const lede = [...profile.tagline.split('\n').map((l) => t(l, 'hero tagline')), t(profile.focus, 'hero focus')]
+        .filter(Boolean).map((l) => `<p class="lede">${l}</p>`).join('');
     const morning = `
 <section id="morning" class="sky sky-morning" aria-labelledby="hero-title">
   <div class="wrap">
@@ -132,7 +133,7 @@ export function renderPortfolio(opts: { production: boolean }): RenderResult {
     <div class="hero">
       <div class="hero-text">
         <h1 id="hero-title" class="px hero-title" aria-label="${esc(C.headline.join(' '))}"><span class="type" aria-hidden="true">${C.headline.map(esc).join('<br>')}</span><span class="caret" aria-hidden="true"></span></h1>
-        <p class="lede">${lede}</p>
+        ${lede}
         <p class="btns">
           ${link(linkByLabel('Resume'), C.resume, 'btn', 'file', 'hero')}
           ${link(linkByLabel('LinkedIn'), C.linkedin, 'btn', 'linkedin', 'hero')}

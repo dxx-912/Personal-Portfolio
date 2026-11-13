@@ -10,8 +10,8 @@ Rules: use this text as written (light grammar fixes only, never new facts). Any
 
 ### 1.1 Basics
 - Name: Daniel Xing
-- Tagline: UCLA sophomore studying economics and cognitive science. I like doing creative things.
-- Focus line: Looking for growth and product roles for 2027.
+- Tagline: UCLA sophomore studying economics and cognitive science, originally from North York, Toronto. / I like doing creative things, building things, and working with people to ship things. (two short paragraphs)
+- Focus line: Looking for product, growth, or whatever roles that satisfy the above.
 - Email (public): dxing01@ucla.edu
 - LinkedIn: https://www.linkedin.com/in/dxing01/
 - GitHub: https://github.com/dxx-912

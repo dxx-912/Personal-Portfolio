@@ -135,6 +135,7 @@ a.card:hover .lbl { animation: flicker 0.32s steps(2) 1; }
 .caret { display: inline-block; width: 0.55em; height: 0.9em; margin-left: 0.15em; vertical-align: -0.05em; background: currentColor; animation: caret 1s steps(1) infinite; }
 @keyframes caret { 50% { opacity: 0; } }
 .lede { font-size: clamp(17px, 1.6vw, 19px); max-width: 34em; margin: 0; }
+.lede + .lede { margin-top: 0.6em; }
 
 .hud { padding: 17px; }
 .shot {

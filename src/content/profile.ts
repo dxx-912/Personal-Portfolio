@@ -30,7 +30,8 @@ export const MAJOR_PLAIN = (() => {
 // Contact details, HUD stats, and the little lines Daniel says (CONTENT_FINAL.md section 1).
 export const profile: Profile = {
     name: 'Daniel Xing',
-    tagline: 'UCLA sophomore studying economics and cognitive science. I like doing creative things.',
+    // quick view hero: each line is its own short paragraph, then the focus line
+    tagline: 'UCLA sophomore studying economics and cognitive science, originally from North York, Toronto.\nI like doing creative things, building things, and working with people to ship things.',
     location: 'UCLA, Los Angeles. From North York, Toronto.',
     links: [
         { label: 'LinkedIn', href: 'https://www.linkedin.com/in/dxing01/', icon: LOGOS.linkedin },
@@ -62,7 +63,7 @@ export const profile: Profile = {
         'I need to apply to more jobs...'
     ],
 
-    focus: 'Looking for growth and product roles for 2027.',
+    focus: 'Looking for product, growth, or whatever roles that satisfy the above.',
 
     // Public URL for canonical and Open Graph tags, e.g. 'https://example.com'. [TODO: custom domain]
     siteUrl: ''
