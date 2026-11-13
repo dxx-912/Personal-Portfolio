@@ -124,8 +124,17 @@ export function renderPortfolio(opts: { production: boolean }): RenderResult {
             : `<span class="shot-ph">${esc(C.headshotAlt)}<br><span class="todo">[TODO: headshot]</span></span>`;
     if (!headshot?.src) todos.push('hero: headshot photo');
 
-    const lede = [...profile.tagline.split('\n').map((l) => t(l, 'hero tagline')), t(profile.focus, 'hero focus')]
-        .filter(Boolean).map((l) => `<p class="lede">${l}</p>`).join('');
+    const ledeLines = [...profile.tagline.split('\n'), profile.focus];
+    let lede = '';
+    let ledeItems: string[] = [];
+    const flush = () => { if (ledeItems.length) lede += `<ul class="lede-list">${ledeItems.join('')}</ul>`; ledeItems = []; };
+    for (const l of ledeLines) {
+        if (l.startsWith('- ')) { ledeItems.push(`<li>${t(l.slice(2), 'hero tagline')}</li>`); continue; }
+        flush();
+        const x = t(l, 'hero tagline');
+        if (x) lede += `<p class="lede">${x}</p>`;
+    }
+    flush();
     const morning = `
 <section id="morning" class="sky sky-morning" aria-labelledby="hero-title">
   <div class="wrap">

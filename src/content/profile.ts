@@ -30,8 +30,8 @@ export const MAJOR_PLAIN = (() => {
 // Contact details, HUD stats, and the little lines Daniel says (CONTENT_FINAL.md section 1).
 export const profile: Profile = {
     name: 'Daniel Xing',
-    // quick view hero: each line is its own short paragraph, then the focus line
-    tagline: 'UCLA sophomore studying economics and cognitive science, originally from North York, Toronto.\nI like doing creative things, building things, and working with people to ship things.',
+    // quick view hero: each line is its own paragraph; lines starting with "- " become a list; then the focus line
+    tagline: 'UCLA sophomore studying economics and cognitive science, originally from North York, Toronto.\nI like\n- Doing creative things\n- Building things\n- Working with people to ship things',
     location: 'UCLA, Los Angeles. From North York, Toronto.',
     links: [
         { label: 'LinkedIn', href: 'https://www.linkedin.com/in/dxing01/', icon: LOGOS.linkedin },
