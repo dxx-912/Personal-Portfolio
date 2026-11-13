@@ -286,95 +286,95 @@
     ],
     "camera/photos": [
         {
-            "src": "/media/camera/photos/01-mount-fuji-behind-a-still-pond-thatched-roof-hou.webp",
-            "alt": "Mount Fuji behind a still pond, thatched roof houses, and green trees",
-            "w": 1440,
-            "h": 1440,
-            "file": "Mount Fuji"
-        },
-        {
-            "src": "/media/camera/photos/02-stone-steps-lined-with-red-lanterns-and-teahouse.webp",
-            "alt": "Stone steps lined with red lanterns and teahouses on Jiufen Old Street",
-            "w": 1024,
-            "h": 1536,
-            "file": "Jiufen Old Street (九份老街)"
-        },
-        {
-            "src": "/media/camera/photos/03-a-turquoise-lake-in-a-green-mountain-valley-at-j.webp",
-            "alt": "A turquoise lake in a green mountain valley at Jiuzhaigou",
-            "w": 1200,
-            "h": 1600,
-            "file": "Jiuzhaigou (九寨沟)"
-        },
-        {
-            "src": "/media/camera/photos/04-the-sun-rising-over-a-sea-of-clouds-at-mount-eme.webp",
-            "alt": "The sun rising over a sea of clouds at Mount Emei",
-            "w": 1200,
-            "h": 1600,
-            "file": "Mount Emei (峨眉山)"
-        },
-        {
-            "src": "/media/camera/photos/05-an-open-kitchen-at-night-above-city-lights-refle.webp",
-            "alt": "An open kitchen at night above city lights, reflected in a restaurant window in New York",
-            "w": 900,
-            "h": 1600,
-            "file": "Cool photo I took in a NY restaurant (0 editing)"
-        },
-        {
-            "src": "/media/camera/photos/06-people-crossing-a-wide-street-between-tall-build.webp",
-            "alt": "People crossing a wide street between tall buildings in Ginza, Tokyo",
-            "w": 1201,
-            "h": 1600,
-            "file": "Ginza"
-        },
-        {
-            "src": "/media/camera/photos/07-a-narrow-quiet-tokyo-side-street-between-tall-bu.webp",
-            "alt": "A narrow, quiet Tokyo side street between tall buildings",
-            "w": 1200,
-            "h": 1600,
-            "file": "Tokyo streets"
-        },
-        {
-            "src": "/media/camera/photos/08-a-dense-crowd-at-shibuya-crossing-tokyo-with-a-f.webp",
-            "alt": "A dense crowd at Shibuya crossing, Tokyo, with a flag held above it",
-            "w": 1024,
-            "h": 1536,
-            "file": "Shibuya crossing"
-        },
-        {
-            "src": "/media/camera/photos/09-close-up-of-pink-blossoms-on-a-branch-against-th.webp",
-            "alt": "Close up of pink blossoms on a branch against the sky",
-            "w": 1067,
-            "h": 1600,
-            "file": "Flowers"
-        },
-        {
-            "src": "/media/camera/photos/10-a-ferry-docked-at-a-pier-on-a-lake-with-green-mo.webp",
-            "alt": "A ferry docked at a pier on a lake with green mountains behind",
-            "w": 1152,
-            "h": 1528,
-            "file": "I forgot where this is from"
-        },
-        {
-            "src": "/media/camera/photos/11-crowds-under-glowing-red-lanterns-and-neon-signs.webp",
+            "src": "/media/camera/photos/01-crowds-under-glowing-red-lanterns-and-neon-signs.webp",
             "alt": "Crowds under glowing red lanterns and neon signs on Jiufen Old Street at night",
             "w": 1281,
             "h": 1600,
             "file": "Jiufen Old Street (九份老街)"
         },
         {
-            "src": "/media/camera/photos/12-a-packed-lantern-lit-lane-on-jiufen-old-street-a.webp",
+            "src": "/media/camera/photos/02-a-packed-lantern-lit-lane-on-jiufen-old-street-a.webp",
             "alt": "A packed, lantern lit lane on Jiufen Old Street at night",
             "w": 1280,
             "h": 1600,
             "file": "Jiufen Old Street (九份老街)"
         },
         {
-            "src": "/media/camera/photos/13-a-train-coming-down-the-tracks-through-shifen-ol.webp",
+            "src": "/media/camera/photos/03-a-train-coming-down-the-tracks-through-shifen-ol.webp",
             "alt": "A train coming down the tracks through Shifen Old Street as people take photos",
             "w": 1281,
             "h": 1600,
             "file": "Shifen Old Street (十分老街)"
+        },
+        {
+            "src": "/media/camera/photos/04-people-crossing-a-wide-street-between-tall-build.webp",
+            "alt": "People crossing a wide street between tall buildings in Ginza, Tokyo",
+            "w": 1201,
+            "h": 1600,
+            "file": "Ginza"
+        },
+        {
+            "src": "/media/camera/photos/05-a-dense-crowd-at-shibuya-crossing-tokyo-with-a-f.webp",
+            "alt": "A dense crowd at Shibuya crossing, Tokyo, with a flag held above it",
+            "w": 1024,
+            "h": 1536,
+            "file": "Shibuya crossing"
+        },
+        {
+            "src": "/media/camera/photos/06-a-narrow-quiet-tokyo-side-street-between-tall-bu.webp",
+            "alt": "A narrow, quiet Tokyo side street between tall buildings",
+            "w": 1200,
+            "h": 1600,
+            "file": "Tokyo streets"
+        },
+        {
+            "src": "/media/camera/photos/07-mount-fuji-behind-a-still-pond-thatched-roof-hou.webp",
+            "alt": "Mount Fuji behind a still pond, thatched roof houses, and green trees",
+            "w": 1440,
+            "h": 1440,
+            "file": "Mount Fuji"
+        },
+        {
+            "src": "/media/camera/photos/08-stone-steps-lined-with-red-lanterns-and-teahouse.webp",
+            "alt": "Stone steps lined with red lanterns and teahouses on Jiufen Old Street",
+            "w": 1024,
+            "h": 1536,
+            "file": "Jiufen Old Street (九份老街)"
+        },
+        {
+            "src": "/media/camera/photos/09-a-turquoise-lake-in-a-green-mountain-valley-at-j.webp",
+            "alt": "A turquoise lake in a green mountain valley at Jiuzhaigou",
+            "w": 1200,
+            "h": 1600,
+            "file": "Jiuzhaigou (九寨沟)"
+        },
+        {
+            "src": "/media/camera/photos/10-the-sun-rising-over-a-sea-of-clouds-at-mount-eme.webp",
+            "alt": "The sun rising over a sea of clouds at Mount Emei",
+            "w": 1200,
+            "h": 1600,
+            "file": "Mount Emei (峨眉山)"
+        },
+        {
+            "src": "/media/camera/photos/11-an-open-kitchen-at-night-above-city-lights-refle.webp",
+            "alt": "An open kitchen at night above city lights, reflected in a restaurant window in New York",
+            "w": 900,
+            "h": 1600,
+            "file": "Cool photo I took in a NY restaurant (0 editing)"
+        },
+        {
+            "src": "/media/camera/photos/12-close-up-of-pink-blossoms-on-a-branch-against-th.webp",
+            "alt": "Close up of pink blossoms on a branch against the sky",
+            "w": 1067,
+            "h": 1600,
+            "file": "Flowers"
+        },
+        {
+            "src": "/media/camera/photos/13-a-ferry-docked-at-a-pier-on-a-lake-with-green-mo.webp",
+            "alt": "A ferry docked at a pier on a lake with green mountains behind",
+            "w": 1152,
+            "h": 1528,
+            "file": "I forgot where this is from"
         }
     ],
     "cat/gallery": [
