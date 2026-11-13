@@ -160,9 +160,10 @@ export const homeContent: Record<string, Entry> = withMedia({
         funFact: 'Check out my photography from Asia!',
         gallery: 'grid',
         images: [
-            { alt: 'Photo by Daniel 1', slot: 'camera/gallery', captionFromFile: true },
-            { alt: 'Photo by Daniel 2', slot: 'camera/gallery', captionFromFile: true },
-            { alt: 'Photo by Daniel 3', slot: 'camera/gallery', captionFromFile: true }
+            // his own photos first, then the ones of him with the camera
+            { alt: 'Photo by Daniel 1', slot: 'camera/photos', captionFromFile: true },
+            { alt: 'Daniel with his camera 1', slot: 'camera/gallery', captionFromFile: true },
+            { alt: 'Daniel taking a photo in a garden with his camera', slot: 'camera/me', captionFromFile: true }
         ]
     },
 

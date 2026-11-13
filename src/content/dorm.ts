@@ -445,6 +445,7 @@ export const dormContent: Record<string, Entry> = withMedia({
         links: [{ label: 'Hope For Hearing on Instagram', href: 'https://www.instagram.com/hopeforhearing/' }],
         // a gallery to scroll through sideways, each photo captioned with its file name
         gallery: 'scroll',
+        galleryBeforeStory: true,
         images: [{ alt: 'Hope For Hearing photo', slot: 'shirt/gallery', captionFromFile: true }]
     }
 });

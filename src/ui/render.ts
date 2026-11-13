@@ -149,6 +149,31 @@ export function renderSection(s: Section, o: RenderOpts): string {
     ];
     writeup.forEach(([k, v]) => { if (!blank(v)) out.push(`<p class="writeup"><strong>${rich(k)}.</strong> ${rich(v!)}</p>`); });
     const story = storyBox(s, Math.min(6, (o.heading || 2) + 1));
+    const gallery: string[] = [];
+    // a sideways 'scroll' gallery keeps wide images (website screenshots) out of the row, full width below it
+    const scrollWide = s.gallery === 'scroll' ? (s.images ?? []).filter((i) => i.wide) : [];
+    // videos marked inGallery lead the photo row (not on the plain page, where videos are links)
+    const galleryVideos = o.mode === 'plain' ? [] : (s.videos ?? []).filter((v) => v.inGallery && v.kind === 'mp4' && videoSrc(v));
+    const imgs = [
+        ...galleryVideos.map((v) => renderVideo(v, o.mode, o.comingSoonVideo, true)),
+        ...(s.images ?? []).filter((i) => !scrollWide.includes(i)).map((i) => renderImage(i, o.mode, o.comingSoonImage))
+    ].filter(Boolean);
+    const wideImgs = scrollWide.map((i) => renderImage(i, o.mode, o.comingSoonImage)).filter(Boolean);
+    if (imgs.length) {
+        if (s.galleryTitle) {
+            const h = Math.min(6, (o.heading || 2) + 1);
+            gallery.push(`<h${h} class="list-title">${rich(s.galleryTitle)}</h${h}>`);
+        }
+        // more than three photos always scroll sideways (decks keep their slide viewer)
+        const style = imgs.length > 3 && s.gallery !== 'slides' && s.gallery !== 'viewer' ? 'scroll'
+            : s.gallery ?? (imgs.length > 1 ? 'grid' : 'single');
+        const h = style === 'scroll' && s.galleryHeight ? ` style="--h: ${s.galleryHeight}px"` : '';
+        gallery.push(`<div class="gallery ${style}"${h}>${imgs.join('')}</div>`);
+    }
+    if (wideImgs.length) gallery.push(`<div class="gallery full">${wideImgs.join('')}</div>`);
+    // game panel option: the photos sit right above the story box instead of near the end
+    const galleryFirst = !!(s.galleryBeforeStory && story && o.mode === 'panel');
+    if (galleryFirst) out.push(...gallery);
     if (story) out.push(story);
     s.list?.forEach((l) => {
         const items = l.items.filter((i) => !blank(i));
@@ -169,27 +194,7 @@ export function renderSection(s: Section, o: RenderOpts): string {
             out.push(`<div class="pair"><ul class="chips"><li class="tag">${rich(p.text)}</li></ul>${pics.length ? `<div class="pair-imgs">${pics.join('')}</div>` : ''}</div>`);
         });
     }
-    // a sideways 'scroll' gallery keeps wide images (website screenshots) out of the row, full width below it
-    const scrollWide = s.gallery === 'scroll' ? (s.images ?? []).filter((i) => i.wide) : [];
-    // videos marked inGallery lead the photo row (not on the plain page, where videos are links)
-    const galleryVideos = o.mode === 'plain' ? [] : (s.videos ?? []).filter((v) => v.inGallery && v.kind === 'mp4' && videoSrc(v));
-    const imgs = [
-        ...galleryVideos.map((v) => renderVideo(v, o.mode, o.comingSoonVideo, true)),
-        ...(s.images ?? []).filter((i) => !scrollWide.includes(i)).map((i) => renderImage(i, o.mode, o.comingSoonImage))
-    ].filter(Boolean);
-    const wideImgs = scrollWide.map((i) => renderImage(i, o.mode, o.comingSoonImage)).filter(Boolean);
-    if (imgs.length) {
-        if (s.galleryTitle) {
-            const h = Math.min(6, (o.heading || 2) + 1);
-            out.push(`<h${h} class="list-title">${rich(s.galleryTitle)}</h${h}>`);
-        }
-        // more than three photos always scroll sideways (decks keep their slide viewer)
-        const style = imgs.length > 3 && s.gallery !== 'slides' && s.gallery !== 'viewer' ? 'scroll'
-            : s.gallery ?? (imgs.length > 1 ? 'grid' : 'single');
-        const h = style === 'scroll' && s.galleryHeight ? ` style="--h: ${s.galleryHeight}px"` : '';
-        out.push(`<div class="gallery ${style}"${h}>${imgs.join('')}</div>`);
-    }
-    if (wideImgs.length) out.push(`<div class="gallery full">${wideImgs.join('')}</div>`);
+    if (!galleryFirst) out.push(...gallery);
     const restVideos = (s.videos ?? []).filter((v) => !galleryVideos.includes(v));
     const embeds = restVideos.filter((v) => v.kind === 'spotify');
     // several Spotify playlists sit side by side (they stack on a narrow screen)

@@ -326,9 +326,63 @@
             "max": 1
         },
         {
+            "key": "camera/photos",
+            "folder": "2 Home/05 Camera, photography/Photos",
+            "max": 0,
+            "skip": [
+                "Me taking a photo.jpg"
+            ],
+            "first": [
+                "Mount Fuji 1.jpg",
+                "九份老街 3.png",
+                "九寨沟.jpg",
+                "峨眉山 1.jpg",
+                "Cool photo I took in a NY restaurant (0 editing).jpg",
+                "Ginza.jpg",
+                "Tokyo streets.jpg",
+                "Shibuya crossing.png",
+                "Flowers.JPG",
+                "I forgot where this is from.jpg",
+                "九份老街 1.jpg",
+                "九份老街 2.jpg",
+                "十分老街.jpg"
+            ],
+            "captions": {
+                "Mount Fuji 1.jpg": "Mount Fuji",
+                "九份老街 1.jpg": "Jiufen Old Street (九份老街)",
+                "九份老街 2.jpg": "Jiufen Old Street (九份老街)",
+                "九份老街 3.png": "Jiufen Old Street (九份老街)",
+                "九寨沟.jpg": "Jiuzhaigou (九寨沟)",
+                "十分老街.jpg": "Shifen Old Street (十分老街)",
+                "峨眉山 1.jpg": "Mount Emei (峨眉山)"
+            },
+            "alts": {
+                "Cool photo I took in a NY restaurant (0 editing).jpg": "An open kitchen at night above city lights, reflected in a restaurant window in New York",
+                "Flowers.JPG": "Close up of pink blossoms on a branch against the sky",
+                "Ginza.jpg": "People crossing a wide street between tall buildings in Ginza, Tokyo",
+                "I forgot where this is from.jpg": "A ferry docked at a pier on a lake with green mountains behind",
+                "Mount Fuji 1.jpg": "Mount Fuji behind a still pond, thatched roof houses, and green trees",
+                "Shibuya crossing.png": "A dense crowd at Shibuya crossing, Tokyo, with a flag held above it",
+                "Tokyo streets.jpg": "A narrow, quiet Tokyo side street between tall buildings",
+                "九份老街 1.jpg": "Crowds under glowing red lanterns and neon signs on Jiufen Old Street at night",
+                "九份老街 2.jpg": "A packed, lantern lit lane on Jiufen Old Street at night",
+                "九份老街 3.png": "Stone steps lined with red lanterns and teahouses on Jiufen Old Street",
+                "九寨沟.jpg": "A turquoise lake in a green mountain valley at Jiuzhaigou",
+                "十分老街.jpg": "A train coming down the tracks through Shifen Old Street as people take photos",
+                "峨眉山 1.jpg": "The sun rising over a sea of clouds at Mount Emei"
+            }
+        },
+        {
+            "key": "camera/me",
+            "file": "2 Home/05 Camera, photography/Photos/Me taking a photo.jpg"
+        },
+        {
             "key": "camera/gallery",
             "folder": "2 Home/05 Camera, photography",
             "max": 0,
+            "captions": {
+                "峨眉山.HEIC": "Mount Emei (峨眉山)"
+            },
             "alts": {
                 "峨眉山.HEIC": "Daniel with his camera above the clouds at Mount Emei (峨眉山) at sunset"
             }

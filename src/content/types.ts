@@ -104,6 +104,8 @@ export interface Section {
     linksTop?: boolean;
     /** Game panel: show the links right above the photo gallery. */
     linksBeforeGallery?: boolean;
+    /** Game panel: show the photo gallery right above the story box (`more`) instead of near the end. */
+    galleryBeforeStory?: boolean;
     /**
      * A long story in its own scrollable box: a heading, the opening paragraphs, then the rest
      * behind a "Read the whole story" expander.
