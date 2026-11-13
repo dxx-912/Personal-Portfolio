@@ -129,16 +129,16 @@ a.card:hover .lbl { animation: flicker 0.32s steps(2) 1; }
 
 /* ---------- morning hero ---------- */
 
-.hero { display: grid; grid-template-columns: minmax(0, 1fr) 250px; gap: clamp(24px, 5vw, 64px); align-items: start; }
+.hero { display: grid; grid-template-columns: minmax(0, 1fr) 300px; gap: clamp(24px, 5vw, 64px); align-items: start; }
 .hero-title { font-size: var(--fs-hero); line-height: 1.35; margin: 4px 0 22px; }
 .hero-title .type { display: inline; }
 .caret { display: inline-block; width: 0.55em; height: 0.9em; margin-left: 0.15em; vertical-align: -0.05em; background: currentColor; animation: caret 1s steps(1) infinite; }
 @keyframes caret { 50% { opacity: 0; } }
 .lede { font-size: clamp(17px, 1.6vw, 19px); max-width: 34em; margin: 0; }
 
-.hud { padding: 14px; }
+.hud { padding: 17px; }
 .shot {
-    position: relative; aspect-ratio: 1; margin-bottom: 14px; border: var(--line) solid var(--ink); overflow: hidden;
+    position: relative; aspect-ratio: 1; margin-bottom: 17px; border: var(--line) solid var(--ink); overflow: hidden;
     background: #e8dcc4; display: grid; place-items: center;
 }
 .shot-img { width: 100%; height: 100%; object-fit: cover; transition: opacity var(--dur-mid); }
@@ -149,9 +149,9 @@ main:not(.dev) .shot:not(.has-img) .shot-ph { display: none; }
 .dev .shot:not(.has-img) .shot-sprite { opacity: 0; }
 .shot:hover .shot-sprite { opacity: 1; }
 .shot.has-img:hover .shot-img, .dev .shot:hover .shot-ph { opacity: 0; }
-.stats { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
-.stat-l { display: block; font-size: 8px; line-height: 1.5; margin-bottom: 6px; }
-.bar { display: block; height: 9px; background: rgba(26, 22, 38, 0.1); border: 1px solid rgba(26, 22, 38, 0.25); }
+.stats { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; }
+.stat-l { display: block; font-size: 8px; line-height: 1.5; margin-bottom: 7px; }
+.bar { display: block; height: 11px; background: rgba(26, 22, 38, 0.1); border: 1px solid rgba(26, 22, 38, 0.25); }
 .bar i { display: block; height: 100%; width: calc(var(--f) * 100%); background: var(--c); transform-origin: left; animation: fill 1.1s var(--ease-out) 0.35s both; }
 @keyframes fill { from { transform: scaleX(0); } }
 
@@ -334,7 +334,7 @@ a.clink:hover span { text-decoration: underline; text-underline-offset: 4px; }
 @media (max-width: 1100px) {
 }
 @media (max-width: 860px) {
-    .hero { grid-template-columns: minmax(0, 1fr) 210px; }
+    .hero { grid-template-columns: minmax(0, 1fr) 252px; }
     .nav-links span { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
     .nav-links a { padding: 6px 8px; }
     .nav-links .pi { font-size: 16px; }
@@ -345,7 +345,7 @@ a.clink:hover span { text-decoration: underline; text-underline-offset: 4px; }
     .progress { display: block; position: fixed; z-index: 45; left: 0; right: 0; top: 0; height: 3px; pointer-events: none; }
     .progress span { display: block; height: 100%; background: var(--hl); transform-origin: left; transform: scaleX(var(--p, 0)); }
     .hero { grid-template-columns: 1fr; }
-    .hud { max-width: 320px; display: grid; grid-template-columns: 96px 1fr; gap: 14px; align-items: center; }
+    .hud { max-width: 384px; display: grid; grid-template-columns: 115px 1fr; gap: 17px; align-items: center; }
     .shot { margin: 0; }
     .work-grid, .edu-grid { grid-template-columns: 1fr; }
     .wordmark { font-size: 10px; }
@@ -393,7 +393,7 @@ a.clink:hover span { text-decoration: underline; text-underline-offset: 4px; }
 .wl { font-size: 12px; }
 .glance dt, .facts dt { font-size: 11px; }
 .list-h { font-size: 12px; }
-.stat-l { font-size: 10px; letter-spacing: 0.06em; }
+.stat-l { font-size: 12px; letter-spacing: 0.06em; }
 .more { font-size: 11px; }
 .sub-h { font-size: 14px; }
 .pv-sib .px { font-size: 10px; }
