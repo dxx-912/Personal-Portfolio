@@ -7,8 +7,10 @@ import { initHud } from './ui/hud';
 import { initInput } from './ui/input';
 import { initEmailCopy } from './ui/copyEmail';
 import { inject } from '@vercel/analytics';
+import { injectSpeedInsights } from '@vercel/speed-insights';
 
 inject();
+injectSpeedInsights();
 initInput();
 initHud();
 initEmailCopy();
