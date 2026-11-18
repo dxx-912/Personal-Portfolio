@@ -141,6 +141,30 @@ export const dormContent: Record<string, Entry> = withMedia({
         tabStyle: 'tabs',
         tabs: [
             {
+                id: 'bruinguessr',
+                title: 'BruinGuessr',
+                linksTop: true,
+                subtitle: 'Solo project',
+                summary: 'GeoGuessr, but for UCLA\'s campus.',
+                hideTags: true,
+                tags: ['Builder', 'Live'],
+                omit: ['role', 'team', 'timeline', 'problem', 'whatIDid'],
+                notes: [
+                    { label: 'What it does', text: 'GeoGuessr, but for UCLA\'s campus. Each round shows a photo from somewhere on campus, and you drop a pin on the campus map before the 30 seconds run out. Up to 5,000 points per round across five rounds, with a leaderboard for solo play and a Versus mode where you host or join a lobby with friends.' },
+                    { label: 'Why I built it', text: 'Thought of this idea in the shower and realized it would lowkey be really fun to play with friends.' },
+                    { label: 'Built with', text: 'Next.js, TypeScript, Supabase (Postgres, Auth), MapLibre, Vercel, Claude Code, Mapillary, Wikimedia' }
+                ],
+                result: 'Still tweaking UI and adding photos as of November 17. Want to launch and market it big, aiming for 1000+ signups.',
+                gallery: 'viewer',
+                images: [
+                    { alt: 'BruinGuessr screenshot', slot: 'laptop/bruinguessr', captionFromFile: true },
+                    { alt: 'BruinGuessr screenshot', slot: 'laptop/bruinguessr', captionFromFile: true },
+                    { alt: 'BruinGuessr screenshot', slot: 'laptop/bruinguessr', captionFromFile: true },
+                    { alt: 'BruinGuessr screenshot', slot: 'laptop/bruinguessr', captionFromFile: true }
+                ],
+                links: [{ label: 'Open the live app', href: 'https://www.bruinguessr.com/' }]
+            },
+            {
                 id: 'cold-email',
                 title: 'Cold Outreach Automator',
                 subtitle: 'Solo project',
@@ -183,30 +207,6 @@ export const dormContent: Record<string, Entry> = withMedia({
                     { alt: 'Saved Posts Scroller screenshot', slot: 'laptop/saved-posts', captionFromFile: true }
                 ],
                 links: [{ label: 'Open the live app', href: 'https://morning-scroller.vercel.app/' }]
-            },
-            {
-                id: 'bruinguessr',
-                title: 'BruinGuessr',
-                linksTop: true,
-                subtitle: 'Solo project',
-                summary: 'GeoGuessr, but for UCLA\'s campus.',
-                hideTags: true,
-                tags: ['Builder', 'Live'],
-                omit: ['role', 'team', 'timeline', 'problem', 'whatIDid'],
-                notes: [
-                    { label: 'What it does', text: 'GeoGuessr, but for UCLA\'s campus. Each round shows a photo from somewhere on campus, and you drop a pin on the campus map before the 30 seconds run out. Up to 5,000 points per round across five rounds, with a leaderboard for solo play and a Versus mode where you host or join a lobby with friends.' },
-                    { label: 'Why I built it', text: 'Thought of this idea in the shower and realized it would lowkey be really fun to play with friends.' },
-                    { label: 'Built with', text: 'Next.js, TypeScript, Supabase (Postgres, Auth), MapLibre, Vercel, Claude Code, Mapillary, Wikimedia' }
-                ],
-                result: 'Still tweaking UI and adding photos as of November 17. Want to launch and market it big, aiming for 1000+ signups.',
-                gallery: 'viewer',
-                images: [
-                    { alt: 'BruinGuessr screenshot', slot: 'laptop/bruinguessr', captionFromFile: true },
-                    { alt: 'BruinGuessr screenshot', slot: 'laptop/bruinguessr', captionFromFile: true },
-                    { alt: 'BruinGuessr screenshot', slot: 'laptop/bruinguessr', captionFromFile: true },
-                    { alt: 'BruinGuessr screenshot', slot: 'laptop/bruinguessr', captionFromFile: true }
-                ],
-                links: [{ label: 'Open the live app', href: 'https://www.bruinguessr.com/' }]
             },
             {
                 id: 'ateball',
