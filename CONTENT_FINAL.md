@@ -109,9 +109,12 @@ Quick view leadership gallery order: Sharpe Fellows first, then DSP, IBB, BEA, U
 - No link.
 
 **BruinGuessr** · `photos/1 Dorm/04 Laptop, software projects/BruinGuessr Screenshots/`
-- One liner: GeoGuessr, but for UCLA's campus.
-- What it does (from the app's own screens): each round shows a photo from somewhere on campus with no street names or hints; drop a pin on the campus map before the 30 seconds run out; up to 5,000 points a round across five rounds; a solo leaderboard and a Versus mode (host or join a lobby with a code).
-- Live link, why I built it, built with, result, solo or team: `[TODO]`
+- Live link: https://www.bruinguessr.com/
+- What it does: GeoGuessr, but for UCLA's campus. Each round shows a photo from somewhere on campus, and you drop a pin on the campus map before the 30 seconds run out. Up to 5,000 points per round across five rounds, with a leaderboard for solo play and a Versus mode where you host or join a lobby with friends.
+- Why I built it: Thought of this idea in the shower and realized it would lowkey be really fun to play with friends.
+- Built with: Next.js, TypeScript, Supabase (Postgres, Auth), MapLibre, Vercel, Claude Code, Mapillary, Wikimedia
+- Result: Still tweaking UI and adding photos as of November 17. Want to launch and market it big, aiming for 1000+ signups.
+- Solo project (no team line).
 - Screenshots are captioned with their file names (as are all laptop screenshots).
 
 ### 2.4 Consulting (binder, item 5)

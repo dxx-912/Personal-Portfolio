@@ -188,17 +188,17 @@ export const dormContent: Record<string, Entry> = withMedia({
                 id: 'bruinguessr',
                 title: 'BruinGuessr',
                 linksTop: true,
-                subtitle: '[TODO: Solo project?]',
+                subtitle: 'Solo project',
                 summary: 'GeoGuessr, but for UCLA\'s campus.',
                 hideTags: true,
-                tags: ['Builder'],
+                tags: ['Builder', 'Live'],
                 omit: ['role', 'team', 'timeline', 'problem', 'whatIDid'],
                 notes: [
-                    { label: 'What it does', text: 'GeoGuessr, but only for UCLA\'s campus. Each round shows a photo from somewhere on campus with no street names or hints, and you drop a pin on the campus map before the 30 seconds run out. Up to 5,000 points a round across five rounds, with a leaderboard for solo play and a Versus mode where you host or join a lobby with friends using a code.' },
-                    { label: 'Why I built it', text: '[TODO: 1 to 2 sentences on why you built BruinGuessr]' },
-                    { label: 'Built with', text: '[TODO: tech stack]' }
+                    { label: 'What it does', text: 'GeoGuessr, but for UCLA\'s campus. Each round shows a photo from somewhere on campus, and you drop a pin on the campus map before the 30 seconds run out. Up to 5,000 points per round across five rounds, with a leaderboard for solo play and a Versus mode where you host or join a lobby with friends.' },
+                    { label: 'Why I built it', text: 'Thought of this idea in the shower and realized it would lowkey be really fun to play with friends.' },
+                    { label: 'Built with', text: 'Next.js, TypeScript, Supabase (Postgres, Auth), MapLibre, Vercel, Claude Code, Mapillary, Wikimedia' }
                 ],
-                result: '[TODO: users, games played, or feedback so far]',
+                result: 'Still tweaking UI and adding photos as of November 17. Want to launch and market it big, aiming for 1000+ signups.',
                 gallery: 'viewer',
                 images: [
                     { alt: 'BruinGuessr screenshot', slot: 'laptop/bruinguessr', captionFromFile: true },
@@ -206,7 +206,7 @@ export const dormContent: Record<string, Entry> = withMedia({
                     { alt: 'BruinGuessr screenshot', slot: 'laptop/bruinguessr', captionFromFile: true },
                     { alt: 'BruinGuessr screenshot', slot: 'laptop/bruinguessr', captionFromFile: true }
                 ],
-                links: [{ label: 'Open the live app', href: '[TODO: BruinGuessr live link]' }]
+                links: [{ label: 'Open the live app', href: 'https://www.bruinguessr.com/' }]
             },
             {
                 id: 'ateball',

@@ -16,7 +16,7 @@ How things show up until they are filled: in development (`npm run dev`) a missi
 - [ ] **Photos for empty folders:**
   - `1 Dorm/07 Grad cap, Upper Canada College/Graduating class hat toss (1 photo)`
 
-- [ ] **BruinGuessr (laptop):** live link, why you built it, tech stack, result (users, games played, or feedback), and whether it was solo. Fill in `dorm.laptop` tab `bruinguessr` in `src/content/dorm.ts`. Also decide whether it gets a card in the quick view work list (and where in the order).
+- [ ] **BruinGuessr:** decide whether it gets a card in the quick view work list, and where in the order.
 
 ## Home (personal)
 
