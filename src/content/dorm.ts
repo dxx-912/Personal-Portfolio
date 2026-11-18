@@ -155,7 +155,7 @@ export const dormContent: Record<string, Entry> = withMedia({
                     { label: 'Built with', text: 'Next.js, TypeScript, Supabase (Postgres, Auth), MapLibre, Vercel, Claude Code, Mapillary, Wikimedia' }
                 ],
                 result: 'Still tweaking UI and adding photos as of November 17. Want to launch and market it big, aiming for 1000+ signups.',
-                gallery: 'viewer',
+                gallery: 'scroll',
                 images: [
                     { alt: 'BruinGuessr screenshot', slot: 'laptop/bruinguessr', captionFromFile: true },
                     { alt: 'BruinGuessr screenshot', slot: 'laptop/bruinguessr', captionFromFile: true },
