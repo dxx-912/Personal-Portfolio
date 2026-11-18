@@ -108,6 +108,12 @@ Quick view leadership gallery order: Sharpe Fellows first, then DSP, IBB, BEA, U
 - Result: Although we didn't finish the entire application on time, this was my first time building a tech product end-to-end and a great experience leading multiple teams toward one goal.
 - No link.
 
+**BruinGuessr** · `photos/1 Dorm/04 Laptop, software projects/BruinGuessr Screenshots/`
+- One liner: GeoGuessr, but for UCLA's campus.
+- What it does (from the app's own screens): each round shows a photo from somewhere on campus with no street names or hints; drop a pin on the campus map before the 30 seconds run out; up to 5,000 points a round across five rounds; a solo leaderboard and a Versus mode (host or join a lobby with a code).
+- Live link, why I built it, built with, result, solo or team: `[TODO]`
+- Screenshots are captioned with their file names (as are all laptop screenshots).
+
 ### 2.4 Consulting (binder, item 5)
 **Genesis Alternative Ventures** (no slides: NDA; no photo gallery)
 - Role: Project manager (through International Business for Bruins)

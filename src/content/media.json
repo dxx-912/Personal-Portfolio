@@ -567,6 +567,36 @@
             "file": "onboarding 2"
         }
     ],
+    "laptop/bruinguessr": [
+        {
+            "src": "/media/laptop/bruinguessr/01-bruinguessr-home-page-know-ucla-solo-and-versus-.webp",
+            "alt": "BruinGuessr home page: Know UCLA? Solo and Versus modes, with Royce Hall",
+            "w": 1600,
+            "h": 1036,
+            "file": "Homepage"
+        },
+        {
+            "src": "/media/laptop/bruinguessr/02-bruinguessr-round-a-campus-street-photo-with-the.webp",
+            "alt": "BruinGuessr round: a campus street photo with the map open to drop a pin",
+            "w": 1600,
+            "h": 1036,
+            "file": "Gameplay 1"
+        },
+        {
+            "src": "/media/laptop/bruinguessr/03-bruinguessr-round-3-a-campus-photo-timer-and-sco.webp",
+            "alt": "BruinGuessr round 3: a campus photo, timer, and score",
+            "w": 1600,
+            "h": 1036,
+            "file": "Gameplay 2"
+        },
+        {
+            "src": "/media/laptop/bruinguessr/04-bruinguessr-results-each-guess-against-the-real-.webp",
+            "alt": "BruinGuessr results: each guess against the real spot on the campus map, 9,292 of 25,000 points",
+            "w": 1600,
+            "h": 1036,
+            "file": "Gameplay 3"
+        }
+    ],
     "laptop/cold-email": [
         {
             "src": "/media/laptop/cold-email/01-cold-outreach-automator-landing-page-personal-co.webp",
@@ -589,21 +619,21 @@
             "alt": "Saved posts scroller intro screen: your saves, actually seen",
             "w": 739,
             "h": 1600,
-            "file": "IMG_5712"
+            "file": "Onboarding"
         },
         {
             "src": "/media/laptop/saved-posts/02-saved-posts-scroller-daily-feed-sorted-into-cate.webp",
             "alt": "Saved posts scroller daily feed, sorted into categories",
             "w": 739,
             "h": 1600,
-            "file": "IMG_5713"
+            "file": "Categories"
         },
         {
             "src": "/media/laptop/saved-posts/03-saved-posts-scroller-library-of-saved-posts-with.webp",
             "alt": "Saved posts scroller library of saved posts with category filters",
             "w": 739,
             "h": 1600,
-            "file": "IMG_5714"
+            "file": "Library"
         }
     ],
     "longboard/gallery": [

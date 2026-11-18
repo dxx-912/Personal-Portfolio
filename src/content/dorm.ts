@@ -157,8 +157,8 @@ export const dormContent: Record<string, Entry> = withMedia({
                 result: '7 users so far with over 650 emails sent.',
                 gallery: 'scroll',
                 images: [
-                    { alt: 'Cold Outreach Automator screenshot', slot: 'laptop/cold-email' },
-                    { alt: 'Cold Outreach Automator screenshot', slot: 'laptop/cold-email' }
+                    { alt: 'Cold Outreach Automator screenshot', slot: 'laptop/cold-email', captionFromFile: true },
+                    { alt: 'Cold Outreach Automator screenshot', slot: 'laptop/cold-email', captionFromFile: true }
                 ],
                 links: [{ label: 'Open the live app', href: 'https://cold-email-automator-two.vercel.app/' }]
             },
@@ -179,10 +179,34 @@ export const dormContent: Record<string, Entry> = withMedia({
                 result: 'I start every morning quite motivated now. Shared with friends and family; good feedback so far.',
                 gallery: 'viewer',
                 images: [
-                    { alt: 'Saved Posts Scroller screenshot', slot: 'laptop/saved-posts' },
-                    { alt: 'Saved Posts Scroller screenshot', slot: 'laptop/saved-posts' }
+                    { alt: 'Saved Posts Scroller screenshot', slot: 'laptop/saved-posts', captionFromFile: true },
+                    { alt: 'Saved Posts Scroller screenshot', slot: 'laptop/saved-posts', captionFromFile: true }
                 ],
                 links: [{ label: 'Open the live app', href: 'https://morning-scroller.vercel.app/' }]
+            },
+            {
+                id: 'bruinguessr',
+                title: 'BruinGuessr',
+                linksTop: true,
+                subtitle: '[TODO: Solo project?]',
+                summary: 'GeoGuessr, but for UCLA\'s campus.',
+                hideTags: true,
+                tags: ['Builder'],
+                omit: ['role', 'team', 'timeline', 'problem', 'whatIDid'],
+                notes: [
+                    { label: 'What it does', text: 'GeoGuessr, but only for UCLA\'s campus. Each round shows a photo from somewhere on campus with no street names or hints, and you drop a pin on the campus map before the 30 seconds run out. Up to 5,000 points a round across five rounds, with a leaderboard for solo play and a Versus mode where you host or join a lobby with friends using a code.' },
+                    { label: 'Why I built it', text: '[TODO: 1 to 2 sentences on why you built BruinGuessr]' },
+                    { label: 'Built with', text: '[TODO: tech stack]' }
+                ],
+                result: '[TODO: users, games played, or feedback so far]',
+                gallery: 'viewer',
+                images: [
+                    { alt: 'BruinGuessr screenshot', slot: 'laptop/bruinguessr', captionFromFile: true },
+                    { alt: 'BruinGuessr screenshot', slot: 'laptop/bruinguessr', captionFromFile: true },
+                    { alt: 'BruinGuessr screenshot', slot: 'laptop/bruinguessr', captionFromFile: true },
+                    { alt: 'BruinGuessr screenshot', slot: 'laptop/bruinguessr', captionFromFile: true }
+                ],
+                links: [{ label: 'Open the live app', href: '[TODO: BruinGuessr live link]' }]
             },
             {
                 id: 'ateball',
@@ -201,9 +225,9 @@ export const dormContent: Record<string, Entry> = withMedia({
                 result: "Although we didn't finish the entire application on time, this was my first time building a tech product end-to-end and a great experience leading multiple teams toward one goal.",
                 gallery: 'viewer',
                 images: [
-                    { alt: 'Ateball UI screenshot', slot: 'laptop/ateball' },
-                    { alt: 'Ateball UI screenshot', slot: 'laptop/ateball' },
-                    { alt: 'Ateball UI screenshot', slot: 'laptop/ateball' }
+                    { alt: 'Ateball UI screenshot', slot: 'laptop/ateball', captionFromFile: true },
+                    { alt: 'Ateball UI screenshot', slot: 'laptop/ateball', captionFromFile: true },
+                    { alt: 'Ateball UI screenshot', slot: 'laptop/ateball', captionFromFile: true }
                 ]
             }
         ]

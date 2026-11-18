@@ -107,10 +107,28 @@
             "folder": "1 Dorm/04 Laptop, software projects/Saved posts scroller screenshots (2 to 4)",
             "max": 4,
             "text": true,
+            "first": [
+                "Onboarding.PNG"
+            ],
             "alts": {
-                "IMG_5712.PNG": "Saved posts scroller intro screen: your saves, actually seen",
-                "IMG_5713.PNG": "Saved posts scroller daily feed, sorted into categories",
-                "IMG_5714.PNG": "Saved posts scroller library of saved posts with category filters"
+                "Onboarding.PNG": "Saved posts scroller intro screen: your saves, actually seen",
+                "Categories.PNG": "Saved posts scroller daily feed, sorted into categories",
+                "Library.PNG": "Saved posts scroller library of saved posts with category filters"
+            }
+        },
+        {
+            "key": "laptop/bruinguessr",
+            "folder": "1 Dorm/04 Laptop, software projects/BruinGuessr Screenshots",
+            "max": 4,
+            "text": true,
+            "first": [
+                "Homepage.png"
+            ],
+            "alts": {
+                "Homepage.png": "BruinGuessr home page: Know UCLA? Solo and Versus modes, with Royce Hall",
+                "Gameplay 1.png": "BruinGuessr round: a campus street photo with the map open to drop a pin",
+                "Gameplay 2.png": "BruinGuessr round 3: a campus photo, timer, and score",
+                "Gameplay 3.png": "BruinGuessr results: each guess against the real spot on the campus map, 9,292 of 25,000 points"
             }
         },
         {
