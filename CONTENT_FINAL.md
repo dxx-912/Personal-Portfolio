@@ -260,7 +260,7 @@ Use Daniel's text as written (his casual voice is intentional). Light fixes only
 ## 4. Quick view only
 
 - Work card order: 1 Cold Outreach Automator · 2 Saved posts scroller · 3 DSP and IBB marketing · 4 Ateball · 5 L.E.K. · 6 Genesis
-- Inventory labels: Rowing, national champ · Piano, ARCT · Built a longboard · Fluffy · Photography · Baking · Music · Lift and sprint · Beach volleyball · Family
+- Inventory labels: Rowing, national champ · Piano, ARCT · Longboard · Fluffy · Photography · Baking · Music · Lift and sprint · Beach volleyball · Family
 - Fun facts (shown when a box flips):
   - Rowing: Won the national championships! (Novice 8+, CSSRA)
   - Piano: I have the ARCT diploma in Piano Performance.

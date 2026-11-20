@@ -249,7 +249,7 @@ export const homeContent: Record<string, Entry> = withMedia({
     // 10. Longboard (E rides it). Short version first, the full story behind "Read the whole story".
     longboard: {
         id: 'longboard',
-        short: 'Built a longboard',
+        short: 'Longboard',
         prompt: 'The build',
         plainGroup: 'personal',
         title: 'Longboard build',
