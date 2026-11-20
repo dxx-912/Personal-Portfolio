@@ -305,6 +305,9 @@ export const dormContent: Record<string, Entry> = withMedia({
                 id: 'dsp',
                 title: 'DSP',
                 subtitle: 'Delta Sigma Pi. Director of Marketing.',
+                summary: 'Vogue themed rush campaign with 350K+ views, a rush video with 110K+ organic views, and a rebuilt chapter website.',
+                tags: ['Brand', 'Web'],
+                omit: ['role', 'team', 'timeline', 'problem', 'whatIDid', 'result'],
                 body: ["Ran the chapter's Fall 2026 rush marketing: designed the Vogue-themed photoshoot campaign, the rush video, and a rebuilt chapter website."],
                 list: [{
                     title: 'Results',
@@ -333,6 +336,9 @@ export const dormContent: Record<string, Entry> = withMedia({
                 id: 'ibb',
                 title: 'IBB',
                 subtitle: 'International Business for Bruins. Director of Marketing.',
+                summary: 'New brand identity, recruitment and event content reaching 80K+ views, and a new club website.',
+                tags: ['Brand', 'Web'],
+                omit: ['role', 'team', 'timeline', 'problem', 'whatIDid', 'result'],
                 body: ["Rebuilt the club's brand identity (logo, fonts, color palette), produced recruitment and event content, and shipped a new club website to showcase offerings and drive recruitment."],
                 list: [{
                     title: 'Results',
