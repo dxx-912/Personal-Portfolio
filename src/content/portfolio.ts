@@ -40,12 +40,12 @@ export const portfolioItems: PortfolioItem[] = [
     // Work, in Daniel's order
     { id: 'bruinguessr', portfolioSection: 'work', cardOrder: 1, label: 'SOFTWARE', section: tab(dormContent.laptop, 'bruinguessr') },
     { id: 'cold-email', portfolioSection: 'work', cardOrder: 2, label: 'SOFTWARE', section: tab(dormContent.laptop, 'cold-email') },
-    { id: 'saved-posts', portfolioSection: 'work', cardOrder: 3, label: 'SOFTWARE', section: tab(dormContent.laptop, 'saved-posts') },
-    { id: 'dsp', portfolioSection: 'work', cardOrder: 4, label: 'MARKETING', title: 'Delta Sigma Pi marketing', section: tab(dormContent.phone, 'dsp') },
-    { id: 'ibb', portfolioSection: 'work', cardOrder: 5, label: 'MARKETING', title: 'IBB marketing', section: tab(dormContent.phone, 'ibb') },
-    { id: 'ateball', portfolioSection: 'work', cardOrder: 6, label: 'PRODUCT', title: 'Ateball, Creative Labs', section: tab(dormContent.laptop, 'ateball') },
-    { id: 'lek', portfolioSection: 'work', cardOrder: 7, label: 'CASE COMP', section: tab(dormContent.binder, 'lek') },
-    { id: 'genesis', portfolioSection: 'work', cardOrder: 8, label: 'CONSULTING', section: tab(dormContent.binder, 'genesis') },
+    { id: 'saved-posts', portfolioSection: 'work', cardOrder: 4, label: 'SOFTWARE', section: tab(dormContent.laptop, 'saved-posts') },
+    { id: 'dsp', portfolioSection: 'work', cardOrder: 5, label: 'MARKETING', title: 'Delta Sigma Pi marketing', section: tab(dormContent.phone, 'dsp') },
+    { id: 'ibb', portfolioSection: 'work', cardOrder: 6, label: 'MARKETING', title: 'IBB marketing', section: tab(dormContent.phone, 'ibb') },
+    { id: 'ateball', portfolioSection: 'work', cardOrder: 3, label: 'PRODUCT', title: 'Ateball, Creative Labs', section: tab(dormContent.laptop, 'ateball') },
+    { id: 'lek', portfolioSection: 'work', cardOrder: 8, label: 'CASE COMP', section: tab(dormContent.binder, 'lek') },
+    { id: 'genesis', portfolioSection: 'work', cardOrder: 7, label: 'CONSULTING', section: tab(dormContent.binder, 'genesis') },
 
     // Leadership: a swipeable gallery. Sharpe Fellows first (the default card), Hope For Hearing second.
     { id: 'sharpe', portfolioSection: 'leadership', cardOrder: 1, kind: 'org', section: tab(dormContent.todo, 'sharpe') },
